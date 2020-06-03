@@ -44,29 +44,29 @@ class QuestionType extends ActiveRecord {
      * @con_length     128
      * @con_is_notnull true
      */
-    protected $form_class;
-    
-    public static function createNew(string $title_key, string $form_class) : QuestionType {
+    protected $factory_class;
+
+    public static function createNew(string $title_key, string $factory_class) : QuestionType {
         $object = new QuestionType();
         $object->title_key = $title_key;
-        $object->form_class = $form_class;
+        $object->form_class = $factory_class;
         return $object;
     }
-    
+
     /**
      * @return string
      */
     public function getTitleKey() : string {
         return $this->title_key;
     }
-    
+
     /**
      * @return string
      */
-    public function getFormClass() : string {
+    public function getFactoryClass() : string {
         return $this->form_class;
     }
-    
+
     /**
      * @return string
      */

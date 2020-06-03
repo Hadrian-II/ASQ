@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web;
+namespace srag\asq\UserInterface\Web\Form;
 
 /**
- * Class InputHelper
+ * Abstract Class AbstractQuestionFormFactory
+ *
+ * Contains Methods that are needed for a FormFactory to Work
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -12,34 +13,39 @@ namespace srag\asq\UserInterface\Web;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class InputHelper {
+abstract class AbstractQuestionFormObjectFactory implements IQuestionFormObjectFactory
+{
     /**
+     * Reads float value from POST
+     *
      * @param string $postvar
-     * @return float|NULL
+     * @return ?float
      */
-    public static function readFloat(string $postvar) : ?float 
+    public static function readFloat(string $postvar) : ?float
     {
         if (! array_key_exists($postvar, $_POST) ||
-            ! is_numeric($_POST[$postvar])) 
+            ! is_numeric($_POST[$postvar]))
         {
             return null;
         }
-        
+
         return floatval($_POST[$postvar]);
     }
-    
+
     /**
+     * Reads int value from POST
+     *
      * @param string $postvar
-     * @return int|NULL
+     * @return ?int
      */
     public static function readInt(string $postvar) : ?int
     {
         if (! array_key_exists($postvar, $_POST) ||
-            ! is_numeric($_POST[$postvar])) 
+            ! is_numeric($_POST[$postvar]))
         {
             return null;
         }
-        
+
         return intval($_POST[$postvar]);
     }
 }

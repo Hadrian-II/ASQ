@@ -21,12 +21,12 @@ class QuestionTypeDefinition extends AbstractValueObject {
      * @var string
      */
     protected $title_key;
-    
+
     /**
      * @var string
      */
-    protected $form_class;
-    
+    protected $factory_class;
+
     /**
      * @param QuestionType $type
      * @return QuestionTypeDefinition
@@ -34,23 +34,23 @@ class QuestionTypeDefinition extends AbstractValueObject {
     public static function create(QuestionType $type) : QuestionTypeDefinition {
         $object = new QuestionTypeDefinition();
         $object->title_key = $type->getTitleKey();
-        $object->form_class = $type->getFormClass();
+        $object->factory_class = $type->getFactoryClass();
         return $object;
     }
-    
+
     /**
      * @return string
      */
     public function getTitle() : string {
         global $DIC;
-        
+
         return $DIC->language()->txt($this->title_key);
     }
-    
+
     /**
      * @return QuestionFormGUI
      */
-    public function getFormClass() : string {
-        return $this->form_class;
+    public function getFactoryClass() : string {
+        return $this->factory_class;
     }
 }

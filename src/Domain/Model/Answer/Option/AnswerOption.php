@@ -29,9 +29,9 @@ class AnswerOption extends AbstractValueObject {
 	protected $scoring_definition;
 
 	public static function create(
-	    string $id, 
-	    ?AnswerDefinition $display_definition = null, 
-	    ?AnswerDefinition $scoring_definition = null) : AnswerOption
+	    string $id,
+	    ?AbstractValueObject $display_definition = null,
+	    ?AbstractValueObject $scoring_definition = null) : AnswerOption
 	{
 	    $object = new AnswerOption();
 	    $object->option_id = $id;
@@ -48,26 +48,16 @@ class AnswerOption extends AbstractValueObject {
 	}
 
 	/**
-	 * @return AnswerDefinition
+	 * @return AbstractValueObject
 	 */
 	public function getDisplayDefinition() {
 		return $this->display_definition;
 	}
 
 	/**
-	 * @return mixed
+	 * @return AbstractValueObject
 	 */
 	public function getScoringDefinition() {
 		return $this->scoring_definition;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function rawValues() : array {
-		$dd_fields = $this->display_definition !== null ? $this->display_definition->getValues() : [];
-		$sd_fields = $this->scoring_definition !== null ? $this->scoring_definition->getValues() : [];
-
-		return array_merge($dd_fields, $sd_fields);
 	}
 }
