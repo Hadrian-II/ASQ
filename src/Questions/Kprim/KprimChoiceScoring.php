@@ -56,7 +56,7 @@ class KprimChoiceScoring extends AbstractScoring
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
-    public function getBestAnswer(): Answer
+    public function getBestAnswer() : Answer
     {
         $answers = [];
 

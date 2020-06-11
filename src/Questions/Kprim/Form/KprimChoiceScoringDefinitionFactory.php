@@ -27,7 +27,7 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @param $definition KprimChoiceScoringDefinition
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [ self::VAR_KPSD_CORRECT => $definition->isCorrectValue() ? KprimChoiceEditor::STR_TRUE : KprimChoiceEditor::STR_FALSE ];
     }
@@ -36,7 +36,7 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         /** @var $conf KprimChoiceEditorConfiguration */
         if (is_null($play) || is_null($play->getEditorConfiguration()))
@@ -68,7 +68,7 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return KprimChoiceScoringDefinition
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return KprimChoiceScoringDefinition::create($values[self::VAR_KPSD_CORRECT] === KprimChoiceEditor::STR_TRUE);
     }
@@ -76,7 +76,7 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return KprimChoiceScoringDefinition
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return KprimChoiceScoringDefinition::create(false);
     }

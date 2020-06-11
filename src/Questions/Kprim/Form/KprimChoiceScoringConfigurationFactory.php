@@ -29,7 +29,7 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -54,7 +54,7 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return KprimChoiceScoringConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return KprimChoiceScoringConfiguration::create(
             $this->readFloat(self::VAR_POINTS),
@@ -64,7 +64,7 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return KprimChoiceScoringConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return KprimChoiceScoringConfiguration::create();
     }

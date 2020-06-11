@@ -46,7 +46,7 @@ class KprimChoiceEditor extends AbstractEditor {
         parent::__construct($question);
     }
 
-    public function readAnswer(): AbstractValueObject
+    public function readAnswer() : AbstractValueObject
     {
         $answers = [];
 
@@ -150,7 +150,7 @@ class KprimChoiceEditor extends AbstractEditor {
      * @param string $id
      * @return string
      */
-    private function getPostName(string $id)
+    private function getPostName(string $id) : string
     {
         return $this->question->getId() . $id;
     }

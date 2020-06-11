@@ -52,7 +52,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @var $value KprimChoiceEditorConfiguration
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -88,7 +88,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
      * @param AbstractConfiguration $config
      * @return \ilRadioGroupInputGUI
      */
-    private function GenerateOptionLabelField(?KprimChoiceEditorConfiguration $config)
+    private function GenerateOptionLabelField(?KprimChoiceEditorConfiguration $config) : ilRadioGroupInputGUI
     {
         $optionLabel = new ilRadioGroupInputGUI(
             $this->language->txt('asq_label_obtion_labels'),
@@ -159,7 +159,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return KprimChoiceEditorConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         switch ($_POST[self::VAR_LABEL_TYPE]) {
             case self::LABEL_RIGHT_WRONG:
@@ -197,7 +197,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return KprimChoiceEditorConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return KprimChoiceEditorConfiguration::create(null, null, null, self::STR_RIGHT, self::STR_WRONG);
     }

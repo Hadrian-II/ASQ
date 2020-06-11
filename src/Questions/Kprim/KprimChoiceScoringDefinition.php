@@ -32,7 +32,7 @@ class KprimChoiceScoringDefinition extends AbstractValueObject
     /**
      * @return boolean
      */
-    public function isCorrectValue()
+    public function isCorrectValue() : bool
     {
         return $this->correct_value;
     }
