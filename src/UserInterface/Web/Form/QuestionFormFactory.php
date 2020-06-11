@@ -1,8 +1,12 @@
 <?php
+declare(strict_types = 1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class QuestionFormFactory
@@ -18,36 +22,36 @@ use srag\asq\Domain\Model\QuestionPlayConfiguration;
 class QuestionFormFactory
 {
     /**
-     * @var IQuestionFormObjectFactory
+     * @var IObjectFactory
      */
     protected $editor_config_factory;
 
     /**
-     * @var IQuestionFormObjectFactory
+     * @var IObjectFactory
      */
     protected $scoring_config_factory;
 
     /**
-     * @var IQuestionFormObjectFactory
+     * @var IAnswerOptionFactory
      */
     protected $editor_definition_factory;
 
     /**
-     * @var IQuestionFormObjectFactory
+     * @var IAnswerOptionFactory
      */
     protected $scoring_definition_factory;
 
     /**
-     * @param IQuestionFormObjectFactory $editor_config_factory
-     * @param IQuestionFormObjectFactory $scoring_config_factory
-     * @param IQuestionFormObjectFactory $editor_definition_factory
-     * @param IQuestionFormObjectFactory $scoring_definition_factory
+     * @param IObjectFactory $editor_config_factory
+     * @param IObjectFactory $scoring_config_factory
+     * @param IAnswerOptionFactory $editor_definition_factory
+     * @param IAnswerOptionFactory $scoring_definition_factory
      */
     public function __construct(
-        IQuestionFormObjectFactory $editor_config_factory,
-        IQuestionFormObjectFactory $scoring_config_factory,
-        IQuestionFormObjectFactory $editor_definition_factory,
-        IQuestionFormObjectFactory $scoring_definition_factory)
+        IObjectFactory $editor_config_factory,
+        IObjectFactory $scoring_config_factory,
+        IAnswerOptionFactory $editor_definition_factory,
+        IAnswerOptionFactory $scoring_definition_factory)
     {
         $this->editor_config_factory = $editor_config_factory;
         $this->scoring_config_factory = $scoring_config_factory;
@@ -74,5 +78,80 @@ class QuestionFormFactory
         return QuestionPlayConfiguration::create(
             $this->editor_config_factory->readObjectFromPost(),
             $this->scoring_config_factory->readObjectFromPost());
+    }
+
+    /**
+     * @return QuestionPlayConfiguration
+     */
+    public function getDefaultPlayConfiguration() : QuestionPlayConfiguration
+    {
+        return QuestionPlayConfiguration::create(
+            $this->editor_config_factory->getDefaultValue(),
+            $this->scoring_config_factory->getDefaultValue());
+    }
+
+    /**
+     * @return AsqTableInputFieldDefinition[]
+     */
+    public function getAnswerOptionDefinitions(?QuestionPlayConfiguration $play) : array
+    {
+        return array_merge(
+            $this->editor_definition_factory->getTableColumns($play),
+            $this->scoring_definition_factory->getTableColumns($play));
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasAnswerOptions() : bool
+    {
+        return count($this->getAnswerOptionDefinitions(null)) > 0;
+    }
+
+    /**
+     * Returns AsqTableInput Options array
+     *
+     * @return array
+     */
+    public function getAnswerOptionConfiguration() : array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAnswerOptionValues(?AnswerOptions $options) : ?array
+    {
+        if (is_null($options))
+        {
+            return null;
+        }
+
+        return array_map(function($option) {
+            /** @var $option AnswerOption */
+            return array_merge(
+                $this->editor_definition_factory->getValues($option->getDisplayDefinition()),
+                $this->scoring_definition_factory->getValues($option->getScoringDefinition()));
+        }, $options->getOptions());
+    }
+
+    /**
+     * @return AnswerOptions
+     */
+    public function readAnswerOptions(array $values) : AnswerOptions
+    {
+        $options = [];
+        $i = 0;
+        foreach ($values as $value) {
+            $i += 1;
+
+            $options[] = AnswerOption::create(
+                strval($i),
+                $this->editor_definition_factory->readObjectFromValues($value),
+                $this->scoring_definition_factory->readObjectFromValues($value));
+        }
+
+        return AnswerOptions::create($options);
     }
 }

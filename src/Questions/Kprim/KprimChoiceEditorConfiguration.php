@@ -44,11 +44,11 @@ class KprimChoiceEditorConfiguration extends AbstractConfiguration {
      * @param string $label_false
      * @return KprimChoiceEditorConfiguration
      */
-    static function create(?bool $shuffle_answers = false,
-                           ?bool $single_line = true,
-                           ?int $thumbnail_size = null,
-                           ?string $label_true = "",
-                           ?string $label_false = "") : KprimChoiceEditorConfiguration
+    static function create(?bool $shuffle_answers,
+                           ?bool $single_line,
+                           ?int $thumbnail_size,
+                           ?string $label_true,
+                           ?string $label_false) : KprimChoiceEditorConfiguration
         {
             $object = new KprimChoiceEditorConfiguration();
             $object->single_line = $single_line;
@@ -56,10 +56,10 @@ class KprimChoiceEditorConfiguration extends AbstractConfiguration {
             $object->thumbnail_size = $thumbnail_size;
             $object->label_true = $label_true;
             $object->label_false = $label_false;
-            
+
             return $object;
     }
-    
+
     /**
      * @return boolean
      */

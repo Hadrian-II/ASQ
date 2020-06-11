@@ -49,7 +49,7 @@ class QuestionType extends ActiveRecord {
     public static function createNew(string $title_key, string $factory_class) : QuestionType {
         $object = new QuestionType();
         $object->title_key = $title_key;
-        $object->form_class = $factory_class;
+        $object->factory_class = $factory_class;
         return $object;
     }
 
@@ -64,7 +64,7 @@ class QuestionType extends ActiveRecord {
      * @return string
      */
     public function getFactoryClass() : string {
-        return $this->form_class;
+        return $this->factory_class;
     }
 
     /**

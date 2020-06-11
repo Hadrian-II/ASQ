@@ -48,15 +48,23 @@ class QuestionData extends AbstractValueObject {
 	protected $working_time = 0;
 
 	/**
-	 * @param string      $title
-	 * @param string      $text
-	 * @param string      $author
-	 * @param string|null $description
-	 * @param int         $working_time
+	 * @param ?string      $title
+	 * @param ?string      $text
+	 * @param ?string      $author
+	 * @param ?string      $description
+	 * @param ?int         $working_time
+	 * @param ?int         $lifecycle
 	 *
 	 * @return QuestionData
 	 */
-	static function create(string $title, string $text, string $author, string $description = null, int $working_time = 0, int $lifecycle = self::LIFECYCLE_DRAFT) {
+	static function create(
+	    ?string $title,
+	    ?string $text,
+	    ?string $author,
+	    ?string $description,
+	    ?int $working_time,
+	    ?int $lifecycle = self::LIFECYCLE_DRAFT)
+	{
 		$object = new QuestionData();
 		$object->title = $title;
 		$object->description = $description;
@@ -87,7 +95,7 @@ class QuestionData extends AbstractValueObject {
 	public function getLifecycle(): int {
 	    return $this->lifecycle;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -108,7 +116,7 @@ class QuestionData extends AbstractValueObject {
 	public function getWorkingTime(): int {
 		return $this->working_time;
 	}
-	
+
 	public function isComplete() : bool {
 	    return !empty($this->title) &&
 	           !empty($this->working_time) &&

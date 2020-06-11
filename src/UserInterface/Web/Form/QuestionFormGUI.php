@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
-use Exception;
 use ilFormSectionHeaderGUI;
 use ilHiddenInputGUI;
 use ilNonEditableValueGUI;
@@ -11,12 +10,8 @@ use ilPropertyFormGUI;
 use ilTextInputGUI;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 
 /**
  * Class QuestionFormGUI
@@ -30,26 +25,18 @@ use srag\asq\UserInterface\Web\Form\Config\AnswerOptionForm;
 class QuestionFormGUI extends ilPropertyFormGUI {
     const VAR_AGGREGATE_ID = 'aggregate_id';
 
-    const VAR_TITLE = 'title';
-    const VAR_AUTHOR = 'author';
-    const VAR_DESCRIPTION = 'description';
-    const VAR_QUESTION = 'question';
-    const VAR_WORKING_TIME = 'working_time';
-    const VAR_LIFECYCLE = 'lifecycle';
     const VAR_REVISION_NAME = 'rev_name';
     const VAR_STATUS = 'status';
+    const VAR_ANSWER_OPTIONS = 'answer_options';
 
     const VAR_LEGACY = 'legacy';
-
-    const SECONDS_IN_MINUTE = 60;
-    const SECONDS_IN_HOUR = 3600;
 
     const FORM_PART_LINK = 'form_part_link';
 
     const CMD_CREATE_REVISON = 'createRevision';
 
     /**
-     * @var AnswerOptionForm
+     * @var AsqTableInput
      */
     protected $option_form;
 
@@ -120,31 +107,31 @@ class QuestionFormGUI extends ilPropertyFormGUI {
         $id->setValue($question->getId());
         $this->addItem($id);
 
-        $this->initQuestionDataConfiguration($question);
-
-        if (is_null($question->getPlayConfiguration())) {
-            $question->setPlayConfiguration($this->createDefaultPlayConfiguration());
+        foreach ($this->question_data_factory->getFormfields($question->getData()) as $field) {
+            $this->addItem($field);
         }
 
-        $this->initiatePlayConfiguration($question->getPlayConfiguration());
+        if (is_null($question->getPlayConfiguration())) {
+            $question->setPlayConfiguration($this->form_factory->getDefaultPlayConfiguration());
+        }
 
-        if (!is_null($question->getPlayConfiguration()) &&
-            $question->getPlayConfiguration()->hasAnswerOptions() &&
-            $this->canDisplayAnswerOptions())
+        foreach ($this->form_factory->getFormfields($question->getPlayConfiguration()) as $field) {
+            $this->addItem($field);
+        }
+
+        if ($this->form_factory->hasAnswerOptions())
         {
-            $this->option_form = new AnswerOptionForm(
+            $this->option_form = new AsqTableInput(
                 $this->lang->txt('asq_label_answer'),
-                $question->getPlayConfiguration(),
-                $question->getAnswerOptions(),
-                $this->getAnswerOptionDefinitions($question->getPlayConfiguration()),
-                $this->getAnswerOptionConfiguration());
+                self::VAR_ANSWER_OPTIONS,
+                $this->form_factory->getAnswerOptionValues($question->getAnswerOptions()),
+                $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()),
+                $this->form_factory->getAnswerOptionConfiguration());
 
             $this->addItem($this->option_form);
         }
 
         $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
-
-        $this->postInit();
     }
 
     private function showQuestionState(QuestionDto $question) {
@@ -183,22 +170,6 @@ class QuestionFormGUI extends ilPropertyFormGUI {
         $this->addItem($revision);
     }
 
-    protected function getAnswerOptionConfiguration() {
-        return null;
-    }
-
-    protected function getAnswerOptionDefinitions(?QuestionPlayConfiguration $play) : ?array {
-        return null;
-    }
-
-    protected function canDisplayAnswerOptions() {
-        return true;
-    }
-
-    protected function postInit() {
-        //i am a virtual function :)
-    }
-
     /**
      * @return QuestionDto
      */
@@ -214,84 +185,12 @@ class QuestionFormGUI extends ilPropertyFormGUI {
         $question = new QuestionDto();
         $question->setId($_POST[self::VAR_AGGREGATE_ID]);
 
-        $question->setData($this->readQuestionData());
+        $question->setData($this->question_data_factory->readObjectFromPost());
 
-        $question->setPlayConfiguration($this->readPlayConfiguration());
+        $question->setPlayConfiguration($this->form_factory->readQuestionPlayConfiguration());
 
-        $question->setAnswerOptions($this->readAnswerOptions($question));
-
-        $question = $this->processPostQuestion($question);
+        $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));
 
         return $question;
-    }
-
-    /**
-     * @param QuestionDto $question
-     * @return QuestionDto
-     */
-    protected function processPostQuestion(QuestionDto $question) : QuestionDto
-    {
-        return $question;
-    }
-
-    protected function readAnswerOptions(QuestionDto $question) : ?AnswerOptions {
-        if (!is_null($this->option_form)) {
-            $this->option_form->setConfiguration($question->getPlayConfiguration());
-            $this->option_form->readAnswerOptions();
-            return $this->option_form->getAnswerOptions();
-        }
-
-        return null;
-    }
-
-    /**
-     * @param QuestionPlayConfiguration $play
-     */
-    protected abstract function initiatePlayConfiguration(?QuestionPlayConfiguration $play): void ;
-
-    /**
-     * @return QuestionData
-     * @throws Exception
-     */
-    private function readQuestionData(): QuestionData {
-        return QuestionData::create(
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_TITLE]),
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_QUESTION]),
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_AUTHOR]),
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_DESCRIPTION]),
-            $this->readWorkingTime($_POST[self::VAR_WORKING_TIME]),
-            InputHelper::readInt(self::VAR_LIFECYCLE));
-    }
-
-    /**
-     * @return QuestionPlayConfiguration
-     */
-    protected abstract function readPlayConfiguration(): QuestionPlayConfiguration;
-
-    /**
-     * @return QuestionPlayConfiguration
-     */
-    protected abstract function createDefaultPlayConfiguration() : QuestionPlayConfiguration;
-
-    /**
-     * @param $postval
-     *
-     * @return int
-     * @throws Exception
-     */
-    private function readWorkingTime($postval) : int {
-        $HOURS = 'hh';
-        $MINUTES = 'mm';
-        $SECONDS = 'ss';
-
-        if (
-            is_array($postval) &&
-            array_key_exists($HOURS, $postval) &&
-            array_key_exists($MINUTES, $postval) &&
-            array_key_exists($SECONDS, $postval)) {
-                return $postval[$HOURS] * self::SECONDS_IN_HOUR + $postval[$MINUTES] * self::SECONDS_IN_MINUTE + $postval[$SECONDS];
-            } else {
-                throw new Exception("This should be impossible, please fix implementation");
-            }
     }
 }

@@ -177,8 +177,8 @@ class QuestionService extends ASQService
      * @param string $title_key
      * @param string $form_class
      */
-    public function addQuestionType(string $title_key, string $form_class) {
-        $type = QuestionType::createNew($title_key, $form_class);
+    public function addQuestionType(string $title_key, string $factory_class) {
+        $type = QuestionType::createNew($title_key, $factory_class);
         $type->create();
     }
 

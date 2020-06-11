@@ -69,18 +69,8 @@ abstract class AbstractEditor {
 	    $this->answer = $answer;
 	}
 
-    /**
-     * @param AbstractConfiguration|null $config
-     *
-     * @return array|null
-     */
-	public static function generateFields(?AbstractConfiguration $config): ?array {
-		return [];
-	}
-
-	public static abstract function readConfig();
-
 	public abstract function isComplete() : bool;
+
 	/**
 	 * @return string
 	 */

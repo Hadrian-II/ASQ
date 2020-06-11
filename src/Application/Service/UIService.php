@@ -44,8 +44,7 @@ class UIService {
      */
     public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI
     {
-        $class = $question->getType()->getFormClass();
-        return new $class($question);
+        return new QuestionFormGUI($question);
     }
 
     /**

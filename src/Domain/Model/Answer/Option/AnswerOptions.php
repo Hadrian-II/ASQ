@@ -26,7 +26,7 @@ class AnswerOptions extends AbstractValueObject {
 	   $object->options = $options;
 	   return $object;
 	}
-	
+
     /**
      * @return AnswerOption[]
      */

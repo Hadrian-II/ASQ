@@ -17,12 +17,12 @@ class AsqTableInputFieldDefinition {
 	const TYPE_TEXT_AREA = 2;
 	const TYPE_NUMBER = 3;
 	const TYPE_IMAGE = 4;
-    const TYPE_RADIO = 5; 
+    const TYPE_RADIO = 5;
     const TYPE_DROPDOWN = 6;
     const TYPE_BUTTON = 7;
     const TYPE_HIDDEN = 8;
     const TYPE_LABEL = 9;
-	
+
 	/**
 	 * @var string
 	 */
@@ -49,7 +49,8 @@ class AsqTableInputFieldDefinition {
      * @param string     $post_var
      * @param array|null $options
      */
-	public function __construct(string $header, int $type, string $post_var, array $options = null) {
+	public function __construct(string $header, int $type, string $post_var, array $options = null)
+	{
 		$this->header = $header;
 		$this->type = $type;
 		$this->post_var = $post_var;
@@ -59,59 +60,32 @@ class AsqTableInputFieldDefinition {
 	/**
 	 * @return string
 	 */
-	public function getHeader(): string {
+	public function getHeader() : string
+	{
 		return $this->header;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getType(): int {
+	public function getType() : int
+	{
 		return $this->type;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getPostVar(): string {
+	public function getPostVar() : string
+	{
 		return $this->post_var;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getOptions(): ?array {
+	public function getOptions() : ?array
+	{
 		return $this->options;
 	}
-    /**
-     * @param string $header
-     */
-    public function setHeader($header)
-    {
-        $this->header = $header;
-    }
-
-    /**
-     * @param int $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @param string $post_var
-     */
-    public function setPostVar($post_var)
-    {
-        $this->post_var = $post_var;
-    }
-
-    /**
-     * @param ?array $options
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-    }
 }

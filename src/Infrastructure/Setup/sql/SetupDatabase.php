@@ -3,26 +3,25 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Setup\sql;
 
+use srag\asq\AsqGateway;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
-use srag\asq\Infrastructure\Persistence\QuestionType;
-use srag\asq\AsqGateway;
-use srag\asq\Questions\Kprim\KprimChoiceQuestionGUI;
-use srag\asq\Questions\MultipleChoice\SingleChoiceQuestionGUI;
-use srag\asq\Questions\MultipleChoice\MultipleChoiceQuestionGUI;
-use srag\asq\Questions\ErrorText\ErrorTextQuestionGUI;
-use srag\asq\Questions\ImageMap\ImageMapQuestionGUI;
-use srag\asq\Questions\Cloze\ClozeQuestionGUI;
-use srag\asq\Questions\Numeric\NumericQuestionGUI;
-use srag\asq\Questions\Formula\FormulaQuestionGUI;
-use srag\asq\Questions\TextSubset\TextSubsetQuestionGUI;
-use srag\asq\Questions\Ordering\OrderingQuestionGUI;
-use srag\asq\Questions\Matching\MatchingQuestionGUI;
-use srag\asq\Questions\Essay\EssayQuestionGUI;
-use srag\asq\Questions\FileUpload\FileUploadQuestionGUI;
-use srag\asq\Questions\Ordering\OrderingTextQuestionGUI;
+use srag\asq\Questions\Cloze\Form\ClozeFormFactory;
+use srag\asq\Questions\ErrorText\Form\ErrorTextFormFactory;
+use srag\asq\Questions\Essay\Form\EssayFormFactory;
+use srag\asq\Questions\FileUpload\Form\FileUploadFormFactory;
+use srag\asq\Questions\Formula\Form\FormulaFormFactory;
+use srag\asq\Questions\ImageMap\Form\ImageMapFormFactory;
+use srag\asq\Questions\Kprim\Form\KprimChoiceFormFactory;
+use srag\asq\Questions\Matching\Form\MatchingFormFactory;
+use srag\asq\Questions\MultipleChoice\Form\MultipleChoiceFormFactory;
+use srag\asq\Questions\MultipleChoice\Form\SingleChoiceFormFactory;
+use srag\asq\Questions\Numeric\Form\NumericFormFactory;
+use srag\asq\Questions\Ordering\Form\OrderingFormFactory;
+use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 
 /**
  * Class SetupDatabase
@@ -51,6 +50,7 @@ class SetupDatabase
         QuestionAr::updateDB();
         SimpleStoredAnswer::updateDB();
         QuestionType::updateDB();
+        QuestionType::truncateDB();
 
         $this->addQuestionTypes();
     }
@@ -59,72 +59,72 @@ class SetupDatabase
     {
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_single_answer',
-            SingleChoiceQuestionGUI::class
+            SingleChoiceFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_multiple_answer',
-            MultipleChoiceQuestionGUI::class
+            MultipleChoiceFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_kprim_answer',
-            KprimChoiceQuestionGUI::class
+            KprimChoiceFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_error_text',
-            ErrorTextQuestionGUI::class
+            ErrorTextFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_image_map',
-            ImageMapQuestionGUI::class
+            ImageMapFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_cloze',
-            ClozeQuestionGUI::class
+            ClozeFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_numeric',
-            NumericQuestionGUI::class
+            NumericFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_formula',
-            FormulaQuestionGUI::class
+            FormulaFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_text_subset',
-            TextSubsetQuestionGUI::class
+            TextSubsetFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_ordering',
-            OrderingQuestionGUI::class
+            OrderingFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_matching',
-            MatchingQuestionGUI::class
+            MatchingFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_essay',
-            EssayQuestionGUI::class
+            EssayFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_file_upload',
-            FileUploadQuestionGUI::class
+            FileUploadFormFactory::class
         );
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_ordering_text',
-            OrderingTextQuestionGUI::class
+            OrderingFormFactory::class
         );
     }
 

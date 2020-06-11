@@ -224,7 +224,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     public function setAnswerOptions(?AnswerOptions $options, int $creator_id)
     {
-        if (! Answeroptions::isNullableEqual($options, $this->getAnswerOptions())) {
+        if (! AnswerOptions::isNullableEqual($options, $this->getAnswerOptions())) {
             $this->ExecuteEvent(
                 new QuestionAnswerOptionsSetEvent(
                     $this->getAggregateId(),

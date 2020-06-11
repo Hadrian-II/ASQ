@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Kprim;
 
-use ilNumberInputGUI;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class KprimChoiceScoring
@@ -19,9 +15,8 @@ use srag\asq\UserInterface\Web\InputHelper;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class KprimChoiceScoring extends AbstractScoring {
-    const VAR_POINTS = 'kcs_points';
-    const VAR_HALF_POINTS = 'kcs_half_points_at';
+class KprimChoiceScoring extends AbstractScoring
+{
 
     /**
      * @param KprimChoiceAnswer $answer
@@ -78,42 +73,6 @@ class KprimChoiceScoring extends AbstractScoring {
         }
 
         return KprimChoiceAnswer::create($answers);
-    }
-
-    /**
-     * @return array|null
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
-        global $DIC;
-
-        $fields = [];
-
-        $points = new ilNumberInputGUI($DIC->language()->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
-
-        $half_points_at = new ilNumberInputGUI($DIC->language()->txt('asq_label_half_points'), self::VAR_HALF_POINTS);
-        $half_points_at->setInfo($DIC->language()->txt('asq_description_half_points'));
-        $half_points_at->setSize(2);
-        $fields[self::VAR_HALF_POINTS] = $half_points_at;
-
-        if ($config !== null) {
-            $points->setValue($config->getPoints());
-            $half_points_at->setValue($config->getHalfPointsAt());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return ?AbstractConfiguration|null
-     */
-    public static function readConfig() : ?AbstractConfiguration {
-        return KprimChoiceScoringConfiguration::create(
-            InputHelper::readFloat(self::VAR_POINTS),
-            InputHelper::readInt(self::VAR_HALF_POINTS)
-        );
     }
 
     /**

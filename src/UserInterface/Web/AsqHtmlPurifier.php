@@ -11,7 +11,7 @@ require_once 'Services/Html/classes/class.ilHtmlPurifierAbstractLibWrapper.php';
 
 /**
  * Class AsqHtmlPurifier
- * 
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  *
@@ -21,26 +21,9 @@ require_once 'Services/Html/classes/class.ilHtmlPurifierAbstractLibWrapper.php';
 class AsqHtmlPurifier extends ilHtmlPurifierAbstractLibWrapper
 {
     /**
-     * @var AsqHtmlPurifier
+     * @return string
      */
-    private static $instance;
-    
-    /**
-     * @return AsqHtmlPurifier
-     */
-    public static function getInstance() : AsqHtmlPurifier {
-        if (self::$instance === null) {
-            self::$instance = new AsqHtmlPurifier();
-        }
-        
-        return self::$instance;
-    }
-    
-    public function __construct() {
-        parent::__construct();
-    }
-    
-	protected function getPurifierType()
+	protected function getPurifierType() : string
 	{
 		return 'assessment';
 	}
@@ -63,20 +46,20 @@ class AsqHtmlPurifier extends ilHtmlPurifierAbstractLibWrapper
 
 		return $config;
 	}
-	
+
 	private function getAllowedElements()
 	{
 		$allowedElements = $this->getElementsUsedForAdvancedEditing();
-		
+
 		$allowedElements = $this->makeElementListTinyMceCompliant($allowedElements);
 		$allowedElements = $this->removeUnsupportedElements($allowedElements);
-		
+
 		return $allowedElements;
 	}
-	
+
 	private function getElementsUsedForAdvancedEditing()
 	{
 		include_once 'Services/AdvancedEditing/classes/class.ilObjAdvancedEditing.php';
 		return ilObjAdvancedEditing::_getUsedHTMLTags($this->getPurifierType());
 	}
-} 
+}

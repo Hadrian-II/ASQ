@@ -5,7 +5,7 @@ namespace srag\asq\UserInterface\Web;
 
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
-use srag\CQRS\Aggregate\Guid;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class ImageUploader
@@ -20,28 +20,18 @@ class ImageUploader {
     const BASE_PATH = 'asq/images/%d/%d/';
 
     /**
-     * @var ImageUploader
-     */
-    private static $instance;
-
-    /**
      * @var array
      */
     private $request_uploads;
 
     /**
-     * @return ImageUploader
+     * @var Factory
      */
-    public static function getInstance() : ImageUploader {
-        if (self::$instance === null) {
-            self::$instance = new ImageUploader();
-        }
+    private $guid_factory;
 
-        return self::$instance;
-    }
-
-    private function __construct() {
+    public function __construct() {
         $this->request_uploads = [];
+        $this->guid_factory = new Factory();
     }
 
     /**
@@ -59,7 +49,7 @@ class ImageUploader {
             {
                 if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK) {
                     $pathinfo    = pathinfo($result->getName());
-                    $target_file = Guid::create() . "." . $pathinfo['extension'];
+                    $target_file = $this->guid_factory->uuid4AsString() . "." . $pathinfo['extension'];
                     $upload->moveOneFileTo(
                         $result,
                         self::processBasePath($target_file),

@@ -53,16 +53,6 @@ abstract class AbstractScoring
     }
 
     /**
-     * @return array|null
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null) : ?array
-    {
-        return [];
-    }
-
-    public static abstract function readConfig();
-
-    /**
      * @return string
      */
     public static function getScoringDefinitionClass() : string

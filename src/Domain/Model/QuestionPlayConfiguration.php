@@ -68,36 +68,4 @@ class QuestionPlayConfiguration extends AbstractValueObject {
 	public function getScoringConfiguration(): ?AbstractConfiguration {
 		return $this->scoring_configuration;
 	}
-
-    /**
-     * @param AbstractValueObject $other
-     *
-     * @return bool
-     */
-    public function equals(AbstractValueObject $other): bool
-    {
-        /** @var QuestionPlayConfiguration $other */
-        return get_class($this) === get_class($other) &&
-               AbstractValueObject::isNullableEqual(
-        	        $this->getEditorConfiguration(),
-	                $other->getEditorConfiguration()) &&
-               AbstractValueObject::isNullableEqual(
-               	    $this->getPresenterConfiguration(),
-                    $other->getPresenterConfiguration()) &&
-               AbstractValueObject::isNullableEqual(
-               	    $this->getScoringConfiguration(),
-                    $other->getScoringConfiguration());
-    }
-
-    public function hasAnswerOptions(): bool {
-        if (is_null($this->getScoringConfiguration()) || is_null($this->getEditorConfiguration())) {
-            return false;
-        }
-
-        $sd_class = $this->getScoringConfiguration()->configurationFor()::getScoringDefinitionClass();
-        $dd_class = $this->getEditorConfiguration()->configurationFor()::getDisplayDefinitionClass();
-
-
-        return (count($dd_class::getFields($this)) + count($sd_class::getFields($this))) > 0;
-    }
 }
