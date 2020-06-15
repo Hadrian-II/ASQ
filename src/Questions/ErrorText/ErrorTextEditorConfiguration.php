@@ -18,51 +18,53 @@ use srag\asq\Domain\Model\AbstractConfiguration;
 class ErrorTextEditorConfiguration extends AbstractConfiguration
 {
     /**
-     * @var int
+     * @var ?int
      */
     protected $text_size;
     /**
-     * @var string
+     * @var ?string
      */
     protected $error_text;
 
     /**
-     * 
+     *
      * @param string $error_text
      * @param int $text_size
      * @return ErrorTextEditorConfiguration
      */
-    public static function create(string $error_text, int $text_size) {
+    public static function create(?string $error_text, ?int $text_size) : ErrorTextEditorConfiguration
+    {
         $object = new ErrorTextEditorConfiguration();
         $object->error_text = $error_text;
         $object->text_size = $text_size;
         return $object;
     }
-    
+
     /**
-     * @return int
+     * @return ?int
      */
-    public function getTextSize()
+    public function getTextSize() : ?int
     {
         return $this->text_size;
     }
-    
+
     /**
-     * @return string
+     * @return ?string
      */
-    public function getErrorText()
+    public function getErrorText() : ?string
     {
         return $this->error_text;
     }
-    
+
     /**
      * @return string
      */
-    public function getSanitizedErrorText() : string {
+    public function getSanitizedErrorText() : string
+    {
         if ($this->error_text === null) {
             return '';
         }
-        
+
         $error_text = $this->error_text;
         $error_text = str_replace('#', '', $error_text);
         $error_text = str_replace('((', '', $error_text);

@@ -121,11 +121,11 @@ class QuestionFormFactory
     /**
      * @return array
      */
-    public function getAnswerOptionValues(?AnswerOptions $options) : ?array
+    public function getAnswerOptionValues(?AnswerOptions $options) : array
     {
         if (is_null($options))
         {
-            return null;
+            return [];
         }
 
         return array_map(function($option) {

@@ -2,12 +2,8 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\ErrorText;
 
-use ilNumberInputGUI;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class ErrorTextScoring
@@ -18,9 +14,6 @@ use srag\asq\UserInterface\Web\InputHelper;
  */
 class ErrorTextScoring extends AbstractScoring
 {
-
-    const VAR_POINTS_WRONG = 'ets_points_wrong';
-
     /**
      * {@inheritdoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
@@ -107,39 +100,6 @@ class ErrorTextScoring extends AbstractScoring
         }
 
         return ErrorTextAnswer::create($selected_word_indexes);
-    }
-
-    /**
-     * @return array|null
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null) : ?array
-    {
-        /** @var ErrorTextScoringConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $points_wrong = new ilNumberInputGUI($DIC->language()->txt('asq_label_points_wrong'), self::VAR_POINTS_WRONG);
-        $points_wrong->setSize(6);
-        $points_wrong->setRequired(true);
-        $points_wrong->setMaxValue(0);
-        $points_wrong->setInfo($DIC->language()
-            ->txt('asq_info_points_wrong'));
-        $fields[self::VAR_POINTS_WRONG] = $points_wrong;
-
-        if ($config !== null) {
-            $points_wrong->setValue($config->getPointsWrong());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return ?AbstractConfiguration|null
-     */
-    public static function readConfig() : ?AbstractConfiguration
-    {
-        return ErrorTextScoringConfiguration::create(InputHelper::readFloat(self::VAR_POINTS_WRONG));
     }
 
     /**

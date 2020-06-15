@@ -3,20 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Cloze;
 
-use ilFormSectionHeaderGUI;
-use ilNumberInputGUI;
-use ilPropertyFormGUI;
-use ilSelectInputGUI;
-use ilTextAreaInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
-use srag\asq\Domain\Model\Scoring\TextScoring;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**

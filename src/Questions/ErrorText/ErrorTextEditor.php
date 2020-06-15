@@ -3,16 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\ErrorText;
 
-use ilNumberInputGUI;
 use ilTemplate;
-use ilTextAreaInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
-use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -25,18 +20,17 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ErrorTextEditor extends AbstractEditor {
-    const DEFAULT_TEXTSIZE_PERCENT = 100;
-
-    const VAR_ERROR_TEXT = 'ete_error_text';
-    const VAR_TEXT_SIZE = 'ete_text_size';
+class ErrorTextEditor extends AbstractEditor
+{
+    use PathHelper;
 
     /**
      * @var ErrorTextEditorConfiguration
      */
     private $configuration;
 
-    public function __construct(QuestionDto $question) {
+    public function __construct(QuestionDto $question)
+    {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
         parent::__construct($question);
@@ -49,7 +43,7 @@ class ErrorTextEditor extends AbstractEditor {
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
 
         $tpl->setCurrentBlock('editor');
         $tpl->setVariable('ERRORTEXT_ID', $this->getPostKey());
@@ -62,7 +56,7 @@ class ErrorTextEditor extends AbstractEditor {
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());
         $tpl->parseCurrentBlock();
 
-        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
+        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
 
         return $tpl->get();
     }
@@ -70,14 +64,16 @@ class ErrorTextEditor extends AbstractEditor {
     /**
      * @return string
      */
-    private function getPostKey() : string {
+    private function getPostKey() : string
+    {
         return $this->question->getId();
     }
 
     /**
      * @return string
      */
-    private function generateErrorText() : string {
+    private function generateErrorText() : string
+    {
         $matches = [];
 
         preg_match_all('/\S+/', $this->configuration->getSanitizedErrorText(), $matches);
@@ -104,7 +100,7 @@ class ErrorTextEditor extends AbstractEditor {
     {
         $answers = $_POST[$this->getPostKey()];
 
-        if(strlen($answers) > 0) {
+        if(!is_null($answers) && strlen($answers) > 0) {
             $answers = explode(',', $answers);
 
             $answers = array_map(function($answer) {
@@ -119,53 +115,10 @@ class ErrorTextEditor extends AbstractEditor {
     }
 
     /**
-     * @param AbstractConfiguration $config
-     * @return array|NULL
-     */
-    public static function generateFields(?AbstractConfiguration $config): ?array {
-        /** @var ErrorTextEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $error_text = new ilTextAreaInputGUI($DIC->language()->txt('asq_label_error_text'), self::VAR_ERROR_TEXT);
-        $error_text->setInfo('<input type="button" id="process_error_text" value="' .
-                                $DIC->language()->txt('asq_label_process_error_text') .
-                             '" class="btn btn-default btn-sm" /><br />' .
-                             $DIC->language()->txt('asq_description_error_text'));
-        $error_text->setRequired(true);
-        $fields[self::VAR_ERROR_TEXT] = $error_text;
-
-
-        $text_size = new ilNumberInputGUI($DIC->language()->txt('asq_label_text_size'), self::VAR_TEXT_SIZE);
-        $text_size->setSize(6);
-        $text_size->setSuffix('%');
-        $fields[self::VAR_TEXT_SIZE] = $text_size;
-
-        if ($config !== null) {
-            $error_text->setValue($config->getErrorText());
-            $text_size->setValue($config->getTextSize());
-        }
-        else {
-            $text_size->setValue(self::DEFAULT_TEXTSIZE_PERCENT);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return AbstractConfiguration|null
-     */
-    public static function readConfig() : ?AbstractConfiguration {
-        return ErrorTextEditorConfiguration::create(
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_ERROR_TEXT]),
-            InputHelper::readInt(self::VAR_TEXT_SIZE));
-    }
-
-    /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string {
+    static function getDisplayDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 

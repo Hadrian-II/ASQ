@@ -14,23 +14,37 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ErrorTextAnswer extends Answer {
+class ErrorTextAnswer extends Answer
+{
     /**
      * @var int[]
      */
     protected $selected_word_indexes;
-    
-    public static function create(array $selected_word_indexes = []) : ErrorTextAnswer {
+
+    /**
+     * @param array $selected_word_indexes
+     * @return ErrorTextAnswer
+     */
+    public static function create(array $selected_word_indexes = []) : ErrorTextAnswer
+    {
         $object = new ErrorTextAnswer();
         $object->selected_word_indexes = $selected_word_indexes;
         return $object;
     }
-    
-    public function getSelectedWordIndexes() : array {
+
+    /**
+     * @return array
+     */
+    public function getSelectedWordIndexes() : array
+    {
         return $this->selected_word_indexes;
     }
-    
-    public function getPostString() : string {
+
+    /**
+     * @return string
+     */
+    public function getPostString() : string
+    {
         return implode(',', $this->selected_word_indexes);
     }
 }
