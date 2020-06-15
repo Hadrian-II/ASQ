@@ -154,4 +154,12 @@ class QuestionFormFactory
 
         return AnswerOptions::create($options);
     }
+
+    /**
+     * @return array
+     */
+    public function getScripts() : array
+    {
+        return[];
+    }
 }

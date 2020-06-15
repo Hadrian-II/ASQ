@@ -21,7 +21,10 @@ use srag\asq\UserInterface\Web\PathHelper;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AsqTableInput extends ilTextInputGUI {
+class AsqTableInput extends ilTextInputGUI
+{
+    use PathHelper;
+
     const OPTION_ORDER = 'TableInputOrder';
     const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
     const OPTION_HIDE_EMPTY = 'TableInputHideEmpty';
@@ -84,7 +87,7 @@ class AsqTableInput extends ilTextInputGUI {
     public function render($a_mode = '') {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
 
         /** @var AsqTableInputFieldDefinition $definition */
         foreach ($this->definitions as $definition) {
@@ -263,7 +266,7 @@ class AsqTableInput extends ilTextInputGUI {
     }
 
     private function generateTextArea(string $post_var, $value) {
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.TextAreaField.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.TextAreaField.html', true, true);
 
         $tpl->setCurrentBlock('textarea');
         $tpl->setVariable('POST_NAME', $post_var);

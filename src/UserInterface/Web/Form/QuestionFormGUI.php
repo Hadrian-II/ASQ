@@ -22,7 +22,10 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionFormGUI extends ilPropertyFormGUI {
+class QuestionFormGUI extends ilPropertyFormGUI
+{
+    use PathHelper;
+
     const VAR_AGGREGATE_ID = 'aggregate_id';
 
     const VAR_REVISION_NAME = 'rev_name';
@@ -84,6 +87,11 @@ class QuestionFormGUI extends ilPropertyFormGUI {
         $this->setMultipart(true);
         $this->setTitle($question->getType()->getTitle());
 
+        foreach ($this->form_factory->getScripts() as $script)
+        {
+            $DIC->ui()->mainTemplate()->addJavaScript($script);
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setValuesByPost();
             $this->post_question = $this->readQuestionFromPost();
@@ -131,7 +139,7 @@ class QuestionFormGUI extends ilPropertyFormGUI {
             $this->addItem($this->option_form);
         }
 
-        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
+        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
     private function showQuestionState(QuestionDto $question) {
@@ -189,7 +197,9 @@ class QuestionFormGUI extends ilPropertyFormGUI {
 
         $question->setPlayConfiguration($this->form_factory->readQuestionPlayConfiguration());
 
-        $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));
+        if ($this->form_factory->hasAnswerOptions()) {
+            $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));
+        }
 
         return $question;
     }

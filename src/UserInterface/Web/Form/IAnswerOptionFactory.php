@@ -28,7 +28,7 @@ interface IAnswerOptionFactory
      * @param $play QuestionPlayConfiguration
      * @return AsqTableInputFieldDefinition[]
      */
-    public function getTableColumns(QuestionPlayConfiguration $play) : array;
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array;
 
     /**
      * Reads configuration object from values entered in UI Table

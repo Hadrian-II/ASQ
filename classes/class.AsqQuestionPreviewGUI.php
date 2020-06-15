@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use srag\asq\UserInterface\Web\PathHelper;
 
 /**
  * Class AsqQuestionPreviewGUI
@@ -22,6 +22,7 @@ use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
  */
 class AsqQuestionPreviewGUI
 {
+    use PathHelper;
 
     const CMD_SHOW_PREVIEW = 'showPreview';
     const CMD_SHOW_FEEDBACK = 'showFeedback';
@@ -126,7 +127,7 @@ class AsqQuestionPreviewGUI
             $question_component->setRenderFeedback(true);
         }
 
-        $question_tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
+        $question_tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
         $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
 

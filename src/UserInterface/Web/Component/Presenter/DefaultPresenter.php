@@ -16,7 +16,9 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class DefaultPresenter extends AbstractPresenter {
+class DefaultPresenter extends AbstractPresenter
+{
+    use PathHelper;
 
     /**
      * @return string
@@ -24,16 +26,16 @@ class DefaultPresenter extends AbstractPresenter {
      */
 	public function generateHtml(AbstractEditor $editor, bool $show_feedback = false): string {
 	    global $DIC;
-	    
-	    $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
+
+	    $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
 		$tpl->setCurrentBlock('question');
 		$tpl->setVariable('QUESTIONTEXT', $this->question->getData()->getQuestionText());
 		$tpl->setVariable('EDITOR', $editor->generateHtml($show_feedback));
 		$tpl->parseCurrentBlock();
 
-		$DIC->ui()->mainTemplate()->addCss(PathHelper::getBasePath(__DIR__) . 'css/asq.css');
-		
+		$DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
+
 		return $tpl->get();
 	}
 }

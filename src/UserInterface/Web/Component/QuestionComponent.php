@@ -23,6 +23,8 @@ use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
  */
 class QuestionComponent
 {
+    use PathHelper;
+
     /**
      * @var QuestionDto
      */
@@ -39,7 +41,7 @@ class QuestionComponent
      * @var bool
      */
     private $show_feedback = false;
-    
+
     public function __construct(QuestionDto $question_dto)
     {
         $this->question_dto = $question_dto;
@@ -61,12 +63,12 @@ class QuestionComponent
 
     public function renderHtml(bool $show_feedback = false) : string
     {
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
         $tpl->setVariable('QUESTION_OUTPUT', $this->presenter->generateHtml($this->editor));
         $tpl->parseCurrentBlock();
-        
+
         if ($this->show_feedback && !is_null($this->question_dto->getFeedback())) {
             $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer());
             $tpl->setCurrentBlock('feedback');

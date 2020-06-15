@@ -40,7 +40,7 @@ class ClozeScoring extends AbstractScoring {
      */
     private $reached_points;
 
-    public function score(Answer $answer): float
+    public function score(Answer $answer) : float
     {
         $given_answer = $answer->getAnswers();
 
@@ -68,7 +68,7 @@ class ClozeScoring extends AbstractScoring {
      * @param string $answer
      * @param SelectGapConfiguration $gap_configuration
      */
-    private function scoreSelectGap(string $answer, SelectGapConfiguration $gap_configuration)
+    private function scoreSelectGap(string $answer, SelectGapConfiguration $gap_configuration) : void
     {
         /** @var $gap ClozeGapItem */
         foreach($gap_configuration->getItems() as $gap_item) {
@@ -82,7 +82,7 @@ class ClozeScoring extends AbstractScoring {
      * @param string $answer
      * @param TextGapConfiguration $gap_configuration
      */
-    private function scoreTextGap(string $answer, TextGapConfiguration $gap_configuration)
+    private function scoreTextGap(string $answer, TextGapConfiguration $gap_configuration) : void
     {
         /** @var $gap ClozeGapItem */
         foreach($gap_configuration->getItems() as $gap_item) {
@@ -96,7 +96,7 @@ class ClozeScoring extends AbstractScoring {
      * @param float $answer
      * @param NumericGapConfiguration $gap_configuration
      */
-    private function scoreNumericGap(float $answer, NumericGapConfiguration $gap_configuration)
+    private function scoreNumericGap(float $answer, NumericGapConfiguration $gap_configuration) : void
     {
         if ($gap_configuration->getUpper() >= $answer &&
             $gap_configuration->getLower() <= $answer) {
@@ -123,14 +123,6 @@ class ClozeScoring extends AbstractScoring {
     {
         //TODO implement me
         throw new NotImplementedException("Needs to implement ClozeScoring->getBestAnswer()");
-    }
-
-    /**
-     * @return ClozeScoringConfiguration
-     */
-    public static function readConfig() : ClozeScoringConfiguration
-    {
-        return ClozeScoringConfiguration::create();
     }
 
     /**

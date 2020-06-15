@@ -20,6 +20,8 @@ use srag\asq\UserInterface\Web\PathHelper;
  */
 class ScoringComponent
 {
+    use PathHelper;
+
     /**
      * @var Answer
      */
@@ -35,7 +37,7 @@ class ScoringComponent
     {
         $scoring_class = $question_dto->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
         $this->scoring = new $scoring_class($question_dto);
-        
+
         $this->answer = $answer;
     }
 
@@ -44,12 +46,12 @@ class ScoringComponent
     {
         global $DIC;
         $DIC->language()->loadLanguageModule('assessment');
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.answer_scoring.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_scoring.html', true, true);
 
         $tpl->setCurrentBlock('answer_scoring');
-        $tpl->setVariable('ANSWER_SCORE', 
-            sprintf($DIC->language()->txt("you_received_a_of_b_points"), 
-                                          $this->scoring->score($this->answer), 
+        $tpl->setVariable('ANSWER_SCORE',
+            sprintf($DIC->language()->txt("you_received_a_of_b_points"),
+                                          $this->scoring->score($this->answer),
                                           $this->scoring->getMaxScore()));
         $tpl->parseCurrentBlock();
 

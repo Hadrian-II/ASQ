@@ -6,6 +6,7 @@ use srag\asq\Domain\Model\AbstractConfiguration;
 
 /**
  * Class ClozeScoringConfiguration
+ *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
  * @package srag/asq
@@ -13,11 +14,10 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  */
 class ClozeScoringConfiguration extends AbstractConfiguration
 {
-
     /**
      * @return ClozeScoringConfiguration
      */
-    public static function create(): ClozeScoringConfiguration
+    public static function create() : ClozeScoringConfiguration
     {
         return new ClozeScoringConfiguration();
     }

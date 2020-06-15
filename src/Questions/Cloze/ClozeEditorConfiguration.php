@@ -14,8 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozeEditorConfiguration extends AbstractConfiguration {
-
+class ClozeEditorConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?string
      */
