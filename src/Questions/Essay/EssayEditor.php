@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay;
 
-use ilNumberInputGUI;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class EssayEditor
@@ -23,9 +21,10 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayEditor extends AbstractEditor {
-
-    const VAR_MAX_LENGTH = "ee_max_length";
+class EssayEditor extends AbstractEditor
+{
+    use InputHandlingTrait;
+    use PathHelper;
 
     /**
      * @var EssayEditorConfiguration
@@ -49,7 +48,7 @@ class EssayEditor extends AbstractEditor {
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.EssayEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.EssayEditor.html', true, true);
 
         $tpl->setVariable('ESSAY', is_null($this->answer) ? '' : $this->answer->getText());
         $tpl->setVariable('POST_VAR', $this->question->getId());
@@ -73,7 +72,7 @@ class EssayEditor extends AbstractEditor {
             $tpl->parseCurrentBlock();
         }
 
-        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Essay/EssayEditor.js');
+        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Essay/EssayEditor.js');
 
         return $tpl->get();
     }
@@ -83,38 +82,7 @@ class EssayEditor extends AbstractEditor {
      */
     public function readAnswer() : AbstractValueObject
     {
-        return EssayAnswer::create(AsqHtmlPurifier::getInstance()->purify($_POST[$this->question->getId()]));
-    }
-
-    /**
-     * @param AbstractConfiguration $config
-     * @return ?array
-     */
-    public static function generateFields(?AbstractConfiguration $config) : ?array
-    {
-        /** @var EssayEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $max_length = new ilNumberInputGUI($DIC->language()->txt('asq_label_max_length'), self::VAR_MAX_LENGTH);
-        $max_length->setSize(2);
-        $max_length->setInfo($DIC->language()->txt('asq_info_max_length'));
-        $fields[self::VAR_MAX_LENGTH] = $max_length;
-
-        if (!is_null($config)) {
-            $max_length->setValue($config->getMaxLength());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return ?AbstractConfiguration
-     */
-    public static function readConfig() : ?AbstractConfiguration
-    {
-        return EssayEditorConfiguration::create(intval($_POST[self::VAR_MAX_LENGTH]));
+        return EssayAnswer::create($this->readString($this->question->getId()));
     }
 
     /**

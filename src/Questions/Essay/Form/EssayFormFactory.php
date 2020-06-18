@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Essay\Form;
 
+use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 
 /**
@@ -16,5 +17,14 @@ use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
  */
 class EssayFormFactory extends QuestionFormFactory
 {
+    public function __construct()
+    {
+        global $DIC;
 
+        parent::__construct(
+            new EssayEditorConfigurationFactory($DIC->language()),
+            new EssayScoringConfigurationFactory($DIC->language()),
+            new EmptyDefinitionFactory($DIC->language()),
+            new EmptyDefinitionFactory($DIC->language()));
+    }
 }

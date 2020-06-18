@@ -32,6 +32,11 @@ class EssayScoringConfiguration extends AbstractConfiguration {
     protected $points;
 
     /**
+     * @var ?EssayScoringDefinition[]
+     */
+    protected $definitions;
+
+    /**
      * @param int $matching_mode
      * @param int $scoring_mode
      * @param float $points
@@ -39,7 +44,8 @@ class EssayScoringConfiguration extends AbstractConfiguration {
      */
     public static function create(?int $matching_mode = TextScoring::TM_CASE_INSENSITIVE,
                                   ?int $scoring_mode = EssayScoring::SCORING_MANUAL,
-                                  ?float $points = null) : EssayScoringConfiguration
+                                  ?float $points = null,
+                                  ?array $definitions = null) : EssayScoringConfiguration
     {
 
         $object = new EssayScoringConfiguration();
@@ -47,6 +53,7 @@ class EssayScoringConfiguration extends AbstractConfiguration {
         $object->matching_mode = $matching_mode;
         $object->scoring_mode = $scoring_mode;
         $object->points = $points;
+        $object->definitions = $definitions;
 
         return $object;
     }
@@ -73,5 +80,13 @@ class EssayScoringConfiguration extends AbstractConfiguration {
     public function getPoints() : ?float
     {
         return $this->points;
+    }
+
+    /**
+     * @return ?EssayScoringDefinition[]
+     */
+    public function getDefinitions() : ?array
+    {
+        return $this->definitions;
     }
 }
