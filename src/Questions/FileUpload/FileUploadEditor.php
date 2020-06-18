@@ -3,15 +3,12 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\FileUpload;
 
+use ILIAS\Data\UUID\Factory;
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
-use ilNumberInputGUI;
 use ilTemplate;
-use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\CQRS\Aggregate\Guid;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
@@ -26,10 +23,10 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class FileUploadEditor extends AbstractEditor {
+class FileUploadEditor extends AbstractEditor
+{
+    use PathHelper;
 
-    const VAR_MAX_UPLOAD = 'fue_max_upload';
-    const VAR_ALLOWED_EXTENSIONS = 'fue_extensions';
     const VAR_CURRENT_ANSWER = 'fue_current_answer';
 
     const UPLOADPATH = 'asq/answers/';
@@ -47,34 +44,18 @@ class FileUploadEditor extends AbstractEditor {
         parent::__construct($question);
     }
 
-    public static function generateFields(?AbstractConfiguration $config): ?array {
-        /** @var FileUploadEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $max_upload = new ilNumberInputGUI($DIC->language()->txt('asq_label_max_upload'), self::VAR_MAX_UPLOAD);
-        $max_upload->setInfo($DIC->language()->txt('asq_description_max_upload'));
-        $fields[self::VAR_MAX_UPLOAD] = $max_upload;
-
-        $allowed_extensions = new ilTextInputGUI($DIC->language()->txt('asq_label_allowed_extensions'),
-                                                 self::VAR_ALLOWED_EXTENSIONS);
-        $allowed_extensions->setInfo($DIC->language()->txt('asq_description_allowed_extensions'));
-        $fields[self::VAR_ALLOWED_EXTENSIONS] = $allowed_extensions;
-
-        if ($config !== null) {
-            $max_upload->setValue($config->getMaximumSize());
-            $allowed_extensions->setValue($config->getAllowedExtensions());
-        }
-
-        return $fields;
-    }
-
     public function readAnswer(): AbstractValueObject
     {
         global $DIC;
 
-        $this->files = json_decode(html_entity_decode($_POST[$this->getPostVar() . self::VAR_CURRENT_ANSWER]), true);
+        $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
+
+        if (!array_key_exists($postkey, $_POST))
+        {
+            return null;
+        }
+
+        $this->files = json_decode(html_entity_decode($_POST[$postkey]), true);
 
         if ($DIC->upload()->hasUploads() && !$DIC->upload()->hasBeenProcessed()) {
             $this->UploadNewFile();
@@ -95,7 +76,9 @@ class FileUploadEditor extends AbstractEditor {
             $folder = self::UPLOADPATH . $this->question->getId() . '/';
             $pathinfo = pathinfo($result->getName());
 
-            $filename = Guid::create() . '.' . $pathinfo['extension'];
+            $uuid_factory = new Factory();
+
+            $filename = $uuid_factory->uuid4AsString() . '.' . $pathinfo['extension'];
 
             if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK &&
                 $this->checkAllowedExtension($pathinfo['extension'])) {
@@ -135,23 +118,11 @@ class FileUploadEditor extends AbstractEditor {
                in_array($extension, explode(',', $this->configuration->getAllowedExtensions()));
     }
 
-    public static function readConfig() : FileUploadEditorConfiguration
-    {
-        $max_upload = intval($_POST[self::VAR_MAX_UPLOAD]);
-
-        if ($max_upload === 0) {
-            $max_upload = null;
-        }
-
-        return FileUploadEditorConfiguration::create($max_upload,
-                                                     str_replace(' ', '', $_POST[self::VAR_ALLOWED_EXTENSIONS]));
-    }
-
     public function generateHtml(): string
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
         $tpl->setVariable('TXT_UPLOAD_FILE', $DIC->language()->txt('asq_header_upload_file'));
         $tpl->setVariable('TXT_MAX_SIZE',
                           sprintf($DIC->language()->txt('asq_text_max_size'),
