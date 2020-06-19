@@ -14,7 +14,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaScoringVariable extends AbstractValueObject {
+class FormulaScoringVariable extends AbstractValueObject
+{
     const VAR_MIN = 'fsv_min';
     const VAR_MAX = 'fsv_max';
     const VAR_UNIT = 'fsv_unit';

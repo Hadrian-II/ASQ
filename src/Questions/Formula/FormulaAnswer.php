@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaAnswer extends Answer {
+class FormulaAnswer extends Answer
+{
     /**
      * @var ?array
      */
@@ -24,16 +25,18 @@ class FormulaAnswer extends Answer {
      * @param array $values
      * @return FormulaAnswer
      */
-    public static function create(?array $values = null) : FormulaAnswer {
+    public static function create(?array $values = null) : FormulaAnswer
+    {
         $object = new FormulaAnswer();
         $object->values = $values;
         return $object;
     }
 
     /**
-     * @return array|NULL
+     * @return ?array
      */
-    public function getValues(): ?array {
+    public function getValues() : ?array
+    {
         return $this->values;
     }
 }

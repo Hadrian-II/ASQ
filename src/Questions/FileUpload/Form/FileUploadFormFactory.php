@@ -3,10 +3,8 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\FileUpload\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\Questions\FileUpload\FileUploadEditorConfiguration;
-use srag\asq\Questions\FileUpload\FileUploadScoringConfiguration;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
+use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 
 /**
  * Class FileUploadFormFactory

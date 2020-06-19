@@ -6,19 +6,9 @@ namespace srag\asq\Questions\Formula;
 use ILIAS\UI\NotImplementedException;
 use EvalMath;
 use Exception;
-use ilNumberInputGUI;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
-use ilTextInputGUI;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
-use srag\asq\UserInterface\Web\InputHelper;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 
 /**
  * Class FormulaScoring
@@ -30,17 +20,6 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
 class FormulaScoring extends AbstractScoring {
-    const VAR_UNITS = 'fs_units';
-    const VAR_PRECISION = 'fs_precision';
-    const VAR_TOLERANCE = 'fs_tolerance';
-    const VAR_RESULT_TYPE = 'fs_type';
-    const VAR_VARIABLES = 'fs_variables';
-
-    /**
-     * @var AsqTableInput
-     */
-    private static $variables_table;
-
     /**
      * @var FormulaScoringConfiguration
      */
@@ -162,117 +141,6 @@ class FormulaScoring extends AbstractScoring {
     }
 
     /**
-     * @return array
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): array
-    {
-        global $DIC;
-
-        /** @var $config FormulaScoringConfiguration */
-
-        $fields = [];
-
-        $units = new ilTextInputGUI($DIC->language()->txt('asq_label_units'), self::VAR_UNITS);
-        $units->setInfo($DIC->language()->txt('asq_description_units'));
-        $fields[self::VAR_UNITS] = $units;
-
-        $precision = new ilNumberInputGUI($DIC->language()->txt('asq_label_precision'), self::VAR_PRECISION);
-        $precision->setInfo($DIC->language()->txt('asq_description_precision'));
-        $precision->setRequired(true);
-        $fields[self::VAR_PRECISION] = $precision;
-
-        $tolerance = new ilNumberInputGUI($DIC->language()->txt('asq_label_tolerance'), self::VAR_TOLERANCE);
-        $tolerance->setInfo($DIC->language()->txt('asq_description_tolerance'));
-        $tolerance->setSuffix('%');
-        $fields[self::VAR_TOLERANCE] = $tolerance;
-
-        $result_type = new ilRadioGroupInputGUI($DIC->language()->txt('asq_label_result_type'), self::VAR_RESULT_TYPE);
-        $result_type->setRequired(true);
-        $result_type->addOption(new ilRadioOption($DIC->language()->txt('asq_label_result_all'),
-                                                  FormulaScoringConfiguration::TYPE_ALL,
-                                                  $DIC->language()->txt('asq_description_result_all')));
-        $result_type->addOption(new ilRadioOption($DIC->language()->txt('asq_label_result_decimal'),
-                                                  FormulaScoringConfiguration::TYPE_DECIMAL,
-                                                  $DIC->language()->txt('asq_description_result_decimal')));
-        $result_type->addOption(new ilRadioOption($DIC->language()->txt('asq_label_result_fraction'),
-                                                  FormulaScoringConfiguration::TYPE_FRACTION,
-                                                  $DIC->language()->txt('asq_description_result_fraction')));
-        $result_type->addOption(new ilRadioOption($DIC->language()->txt('asq_label_result_coprime_fraction'),
-                                                  FormulaScoringConfiguration::TYPE_COPRIME_FRACTION,
-                                                  $DIC->language()->txt('asq_description_result_coprime_fraction')));
-        $fields[self::VAR_RESULT_TYPE] = $result_type;
-
-        self::$variables_table = new AsqTableInput(
-            $DIC->language()->txt('asq_label_variables'),
-            self::VAR_VARIABLES,
-            $config->getVariablesArray(),
-            [
-                new AsqTableInputFieldDefinition(
-                    $DIC->language()->txt('asq_header_min'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MIN),
-                new AsqTableInputFieldDefinition(
-                    $DIC->language()->txt('asq_header_max'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MAX),
-                new AsqTableInputFieldDefinition(
-                    $DIC->language()->txt('asq_header_unit'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_UNIT),
-                new AsqTableInputFieldDefinition(
-                    $DIC->language()->txt('asq_header_multiple_of'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MULTIPLE_OF)
-            ],
-            [
-                AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
-            ]);
-        self::$variables_table->setRequired(true);
-        $fields[self::VAR_VARIABLES] = self::$variables_table;
-
-        if ($config !== null) {
-
-            $units->setValue($config->getUnitString());
-            $precision->setValue($config->getPrecision());
-            $tolerance->setValue($config->getTolerance());
-            $result_type->setValue($config->getResultType());
-        }
-        else {
-            $tolerance->setValue(0);
-            $result_type->setValue(FormulaScoringConfiguration::TYPE_ALL);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return FormulaScoringConfiguration
-     */
-    public static function readConfig() : FormulaScoringConfiguration
-    {
-        $variables = [];
-        $raw_variables = self::$variables_table->readValues();
-
-        foreach ($raw_variables as $raw_variable) {
-            $variables[] = FormulaScoringVariable::create(
-                floatval($raw_variable[FormulaScoringVariable::VAR_MIN]),
-                floatval($raw_variable[FormulaScoringVariable::VAR_MAX]),
-                AsqHtmlPurifier::getInstance()->purify($raw_variable[FormulaScoringVariable::VAR_UNIT]),
-                empty($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]) ?
-                    null:
-                    floatval($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]));
-        }
-
-        return FormulaScoringConfiguration::create(
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::VAR_UNITS]),
-            InputHelper::readInt(self::VAR_PRECISION),
-            InputHelper::readFloat(self::VAR_TOLERANCE),
-            InputHelper::readInt(self::VAR_RESULT_TYPE),
-            $variables
-        );
-    }
-
-    /**
      * @return bool
      */
     public function isComplete() : bool
@@ -322,8 +190,9 @@ class FormulaScoring extends AbstractScoring {
             return false;
         }
 
-        if (! is_null($var->getUnit()) &&
-            ! in_array($var->getUnit(), $this->configuration->getUnits()))
+        if (! empty($var->getUnit()) &&
+            (is_null($this->configuration->getUnits()) ||
+            ! in_array($var->getUnit(), $this->configuration->getUnits())))
         {
             return false;
         }
@@ -350,8 +219,9 @@ class FormulaScoring extends AbstractScoring {
      */
     private function isResultValid(FormulaScoringDefinition $result) : bool
     {
-        if (! is_null($result->getUnit()) &&
-            ! in_array($result->getUnit(), $this->configuration->getUnits()))
+        if (! empty($result->getUnit()) &&
+            (is_null($this->configuration->getUnits()) ||
+            ! in_array($result->getUnit(), $this->configuration->getUnits())))
         {
             return false;
         }

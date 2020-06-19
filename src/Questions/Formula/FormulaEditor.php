@@ -8,6 +8,7 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class FormulaEditor
@@ -18,7 +19,10 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaEditor extends AbstractEditor {
+class FormulaEditor extends AbstractEditor
+{
+    use InputHandlingTrait;
+
     const VAR_UNIT = 'fe_unit';
 
     /**
@@ -67,10 +71,10 @@ class FormulaEditor extends AbstractEditor {
         $unit_postname = $this->getUnitPostVariable($name);
 
         if (array_key_exists($postname, $_POST)) {
-            $answers[$name] = AsqHtmlPurifier::getInstance()->purify($_POST[$postname]);
+            $answers[$name] = $this->readString($postname);
 
             if (array_key_exists($unit_postname, $_POST)) {
-                $answers[$name . self::VAR_UNIT] = AsqHtmlPurifier::getInstance()->purify($_POST[$unit_postname]);
+                $answers[$name . self::VAR_UNIT] = $this->readString($unit_postname);
             }
 
             return true;
@@ -80,20 +84,12 @@ class FormulaEditor extends AbstractEditor {
     }
 
     /**
-     * @return FormulaEditorConfiguration
-     */
-    public static function readConfig() : FormulaEditorConfiguration
-    {
-        return FormulaEditorConfiguration::create();
-    }
-
-    /**
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
      */
     public function generateHtml() : string
     {
-        $output = $this->question->getData()->getQuestionText();
+        $output = $this->configuration->getFormula();
 
         foreach (range(1, count($this->question->getAnswerOptions()->getOptions())) as $resindex) {
             $output = $this->createResult($resindex, $output, $this->question->getPlayConfiguration()->getScoringConfiguration()->getUnits());
@@ -114,7 +110,7 @@ class FormulaEditor extends AbstractEditor {
      * @param string $units
      * @return string
      */
-    private function createResult(int $index, string $output, array $units) : string
+    private function createResult(int $index, string $output, ?array $units) : string
     {
         $name = '$r' . $index;
 

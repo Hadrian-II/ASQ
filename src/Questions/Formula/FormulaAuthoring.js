@@ -16,7 +16,7 @@
         clearTable('#il_prop_cont_fs_variables');
         clearTable('#il_prop_cont_answer_options');
 
-        const variables = $('#question').val().match(varRegex);
+        const variables = $('#fs_formula').val().match(varRegex);
 
         let vars = 0;
         let res = 0;

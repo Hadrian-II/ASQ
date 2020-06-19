@@ -3,11 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula;
 
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class FormulaScoringDefinition
@@ -18,11 +14,8 @@ use srag\asq\UserInterface\Web\InputHelper;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaScoringDefinition extends AnswerDefinition {
-    const VAR_FORMULA = 'fsd_formula';
-    const VAR_UNIT = 'fsd_unit';
-    const VAR_POINTS = 'fsd_points';
-
+class FormulaScoringDefinition extends AbstractValueObject
+{
     /**
      * @var ?string
      */
@@ -39,12 +32,12 @@ class FormulaScoringDefinition extends AnswerDefinition {
     protected $points;
 
     /**
-     * @param string $formula
-     * @param string $unit
-     * @param float $points
+     * @param ?string $formula
+     * @param ?string $unit
+     * @param ?float $points
      * @return FormulaScoringDefinition
      */
-    public static function create(string $formula, string $unit, float $points) : FormulaScoringDefinition {
+    public static function create(?string $formula, ?string $unit, ?float $points) : FormulaScoringDefinition {
         $object = new FormulaScoringDefinition();
         $object->formula = $formula;
         $object->unit = $unit;
@@ -77,59 +70,6 @@ class FormulaScoringDefinition extends AnswerDefinition {
     }
 
     /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
-    public static function getFields(QuestionPlayConfiguration $play) : array
-    {
-        global $DIC;
-
-        $fields = [];
-
-        $fields[] = new AsqTableInputFieldDefinition(
-            $DIC->language()->txt('asq_header_formula'),
-            AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_FORMULA);
-
-        $fields[] = new AsqTableInputFieldDefinition(
-            $DIC->language()->txt('asq_header_unit'),
-            AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_UNIT);
-
-        $fields[] = new AsqTableInputFieldDefinition(
-            $DIC->language()->txt('asq_label_points'),
-            AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_POINTS);
-
-        return $fields;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Answer\Option\AnswerDefinition::getValues()
-     */
-    public function getValues() : array
-    {
-        return [
-            self::VAR_FORMULA => $this->formula,
-            self::VAR_UNIT => $this->unit,
-            self::VAR_POINTS => $this->points
-        ];
-    }
-
-    /**
-     * @param string $index
-     * @return FormulaScoringDefinition
-     */
-    public static function getValueFromPost(string $index) : FormulaScoringDefinition
-    {
-        return FormulaScoringDefinition::create(
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_FORMULA)]),
-            AsqHtmlPurifier::getInstance()->purify($_POST[self::getPostKey($index, self::VAR_UNIT)]),
-            InputHelper::readFloat(self::getPostKey($index, self::VAR_POINTS)));
-    }
-
-    /**
      * @param array $units
      * @return bool
      */
@@ -139,7 +79,7 @@ class FormulaScoringDefinition extends AnswerDefinition {
             return false;
         }
 
-        if (! is_null($this->getUnit()) &&
+        if (! empty($this->getUnit()) &&
             ! in_array($this->getUnit(), $config->getUnits())) {
             return false;
         }

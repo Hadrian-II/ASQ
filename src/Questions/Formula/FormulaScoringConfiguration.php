@@ -14,7 +14,13 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaScoringConfiguration extends AbstractConfiguration {
+class FormulaScoringConfiguration extends AbstractConfiguration
+{
+    /**
+     * @var ?string
+     */
+    protected $formula;
+
     /**
      * @var ?string
      */
@@ -53,13 +59,15 @@ class FormulaScoringConfiguration extends AbstractConfiguration {
      * @param array $variables
      * @return FormulaScoringConfiguration
      */
-    public static function create(?string $units = null,
+    public static function create(?string $formula = null,
+                                  ?string $units = null,
                                   ?int $precision = null,
                                   ?float $tolerance = null,
                                   ?int $result_type = null,
                                   ?array $variables = []) : FormulaScoringConfiguration
     {
         $object = new FormulaScoringConfiguration();
+        $object->formula = $formula;
         $object->units = $units;
         $object->precision = $precision;
         $object->tolerance = $tolerance;
@@ -69,11 +77,19 @@ class FormulaScoringConfiguration extends AbstractConfiguration {
     }
 
     /**
+     * @return ?string
+     */
+    public function getFormula() : ?string
+    {
+        return $this->formula;
+    }
+
+    /**
      * @return array
      */
     public function getUnits() : ?array
     {
-        if (is_null($this->units)) {
+        if (is_null($this->units) || empty($this->units)) {
             return null;
         }
 
