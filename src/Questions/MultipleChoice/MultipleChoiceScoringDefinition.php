@@ -2,10 +2,7 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\MultipleChoice;
 
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Option\AnswerDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class MultipleChoiceScoringDefinition
@@ -14,13 +11,8 @@ use srag\asq\UserInterface\Web\InputHelper;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class MultipleChoiceScoringDefinition extends AnswerDefinition
+class MultipleChoiceScoringDefinition extends AbstractValueObject
 {
-
-    const VAR_MCSD_SELECTED = 'mcsd_selected';
-
-    const VAR_MCSD_UNSELECTED = 'mcsd_unselected';
-
     /**
      * @var ?float
      */
@@ -61,46 +53,6 @@ class MultipleChoiceScoringDefinition extends AnswerDefinition
     }
 
     /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
-    public static function getFields(QuestionPlayConfiguration $play) : array
-    {
-        global $DIC;
-
-        $fields = [];
-        $fields[self::VAR_MCSD_SELECTED] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_label_checked'), AsqTableInputFieldDefinition::TYPE_NUMBER, self::VAR_MCSD_SELECTED);
-
-        $fields[self::VAR_MCSD_UNSELECTED] = new AsqTableInputFieldDefinition($DIC->language()->txt('asq_label_unchecked'), AsqTableInputFieldDefinition::TYPE_NUMBER, self::VAR_MCSD_UNSELECTED);
-
-        return $fields;
-    }
-
-    /**
-     * @param string $index
-     * @return MultipleChoiceScoringDefinition
-     */
-    public static function getValueFromPost(string $index)
-    {
-        return MultipleChoiceScoringDefinition::create(
-            InputHelper::readFloat(self::getPostKey($index, self::VAR_MCSD_SELECTED)),
-            InputHelper::readFloat(self::getPostKey($index, self::VAR_MCSD_UNSELECTED))
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Answer\Option\AnswerDefinition::getValues()
-     */
-    public function getValues() : array
-    {
-        return [
-            self::VAR_MCSD_SELECTED => $this->points_selected,
-            self::VAR_MCSD_UNSELECTED => $this->points_unselected
-        ];
-    }
-
-    /**
      * @var string
      */
     private static $error_message;
@@ -130,7 +82,7 @@ class MultipleChoiceScoringDefinition extends AnswerDefinition
 
         if (! $points_found) {
             self::$error_message = $DIC->language()->txt('asq_error_points');
-            ;
+
             return false;
         }
 

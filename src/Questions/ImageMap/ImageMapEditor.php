@@ -1,43 +1,27 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace srag\asq\Questions\ImageMap;
 
 use Exception;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
 use ilTemplate;
-use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\MultipleChoice\MultipleChoiceAnswer;
-use srag\asq\UserInterface\Web\ImageUploader;
-use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 
 /**
  * Class ImageMapEditor
- *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
- *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class ImageMapEditor extends AbstractEditor {
-
-    const VAR_IMAGE = 'ime_image';
-    const VAR_MULTIPLE_CHOICE = 'ime_multiple_choice';
-    const VAR_MAX_ANSWERS = 'ime_max_answers';
-    const POPUP_FIELD = 'ime_popup';
-
-    const STR_MULTICHOICE = 'Multichoice';
-    const STR_SINGLECHOICE = 'Singlechoice';
+class ImageMapEditor extends AbstractEditor
+{
+    use PathHelper;
 
     /**
      * @var ImageMapEditorConfiguration
@@ -47,7 +31,8 @@ class ImageMapEditor extends AbstractEditor {
     /**
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question) {
+    public function __construct(QuestionDto $question)
+    {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
         parent::__construct($question);
@@ -56,11 +41,11 @@ class ImageMapEditor extends AbstractEditor {
     /**
      * @return string
      */
-    public function generateHtml() : string
+    public function generateHtml(): string
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
 
         $tpl->setCurrentBlock('generic');
         $tpl->setVariable('POST_NAME', $this->getPostName());
@@ -71,7 +56,7 @@ class ImageMapEditor extends AbstractEditor {
 
         /** @var AnswerOption $answer_option */
         foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
-            /** @var ImageMapEditorDisplayDefinition $display_definition */
+            /** @var ImageMapEditorDefinition $display_definition */
             $display_definition = $answer_option->getDisplayDefinition();
 
             $tpl->setCurrentBlock('answer_option');
@@ -79,7 +64,9 @@ class ImageMapEditor extends AbstractEditor {
             $tpl->parseCurrentBlock();
         }
 
-        $DIC->ui()->mainTemplate()->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapEditor.js');
+        $DIC->ui()
+            ->mainTemplate()
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapEditor.js');
 
         return $tpl->get();
     }
@@ -87,22 +74,24 @@ class ImageMapEditor extends AbstractEditor {
     /**
      * @return string
      */
-    private function getPostName() : string {
+    private function getPostName(): string
+    {
         return $this->question->getId();
     }
 
     /**
-     * @param ImageMapEditorDisplayDefinition $display_definition
+     * @param ImageMapEditorDefinition $display_definition
      * @param int $id
      * @return string
      */
-    private function generateShape(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
+    private function generateShape(ImageMapEditorDefinition $display_definition, string $id): string
+    {
         switch ($display_definition->getType()) {
-            case ImageMapEditorDisplayDefinition::TYPE_CIRCLE:
+            case ImageMapEditorDefinition::TYPE_CIRCLE:
                 return $this->generateCircle($display_definition, $id);
-            case ImageMapEditorDisplayDefinition::TYPE_POLYGON:
+            case ImageMapEditorDefinition::TYPE_POLYGON:
                 return $this->generatePolygon($display_definition, $id);
-            case ImageMapEditorDisplayDefinition::TYPE_RECTANGLE:
+            case ImageMapEditorDefinition::TYPE_RECTANGLE:
                 return $this->generateRectangle($display_definition, $id);
             default:
                 throw new Exception('implement rendering of shape please');
@@ -110,49 +99,52 @@ class ImageMapEditor extends AbstractEditor {
     }
 
     /**
-     * @param ImageMapEditorDisplayDefinition $display_definition
+     * @param ImageMapEditorDefinition $display_definition
      * @param int $id
      * @return string
      */
-    private function generateCircle(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
+    private function generateCircle(ImageMapEditorDefinition $display_definition, string $id): string
+    {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
         return '<ellipse class="' . $this->getClass($id) . '"
-                      cx="' . $values['cx'] .'"
-                      cy="' . $values['cy'] .'"
-                      rx="' . $values['rx'] .'"
-                      ry="' . $values['ry'] .'"
+                      cx="' . $values['cx'] . '"
+                      cy="' . $values['cy'] . '"
+                      rx="' . $values['rx'] . '"
+                      ry="' . $values['ry'] . '"
                       data-value="' . $id . '">
                    <title>' . $display_definition->getTooltip() . '</title>
                 </ellipse>';
     }
 
     /**
-     * @param ImageMapEditorDisplayDefinition $display_definition
+     * @param ImageMapEditorDefinition $display_definition
      * @param int $id
      * @return string
      */
-    private function generatePolygon(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
+    private function generatePolygon(ImageMapEditorDefinition $display_definition, string $id): string
+    {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
-        return '<polygon class="' . $this->getClass($id) . '" points="' . $values['points'] .'" data-value="' . $id . '">
+        return '<polygon class="' . $this->getClass($id) . '" points="' . $values['points'] . '" data-value="' . $id . '">
                    <title>' . $display_definition->getTooltip() . '</title>
                 </polygon>';
     }
 
     /**
-     * @param ImageMapEditorDisplayDefinition $display_definition
+     * @param ImageMapEditorDefinition $display_definition
      * @param int $id
      * @return string
      */
-    private function generateRectangle(ImageMapEditorDisplayDefinition $display_definition, string $id) : string {
+    private function generateRectangle(ImageMapEditorDefinition $display_definition, string $id): string
+    {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
         return '<rect class="' . $this->getClass($id) . '"
-                      x="' . $values['x'] .'"
-                      y="' . $values['y'] .'"
-                      width="' . $values['width'] .'"
-                      height="' . $values['height'] .'"
+                      x="' . $values['x'] . '"
+                      y="' . $values['y'] . '"
+                      width="' . $values['width'] . '"
+                      height="' . $values['height'] . '"
                       data-value="' . $id . '">
                    <title>' . $display_definition->getTooltip() . '</title>
                 </rect>';
@@ -160,18 +152,16 @@ class ImageMapEditor extends AbstractEditor {
 
     /**
      * Decodes 'a:1;b:2'
-     *
      * to
-     *
      * [
-     *  'a' => '1',
-     *  'b' => '2'
+     * 'a' => '1',
+     * 'b' => '2'
      * ]
-     *
      * @param string $coordinates
      * @return array
      */
-    private function decodeCoordinates(string $coordinates) : array {
+    private function decodeCoordinates(string $coordinates): array
+    {
         $raw_values = explode(';', $coordinates);
 
         $values = [];
@@ -188,10 +178,11 @@ class ImageMapEditor extends AbstractEditor {
      * @param int $id
      * @return string
      */
-    private function getClass(string $id) : string {
+    private function getClass(string $id): string
+    {
         $class = '';
 
-        if (!is_null($this->answer) && in_array($id, $this->answer->getSelectedIds())) {
+        if (! is_null($this->answer) && in_array($id, $this->answer->getSelectedIds())) {
             $class .= ' selected';
         }
 
@@ -199,64 +190,21 @@ class ImageMapEditor extends AbstractEditor {
             $class .= ' multiple_choice';
         }
 
-        return  $class;
+        return $class;
     }
 
     /**
      * @return Answer
      */
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer(): ?AbstractValueObject
     {
-        return MultipleChoiceAnswer::create(explode(',', $_POST[$this->getPostName()]));
-    }
+        $postkey = $this->getPostName();
 
-    /**
-     * @param AbstractConfiguration $config
-     * @return array|NULL
-     */
-    public static function generateFields(?AbstractConfiguration $config): ?array {
-        /** @var ImageMapEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $mode = new ilRadioGroupInputGUI($DIC->language()->txt('asq_label_mode'), self::VAR_MULTIPLE_CHOICE);
-        $mode->addOption(new ilRadioOption($DIC->language()->txt('asq_label_single_choice'), self::STR_SINGLECHOICE));
-        $multi = new ilRadioOption($DIC->language()->txt('asq_label_multiple_choice'), self::STR_MULTICHOICE);
-        $max_answers = new ilTextInputGUI($DIC->language()->txt('asq_label_answering_limitation'), self::VAR_MAX_ANSWERS);
-        $max_answers->setInfo($DIC->language()->txt('asq_info_answering_limitation'));
-        $multi->addSubItem($max_answers);
-        $mode->addOption($multi);
-
-        $fields[self::VAR_MULTIPLE_CHOICE] = $mode;
-
-        $image = new AsqImageUpload($DIC->language()->txt('asq_label_image'), self::VAR_IMAGE);
-        $image->setRequired(true);
-        $fields[self::VAR_IMAGE] = $image;
-
-        $popup = new ImageFormPopup();
-        $fields[self::POPUP_FIELD] = $popup;
-
-        if ($config !== null) {
-            $mode->setValue($config->isMultipleChoice() ? self::STR_MULTICHOICE : self::STR_SINGLECHOICE);
-            $image->setImagePath($config->getImage());
-            $popup->setValue($config->getImage());
-            $max_answers->setValue($config->getMaxAnswers());
+        if (! array_key_exists($postkey, $_POST)) {
+            return null;
         }
 
-        return $fields;
-    }
-
-    /**
-     * @return AbstractConfiguration|null
-     */
-    public static function readConfig() : ?AbstractConfiguration {
-        return ImageMapEditorConfiguration::create(
-            ImageUploader::getInstance()->processImage(self::VAR_IMAGE),
-            $_POST[self::VAR_MULTIPLE_CHOICE] === self::STR_MULTICHOICE,
-            $_POST[self::VAR_MULTIPLE_CHOICE] === self::STR_MULTICHOICE ?
-                InputHelper::readInt(self::VAR_MAX_ANSWERS) :
-                1);
+        return MultipleChoiceAnswer::create(explode(',', $_POST[$postkey]));
     }
 
     /**
@@ -268,19 +216,15 @@ class ImageMapEditor extends AbstractEditor {
             return false;
         }
 
-        if (is_null($this->question->getAnswerOptions()) ||
-            count($this->question->getAnswerOptions()->getOptions()) < 2)
-        {
+        if (is_null($this->question->getAnswerOptions()) || count($this->question->getAnswerOptions()->getOptions()) < 2) {
             return false;
         }
 
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
-            /** @var ImageMapEditorDisplayDefinition $option_config */
+            /** @var ImageMapEditorDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 
-            if (empty($option_config->getType()) ||
-                empty($option_config->getCoordinates()))
-            {
+            if (empty($option_config->getType()) || empty($option_config->getCoordinates())) {
                 return false;
             }
         }

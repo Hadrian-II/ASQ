@@ -26,7 +26,7 @@ abstract class AbstractEditor {
 	 */
 	protected $question;
 	/**
-	 * @var AbstractValueObject
+	 * @var ?AbstractValueObject
 	 */
 	protected $answer;
 	/**
@@ -60,12 +60,12 @@ abstract class AbstractEditor {
 	/**
 	 * @return Answer
 	 */
-	abstract public function readAnswer() : AbstractValueObject;
+	abstract public function readAnswer() : ?AbstractValueObject;
 
 	/**
 	 * @param AbstractValueObject $answer
 	 */
-	public function setAnswer(AbstractValueObject $answer) : void {
+	public function setAnswer(?AbstractValueObject $answer) : void {
 	    $this->answer = $answer;
 	}
 

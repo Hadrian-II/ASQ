@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ImageMap;
+namespace srag\asq\Questions\ImageMap\Form;
 
 use ilTemplate;
 use ilTextInputGUI;
@@ -16,7 +16,10 @@ use srag\asq\UserInterface\Web\PathHelper;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ImageFormPopup extends ilTextInputGUI {
+class ImageFormPopup extends ilTextInputGUI
+{
+    use PathHelper;
+
     /**
      * @param string $a_mode
      *
@@ -25,15 +28,15 @@ class ImageFormPopup extends ilTextInputGUI {
      */
     public function render($a_mode = '') {
         global $DIC;
-        
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
+
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
         $tpl->setVariable('POPUP_TITLE', $DIC->language()->txt('asq_imagemap_popup_title'));
         $tpl->setVariable('IMAGE_SRC', $this->getValue());
         $tpl->setVariable('OK', $DIC->language()->txt('ok'));
         $tpl->setVariable('CANCEL', $DIC->language()->txt('cancel'));
         return $tpl->get();
     }
-    
+
     public function setValueByArray($values) {
         //do nothing as it has no post value and setvaluebypost resets value
     }

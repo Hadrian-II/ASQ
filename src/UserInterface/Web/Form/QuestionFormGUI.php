@@ -201,6 +201,8 @@ class QuestionFormGUI extends ilPropertyFormGUI
             $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));
         }
 
+        $question = $this->form_factory->performQuestionPostProcessing($question);
+
         return $question;
     }
 }

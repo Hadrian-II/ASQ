@@ -7,6 +7,7 @@ use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class QuestionFormFactory
@@ -161,5 +162,15 @@ class QuestionFormFactory
     public function getScripts() : array
     {
         return[];
+    }
+
+    /**
+     * @param QuestionDto $question
+     * @return QuestionDto
+     */
+    public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
+    {
+        // virtual method
+        return $question;
     }
 }

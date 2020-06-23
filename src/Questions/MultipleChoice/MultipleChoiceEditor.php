@@ -2,19 +2,12 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\MultipleChoice;
 
-use JsonSerializable;
-use ilCheckboxInputGUI;
-use ilNumberInputGUI;
-use ilSelectInputGUI;
 use ilTemplate;
-use stdClass;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
-use srag\asq\UserInterface\Web\InputHelper;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -27,6 +20,9 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class MultipleChoiceEditor extends AbstractEditor
 {
+    use PathHelper;
+
+    const VAR_MC_POSTNAME = 'multiple_choice_post_';
 
     /**
      * @var array
@@ -37,20 +33,6 @@ class MultipleChoiceEditor extends AbstractEditor
      * @var MultipleChoiceEditorConfiguration
      */
     private $configuration;
-
-    const VAR_MCE_SHUFFLE = 'shuffle';
-
-    const VAR_MCE_MAX_ANSWERS = 'max_answers';
-
-    const VAR_MCE_THUMB_SIZE = 'thumbsize';
-
-    const VAR_MCE_IS_SINGLELINE = 'singleline';
-
-    const STR_TRUE = "true";
-
-    const STR_FALSE = "false";
-
-    const VAR_MC_POSTNAME = 'multiple_choice_post_';
 
     /**
      * @param QuestionDto $question
@@ -74,7 +56,7 @@ class MultipleChoiceEditor extends AbstractEditor
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.MultipleChoiceEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.MultipleChoiceEditor.html', true, true);
 
         if ($this->isMultipleChoice()) {
             $tpl->setCurrentBlock('selection_limit_hint');
@@ -132,7 +114,7 @@ class MultipleChoiceEditor extends AbstractEditor
 
         $DIC->ui()
             ->mainTemplate()
-            ->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceEditor.js');
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceEditor.js');
 
         return $tpl->get();
     }
@@ -197,93 +179,6 @@ class MultipleChoiceEditor extends AbstractEditor
         }
 
         return $this->answer;
-    }
-
-    public static function generateFields(?AbstractConfiguration $config) : ?array
-    {
-        /** @var MultipleChoiceEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $shuffle = new ilCheckboxInputGUI($DIC->language()->txt('asq_label_shuffle'), self::VAR_MCE_SHUFFLE);
-
-        $shuffle->setValue(self::STR_TRUE);
-        $fields[self::VAR_MCE_SHUFFLE] = $shuffle;
-
-        $max_answers = new ilNumberInputGUI($DIC->language()->txt('asq_label_max_answer'), self::VAR_MCE_MAX_ANSWERS);
-        $max_answers->setInfo($DIC->language()
-            ->txt('asq_description_max_answer'));
-        $max_answers->setDecimals(0);
-        $max_answers->setSize(2);
-        $fields[self::VAR_MCE_MAX_ANSWERS] = $max_answers;
-
-        $singleline = new ilSelectInputGUI($DIC->language()->txt('asq_label_editor'), self::VAR_MCE_IS_SINGLELINE);
-
-        $singleline->setOptions([
-            self::STR_TRUE => $DIC->language()
-                ->txt('asq_option_single_line'),
-            self::STR_FALSE => $DIC->language()
-                ->txt('asq_option_multi_line')
-        ]);
-
-        $fields[self::VAR_MCE_IS_SINGLELINE] = $singleline;
-
-        if ($config === null || $config->isSingleLine()) {
-            $thumb_size = new ilNumberInputGUI($DIC->language()->txt('asq_label_thumb_size'), self::VAR_MCE_THUMB_SIZE);
-            $thumb_size->setInfo($DIC->language()
-                ->txt('asq_description_thumb_size'));
-            $thumb_size->setSuffix($DIC->language()
-                ->txt('asq_pixel'));
-            $thumb_size->setMinValue(20);
-            $thumb_size->setDecimals(0);
-            $thumb_size->setSize(6);
-            $fields[self::VAR_MCE_THUMB_SIZE] = $thumb_size;
-        } else {
-            $thumb_size = new \ilHiddenInputGUI(self::VAR_MCE_THUMB_SIZE);
-            $fields[self::VAR_MCE_THUMB_SIZE] = $thumb_size;
-        }
-
-        if ($config !== null) {
-            $shuffle->setChecked($config->isShuffleAnswers());
-            $max_answers->setValue($config->getMaxAnswers());
-            $thumb_size->setValue($config->getThumbnailSize());
-            $singleline->setValue($config->isSingleLine() ? self::STR_TRUE : self::STR_FALSE);
-        } else {
-            $shuffle->setChecked(true);
-            $max_answers->setValue(1);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return JsonSerializable|null
-     */
-    public static function readConfig() : ?AbstractConfiguration
-    {
-        return MultipleChoiceEditorConfiguration::create(
-            $_POST[self::VAR_MCE_SHUFFLE] === self::STR_TRUE,
-            InputHelper::readInt(self::VAR_MCE_MAX_ANSWERS),
-            InputHelper::readInt(self::VAR_MCE_THUMB_SIZE),
-            $_POST[self::VAR_MCE_IS_SINGLELINE] === self::STR_TRUE);
-    }
-
-    /**
-     * @param stdClass $input
-     *
-     * @return JsonSerializable|null
-     */
-    public static function deserialize(?stdClass $input) : ?JsonSerializable
-    {
-        if (is_null($input)) {
-            return null;
-        }
-
-        return MultipleChoiceEditorConfiguration::create(
-            $input->shuffle_answers,
-            $input->max_answers,
-            $input->thumbnail_size);
     }
 
     /**
