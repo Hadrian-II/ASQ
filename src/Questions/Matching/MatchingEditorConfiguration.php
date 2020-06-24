@@ -41,36 +41,36 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
     protected $matching_mode;
 
     /**
-     * @var ?array
+     * @var ?MatchingItem[]
      */
     protected $definitions;
 
     /**
-     * @var ?array
+     * @var ?MatchingItem[]
      */
     protected $terms;
 
     /**
-     * @var ?array
+     * @var ?MatchingMapping[]
      */
     protected $matches;
 
     /**
-     * @param int $shuffle
-     * @param int $thumbnail_size
-     * @param int $matching_mode
-     * @param array $definitions
-     * @param array $terms
-     * @param array $matches
+     * @param ?int $shuffle
+     * @param ?int $thumbnail_size
+     * @param ?int $matching_mode
+     * @param ?MatchingItem[] $definitions
+     * @param ?MatchingItem[] $terms
+     * @param ?MatchingItem[] $matches
      * @return MatchingEditorConfiguration
      */
     public static function create(
-            int $shuffle = self::SHUFFLE_NONE,
-            int $thumbnail_size = 100,
-            int $matching_mode = self::MATCHING_ONE_TO_ONE,
-            array $definitions = [],
-            array $terms = [],
-            array $matches = []
+            ?int $shuffle = self::SHUFFLE_NONE,
+            ?int $thumbnail_size = 100,
+            ?int $matching_mode = self::MATCHING_ONE_TO_ONE,
+            ?array $definitions = [],
+            ?array $terms = [],
+            ?array $matches = []
         ) : MatchingEditorConfiguration
     {
         $object = new MatchingEditorConfiguration();
@@ -89,24 +89,6 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
     public function getShuffle() : ?int
     {
         return $this->shuffle;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isShuffleDefinitions() : bool
-    {
-        return $this->shuffle === self::SHUFFLE_DEFINITIONS ||
-               $this->shuffle === self::SHUFFLE_BOTH;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isShuffleTerms() : bool
-    {
-        return $this->shuffle === self::SHUFFLE_TERMS ||
-               $this->shuffle === self::SHUFFLE_BOTH;
     }
 
     /**
@@ -130,7 +112,16 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
      */
     public function getDefinitions() : ?array
     {
-        return $this->definitions;
+        return $this->isShuffleDefinitions() ? shuffle($this->definitions) : $this->definitions;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isShuffleDefinitions() : bool
+    {
+        return $this->shuffle === self::SHUFFLE_DEFINITIONS ||
+        $this->shuffle === self::SHUFFLE_BOTH;
     }
 
     /**
@@ -138,7 +129,16 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
      */
     public function getTerms() : ?array
     {
-        return $this->terms;
+        return $this->isShuffleTerms() ? shuffle($this->terms) : $this->terms;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isShuffleTerms() : bool
+    {
+        return $this->shuffle === self::SHUFFLE_TERMS ||
+        $this->shuffle === self::SHUFFLE_BOTH;
     }
 
     /**

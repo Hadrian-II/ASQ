@@ -3,13 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Matching;
 
-use ilNumberInputGUI;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class MultipleChoiceScoring
@@ -22,8 +18,6 @@ use srag\asq\UserInterface\Web\InputHelper;
  */
 class MatchingScoring extends AbstractScoring
 {
-    const VAR_WRONG_DEDUCTION = 'ms_wrong_deduction';
-
     /**
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
@@ -34,8 +28,8 @@ class MatchingScoring extends AbstractScoring
         $wrong_deduction = $this->question->getPlayConfiguration()->getScoringConfiguration()->getWrongDeduction();
 
         foreach ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMatches() as $match) {
-            $key = $match[MatchingEditor::VAR_MATCH_DEFINITION] . '-' . $match[MatchingEditor::VAR_MATCH_TERM];
-            $matches[$key] = intval($match[MatchingEditor::VAR_MATCH_POINTS]);
+            $key = $match->getDefinitionId() . '-' . $match->getTermId();
+            $matches[$key] = $match->getPoints();
         };
 
         $score = 0;
@@ -61,7 +55,7 @@ class MatchingScoring extends AbstractScoring
         $matches = [];
 
         foreach ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMatches() as $match) {
-            $matches[] = $match[MatchingEditor::VAR_MATCH_DEFINITION] . '-' . $match[MatchingEditor::VAR_MATCH_TERM];
+            $matches[] = $match->getDefinitionId() . '-' . $match->getTermId();
         };
 
         return new MatchingAnswer($matches);
@@ -76,38 +70,10 @@ class MatchingScoring extends AbstractScoring
         $max_score = 0;
 
         foreach ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMatches() as $match) {
-            $max_score += intval($match[MatchingEditor::VAR_MATCH_POINTS]);
+            $max_score += intval($match->getPoints());
         };
 
         return $max_score;
-    }
-
-    /**
-     * @return ?array
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null) : ?array
-    {
-        global $DIC;
-
-        $fields = [];
-
-        $wrong_deduction = new ilNumberInputGUI($DIC->language()->txt('asq_label_wrong_deduction'), self::VAR_WRONG_DEDUCTION);
-        $wrong_deduction->setSize(2);
-        $fields[self::VAR_WRONG_DEDUCTION] = $wrong_deduction;
-
-        if (!is_null($config)) {
-            $wrong_deduction->setValue($config->getWrongDeduction());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return MatchingScoringConfiguration
-     */
-    public static function readConfig() : MatchingScoringConfiguration
-    {
-        return MatchingScoringConfiguration::create(InputHelper::readFloat(self::VAR_WRONG_DEDUCTION));
     }
 
     /**
