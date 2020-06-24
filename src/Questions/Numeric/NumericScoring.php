@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Numeric;
 
-use ilFormSectionHeaderGUI;
-use ilNumberInputGUI;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class NumericScoring
@@ -23,10 +18,6 @@ use srag\asq\UserInterface\Web\InputHelper;
  */
 class NumericScoring extends AbstractScoring
 {
-    const VAR_POINTS = 'ns_points';
-    const VAR_LOWER_BOUND = 'ns_lower_bound';
-    const VAR_UPPER_BOUND = 'ns_upper_bound';
-
     /**
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
@@ -68,58 +59,6 @@ class NumericScoring extends AbstractScoring
         $conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         return NumericAnswer::create(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
-    }
-
-    /**
-     * @param AbstractConfiguration|null $config
-     *
-     * @return array|null
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
-        /** @var NumericScoringConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $points = new ilNumberInputGUI($DIC->language()->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
-
-        $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle($DIC->language()->txt('asq_range'));
-        $fields[] = $spacer;
-
-        $lower_bound = new ilNumberInputGUI($DIC->language()->txt('asq_label_lower_bound'), self::VAR_LOWER_BOUND);
-        $lower_bound->setRequired(true);
-        $lower_bound->allowDecimals(true);
-        $lower_bound->setSize(6);
-        $fields[self::VAR_LOWER_BOUND] = $lower_bound;
-
-        $upper_bound = new ilNumberInputGUI($DIC->language()->txt('asq_label_upper_bound'), self::VAR_UPPER_BOUND);
-        $upper_bound->setRequired(true);
-        $upper_bound->allowDecimals(true);
-        $upper_bound->setSize(6);
-        $fields[self::VAR_UPPER_BOUND] = $upper_bound;
-
-        if ($config !== null) {
-            $points->setValue($config->getPoints());
-            $lower_bound->setValue($config->getLowerBound());
-            $upper_bound->setValue($config->getUpperBound());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return NumericScoringConfiguration
-     */
-    public static function readConfig() : NumericScoringConfiguration
-    {
-        return NumericScoringConfiguration::create(
-            InputHelper::readFloat(self::VAR_POINTS),
-            InputHelper::readFloat(self::VAR_LOWER_BOUND),
-            InputHelper::readFloat(self::VAR_UPPER_BOUND));
     }
 
     /**
