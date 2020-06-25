@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\TextSubset;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
-use srag\asq\Application\Exception\AsqException;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class TextSubsetScoring
@@ -27,8 +24,6 @@ class TextSubsetScoring extends AbstractScoring
      * @var Answer
      */
     protected $answer;
-
-    const VAR_TEXT_MATCHING = 'tss_text_matching';
 
     /**
      * {@inheritDoc}
@@ -160,35 +155,6 @@ class TextSubsetScoring extends AbstractScoring
      */
     private function getAnswers() : array {
         return array_unique($this->answer->getAnswers());
-    }
-
-    /**
-     * @param AbstractConfiguration|null $config
-     *
-     * @return ?array
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array {
-        /** @var TextSubsetScoringConfiguration $config */
-
-        $fields = [];
-
-        $text_matching = TextScoring::getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
-        $fields[self::VAR_TEXT_MATCHING] = $text_matching;
-
-        if ($config !== null) {
-            $text_matching->setValue($config->getTextMatching());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return TextSubsetScoringConfiguration
-     */
-    public static function readConfig() : TextSubsetScoringConfiguration
-    {
-        return TextSubsetScoringConfiguration::create(
-            InputHelper::readInt(self::VAR_TEXT_MATCHING));
     }
 
     /**
