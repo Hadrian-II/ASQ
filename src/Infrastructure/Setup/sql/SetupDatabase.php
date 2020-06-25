@@ -21,6 +21,7 @@ use srag\asq\Questions\MultipleChoice\Form\MultipleChoiceFormFactory;
 use srag\asq\Questions\MultipleChoice\Form\SingleChoiceFormFactory;
 use srag\asq\Questions\Numeric\Form\NumericFormFactory;
 use srag\asq\Questions\Ordering\Form\OrderingFormFactory;
+use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
 use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 
 /**
@@ -124,7 +125,7 @@ class SetupDatabase
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_ordering_text',
-            OrderingFormFactory::class
+            OrderingTextFormFactory::class
         );
     }
 

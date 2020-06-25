@@ -2,11 +2,9 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\Ordering;
 
-use ilSelectInputGUI;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
@@ -21,14 +19,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class OrderingEditor extends AbstractEditor
 {
-
-    const VAR_VERTICAL = "oe_vertical";
-
-    const VAR_MINIMUM_SIZE = "oe_minimum_size";
-
-    const VERTICAL = "vertical";
-
-    const HORICONTAL = "horicontal";
+    use PathHelper;
 
     /**
      * @var OrderingEditorConfiguration
@@ -71,7 +62,7 @@ class OrderingEditor extends AbstractEditor
     {
         global $DIC;
 
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
 
         if (empty($this->answer)) {
             $items = $this->question->getAnswerOptions()->getOptions();
@@ -100,7 +91,7 @@ class OrderingEditor extends AbstractEditor
 
         $DIC->ui()
             ->mainTemplate()
-            ->addJavaScript(PathHelper::getBasePath(__DIR__) . 'src/Questions/Ordering/OrderingEditor.js');
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Ordering/OrderingEditor.js');
 
         return $tpl->get();
     }
@@ -136,48 +127,15 @@ class OrderingEditor extends AbstractEditor
      * {@inheritdoc}
      * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
      */
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
+        if (!array_key_exists($this->question->getId(), $_POST)) {
+            return null;
+        }
+
         return OrderingAnswer::create(array_map(function ($display_id) {
             return array_search($display_id, $this->display_ids);
         }, explode(',', $_POST[$this->question->getId()])));
-    }
-
-    /**
-     * @param AbstractConfiguration $config
-     * @return ?array
-     */
-    public static function generateFields(?AbstractConfiguration $config) : ?array
-    {
-        /** @var OrderingEditorConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $is_vertical = new ilSelectInputGUI($DIC->language()->txt('asq_label_is_vertical'), self::VAR_VERTICAL);
-        $is_vertical->setOptions([
-            self::VERTICAL => $DIC->language()
-                ->txt('asq_label_vertical'),
-            self::HORICONTAL => $DIC->language()
-                ->txt('asq_label_horicontal')
-        ]);
-        $fields[self::VAR_VERTICAL] = $is_vertical;
-
-        if ($config !== null) {
-            $is_vertical->setValue($config->isVertical() ? self::VERTICAL : self::HORICONTAL);
-        } else {
-            $is_vertical->setValue(self::VERTICAL);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return OrderingEditorConfiguration
-     */
-    public static function readConfig() : OrderingEditorConfiguration
-    {
-        return OrderingEditorConfiguration::create($_POST[self::VAR_VERTICAL] === self::VERTICAL);
     }
 
     /**

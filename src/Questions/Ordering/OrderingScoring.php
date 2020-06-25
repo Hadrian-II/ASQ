@@ -3,13 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering;
 
-use ilNumberInputGUI;
-use srag\asq\Domain\Model\AbstractConfiguration;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\InputHelper;
 
 /**
  * Class OrderingScoring
@@ -22,9 +18,6 @@ use srag\asq\UserInterface\Web\InputHelper;
  */
 class OrderingScoring extends AbstractScoring
 {
-
-    const VAR_POINTS = 'os_points';
-
     /**
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
@@ -75,40 +68,6 @@ class OrderingScoring extends AbstractScoring
         }
 
         return OrderingAnswer::create($answers);
-    }
-
-    /**
-     * @param AbstractConfiguration|null $config
-     *
-     * @return array|null
-     */
-    public static function generateFields(?AbstractConfiguration $config, AnswerOptions $options = null): ?array
-    {
-        /** @var OrderingScoringConfiguration $config */
-        global $DIC;
-
-        $fields = [];
-
-        $points = new ilNumberInputGUI($DIC->language()->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
-
-        if ($config !== null) {
-            $points->setValue($config->getPoints());
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return OrderingScoringConfiguration
-     */
-    public static function readConfig() : OrderingScoringConfiguration
-    {
-        return OrderingScoringConfiguration::create(
-            InputHelper::readFloat(self::VAR_POINTS)
-        );
     }
 
     /**
