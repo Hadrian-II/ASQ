@@ -60,7 +60,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         $any->setInfo($this->language->txt('asq_info_automatic_any'));
         $any_options = new AsqTableInput($this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ANY,
-            self::readAnswerOptionValues($value->getDefinitions()),
+            $this->readAnswerOptionValues($value->getDefinitions()),
             [
                 new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
@@ -76,7 +76,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         $all->setInfo($this->language->txt('asq_info_automatic_all'));
         $all_options = new AsqTableInput($this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ALL,
-            self::readAnswerOptionValues($value->getDefinitions()),
+            $this->readAnswerOptionValues($value->getDefinitions()),
             [
                 new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
@@ -96,7 +96,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
 
         $one_options = new AsqTableInput($this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ONE,
-            self::readAnswerOptionValues($value->getDefinitions()),
+            $this->readAnswerOptionValues($value->getDefinitions()),
             [
                 new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
@@ -127,7 +127,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      * @param Answeroptions $options
      * @return array
      */
-    private static function readAnswerOptionValues(?Answeroptions $options) : array {
+    private function readAnswerOptionValues(?Answeroptions $options) : array {
         if (is_null($options) || count($options->getOptions()) === 0) {
             return [];
         }

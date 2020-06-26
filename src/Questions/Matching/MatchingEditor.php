@@ -26,19 +26,6 @@ class MatchingEditor extends AbstractEditor
     use PathHelper;
 
     /**
-     * @var AsqTableInput
-     */
-    private static $definitions;
-    /**
-     * @var AsqTableInput
-     */
-    private static $terms;
-    /**
-     * @var AsqTableInput
-     */
-    private static $matches;
-
-    /**
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
      */
