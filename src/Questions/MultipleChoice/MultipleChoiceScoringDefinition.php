@@ -63,6 +63,7 @@ class MultipleChoiceScoringDefinition extends AbstractValueObject
      */
     public static function checkInput(int $count) : bool
     {
+        //TODO fix input checking
         global $DIC;
 
         $points_found = false;

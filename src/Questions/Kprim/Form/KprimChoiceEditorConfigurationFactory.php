@@ -161,7 +161,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost() : AbstractValueObject
     {
-        switch ($_POST[self::VAR_LABEL_TYPE]) {
+        switch ($this->readString(self::VAR_LABEL_TYPE)) {
             case self::LABEL_RIGHT_WRONG:
                 $label_true = self::STR_RIGHT;
                 $label_false = self::STR_WRONG;
@@ -187,8 +187,8 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
         $thumbsize = $this->readInt(self::VAR_THUMBNAIL_SIZE);
 
         return KprimChoiceEditorConfiguration::create(
-            $_POST[self::VAR_SHUFFLE_ANSWERS] === self::STR_TRUE,
-            $_POST[self::VAR_SINGLE_LINE] === self::STR_TRUE,
+            $this->readString(self::VAR_SHUFFLE_ANSWERS) === self::STR_TRUE,
+            $this->readString(self::VAR_SINGLE_LINE) === self::STR_TRUE,
             $thumbsize,
             $label_true,
             $label_false);

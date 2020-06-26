@@ -66,14 +66,15 @@ class FormulaEditor extends AbstractEditor
      */
     private function processVar(string $name, array &$answers) : bool
     {
-        $postname = $this->getPostVariable($name);
-        $unit_postname = $this->getUnitPostVariable($name);
+        $value = $this->readString($this->getPostVariable($name));
 
-        if (array_key_exists($postname, $_POST)) {
-            $answers[$name] = $this->readString($postname);
+        if (!empty($value)) {
+            $answers[$name] = $value;
 
-            if (array_key_exists($unit_postname, $_POST)) {
-                $answers[$name . self::VAR_UNIT] = $this->readString($unit_postname);
+            $unit = $this->readString($this->getUnitPostVariable($name));
+
+            if (!empty($unit)) {
+                $answers[$name . self::VAR_UNIT] = $unit;
             }
 
             return true;

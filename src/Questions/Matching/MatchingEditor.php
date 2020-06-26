@@ -9,6 +9,7 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class MatchingEditor
@@ -21,6 +22,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput;
  */
 class MatchingEditor extends AbstractEditor
 {
+    use InputHandlingTrait;
     use PathHelper;
 
     /**
@@ -42,12 +44,14 @@ class MatchingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        if (! array_key_exists($this->question->getId(), $_POST))
+        $value = $this->readString($this->question->getId());
+
+        if (! empty($value))
         {
             return null;
         }
 
-        $matches = explode(';', $_POST[$this->question->getId()]);
+        $matches = explode(';', $value);
 
         $matches = array_diff($matches, ['']);
 

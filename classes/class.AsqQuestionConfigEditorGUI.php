@@ -6,6 +6,7 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -22,6 +23,8 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  */
 class AsqQuestionConfigEditorGUI
 {
+    use PostAccess;
+
     const CMD_SHOW_FORM = 'showForm';
     const CMD_SAVE_FORM = 'saveForm';
     const CMD_SAVE_AND_RETURN = 'saveAndReturn';
@@ -147,7 +150,7 @@ class AsqQuestionConfigEditorGUI
 
         $form = $this->buildForm();
 
-        $rev_name = $_POST[QuestionFormGUI::VAR_REVISION_NAME];
+        $rev_name = $this->getPostValue(QuestionFormGUI::VAR_REVISION_NAME);
 
         if (empty($rev_name)) {
             ilutil::sendInfo($DIC->language()->txt('asq_missing_revision_name'));

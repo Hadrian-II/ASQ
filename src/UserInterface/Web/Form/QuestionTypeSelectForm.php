@@ -17,18 +17,22 @@ use srag\asq\AsqGateway;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionTypeSelectForm extends ilPropertyFormGUI {
+class QuestionTypeSelectForm extends ilPropertyFormGUI
+{
+    use InputHandlingTrait;
+
 	const VAR_QUESTION_TYPE = "question_type";
 
 	/**
 	 * @var QuestionTypeDefinition[]
 	 */
 	private $question_types;
-	
+
     /**
      * QuestionTypeSelectForm constructor.
      */
-	public function __construct( ) {
+	public function __construct( )
+	{
 		$this->initForm();
 
 		parent::__construct();
@@ -39,12 +43,13 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI {
 	 *
 	 * @access private
 	 */
-	private function initForm() {
+	private function initForm() : void
+	{
 
 	    global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
 	    $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
-	    
+
 	    $this->setTitle($DIC->language()->txt('asq_create_question_form'));
 
 		$select = new ilSelectInputGUI(
@@ -64,7 +69,8 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI {
     /**
      * @return QuestionTypeDefinition
      */
-	public function getQuestionType() : QuestionTypeDefinition {
-		return $this->question_types[intval($_POST[self::VAR_QUESTION_TYPE])];
+	public function getQuestionType() : QuestionTypeDefinition
+	{
+		return $this->question_types[$this->readInt(self::VAR_QUESTION_TYPE)];
 	}
 }

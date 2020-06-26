@@ -53,7 +53,7 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost() : AbstractValueObject
     {
-        return OrderingEditorConfiguration::create($_POST[self::VAR_VERTICAL] === self::VERTICAL);
+        return OrderingEditorConfiguration::create($this->readString(self::VAR_VERTICAL) === self::VERTICAL);
     }
 
     /**

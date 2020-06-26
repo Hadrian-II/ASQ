@@ -83,10 +83,10 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
     public function readObjectFromPost(): AbstractValueObject
     {
         return MultipleChoiceEditorConfiguration::create(
-            $_POST[self::VAR_MCE_SHUFFLE] === self::STR_TRUE,
+            $this->readString(self::VAR_MCE_SHUFFLE) === self::STR_TRUE,
             self::SINGLE_CHOICE,
             $this->readInt(self::VAR_MCE_THUMB_SIZE),
-            $_POST[self::VAR_MCE_IS_SINGLELINE] === self::STR_TRUE);
+            $this->readString(self::VAR_MCE_IS_SINGLELINE) === self::STR_TRUE);
     }
 
     /**

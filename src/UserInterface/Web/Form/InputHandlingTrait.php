@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\ImageUploader;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Trait Input Handling
@@ -19,10 +19,7 @@ use srag\asq\UserInterface\Web\ImageUploader;
  */
 trait InputHandlingTrait
 {
-    /**
-     * @var AsqHtmlPurifier
-     */
-    protected $purifier;
+    use PostAccess;
 
     /**
      * @var ImageUploader
@@ -37,13 +34,13 @@ trait InputHandlingTrait
      */
     protected function readFloat(string $postvar) : ?float
     {
-        if (! array_key_exists($postvar, $_POST) ||
-            ! is_numeric($_POST[$postvar]))
+        if (! $this->isPostVarSet($postvar) ||
+            ! is_numeric($this->getPostValue($postvar)))
         {
             return null;
         }
 
-        return floatval($_POST[$postvar]);
+        return floatval($this->getPostValue($postvar));
     }
 
     /**
@@ -54,26 +51,13 @@ trait InputHandlingTrait
      */
     protected function readInt(string $postvar) : ?int
     {
-        if (! array_key_exists($postvar, $_POST) ||
-            ! is_numeric($_POST[$postvar]))
+        if (! $this->isPostVarSet($postvar) ||
+            ! is_numeric($this->getPostValue($postvar)))
         {
             return null;
         }
 
-        return intval($_POST[$postvar]);
-    }
-
-    /**
-     * @return AsqHtmlPurifier
-     */
-    private function getPurifier() : AsqHtmlPurifier
-    {
-        if (is_null($this->purifier))
-        {
-            $this->purifier = new AsqHtmlPurifier();
-        }
-
-        return $this->purifier;
+        return intval($this->getPostValue($postvar));
     }
 
     /**
@@ -82,12 +66,7 @@ trait InputHandlingTrait
      */
     protected function readString(string $postvar) : ?string
     {
-        if (! array_key_exists($postvar, $_POST))
-        {
-            return null;
-        }
-
-        return $this->getPurifier()->purify($_POST[$postvar]);
+        return $this->getPostValue($postvar);
     }
 
     /**

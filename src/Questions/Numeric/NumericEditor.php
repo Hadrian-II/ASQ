@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class NumericEditor
@@ -23,6 +24,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 class NumericEditor extends AbstractEditor
 {
     use PathHelper;
+    use InputHandlingTrait;
 
     /**
      * @var NumericEditorConfiguration
@@ -64,7 +66,7 @@ class NumericEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return NumericAnswer::create(floatval($_POST[$this->question->getId()]));
+        return NumericAnswer::create($this->readFloat($this->question->getId()));
     }
 
     /**

@@ -9,6 +9,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class OrderingEditor
@@ -19,6 +20,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class OrderingEditor extends AbstractEditor
 {
+    use InputHandlingTrait;
     use PathHelper;
 
     /**
@@ -129,13 +131,15 @@ class OrderingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        if (!array_key_exists($this->question->getId(), $_POST)) {
+        $value = $this->readString($this->question->getId());
+
+        if (empty($value)) {
             return null;
         }
 
         return OrderingAnswer::create(array_map(function ($display_id) {
             return array_search($display_id, $this->display_ids);
-        }, explode(',', $_POST[$this->question->getId()])));
+        }, explode(',', $value)));
     }
 
     /**

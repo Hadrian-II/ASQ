@@ -11,6 +11,7 @@ use ilTextAreaInputGUI;
 use ilDurationInputGUI;
 use ilObjAdvancedEditing;
 use Exception;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AbstractQuestionFormFactory
@@ -25,6 +26,8 @@ use Exception;
  */
 class QuestionDataFormFactory extends AbstractObjectFactory
 {
+    use PostAccess;
+
     const VAR_TITLE = 'title';
     const VAR_AUTHOR = 'author';
     const VAR_DESCRIPTION = 'description';
@@ -125,7 +128,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         $MINUTES = 'mm';
         $SECONDS = 'ss';
 
-        $postval = $_POST[$post_name];
+        $postval = $this->getPostValue($post_name);
 
         if (
             is_array($postval) &&

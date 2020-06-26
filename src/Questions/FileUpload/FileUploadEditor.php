@@ -12,6 +12,7 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class FileUploadEditor
@@ -25,6 +26,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class FileUploadEditor extends AbstractEditor
 {
+    use PostAccess;
     use PathHelper;
 
     const VAR_CURRENT_ANSWER = 'fue_current_answer';
@@ -50,12 +52,12 @@ class FileUploadEditor extends AbstractEditor
 
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
 
-        if (!array_key_exists($postkey, $_POST))
+        if (!$this->isPostVarSet($postkey))
         {
             return null;
         }
 
-        $this->files = json_decode(html_entity_decode($_POST[$postkey]), true);
+        $this->files = json_decode(html_entity_decode($this->getPostValue($postkey)), true);
 
         if ($DIC->upload()->hasUploads() && !$DIC->upload()->hasBeenProcessed()) {
             $this->UploadNewFile();
@@ -102,7 +104,7 @@ class FileUploadEditor extends AbstractEditor
             $answers = $this->files;
 
             foreach (array_keys($answers) as $key) {
-                if (array_key_exists($this->getFileKey($key), $_POST)) {
+                if ($this->isPostVarSet($this->getFileKey($key))) {
                     unset($this->files[$key]);
                 }
             }

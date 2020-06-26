@@ -19,6 +19,7 @@ use ilNumberInputGUI;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use ilPropertyFormGUI;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class ClozeEditorConfigurationFactory
@@ -31,6 +32,8 @@ use ilPropertyFormGUI;
  */
 class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 {
+    use PostAccess;
+
     const VAR_CLOZE_TEXT = 'cze_text';
     const VAR_GAP_SIZE = 'cze_gap_size';
     const VAR_TEXT_METHOD = 'cze_text_method';
@@ -279,16 +282,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $i = 1;
         $gap_configs = [];
 
-        while (array_key_exists($i . self::VAR_GAP_TYPE, $_POST)) {
+        while ($this->isPostVarSet($i . self::VAR_GAP_TYPE)) {
             $istr = strval($i);
 
-            if ($_POST[$istr . self::VAR_GAP_TYPE] == ClozeGapConfiguration::TYPE_TEXT) {
+            if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_TEXT) {
                 $gap_configs[] = self::readTextGapConfiguration($istr);
             }
-            else if ($_POST[$istr . self::VAR_GAP_TYPE] == ClozeGapConfiguration::TYPE_DROPDOWN) {
+            else if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_DROPDOWN) {
                 $gap_configs[] = self::readSelectGapConfiguration($istr);
             }
-            else if ($_POST[$istr . self::VAR_GAP_TYPE] == ClozeGapConfiguration::TYPE_NUMBER) {
+            else if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_NUMBER) {
                 $gap_configs[] = self::readNumericGapConfiguration($istr);
             }
 

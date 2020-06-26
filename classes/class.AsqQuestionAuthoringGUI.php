@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -28,6 +29,8 @@ use srag\asq\Application\Service\AuthoringContextContainer;
  */
 class AsqQuestionAuthoringGUI
 {
+    use PostAccess;
+
     const TAB_ID_PREVIEW = 'qst_preview_tab';
     const TAB_ID_PAGEVIEW = 'qst_pageview_tab';
     const TAB_ID_CONFIG = 'qst_config_tab';
@@ -115,7 +118,7 @@ class AsqQuestionAuthoringGUI
                 $gui = AsqGateway::get()->ui()->getQuestionPage(
                     AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id));
 
-                if (strlen($DIC->ctrl()->getCmd()) == 0 && !isset($_POST["editImagemapForward_x"]))
+                if (strlen($DIC->ctrl()->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x"))
                 {
                     // workaround for page edit imagemaps, keep in mind
 

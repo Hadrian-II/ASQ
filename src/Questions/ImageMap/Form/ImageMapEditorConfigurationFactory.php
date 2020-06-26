@@ -10,6 +10,7 @@ use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTextInputGUI;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class ImageMapFormFactory
@@ -22,6 +23,8 @@ use ilTextInputGUI;
  */
 class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
 {
+    use InputHandlingTrait;
+
     const VAR_IMAGE = 'ime_image';
     const VAR_MULTIPLE_CHOICE = 'ime_multiple_choice';
     const VAR_MAX_ANSWERS = 'ime_max_answers';
@@ -70,11 +73,12 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost() : AbstractValueObject
     {
+        $multiple_choice = $this->readString(self::VAR_MULTIPLE_CHOICE);
+
         return ImageMapEditorConfiguration::create(
             $this->readImage(self::VAR_IMAGE),
-            $_POST[self::VAR_MULTIPLE_CHOICE] === self::STR_MULTICHOICE,
-            $_POST[self::VAR_MULTIPLE_CHOICE] === self::STR_MULTICHOICE ?
-                $this->readInt(self::VAR_MAX_ANSWERS) : 1);
+            $multiple_choice === self::STR_MULTICHOICE,
+            $multiple_choice === self::STR_MULTICHOICE ? $this->readInt(self::VAR_MAX_ANSWERS) : 1);
     }
 
     /**

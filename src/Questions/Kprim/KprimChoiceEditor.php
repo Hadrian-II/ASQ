@@ -11,6 +11,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class KprimChoiceEditor
@@ -21,7 +22,10 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class KprimChoiceEditor extends AbstractEditor {
+class KprimChoiceEditor extends AbstractEditor
+{
+    use InputHandlingTrait;
+
     const STR_TRUE = "True";
     const STR_FALSE = "False";
 
@@ -46,13 +50,17 @@ class KprimChoiceEditor extends AbstractEditor {
         parent::__construct($question);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
+     */
     public function readAnswer() : AbstractValueObject
     {
         $answers = [];
 
         /** @var AnswerOption $answer_option */
         foreach ($this->answer_options as $answer_option) {
-            $answer = $_POST[$this->getPostName($answer_option->getOptionId())];
+            $answer = $this->readString($this->getPostName($answer_option->getOptionId()));
 
 
             if ($answer === self::STR_TRUE) {
@@ -132,6 +140,10 @@ class KprimChoiceEditor extends AbstractEditor {
         return $tpl->get();
     }
 
+    /**
+     * @param AnswerOption $option
+     * @return bool
+     */
     private function showFeedBackForAnswerOption(AnswerOption $option) : bool
     {
         switch ($this->question->getFeedback()->getAnswerOptionFeedbackMode()) {
@@ -158,7 +170,8 @@ class KprimChoiceEditor extends AbstractEditor {
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string {
+    static function getDisplayDefinitionClass() : string
+    {
         return ImageAndTextDisplayDefinition::class;
     }
 

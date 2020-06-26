@@ -25,6 +25,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 class QuestionFormGUI extends ilPropertyFormGUI
 {
     use PathHelper;
+    use InputHandlingTrait;
 
     const VAR_AGGREGATE_ID = 'aggregate_id';
 
@@ -191,7 +192,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
     private function readQuestionFromPost() : QuestionDto
     {
         $question = new QuestionDto();
-        $question->setId($_POST[self::VAR_AGGREGATE_ID]);
+        $question->setId($this->readString(self::VAR_AGGREGATE_ID));
 
         $question->setData($this->question_data_factory->readObjectFromPost());
 

@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class ErrorTextEditor
@@ -22,6 +23,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class ErrorTextEditor extends AbstractEditor
 {
+    use InputHandlingTrait;
     use PathHelper;
 
     /**
@@ -98,7 +100,7 @@ class ErrorTextEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        $answers = $_POST[$this->getPostKey()];
+        $answers = $this->readString($this->getPostKey());
 
         if(!is_null($answers) && strlen($answers) > 0) {
             $answers = explode(',', $answers);

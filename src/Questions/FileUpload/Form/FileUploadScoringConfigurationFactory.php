@@ -29,7 +29,7 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -56,17 +56,17 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return FileUploadScoringConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return FileUploadScoringConfiguration::create(
             $this->readFloat(self::VAR_POINTS),
-            $_POST[self::VAR_COMPLETED_ON_UPLOAD] === self::CHECKED);
+            $this->readString(self::VAR_COMPLETED_ON_UPLOAD) === self::CHECKED);
     }
 
     /**
      * @return FileUploadScoringConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return FileUploadScoringConfiguration::create();
     }

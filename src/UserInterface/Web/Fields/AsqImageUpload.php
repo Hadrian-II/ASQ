@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Fields;
 
 use ilFileInputGUI;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqImageUpload
@@ -14,8 +15,10 @@ use ilFileInputGUI;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AsqImageUpload extends ilFileInputGUI {
-    
+class AsqImageUpload extends ilFileInputGUI
+{
+    use PostAccess;
+
     /**
      * @var string
      */
@@ -33,7 +36,7 @@ class AsqImageUpload extends ilFileInputGUI {
         $this->setType("image_file");
         $this->setSuffixes(array("jpg", "jpeg", "png", "gif", "svg"));
     }
-    
+
     /**
      * Set Value. (used for displaying file title of existing file below input field)
      *
@@ -42,7 +45,7 @@ class AsqImageUpload extends ilFileInputGUI {
     function setImagePath($a_value)
     {
         $this->image_path = $a_value;
-        
+
         if (!empty($a_value)) {
             parent::setValue(' ');
         }
@@ -50,7 +53,7 @@ class AsqImageUpload extends ilFileInputGUI {
             parent::setValue('');
         }
     }
-    
+
     /**
      * Get Value.
      *
@@ -66,29 +69,30 @@ class AsqImageUpload extends ilFileInputGUI {
      */
     function checkInput()
     {
-        $post = $_POST[$this->getPostVar()];
-        
+        $post = $this->getPostValue($this->getPostVar());
+
         $value = parent::checkInput();
-        
+
+        /* $_POST reference needed as parent destroys input */
         $_POST[$this->getPostVar()] = $post;
-        
+
         return $value;
     }
-    
+
     /**
      * Render html
      */
     function render($a_mode = "")
     {
         global $DIC;
-        
+
         //TODO create template when definitive
         $additional = '<input type="hidden" name="' . $this->getPostVar() . '" value="' . $this->image_path . '" />';
         $delete = '';
-        
+
         if (!empty($this->image_path)) {
             $additional .= '<img class="image_preview" style="margin: 5px 0px 5px 0px; max-width: 333px;" src="' . $this->image_path . '" border="0" /><br />';
-        
+
             if (!$this->required) {
                 $delete = '<div class="checkbox">
                         <label>
@@ -101,13 +105,13 @@ class AsqImageUpload extends ilFileInputGUI {
                        </div>';
             }
         }
-        
+
         if ($this->getDisabled()) {
            return $additional;
         }
         else {
             return '<div style="width: 333px;">' . parent::render($a_mode)  . $additional . $delete . '</div>';
         }
-        
+
     }
 }

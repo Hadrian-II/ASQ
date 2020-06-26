@@ -6,9 +6,9 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class TextSubsetEditor
@@ -19,6 +19,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class TextSubsetEditor extends AbstractEditor
 {
+    use InputHandlingTrait;
     use PathHelper;
 
     /**
@@ -86,16 +87,16 @@ class TextSubsetEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        if (! array_key_exists($this->getPostValue(1), $_POST)) {
+        $value = $this->readString($this->getPostValue(1));
+
+        if (empty($value)) {
             return null;
         }
 
         $answer = [];
 
-        $purifier = new AsqHtmlPurifier();
-
         for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i ++) {
-            $answer[$i] = $purifier->purify($_POST[$this->getPostValue($i)]);
+            $answer[$i] = $this->readString($this->getPostValue($i));
         }
 
         return TextSubsetAnswer::create($answer);

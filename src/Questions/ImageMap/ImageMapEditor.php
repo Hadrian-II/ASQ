@@ -11,6 +11,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\MultipleChoice\MultipleChoiceAnswer;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class ImageMapEditor
@@ -21,6 +22,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class ImageMapEditor extends AbstractEditor
 {
+    use InputHandlingTrait;
     use PathHelper;
 
     /**
@@ -198,13 +200,13 @@ class ImageMapEditor extends AbstractEditor
      */
     public function readAnswer(): ?AbstractValueObject
     {
-        $postkey = $this->getPostName();
+        $value = $this->readString($this->getPostName());
 
-        if (! array_key_exists($postkey, $_POST)) {
+        if (empty($value)) {
             return null;
         }
 
-        return MultipleChoiceAnswer::create(explode(',', $_POST[$postkey]));
+        return MultipleChoiceAnswer::create(explode(',', $value));
     }
 
     /**

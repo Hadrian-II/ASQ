@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class MultipleChoiceEditor
@@ -20,6 +21,7 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 class MultipleChoiceEditor extends AbstractEditor
 {
+    use PostAccess;
     use PathHelper;
 
     const VAR_MC_POSTNAME = 'multiple_choice_post_';
@@ -167,14 +169,14 @@ class MultipleChoiceEditor extends AbstractEditor
             /** @var AnswerOption $answer_option */
             foreach ($this->answer_options as $answer_option) {
                 $poststring = $this->getPostName($answer_option->getOptionId());
-                if (isset($_POST[$poststring])) {
-                    $result[] = $_POST[$poststring];
+                if ($this->isPostVarSet($poststring)) {
+                    $result[] = $this->getPostValue($poststring);
                 }
             }
             $this->answer = MultipleChoiceAnswer::create($result);
         } else {
             $this->answer = MultipleChoiceAnswer::create([
-                $_POST[$this->getPostName()]
+                $this->getPostValue($this->getPostName())
             ]);
         }
 

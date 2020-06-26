@@ -16,7 +16,10 @@ use ILIAS\Data\UUID\Factory;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ImageUploader {
+class ImageUploader
+{
+    use PostAccess;
+
     const BASE_PATH = 'asq/images/%d/%d/';
 
     /**
@@ -29,7 +32,8 @@ class ImageUploader {
      */
     private $guid_factory;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->request_uploads = [];
         $this->guid_factory = new Factory();
     }
@@ -37,7 +41,8 @@ class ImageUploader {
     /**
      * @return string
      */
-    public function processImage(string $image_key) : string {
+    public function processImage(string $image_key) : string
+    {
         global $DIC;
         $upload = $DIC->upload();
         $target_file = "";
@@ -67,7 +72,7 @@ class ImageUploader {
 
         // delete selected
         //TODO search ilias source for hopefully existing _delete constant
-        if (array_key_exists($image_key . '_delete', $_POST)) {
+        if ($this->isPostVarSet($image_key . '_delete')) {
             return '';
         }
 
@@ -77,8 +82,9 @@ class ImageUploader {
         }
 
         // old file exists
-        if (!empty($_POST[$image_key])) {
-            return $_POST[$image_key];
+        if (!empty($this->getPostValue($image_key)))
+        {
+            return $this->getPostValue($image_key);
         }
 
         // no file
@@ -89,7 +95,8 @@ class ImageUploader {
      * @param string $filename
      * @return string
      */
-    private function getImagePath(string $filename) : string {
+    private function getImagePath(string $filename) : string
+    {
         return ILIAS_HTTP_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID .  '/' . self::processBasePath($filename) . $filename;
     }
 
@@ -97,7 +104,8 @@ class ImageUploader {
      * @param string $filename
      * @return string
      */
-    private function processBasePath(string $filename) : string {
+    private function processBasePath(string $filename) : string
+    {
         if (strlen($filename) < 2) {
             $first = '0';
             $second = '0';

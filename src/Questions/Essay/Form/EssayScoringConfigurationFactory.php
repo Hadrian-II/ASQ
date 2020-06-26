@@ -174,7 +174,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readDefinitions() : array
     {
-        $selected = intval($_POST[self::VAR_SCORING_MODE]);
+        $selected = $this->readInt(self::VAR_SCORING_MODE);
 
         $definitions = [];
 
@@ -191,7 +191,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
 
             $i = 1;
 
-            while (array_key_exists($this->getPostKey($i, $prefix, self::VAR_DEF_TEXT), $_POST)) {
+            while ($this->isPostVarSet($this->getPostKey($i, $prefix, self::VAR_DEF_TEXT))) {
                 $istr = strval($i);
 
                 $definitions[] =

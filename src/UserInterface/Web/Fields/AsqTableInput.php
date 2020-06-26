@@ -11,6 +11,7 @@ use ilTemplate;
 use ilTextInputGUI;
 use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqTableInput
@@ -24,6 +25,7 @@ use srag\asq\UserInterface\Web\PathHelper;
 class AsqTableInput extends ilTextInputGUI
 {
     use PathHelper;
+    use PostAccess;
 
     const OPTION_ORDER = 'TableInputOrder';
     const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
@@ -69,6 +71,9 @@ class AsqTableInput extends ilTextInputGUI
         }
     }
 
+    /**
+     * @return int
+     */
     public function getMinRows() : int
     {
         if(array_key_exists(self::OPTION_MIN_ROWS, $this->form_configuration)) {
@@ -84,7 +89,8 @@ class AsqTableInput extends ilTextInputGUI
      * @return string
      * @throws \ilTemplateException
      */
-    public function render($a_mode = '') {
+    public function render($a_mode = '') : string
+    {
         global $DIC;
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
@@ -159,7 +165,8 @@ class AsqTableInput extends ilTextInputGUI
     /**
      * @return bool
      */
-    private function hasActions() :bool {
+    private function hasActions() : bool
+    {
         return array_key_exists(self::OPTION_ORDER, $this->form_configuration) ||
         !array_key_exists(self::OPTION_HIDE_ADD_REMOVE, $this->form_configuration);
 
@@ -168,13 +175,20 @@ class AsqTableInput extends ilTextInputGUI
     /**
      * @return bool
      */
-    public function checkInput() : bool {
+    public function checkInput() : bool
+    {
         //TODO required etc.
         return true;
     }
 
-    public static function readValuesFromPost($post_var, $definitions) {
-        $count = intval($_POST[$post_var]);
+    /**
+     * @param $post_var
+     * @param $definitions
+     * @return array
+     */
+    public function readValuesFromPost($post_var, $definitions) : array
+    {
+        $count = intval($this->getPostValue($post_var));
 
         $values = [];
         for ($i = 1; $i <= $count; $i++) {
@@ -183,8 +197,8 @@ class AsqTableInput extends ilTextInputGUI
             foreach ($definitions as $definition) {
                 $item_post_var = self::getTableItemPostVar($i, $post_var, $definition->getPostVar());
 
-                if (array_key_exists($item_post_var, $_POST)) {
-                    $new_value[$definition->getPostVar()] = $_POST[$item_post_var];
+                if ($this->isPostVarSet($item_post_var)) {
+                    $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
                 }
 
             }
@@ -195,7 +209,14 @@ class AsqTableInput extends ilTextInputGUI
         return $values;
     }
 
-    private static function getTableItemPostVar(int $id, string $postvar, string $definition_postvar) {
+    /**
+     * @param int $id
+     * @param string $postvar
+     * @param string $definition_postvar
+     * @return string
+     */
+    private static function getTableItemPostVar(int $id, string $postvar, string $definition_postvar) : string
+    {
         return sprintf('%s_%s_%s', $id, $postvar, $definition_postvar);
     }
 
@@ -205,15 +226,17 @@ class AsqTableInput extends ilTextInputGUI
      *
      * @return array
      */
-    public function readValues() {
-        $this->values = self::readValuesFromPost($this->getPostVar(), $this->definitions);
+    public function readValues() : array
+    {
+        $this->values = $this->readValuesFromPost($this->getPostVar(), $this->definitions);
         return $this->values;
     }
 
     /**
      * @param array $values
      */
-    public function setValues(array $values) {
+    public function setValues(array $values) : void
+    {
         $this->values = $values;
     }
 
@@ -225,7 +248,7 @@ class AsqTableInput extends ilTextInputGUI
      * @return string
      * @throws Exception
      */
-    private function generateField(AsqTableInputFieldDefinition $definition, int $row_id, $value)
+    private function generateField(AsqTableInputFieldDefinition $definition, int $row_id, $value) : string
     {
         switch ($definition->getType()) {
             case AsqTableInputFieldDefinition::TYPE_TEXT:
@@ -255,9 +278,10 @@ class AsqTableInput extends ilTextInputGUI
      * @param string $post_var
      * @param        $value
      *
-     * @return ilTextInputGUI
+     * @return string
      */
-    private function generateTextField(string $post_var, $value) {
+    private function generateTextField(string $post_var, $value) : string
+    {
         $field = new ilTextInputGUI('', $post_var);
 
         $this->setFieldValue($post_var, $value, $field);
@@ -265,7 +289,13 @@ class AsqTableInput extends ilTextInputGUI
         return $field->render();
     }
 
-    private function generateTextArea(string $post_var, $value) {
+    /**
+     * @param string $post_var
+     * @param $value
+     * @return string
+     */
+    private function generateTextArea(string $post_var, $value) : string
+    {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.TextAreaField.html', true, true);
 
         $tpl->setCurrentBlock('textarea');
@@ -280,9 +310,10 @@ class AsqTableInput extends ilTextInputGUI
      * @param string $post_var
      * @param        $value
      *
-     * @return AsqImageUpload
+     * @return string
      */
-    private function generateImageField(string $post_var, $value) {
+    private function generateImageField(string $post_var, $value) : string
+    {
         $field = new AsqImageUpload('', $post_var);
 
         $field->setImagePath($value);
@@ -294,9 +325,10 @@ class AsqTableInput extends ilTextInputGUI
      * @param string $post_var
      * @param        $value
      *
-     * @return ilNumberInputGUI
+     * @return string
      */
-    private function generateNumberField(string $post_var, $value) {
+    private function generateNumberField(string $post_var, $value) : string
+    {
         $field = new ilNumberInputGUI('', $post_var);
         $field->setSize(2);
 
@@ -305,7 +337,14 @@ class AsqTableInput extends ilTextInputGUI
         return $field->render();
     }
 
-    private function generateRadioField(string $post_var, $value, $options) {
+    /**
+     * @param string $post_var
+     * @param $value
+     * @param $options
+     * @return string
+     */
+    private function generateRadioField(string $post_var, $value, $options) : string
+    {
         $field = new ilRadioGroupInputGUI('', $post_var);
 
         $this->setFieldValue($post_var, $value, $field);
@@ -318,7 +357,14 @@ class AsqTableInput extends ilTextInputGUI
         return $field->render();
     }
 
-    private function generateDropDownField(string $post_var, $value, $options) {
+    /**
+     * @param string $post_var
+     * @param $value
+     * @param $options
+     * @return string
+     */
+    private function generateDropDownField(string $post_var, $value, $options) : string
+    {
         $field = new \ilSelectInputGUI('', $post_var);
 
         $field->setOptions($options);
@@ -328,7 +374,13 @@ class AsqTableInput extends ilTextInputGUI
         return $field->render();
     }
 
-    private function generateButton(string $id, $options) {
+    /**
+     * @param string $id
+     * @param $options
+     * @return string
+     */
+    private function generateButton(string $id, $options) : string
+    {
         $css = 'btn btn-default';
         if (array_key_exists('css', $options)) {
             $css .= ' ' . $options['css'];
@@ -342,11 +394,23 @@ class AsqTableInput extends ilTextInputGUI
         return sprintf('<input type="Button" id="%s" class="%s" value="%s" />', $id, $css, $title);
     }
 
-    private function generateHiddenField(string $post_var, $value) {
+    /**
+     * @param string $post_var
+     * @param $value
+     * @return string
+     */
+    private function generateHiddenField(string $post_var, $value) : string
+    {
         return sprintf('<input type="hidden" id="%1$s" name="%1$s" value="%2$s" />', $post_var, $value);
     }
 
-    private function generateLabel($text, $name) {
+    /**
+     * @param $text
+     * @param $name
+     * @return string
+     */
+    private function generateLabel($text, $name) : string
+    {
         return sprintf('<span class="%s">%s</span>', $name,  $text);
     }
 
@@ -355,10 +419,10 @@ class AsqTableInput extends ilTextInputGUI
      * @param $value
      * @param $field
      */
-    private function setFieldValue(string $post_var, $value, $field)
+    private function setFieldValue(string $post_var, $value, $field) : void
     {
-        if (array_key_exists($post_var, $_POST)) {
-            $field->setValue($_POST[$post_var]);
+        if ($this->isPostVarSet($post_var)) {
+            $field->setValue($this->getPostValue($post_var));
         }
         else if ($value !== null) {
             $field->setValue($value);
