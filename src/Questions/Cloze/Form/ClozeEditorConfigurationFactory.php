@@ -82,21 +82,19 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function createGapFields(int $index, ClozeGapConfiguration $gap = null) : array
     {
-        global $DIC;
-
         $fields = [];
 
         $spacer = new ilFormSectionHeaderGUI();
         $spacer->setTitle('');
         $fields[] = $spacer;
 
-        $gap_type = new ilSelectInputGUI($DIC->language()->txt('asq_label_gap_type'), $index . self::VAR_GAP_TYPE);
+        $gap_type = new ilSelectInputGUI($this->language->txt('asq_label_gap_type'), $index . self::VAR_GAP_TYPE);
         $gap_type->setOptions([
-            ClozeGapConfiguration::TYPE_DROPDOWN => $DIC->language()->txt('asq_label_gap_type_dropdown'),
-            ClozeGapConfiguration::TYPE_TEXT => $DIC->language()->txt('asq_label_gap_type_text'),
-            ClozeGapConfiguration::TYPE_NUMBER => $DIC->language()->txt('asq_label_gap_type_number')
+            ClozeGapConfiguration::TYPE_DROPDOWN => $this->language->txt('asq_label_gap_type_dropdown'),
+            ClozeGapConfiguration::TYPE_TEXT => $this->language->txt('asq_label_gap_type_text'),
+            ClozeGapConfiguration::TYPE_NUMBER => $this->language->txt('asq_label_gap_type_number')
         ]);
-        $gap_type->setInfo(sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $DIC->language()->txt('asq_label_btn_delete_gap')));
+        $gap_type->setInfo(sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $this->language->txt('asq_label_btn_delete_gap')));
         $fields[$index . self::VAR_GAP_TYPE] = $gap_type;
 
         if (!is_null($gap)) {
@@ -250,15 +248,13 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function getClozeGapItemFieldDefinitions() : array
     {
-        global $DIC;
-
         return [
             new AsqTableInputFieldDefinition(
-                $DIC->language()->txt('asq_header_value'),
+                $this->language->txt('asq_header_value'),
                 AsqTableInputFieldDefinition::TYPE_TEXT,
                 ClozeGapItem::VAR_TEXT),
             new AsqTableInputFieldDefinition(
-                $DIC->language()->txt('asq_header_points'),
+                $this->language->txt('asq_header_points'),
                 AsqTableInputFieldDefinition::TYPE_TEXT,
                 ClozeGapItem::VAR_POINTS)
         ];

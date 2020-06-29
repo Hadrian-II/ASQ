@@ -7,6 +7,7 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\UserInterface\Web\PathHelper;
+use ilLanguage;
 
 /**
  * Class FormulaFormFactory
@@ -21,15 +22,13 @@ class FormulaFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new FormulaEditorConfigurationFactory($DIC->language()),
-            new FormulaScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new FormulaScoringDefinitionFactory($DIC->language()));
+            new FormulaEditorConfigurationFactory($language),
+            new FormulaScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new FormulaScoringDefinitionFactory($language));
     }
 
     /**

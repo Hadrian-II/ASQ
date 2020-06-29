@@ -5,6 +5,7 @@ namespace srag\asq\Questions\FileUpload\Form;
 
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
+use ilLanguage;
 
 /**
  * Class FileUploadFormFactory
@@ -17,14 +18,12 @@ use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
  */
 class FileUploadFormFactory extends QuestionFormFactory
 {
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new FileUploadEditorConfigurationFactory($DIC->language()),
-            new FileUploadScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new FileUploadEditorConfigurationFactory($language),
+            new FileUploadScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 }

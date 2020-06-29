@@ -6,6 +6,7 @@ namespace srag\asq\Questions\MultipleChoice\Form;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\PathHelper;
+use ilLanguage;
 
 /**
  * Class SingleChoiceFormFactory
@@ -21,15 +22,13 @@ class SingleChoiceFormFactory extends QuestionFormFactory
     use ChoiceQuestionPostProcessing;
     use PathHelper;
 
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new SingleChoiceEditorConfigurationFactory($DIC->language()),
-            new MultipleChoiceScoringConfigurationFactory($DIC->language()),
-            new ImageAndTextDefinitionFactory($DIC->language()),
-            new SingleChoiceScoringDefinitionFactory($DIC->language()));
+            new SingleChoiceEditorConfigurationFactory($language),
+            new MultipleChoiceScoringConfigurationFactory($language),
+            new ImageAndTextDefinitionFactory($language),
+            new SingleChoiceScoringDefinitionFactory($language));
     }
 
     /**

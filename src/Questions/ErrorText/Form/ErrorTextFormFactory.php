@@ -6,6 +6,7 @@ namespace srag\asq\Questions\ErrorText\Form;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\PathHelper;
+use ilLanguage;
 
 /**
  * Class ErrorTextFormFactory
@@ -20,15 +21,13 @@ class ErrorTextFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new ErrorTextEditorConfigurationFactory($DIC->language()),
-            new ErrorTextScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new ErrorTextScoringDefinitionFactory($DIC->language()));
+            new ErrorTextEditorConfigurationFactory($language),
+            new ErrorTextScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new ErrorTextScoringDefinitionFactory($language));
     }
 
     /**

@@ -6,6 +6,7 @@ namespace srag\asq\Questions\Matching\Form;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\PathHelper;
+use ilLanguage;
 
 /**
  * Class MatchingFormFactory
@@ -20,15 +21,13 @@ class MatchingFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new MatchingEditorConfigurationFactory($DIC->language()),
-            new MatchingScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new MatchingEditorConfigurationFactory($language),
+            new MatchingScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 
     /**

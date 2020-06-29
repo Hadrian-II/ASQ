@@ -12,6 +12,8 @@ use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use ilLanguage;
+use ILIAS\DI\UIServices;
 
 /**
  * Class QuestionFormGUI
@@ -45,9 +47,14 @@ class QuestionFormGUI extends ilPropertyFormGUI
     protected $option_form;
 
     /**
-     * @var \ilLanguage
+     * @var ilLanguage
      */
-    protected $lang;
+    protected $language;
+
+    /**
+     * @var UIServices
+     */
+    protected $ui;
 
     /**
      * @var QuestionDto
@@ -74,15 +81,17 @@ class QuestionFormGUI extends ilPropertyFormGUI
      *
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question) {
-        global $DIC;
-        $this->lang = $DIC->language();
+    public function __construct(QuestionDto $question, ilLanguage $language, UIServices $ui)
+    {
+        $this->language = $language;
+        $this->ui = $ui;
+
         $this->initial_question = $question;
 
-        $this->question_data_factory = new QuestionDataFormFactory($this->lang);
+        $this->question_data_factory = new QuestionDataFormFactory($this->language);
 
         $factory_class = $question->getType()->getFactoryClass();
-        $this->form_factory = new $factory_class();
+        $this->form_factory = new $factory_class($this->language);
 
         $this->initForm($question);
         $this->setMultipart(true);
@@ -90,7 +99,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
 
         foreach ($this->form_factory->getScripts() as $script)
         {
-            $DIC->ui()->mainTemplate()->addJavaScript($script);
+            $this->ui->mainTemplate()->addJavaScript($script);
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,9 +118,8 @@ class QuestionFormGUI extends ilPropertyFormGUI
     /**
      * @param QuestionDto $question
      */
-    private function initForm(QuestionDto $question) {
-        global $DIC;
-
+    private function initForm(QuestionDto $question) : void
+    {
         $id = new ilHiddenInputGUI(self::VAR_AGGREGATE_ID);
         $id->setValue($question->getId());
         $this->addItem($id);
@@ -131,7 +139,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
         if ($this->form_factory->hasAnswerOptions())
         {
             $this->option_form = new AsqTableInput(
-                $this->lang->txt('asq_label_answer'),
+                $this->language->txt('asq_label_answer'),
                 self::VAR_ANSWER_OPTIONS,
                 $this->form_factory->getAnswerOptionValues($question->getAnswerOptions()),
                 $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()),
@@ -140,13 +148,15 @@ class QuestionFormGUI extends ilPropertyFormGUI
             $this->addItem($this->option_form);
         }
 
-        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
-    private function showQuestionState(QuestionDto $question) {
-        global $DIC;
-
-        $state = new ilNonEditableValueGUI($DIC->language()->txt('Status'), self::VAR_STATUS);
+    /**
+     * @param QuestionDto $question
+     */
+    private function showQuestionState(QuestionDto $question) : void
+    {
+        $state = new ilNonEditableValueGUI($this->language->txt('Status'), self::VAR_STATUS);
 
         if ($question->isComplete()) {
             $value = sprintf(
@@ -162,19 +172,18 @@ class QuestionFormGUI extends ilPropertyFormGUI
         $this->addItem($state);
     }
 
-    private function addRevisionForm() {
-        global $DIC;
-
+    private function addRevisionForm() : void
+    {
         $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle($DIC->language()->txt('asq_version_title'));
+        $spacer->setTitle($this->language->txt('asq_version_title'));
         $this->addItem($spacer);
 
-        $revision = new ilTextInputGUI($DIC->language()->txt('asq_label_new_revision'), self::VAR_REVISION_NAME);
+        $revision = new ilTextInputGUI($this->language->txt('asq_label_new_revision'), self::VAR_REVISION_NAME);
         $revision->setInfo(sprintf(
             '%s<br /><input class="btn btn-default btn-sm" type="submit" name="cmd[%s]" value="%s" />',
-            $DIC->language()->txt('asq_info_create_revision'),
+            $this->language->txt('asq_info_create_revision'),
             self::CMD_CREATE_REVISON,
-            $DIC->language()->txt('asq_button_create_revision')
+            $this->language->txt('asq_button_create_revision')
         ));
         $this->addItem($revision);
     }
@@ -182,7 +191,8 @@ class QuestionFormGUI extends ilPropertyFormGUI
     /**
      * @return QuestionDto
      */
-    public function getQuestion() : QuestionDto {
+    public function getQuestion() : QuestionDto
+    {
         return $this->post_question ?? $this->initial_question;
     }
 

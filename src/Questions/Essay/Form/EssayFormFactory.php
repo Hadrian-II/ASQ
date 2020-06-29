@@ -5,6 +5,7 @@ namespace srag\asq\Questions\Essay\Form;
 
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
+use ilLanguage;
 
 /**
  * Class EssayFormFactory
@@ -17,14 +18,12 @@ use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
  */
 class EssayFormFactory extends QuestionFormFactory
 {
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new EssayEditorConfigurationFactory($DIC->language()),
-            new EssayScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new EssayEditorConfigurationFactory($language),
+            new EssayScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 }

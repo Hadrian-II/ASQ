@@ -44,7 +44,12 @@ class UIService {
      */
     public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI
     {
-        return new QuestionFormGUI($question);
+        global $DIC;
+
+        return new QuestionFormGUI(
+            $question,
+            $DIC->language(),
+            $DIC->ui());
     }
 
     /**

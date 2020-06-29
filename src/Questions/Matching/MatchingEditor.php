@@ -8,7 +8,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**

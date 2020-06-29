@@ -7,6 +7,7 @@ use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDefinitionFactory;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
+use ilLanguage;
 
 /**
  * Class OrderingFormFactory
@@ -19,15 +20,13 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
  */
 class OrderingFormFactory extends QuestionFormFactory
 {
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new OrderingEditorConfigurationFactory($DIC->language()),
-            new OrderingScoringConfigurationFactory($DIC->language()),
-            new ImageAndTextDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new OrderingEditorConfigurationFactory($language),
+            new OrderingScoringConfigurationFactory($language),
+            new ImageAndTextDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 
     /**

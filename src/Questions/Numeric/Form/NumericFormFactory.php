@@ -5,6 +5,7 @@ namespace srag\asq\Questions\Numeric\Form;
 
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
+use ilLanguage;
 
 /**
  * Class NumericFormFactory
@@ -17,14 +18,12 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
  */
 class NumericFormFactory extends QuestionFormFactory
 {
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new NumericEditorConfigurationFactory($DIC->language()),
-            new NumericScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new NumericEditorConfigurationFactory($language),
+            new NumericScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 }

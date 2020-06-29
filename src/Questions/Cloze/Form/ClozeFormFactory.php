@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Cloze\Form;
 
+use ilLanguage;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\PathHelper;
@@ -20,15 +21,13 @@ class ClozeFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new ClozeEditorConfigurationFactory($DIC->language()),
-            new ClozeScoringConfigurationFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()),
-            new EmptyDefinitionFactory($DIC->language()));
+            new ClozeEditorConfigurationFactory($language),
+            new ClozeScoringConfigurationFactory($language),
+            new EmptyDefinitionFactory($language),
+            new EmptyDefinitionFactory($language));
     }
 
     /**

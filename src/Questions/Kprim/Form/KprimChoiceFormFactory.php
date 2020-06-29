@@ -6,6 +6,7 @@ namespace srag\asq\Questions\Kprim\Form;
 use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use srag\asq\Domain\Model\Answer\Option\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use ilLanguage;
 
 /**
  * Class KprimFormFactory
@@ -18,15 +19,13 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput;
  */
 class KprimChoiceFormFactory extends QuestionFormFactory
 {
-    public function __construct()
+    public function __construct(ilLanguage $language)
     {
-        global $DIC;
-
         parent::__construct(
-            new KprimChoiceEditorConfigurationFactory($DIC->language()),
-            new KprimChoiceScoringConfigurationFactory($DIC->language()),
-            new ImageAndTextDefinitionFactory($DIC->language()),
-            new KprimChoiceScoringDefinitionFactory($DIC->language()));
+            new KprimChoiceEditorConfigurationFactory($language),
+            new KprimChoiceScoringConfigurationFactory($language),
+            new ImageAndTextDefinitionFactory($language),
+            new KprimChoiceScoringDefinitionFactory($language));
     }
 
     /**
