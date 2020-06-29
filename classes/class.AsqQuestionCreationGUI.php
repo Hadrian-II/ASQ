@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\UserInterface\Web\Form\QuestionTypeSelectForm;
@@ -31,13 +32,36 @@ class AsqQuestionCreationGUI
     protected $contextContainer;
 
     /**
-     * ilAsqQuestionCreationGUI constructor.
-     *
-     * @param AuthoringContextContainer $contextContainer
+     * @var ilLanguage
      */
-    public function __construct(AuthoringContextContainer $contextContainer)
+    private $language;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @param AuthoringContextContainer $contextContainer
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     */
+    public function __construct(
+        AuthoringContextContainer $contextContainer,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl)
     {
         $this->contextContainer = $contextContainer;
+        $this->language = $language;
+        $this->ui = $ui;
+        $this->ctrl = $ctrl;
     }
 
 
@@ -46,14 +70,12 @@ class AsqQuestionCreationGUI
      */
     public function executeCommand() : void
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
-
-        switch( $DIC->ctrl()->getNextClass() )
+        switch( $this->ctrl->getNextClass() )
         {
             case strtolower(self::class):
             default:
 
-                $cmd = $DIC->ctrl()->getCmd(self::CMD_SHOW_CREATE_FORM);
+                $cmd = $this->ctrl->getCmd(self::CMD_SHOW_CREATE_FORM);
                 $this->{$cmd}();
         }
     }
@@ -64,12 +86,10 @@ class AsqQuestionCreationGUI
      */
     protected function buildCreationForm() : QuestionTypeSelectForm
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         $form = new QuestionTypeSelectForm();
-        $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_CREATE_FORM));
-        $form->addCommandButton(self::CMD_CREATE_QUESTION,$DIC->language()->txt('create'));
-        $form->addCommandButton(self::CMD_CANCEL_CREATION,$DIC->language()->txt('cancel'));
+        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_CREATE_FORM));
+        $form->addCommandButton(self::CMD_CREATE_QUESTION,$this->language->txt('create'));
+        $form->addCommandButton(self::CMD_CANCEL_CREATION,$this->language->txt('cancel'));
 
         return $form;
     }
@@ -79,14 +99,12 @@ class AsqQuestionCreationGUI
      */
     protected function showCreationForm(QuestionTypeSelectForm $form = null) : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         if( $form === null )
         {
             $form = $this->buildCreationForm();
         }
 
-        $DIC->ui()->mainTemplate()->setContent($form->getHTML());
+        $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
 
@@ -95,8 +113,6 @@ class AsqQuestionCreationGUI
      */
     protected function createQuestion() : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         $form = $this->buildCreationForm();
 
         if( !$form->checkInput() )
@@ -113,13 +129,13 @@ class AsqQuestionCreationGUI
             $this->contextContainer->getCaller()->afterQuestionCreated($new_question);
         }
 
-        $DIC->ctrl()->setParameterByClass(
+        $this->ctrl->setParameterByClass(
             AsqQuestionConfigEditorGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
             $new_question->getId()
         );
 
-        $DIC->ctrl()->redirectByClass(
+        $this->ctrl->redirectByClass(
             AsqQuestionConfigEditorGUI::class,
             AsqQuestionConfigEditorGUI::CMD_SHOW_FORM
         );
@@ -127,9 +143,7 @@ class AsqQuestionCreationGUI
 
     protected function cancelCreation() : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
-        $DIC->ctrl()->redirectToURL( str_replace('&amp;', '&',
+        $this->ctrl->redirectToURL( str_replace('&amp;', '&',
             $this->contextContainer->getBackLink()->getAction()
         ));
     }

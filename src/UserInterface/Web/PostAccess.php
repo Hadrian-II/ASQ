@@ -58,7 +58,7 @@ trait PostAccess
      */
     public function isPostVarSet(string $variable_name) : bool
     {
-        return array_key_exists($variable_name, $this->post);
+        return array_key_exists($variable_name, $this->getPost());
     }
 
     /**
@@ -71,6 +71,6 @@ trait PostAccess
             return null;
         }
 
-        return $this->getPurifier()->purify($this->post[$variable_name]);
+        return $this->getPurifier()->purify($this->getPost()[$variable_name]);
     }
 }

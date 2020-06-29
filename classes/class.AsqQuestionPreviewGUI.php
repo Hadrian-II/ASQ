@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
@@ -56,18 +57,37 @@ class AsqQuestionPreviewGUI
     private $show_score;
 
     /**
-     * @param string $question_id
+     * @var ilLanguage
      */
-    public function __construct(string $question_id)
-    {
-        global $DIC;
+    private $language;
 
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @param string $question_id
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     */
+    public function __construct(string $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
+    {
         $this->question_id = $question_id;
+        $this->language = $language;
+        $this->ui = $ui;
+        $this->ctrl = $ctrl;
 
         if (isset($_GET[self::PARAM_REVISON_NAME])) {
             $this->revision_name = $_GET[self::PARAM_REVISON_NAME];
 
-            $DIC->ctrl()->setParameter(
+            $this->ctrl->setParameter(
                 $this, self::PARAM_REVISON_NAME, $this->revision_name
             );
         }
@@ -75,12 +95,10 @@ class AsqQuestionPreviewGUI
 
     public function executeCommand() : void
     {
-        global $DIC;
-        /* @var ILIAS\DI\Container $DIC */
-        switch ($DIC->ctrl()->getNextClass()) {
+        switch ($this->ctrl->getNextClass()) {
             case strtolower(self::class):
             default:
-                switch ($DIC->ctrl()->getCmd()) {
+                switch ($this->ctrl->getCmd()) {
                     case self::CMD_SHOW_HINTS:
                         $this->show_hints = true;
                         break;
@@ -98,8 +116,6 @@ class AsqQuestionPreviewGUI
 
     public function showQuestion() : void
     {
-        global $DIC;
-
         if (is_null($this->revision_name)) {
             $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id);
         } else {
@@ -107,7 +123,7 @@ class AsqQuestionPreviewGUI
         }
 
         if (! $question_dto->isComplete()) {
-            $DIC->ui()->mainTemplate()->setContent($DIC->language()->txt('asq_no_preview_of incomplete_questions'));
+            $this->ui->mainTemplate()->setContent($this->language->txt('asq_no_preview_of incomplete_questions'));
             return;
         }
 
@@ -119,8 +135,6 @@ class AsqQuestionPreviewGUI
      */
     private function renderQuestion(QuestionDto $question_dto)
     {
-        global $DIC;
-
         $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
 
         if ($this->show_feedback) {
@@ -128,7 +142,7 @@ class AsqQuestionPreviewGUI
         }
 
         $question_tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
-        $question_tpl->setVariable('FORMACTION', $DIC->ctrl()->getFormAction($this, self::CMD_SHOW_PREVIEW));
+        $question_tpl->setVariable('FORMACTION', $this->ctrl->getFormAction($this, self::CMD_SHOW_PREVIEW));
         $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
 
         if ($this->show_hints) {
@@ -141,20 +155,20 @@ class AsqQuestionPreviewGUI
             $question_tpl->setVariable('SCORE', $score_component->getHtml());
         }
 
-        $question_tpl->setVariable('SCORE_BUTTON_TITLE', $DIC->language()->txt('asq_score_button_title'));
+        $question_tpl->setVariable('SCORE_BUTTON_TITLE', $this->language->txt('asq_score_button_title'));
 
         if ($question_dto->hasFeedback()) {
             $question_tpl->setCurrentBlock('feedback_button');
-            $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $DIC->language()->txt('asq_feedback_button_title'));
+            $question_tpl->setVariable('FEEDBACK_BUTTON_TITLE', $this->language->txt('asq_feedback_button_title'));
             $question_tpl->parseCurrentBlock();
         }
 
         if ($question_dto->hasHints()) {
             $question_tpl->setCurrentBlock('hint_button');
-            $question_tpl->setVariable('HINT_BUTTON_TITLE', $DIC->language()->txt('asq_hint_button_title'));
+            $question_tpl->setVariable('HINT_BUTTON_TITLE', $this->language->txt('asq_hint_button_title'));
             $question_tpl->parseCurrentBlock();
         }
 
-        $DIC->ui()->mainTemplate()->setContent($question_tpl->get());
+        $this->ui->mainTemplate()->setContent($question_tpl->get());
     }
 }

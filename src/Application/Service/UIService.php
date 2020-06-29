@@ -55,7 +55,12 @@ class UIService {
      */
     public function getQuestionPage(QuestionDto $question_dto) : AsqQuestionPageGUI
     {
-        $page_gui = new AsqQuestionPageGUI($question_dto->getContainerObjId(), $question_dto->getQuestionIntId());
+        global $DIC;
+
+        $page_gui = new AsqQuestionPageGUI(
+            $question_dto->getContainerObjId(),
+            $question_dto->getQuestionIntId(),
+            $DIC->ui());
         $page_gui->setRenderPageContainer(false);
         $page_gui->setEditPreview(true);
         $page_gui->setEnabledTabs(false);

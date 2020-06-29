@@ -25,6 +25,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 class KprimChoiceEditor extends AbstractEditor
 {
     use InputHandlingTrait;
+    use PathHelper;
 
     const STR_TRUE = "True";
     const STR_FALSE = "False";
@@ -82,7 +83,7 @@ class KprimChoiceEditor extends AbstractEditor
      */
     public function generateHtml(): string
     {
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.KprimChoiceEditor.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.KprimChoiceEditor.html', true, true);
 
         $tpl->setCurrentBlock('header');
         $tpl->setVariable('INSTRUCTIONTEXT', "You have to decide on every statement: [{$this->configuration->getLabelTrue()}] or [{$this->configuration->getLabelFalse()}]");

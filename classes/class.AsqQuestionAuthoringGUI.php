@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\UserInterface\Web\PostAccess;
@@ -58,24 +59,60 @@ class AsqQuestionAuthoringGUI
     protected $lng_key;
 
     /**
-     * ilAsqQuestionAuthoringGUI constructor.
-     *
-     * @param AuthoringContextContainer $authoring_context_container
+     * @var ilLanguage
      */
-	function __construct(AuthoringContextContainer $authoring_context_container)
-	{
-	    global $DIC; /* @var ILIAS\DI\Container $DIC */
+    private $language;
 
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @var ilTabsGUI
+     */
+    private $tabs;
+
+    /**
+     * @var ilAccessHandler
+     */
+    private $access;
+
+    /**
+     * @param AuthoringContextContainer $authoring_context_container
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     * @param ilTabsGUI $tabs
+     */
+	function __construct(
+	    AuthoringContextContainer $authoring_context_container,
+	    ilLanguage $language,
+	    UIServices $ui,
+	    ilCtrl $ctrl,
+	    ilTabsGUI $tabs,
+	    ilAccessHandler $access)
+	{
 	    $this->authoring_context_container = $authoring_context_container;
+        $this->language = $language;
+        $this->ui = $ui;
+        $this->ctrl = $ctrl;
+        $this->tabs = $tabs;
+        $this->access = $access;
 
 	    //we could use this in future in constructer
-	    $this->lng_key = $DIC->language()->getDefaultLanguage();
+	    $this->lng_key = $this->language->getDefaultLanguage();
 
 	    if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
 	        $this->question_id = $_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID];
 	    }
 
-        $DIC->language()->loadLanguageModule('asq');
+        $this->language->loadLanguageModule('asq');
     }
 
     /**
@@ -83,17 +120,19 @@ class AsqQuestionAuthoringGUI
      */
 	public function executeCommand() : void
 	{
-		global $DIC; /* @var ILIAS\DI\Container $DIC */
+        $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id);
 
-        $DIC->ctrl()->setParameter($this, self::VAR_QUESTION_ID, $this->question_id);
-
-		switch( $DIC->ctrl()->getNextClass() )
+		switch( $this->ctrl->getNextClass() )
         {
             case strtolower(AsqQuestionCreationGUI::class):
 
-                $gui = new AsqQuestionCreationGUI($this->authoring_context_container);
+                $gui = new AsqQuestionCreationGUI(
+                    $this->authoring_context_container,
+                    $this->language,
+                    $this->ui,
+                    $this->ctrl);
 
-                $DIC->ctrl()->forwardCommand($gui);
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
@@ -101,11 +140,15 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_PREVIEW);
+                $this->tabs->activateTab(self::TAB_ID_PREVIEW);
 
-                $gui = new AsqQuestionPreviewGUI($this->question_id);
+                $gui = new AsqQuestionPreviewGUI(
+                    $this->question_id,
+                    $this->language,
+                    $this->ui,
+                    $this->ctrl);
 
-                $DIC->ctrl()->forwardCommand($gui);
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
@@ -113,21 +156,21 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_PAGEVIEW);
+                $this->tabs->activateTab(self::TAB_ID_PAGEVIEW);
 
                 $gui = AsqGateway::get()->ui()->getQuestionPage(
                     AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id));
 
-                if (strlen($DIC->ctrl()->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x"))
+                if (strlen($this->ctrl->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x"))
                 {
                     // workaround for page edit imagemaps, keep in mind
 
-                    $DIC->ctrl()->setCmdClass(strtolower(get_class($gui)));
-                    $DIC->ctrl()->setCmd('preview');
+                    $this->ctrl->setCmdClass(strtolower(get_class($gui)));
+                    $this->ctrl->setCmd('preview');
                 }
 
-                $html = $DIC->ctrl()->forwardCommand($gui);
-                $DIC->ui()->mainTemplate()->setContent($html);
+                $html = $this->ctrl->forwardCommand($gui);
+                $this->ui->mainTemplate()->setContent($html);
 
                 break;
 
@@ -135,12 +178,16 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_CONFIG);
+                $this->tabs->activateTab(self::TAB_ID_CONFIG);
 
                 $gui = new AsqQuestionConfigEditorGUI(
                     $this->authoring_context_container,
-                    $this->question_id);
-                $DIC->ctrl()->forwardCommand($gui);
+                    $this->question_id,
+                    $this->language,
+                    $this->ui,
+                    $this->ctrl);
+
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
@@ -148,12 +195,15 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_FEEDBACK);
+                $this->tabs->activateTab(self::TAB_ID_FEEDBACK);
 
                 $gui = new AsqQuestionFeedbackEditorGUI(
-                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id)
+                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
+                    $this->language,
+                    $this->ui,
+                    $this->ctrl
                 );
-                $DIC->ctrl()->forwardCommand($gui);
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
@@ -161,10 +211,14 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_HINTS);
+                $this->tabs->activateTab(self::TAB_ID_HINTS);
 
-                $gui = new AsqQuestionHintEditorGUI(AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id));
-                $DIC->ctrl()->forwardCommand($gui);
+                $gui = new AsqQuestionHintEditorGUI(
+                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
+                    $this->language,
+                    $this->ui);
+
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
@@ -172,24 +226,27 @@ class AsqQuestionAuthoringGUI
 
                 $this->initHeaderAction();
                 $this->initAuthoringTabs();
-                $DIC->tabs()->activateTab(self::TAB_ID_VERSIONS);
+                $this->tabs->activateTab(self::TAB_ID_VERSIONS);
 
-                $gui = new AsqQuestionVersionGUI($this->question_id);
-                $DIC->ctrl()->forwardCommand($gui);
+                $gui = new AsqQuestionVersionGUI($this->question_id,
+                    $this->language,
+                    $this->ui);
+
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
             case strtolower(ilCommonActionDispatcherGUI::class):
 
                 $gui = ilCommonActionDispatcherGUI::getInstanceFromAjaxCall();
-                $DIC->ctrl()->forwardCommand($gui);
+                $this->ctrl->forwardCommand($gui);
 
                 break;
 
             case strtolower(self::class):
             default:
 
-                $cmd = $DIC->ctrl()->getCmd();
+                $cmd = $this->ctrl->getCmd();
                 $this->{$cmd}();
         }
 	}
@@ -197,40 +254,35 @@ class AsqQuestionAuthoringGUI
 
     protected function redrawHeaderAction() : void
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
-        echo $this->getHeaderAction() . $DIC->ui()->mainTemplate()->getOnLoadCodeForAsynch();
+        echo $this->getHeaderAction() . $this->ui->mainTemplate()->getOnLoadCodeForAsynch();
         exit;
     }
 
 
     protected function initHeaderAction() : void
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
-
-        $DIC->ui()->mainTemplate()->setVariable(
+        $this->ui->mainTemplate()->setVariable(
             'HEAD_ACTION', $this->getHeaderAction()
         );
 
-        $notesUrl = $DIC->ctrl()->getLinkTargetByClass(
+        $notesUrl = $this->ctrl->getLinkTargetByClass(
             array('ilCommonActionDispatcherGUI', 'ilNoteGUI'), '', '', true, false
         );
 
-        ilNoteGUI::initJavascript($notesUrl,IL_NOTE_PUBLIC, $DIC->ui()->mainTemplate());
+        ilNoteGUI::initJavascript($notesUrl,IL_NOTE_PUBLIC, $this->ui->mainTemplate());
 
-        $redrawActionsUrl = $DIC->ctrl()->getLinkTarget(
+        $redrawActionsUrl = $this->ctrl->getLinkTarget(
             $this, self::CMD_REDRAW_HEADER_ACTION_ASYNC, '', true
         );
 
-        $DIC->ui()->mainTemplate()->addOnLoadCode("il.Object.setRedrawAHUrl('$redrawActionsUrl');");
+        $this->ui->mainTemplate()->addOnLoadCode("il.Object.setRedrawAHUrl('$redrawActionsUrl');");
     }
 
 
     protected function getHeaderAction() : string
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
-
         $dispatcher = new ilCommonActionDispatcherGUI(
-            ilCommonActionDispatcherGUI::TYPE_REPOSITORY, $DIC->access(),
+            ilCommonActionDispatcherGUI::TYPE_REPOSITORY, $this->access,
             $this->authoring_context_container->getObjType(),
             $this->authoring_context_container->getRefId(),
             $this->authoring_context_container->getObjId()
@@ -239,39 +291,37 @@ class AsqQuestionAuthoringGUI
         $ha = $dispatcher->initHeaderAction();
         $ha->enableComments(true, false);
 
-        return $ha->getHeaderAction($DIC->ui()->mainTemplate());
+        return $ha->getHeaderAction($this->ui->mainTemplate());
     }
 
 
     protected function initAuthoringTabs() : void
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
+        $this->tabs->clearTargets();
 
-        $DIC->tabs()->clearTargets();
-
-        $DIC->tabs()->setBackTarget(
+        $this->tabs->setBackTarget(
             $this->authoring_context_container->getBackLink()->getLabel(),
             $this->authoring_context_container->getBackLink()->getAction()
         );
 
         /* TODO fix page
         $page_link = AsqGateway::get()->link()->getEditPageLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_PAGEVIEW, $page_link->getLabel(), $page_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_PAGEVIEW, $page_link->getLabel(), $page_link->getAction());
         */
 
         $preview_link = AsqGateway::get()->link()->getPreviewLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_PREVIEW, $preview_link->getLabel(), $preview_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_PREVIEW, $preview_link->getLabel(), $preview_link->getAction());
 
         $edit_link = AsqGateway::get()->link()->getEditLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_CONFIG, $edit_link->getLabel(), $edit_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_CONFIG, $edit_link->getLabel(), $edit_link->getAction());
 
         $feedback_link = AsqGateway::get()->link()->getEditFeedbacksLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_FEEDBACK, $feedback_link->getLabel(), $feedback_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_FEEDBACK, $feedback_link->getLabel(), $feedback_link->getAction());
 
         $hint_link = AsqGateway::get()->link()->getEditHintsLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_HINTS, $hint_link->getLabel(), $hint_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_HINTS, $hint_link->getLabel(), $hint_link->getAction());
 
         $revisions_link = AsqGateway::get()->link()->getRevisionsLink($this->question_id);
-        $DIC->tabs()->addTab(self::TAB_ID_VERSIONS, $revisions_link->getLabel(), $revisions_link->getAction());
+        $this->tabs->addTab(self::TAB_ID_VERSIONS, $revisions_link->getLabel(), $revisions_link->getAction());
     }
 }

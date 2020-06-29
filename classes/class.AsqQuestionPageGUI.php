@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
+use ILIAS\DI\UIServices;
 
 /**
  * Class AsqQuestionPageGUI
@@ -46,16 +47,18 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
     private $component;
 
     /**
-     * ilAsqQuestionPageGUI constructor.
-     *
-     * @param AsqPageObject $page
+     * @var UIServices
      */
-    function __construct(int $parent_int_id, int $page_int_id)
+    private $ui;
+
+    /**
+     * @param int $parent_int_id
+     * @param int $page_int_id
+     * @param UIServices $ui
+     */
+    function __construct(int $parent_int_id, int $page_int_id, UIServices $ui)
     {
-        /**
-          * @var \ILIAS\DI\Container $DIC
-        **/
-        global $DIC;
+        $this->ui = $ui;
 
         $this->createPageIfNotExists(self::PAGE_TYPE, $parent_int_id, $page_int_id);
 
@@ -64,12 +67,12 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
         $this->page_back_title = $this->lng->txt("page");
 
         // content and syntax styles
-        $DIC->ui()->mainTemplate()->setCurrentBlock("ContentStyle");
-        $DIC->ui()->mainTemplate()->setVariable("LOCATION_CONTENT_STYLESHEET", ilObjStyleSheet::getContentStylePath(0));
-        $DIC->ui()->mainTemplate()->parseCurrentBlock();
-        $DIC->ui()->mainTemplate()->setCurrentBlock("SyntaxStyle");
-        $DIC->ui()->mainTemplate()->setVariable("LOCATION_SYNTAX_STYLESHEET", ilObjStyleSheet::getSyntaxStylePath());
-        $DIC->ui()->mainTemplate()->parseCurrentBlock();
+        $this->ui->mainTemplate()->setCurrentBlock("ContentStyle");
+        $this->ui->mainTemplate()->setVariable("LOCATION_CONTENT_STYLESHEET", ilObjStyleSheet::getContentStylePath(0));
+        $this->ui->mainTemplate()->parseCurrentBlock();
+        $this->ui->mainTemplate()->setCurrentBlock("SyntaxStyle");
+        $this->ui->mainTemplate()->setVariable("LOCATION_SYNTAX_STYLESHEET", ilObjStyleSheet::getSyntaxStylePath());
+        $this->ui->mainTemplate()->parseCurrentBlock();
     }
 
     private function createPageIfNotExists(string $page_type, int $parent_int_id, int $page_int_id)

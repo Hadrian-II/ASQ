@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
@@ -33,11 +34,32 @@ class AsqQuestionFeedbackEditorGUI
     protected $question_dto;
 
     /**
-     * @param QuestionDto $question_dto
+     * @var ilLanguage
      */
-    public function __construct(QuestionDto $question_dto)
+    private $language;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @param QuestionDto $question_dto
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     */
+    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
     {
         $this->question_dto = $question_dto;
+        $this->language = $language;
+        $this->ui = $ui;
+        $this->ctrl = $ctrl;
     }
 
 
@@ -46,16 +68,12 @@ class AsqQuestionFeedbackEditorGUI
      */
     public function executeCommand() : void
     {
-        global $DIC;
-
-        $cmd = $DIC->ctrl()->getCmd(self::CMD_SHOW_FEEDBACK_FORM);
+        $cmd = $this->ctrl->getCmd(self::CMD_SHOW_FEEDBACK_FORM);
         $this->{$cmd}();
     }
 
     protected function saveFeedback() : void
     {
-        global $DIC;
-
         $form = $this->createForm();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
@@ -67,16 +85,14 @@ class AsqQuestionFeedbackEditorGUI
             ilutil::sendSuccess("Question Saved", true);
         }
 
-        $DIC->ui()->mainTemplate()->setContent($form->getHTML());
+        $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
     protected function showFeedbackForm() : void
     {
-        global $DIC;
-
         $form = $this->createForm();
 
-        $DIC->ui()->mainTemplate()->setContent($form->getHTML());
+        $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
     /**
@@ -84,11 +100,10 @@ class AsqQuestionFeedbackEditorGUI
      */
     private function createForm() : QuestionFeedbackFormGUI
     {
-        global $DIC;
         $form = new QuestionFeedbackFormGUI($this->question_dto);
-        $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_FEEDBACK_FORM));
-        $form->addCommandButton(self::CMD_SAVE_FEEDBACK, $DIC->language()->txt('save'));
-        $form->addCommandButton(self::CMD_SHOW_FEEDBACK_FORM, $DIC->language()->txt('cancel'));
+        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_FEEDBACK_FORM));
+        $form->addCommandButton(self::CMD_SAVE_FEEDBACK, $this->language->txt('save'));
+        $form->addCommandButton(self::CMD_SHOW_FEEDBACK_FORM, $this->language->txt('cancel'));
         return $form;
     }
 

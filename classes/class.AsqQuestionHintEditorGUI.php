@@ -5,6 +5,7 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
 use srag\asq\AsqGateway;
+use ILIAS\DI\UIServices;
 
 /**
  * Class AsqQuestionHintEditorGUI
@@ -29,12 +30,24 @@ class AsqQuestionHintEditorGUI
     protected $question_dto;
 
     /**
-     * ilAsqQuestionPageGUI constructor.
-     *
-     * @param QuestionDto $question
+     * @var ilLanguage
      */
-    function __construct(QuestionDto $question_dto)
+    private $language;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @param QuestionDto $question_dto
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     */
+    function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui)
     {
+        $this->language = $language;
+        $this->ui = $ui;
         $this->question_dto = $question_dto;
     }
 
@@ -49,16 +62,14 @@ class AsqQuestionHintEditorGUI
 
     private function showHints() : void
     {
-        global $DIC;
-
         $form = new HintFormGUI($this->question_dto);
-        $form->addCommandButton(self::CMD_SAVE, $DIC->language()->txt('save'));
+        $form->addCommandButton(self::CMD_SAVE, $this->language->txt('save'));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->question_dto->setQuestionHints($form->getHintsFromPost());
             AsqGateway::get()->question()->saveQuestion($this->question_dto);
         }
 
-        $DIC->ui()->mainTemplate()->setContent($form->getHTML());
+        $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 }

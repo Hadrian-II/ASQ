@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
@@ -40,26 +41,50 @@ class AsqQuestionConfigEditorGUI
     private $question;
 
     /**
-     *
-     * @param AuthoringContextContainer $contextContainer
+     * @var ilLanguage
      */
-    public function __construct(AuthoringContextContainer $contextContainer, string $questionId)
+    private $language;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @param AuthoringContextContainer $contextContainer
+     * @param string $questionId
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     */
+    public function __construct(
+        AuthoringContextContainer $contextContainer,
+        string $questionId,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl)
     {
         $this->contextContainer = $contextContainer;
         $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId);
+        $this->language = $language;
+        $this->ui = $ui;
+        $this->ctrl = $ctrl;
     }
 
 
     public function executeCommand() : void
     {
-        global $DIC; /* @var ILIAS\DI\Container $DIC */
-
-        switch( $DIC->ctrl()->getNextClass() )
+        switch( $this->ctrl->getNextClass() )
         {
             case strtolower(self::class):
             default:
 
-                $cmd = $DIC->ctrl()->getCmd(self::CMD_SHOW_FORM);
+                $cmd = $this->ctrl->getCmd(self::CMD_SHOW_FORM);
                 $this->{$cmd}();
         }
     }
@@ -71,14 +96,12 @@ class AsqQuestionConfigEditorGUI
      */
     protected function showForm(ilPropertyFormGUI $form = null) : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         if( $form === null )
         {
             $form = $this->buildForm();
         }
 
-        $DIC->ui()->mainTemplate()->setContent($form->getHTML());
+        $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
 
@@ -102,8 +125,6 @@ class AsqQuestionConfigEditorGUI
      */
     protected function saveAndReturn() : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         $form = $this->buildForm();
 
         $this->saveQuestion($form);
@@ -114,7 +135,7 @@ class AsqQuestionConfigEditorGUI
             return;
         }
 
-        $DIC->ctrl()->redirectToUrl(str_replace('&amp;', '&',
+        $this->ctrl->redirectToUrl(str_replace('&amp;', '&',
             $this->contextContainer->getBackLink()->getAction()
         ));
     }
@@ -134,30 +155,26 @@ class AsqQuestionConfigEditorGUI
      */
     private function buildForm() : QuestionFormGUI
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         $form = AsqGateway::get()->ui()->getQuestionEditForm($this->question);
-        $form->setFormAction($DIC->ctrl()->getFormAction($this, self::CMD_SHOW_FORM));
-        $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $DIC->language()->txt('save_return'));
-        $form->addCommandButton(self::CMD_SAVE_FORM, $DIC->language()->txt('save'));
+        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_FORM));
+        $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
+        $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
 
         return $form;
     }
 
     private function createRevision() : void
     {
-        global $DIC;
-
         $form = $this->buildForm();
 
         $rev_name = $this->getPostValue(QuestionFormGUI::VAR_REVISION_NAME);
 
         if (empty($rev_name)) {
-            ilutil::sendInfo($DIC->language()->txt('asq_missing_revision_name'));
+            ilutil::sendInfo($this->language->txt('asq_missing_revision_name'));
         } else {
             try {
                 AsqGateway::get()->question()->createQuestionRevision($rev_name, $this->question->getId());
-                ilUtil::sendSuccess($DIC->language()->txt('asq_revision_created'));
+                ilUtil::sendSuccess($this->language->txt('asq_revision_created'));
             } catch(AsqException $e) {
                 ilutil::sendFailure($e->getMessage());
             }
