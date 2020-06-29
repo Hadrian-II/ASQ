@@ -13,6 +13,8 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\PostAccess;
+use ILIAS\FileUpload\FileUpload;
+use ilLanguage;
 
 /**
  * Class FileUploadEditor
@@ -33,23 +35,35 @@ class FileUploadEditor extends AbstractEditor
 
     const UPLOADPATH = 'asq/answers/';
 
+    /**
+     * @var FileUpload
+     */
+    private $upload;
+
+    /**
+     * @var ilLanguage;
+     */
+    private $language;
 
     /**
      * @var FileUploadEditorConfiguration
      */
     private $configuration;
 
-    public function __construct(QuestionDto $question) {
+    public function __construct(QuestionDto $question)
+    {
+        global $DIC;
+
         $this->files = [];
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->upload = $DIC->upload();
+        $this->language = $DIC->language();
 
         parent::__construct($question);
     }
 
     public function readAnswer(): AbstractValueObject
     {
-        global $DIC;
-
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
 
         if (!$this->isPostVarSet($postkey))
@@ -59,7 +73,7 @@ class FileUploadEditor extends AbstractEditor
 
         $this->files = json_decode(html_entity_decode($this->getPostValue($postkey)), true);
 
-        if ($DIC->upload()->hasUploads() && !$DIC->upload()->hasBeenProcessed()) {
+        if ($this->upload->hasUploads() && !$this->upload->hasBeenProcessed()) {
             $this->UploadNewFile();
         }
 
@@ -68,12 +82,11 @@ class FileUploadEditor extends AbstractEditor
         return FileUploadAnswer::create($this->files);
     }
 
-    private function UploadNewFile() {
-        global $DIC;
+    private function UploadNewFile() : void
+    {
+        $this->upload->process();
 
-        $DIC->upload()->process();
-
-        foreach ($DIC->upload()->getResults() as $result)
+        foreach ($this->upload->getResults() as $result)
         {
             $folder = self::UPLOADPATH . $this->question->getId() . '/';
             $pathinfo = pathinfo($result->getName());
@@ -83,8 +96,9 @@ class FileUploadEditor extends AbstractEditor
             $filename = $uuid_factory->uuid4AsString() . '.' . $pathinfo['extension'];
 
             if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK &&
-                $this->checkAllowedExtension($pathinfo['extension'])) {
-                $DIC->upload()->moveOneFileTo(
+                $this->checkAllowedExtension($pathinfo['extension']))
+            {
+                $this->upload->moveOneFileTo(
                     $result,
                     $folder,
                     Location::WEB,
@@ -99,7 +113,8 @@ class FileUploadEditor extends AbstractEditor
         }
     }
 
-    private function deleteOldFiles() {
+    private function deleteOldFiles() : void
+    {
         if(!empty($this->files)) {
             $answers = $this->files;
 
@@ -115,20 +130,21 @@ class FileUploadEditor extends AbstractEditor
      * @param string $extension
      * @return bool
      */
-    private function checkAllowedExtension(string $extension) :bool {
+    private function checkAllowedExtension(string $extension) :bool
+    {
         return empty($this->configuration->getAllowedExtensions()) ||
                in_array($extension, explode(',', $this->configuration->getAllowedExtensions()));
     }
 
     public function generateHtml(): string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
-        $tpl->setVariable('TXT_UPLOAD_FILE', $DIC->language()->txt('asq_header_upload_file'));
+        $tpl->setVariable('TXT_UPLOAD_FILE', $this->language->txt('asq_header_upload_file'));
         $tpl->setVariable('TXT_MAX_SIZE',
-                          sprintf($DIC->language()->txt('asq_text_max_size'),
-                                  $this->configuration->getMaximumSize() ?? ini_get('upload_max_filesize')));
+            sprintf(
+                $this->language->txt('asq_text_max_size'),
+                $this->configuration->getMaximumSize() ?? ini_get('upload_max_filesize')));
+
         $tpl->setVariable('POST_VAR', $this->getPostVar());
         $tpl->setVariable('CURRENT_ANSWER_NAME', $this->getPostVar() . self::VAR_CURRENT_ANSWER);
         $tpl->setVariable('CURRENT_ANSWER_VALUE', htmlspecialchars(json_encode(is_null($this->answer) ? null : $this->answer->getFiles())));
@@ -136,8 +152,10 @@ class FileUploadEditor extends AbstractEditor
         if (!empty($this->configuration->getAllowedExtensions())) {
             $tpl->setCurrentBlock('allowed_extensions');
             $tpl->setVariable('TXT_ALLOWED_EXTENSIONS',
-                              sprintf($DIC->language()->txt('asq_text_allowed_extensions'),
-                                      $this->configuration->getAllowedExtensions()));
+                sprintf(
+                    $this->language->txt('asq_text_allowed_extensions'),
+                    $this->configuration->getAllowedExtensions()));
+
             $tpl->parseCurrentBlock();
 
         }
@@ -154,18 +172,19 @@ class FileUploadEditor extends AbstractEditor
             }
         } else {
             $tpl->setCurrentBlock('no_file');
-            $tpl->setVariable('TEXT_NO_FILE', $DIC->language()->txt('asq_no_file'));
+            $tpl->setVariable('TEXT_NO_FILE', $this->language->txt('asq_no_file'));
             $tpl->parseCurrentBlock();
         }
 
-        $tpl->setVariable('HEADER_DELETE', $DIC->language()->txt('delete'));
-        $tpl->setVariable('HEADER_FILENAME', $DIC->language()->txt('filename'));
+        $tpl->setVariable('HEADER_DELETE', $this->language->txt('delete'));
+        $tpl->setVariable('HEADER_FILENAME', $this->language->txt('filename'));
         $tpl->parseCurrentBlock();
 
         return $tpl->get();
     }
 
-    private function getPostVar() : string {
+    private function getPostVar() : string
+    {
         return $this->question->getId();
     }
 

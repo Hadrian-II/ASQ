@@ -55,7 +55,7 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
         $image->setRequired(true);
         $fields[self::VAR_IMAGE] = $image;
 
-        $popup = new ImageFormPopup();
+        $popup = new ImageFormPopup($this->language);
         $fields[self::POPUP_FIELD] = $popup;
 
         if ($value !== null) {

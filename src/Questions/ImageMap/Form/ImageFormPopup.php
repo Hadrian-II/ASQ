@@ -6,6 +6,7 @@ namespace srag\asq\Questions\ImageMap\Form;
 use ilTemplate;
 use ilTextInputGUI;
 use srag\asq\UserInterface\Web\PathHelper;
+use ilLanguage;
 
 /**
  * Class ImageFormPopup
@@ -21,19 +22,27 @@ class ImageFormPopup extends ilTextInputGUI
     use PathHelper;
 
     /**
+     * @var ilLanguage;
+     */
+    private $language;
+
+    public function __construct(ilLanguage $language)
+    {
+        $this->language = $language;
+    }
+
+    /**
      * @param string $a_mode
      *
      * @return string
      * @throws \ilTemplateException
      */
     public function render($a_mode = '') {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
-        $tpl->setVariable('POPUP_TITLE', $DIC->language()->txt('asq_imagemap_popup_title'));
+        $tpl->setVariable('POPUP_TITLE', $this->language->txt('asq_imagemap_popup_title'));
         $tpl->setVariable('IMAGE_SRC', $this->getValue());
-        $tpl->setVariable('OK', $DIC->language()->txt('ok'));
-        $tpl->setVariable('CANCEL', $DIC->language()->txt('cancel'));
+        $tpl->setVariable('OK', $this->language->txt('ok'));
+        $tpl->setVariable('CANCEL', $this->language->txt('cancel'));
         return $tpl->get();
     }
 

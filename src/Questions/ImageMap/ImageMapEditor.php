@@ -12,6 +12,7 @@ use srag\asq\Questions\MultipleChoice\MultipleChoiceAnswer;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use ILIAS\DI\UIServices;
 
 /**
  * Class ImageMapEditor
@@ -31,11 +32,19 @@ class ImageMapEditor extends AbstractEditor
     private $configuration;
 
     /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
+        global $DIC;
+
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->ui = $DIC->ui();
 
         parent::__construct($question);
     }
@@ -45,8 +54,6 @@ class ImageMapEditor extends AbstractEditor
      */
     public function generateHtml(): string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
 
         $tpl->setCurrentBlock('generic');
@@ -66,7 +73,7 @@ class ImageMapEditor extends AbstractEditor
             $tpl->parseCurrentBlock();
         }
 
-        $DIC->ui()
+        $this->ui
             ->mainTemplate()
             ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapEditor.js');
 

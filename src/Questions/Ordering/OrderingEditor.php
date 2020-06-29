@@ -10,6 +10,7 @@ use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use ILIAS\DI\UIServices;
 
 /**
  * Class OrderingEditor
@@ -34,11 +35,19 @@ class OrderingEditor extends AbstractEditor
     private $display_ids;
 
     /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
+        global $DIC;
+
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->ui = $DIC->ui();
 
         $this->calculateDisplayIds($question);
 
@@ -62,8 +71,6 @@ class OrderingEditor extends AbstractEditor
      */
     public function generateHtml(): string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
 
         if (empty($this->answer)) {
@@ -91,7 +98,7 @@ class OrderingEditor extends AbstractEditor
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
         $tpl->parseCurrentBlock();
 
-        $DIC->ui()
+        $this->ui
             ->mainTemplate()
             ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Ordering/OrderingEditor.js');
 

@@ -11,6 +11,7 @@ use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\PostAccess;
+use ILIAS\DI\UIServices;
 
 /**
  * Class MultipleChoiceEditor
@@ -37,12 +38,20 @@ class MultipleChoiceEditor extends AbstractEditor
     private $configuration;
 
     /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
+        global $DIC;
+
         $this->answer_options = $question->getAnswerOptions()->getOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->ui = $DIC->ui();
 
         if ($this->configuration->isShuffleAnswers()) {
             shuffle($this->answer_options);
@@ -56,8 +65,6 @@ class MultipleChoiceEditor extends AbstractEditor
      */
     public function generateHtml() : string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.MultipleChoiceEditor.html', true, true);
 
         if ($this->isMultipleChoice()) {
@@ -114,7 +121,7 @@ class MultipleChoiceEditor extends AbstractEditor
             $tpl->parseCurrentBlock();
         }
 
-        $DIC->ui()
+        $this->ui
             ->mainTemplate()
             ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceEditor.js');
 

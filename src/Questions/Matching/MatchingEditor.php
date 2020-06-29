@@ -5,10 +5,12 @@ namespace srag\asq\Questions\Matching;
 
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use ILIAS\DI\UIServices;
 
 /**
  * Class MatchingEditor
@@ -23,6 +25,23 @@ class MatchingEditor extends AbstractEditor
 {
     use InputHandlingTrait;
     use PathHelper;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @param QuestionDto $question
+     */
+    public function __construct(QuestionDto $question)
+    {
+        global $DIC;
+
+        $this->ui = $DIC->ui();
+
+        parent::__construct($question);
+    }
 
     /**
      * {@inheritDoc}
@@ -50,8 +69,6 @@ class MatchingEditor extends AbstractEditor
      */
     public function generateHtml() : string
     {
-        global $DIC;
-
         /** @var MatchingEditorConfiguration $config */
         $config = $this->question->getPlayConfiguration()->getEditorConfiguration();
 
@@ -64,7 +81,7 @@ class MatchingEditor extends AbstractEditor
 
         $this->renderTerms($config, $tpl);
 
-        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Matching/MatchingEditor.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Matching/MatchingEditor.js');
 
         return $tpl->get();
     }

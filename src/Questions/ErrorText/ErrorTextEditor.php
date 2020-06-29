@@ -11,6 +11,7 @@ use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use ILIAS\DI\UIServices;
 
 /**
  * Class ErrorTextEditor
@@ -31,9 +32,17 @@ class ErrorTextEditor extends AbstractEditor
      */
     private $configuration;
 
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
     public function __construct(QuestionDto $question)
     {
+        global $DIC;
+
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->ui = $DIC->ui();
 
         parent::__construct($question);
     }
@@ -43,8 +52,6 @@ class ErrorTextEditor extends AbstractEditor
      */
     public function generateHtml() : string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
 
         $tpl->setCurrentBlock('editor');
@@ -58,7 +65,7 @@ class ErrorTextEditor extends AbstractEditor
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());
         $tpl->parseCurrentBlock();
 
-        $DIC->ui()->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
 
         return $tpl->get();
     }
