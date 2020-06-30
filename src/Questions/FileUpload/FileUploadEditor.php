@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Questions\FileUpload;
 
 use ILIAS\Data\UUID\Factory;
+use ILIAS\FileUpload\FileUpload;
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ilTemplate;
@@ -11,10 +12,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\PostAccess;
-use ILIAS\FileUpload\FileUpload;
-use ilLanguage;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
 /**
  * Class FileUploadEditor

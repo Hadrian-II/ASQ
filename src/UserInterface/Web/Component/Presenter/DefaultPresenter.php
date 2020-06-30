@@ -6,7 +6,6 @@ namespace srag\asq\UserInterface\Web\Component\Presenter;
 use ilTemplate;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use ILIAS\DI\UIServices;
 
 /**
  * Class DefaultPresenter
