@@ -26,13 +26,21 @@ class ClozeScoring extends AbstractScoring {
     protected $configuration;
 
     /**
+     * @var TextScoring
+     */
+    private $text_scoring;
+
+    /**
      * @param QuestionDto $question
      */
     public function __construct($question)
     {
+        global $DIC;
+
         parent::__construct($question);
 
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
+        $this->text_scoring = new TextScoring($DIC->language());
     }
 
     /**
@@ -86,7 +94,7 @@ class ClozeScoring extends AbstractScoring {
     {
         /** @var $gap ClozeGapItem */
         foreach($gap_configuration->getItems() as $gap_item) {
-            if (TextScoring::isMatch($answer, $gap_item->getText(), $gap_configuration->getMatchingMethod())) {
+            if ($this->text_scoring->isMatch($answer, $gap_item->getText(), $gap_configuration->getMatchingMethod())) {
                 $this->reached_points += $gap_item->getPoints();
             }
         }

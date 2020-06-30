@@ -62,7 +62,7 @@ class AsqQuestionHintEditorGUI
 
     private function showHints() : void
     {
-        $form = new HintFormGUI($this->question_dto);
+        $form = new HintFormGUI($this->question_dto, $this->ui, $this->language);
         $form->addCommandButton(self::CMD_SAVE, $this->language->txt('save'));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

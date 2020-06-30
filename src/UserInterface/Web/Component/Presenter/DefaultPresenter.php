@@ -6,6 +6,7 @@ namespace srag\asq\UserInterface\Web\Component\Presenter;
 use ilTemplate;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use ILIAS\DI\UIServices;
 
 /**
  * Class DefaultPresenter
@@ -24,9 +25,8 @@ class DefaultPresenter extends AbstractPresenter
      * @return string
      * @throws \ilTemplateException
      */
-	public function generateHtml(AbstractEditor $editor, bool $show_feedback = false): string {
-	    global $DIC;
-
+	public function generateHtml(AbstractEditor $editor, bool $show_feedback = false) : string
+	{
 	    $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
 		$tpl->setCurrentBlock('question');
@@ -34,7 +34,7 @@ class DefaultPresenter extends AbstractPresenter
 		$tpl->setVariable('EDITOR', $editor->generateHtml($show_feedback));
 		$tpl->parseCurrentBlock();
 
-		$DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
+		$this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
 		return $tpl->get();
 	}

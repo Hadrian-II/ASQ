@@ -141,7 +141,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $field_size->setValue($gap->getFieldLength());
         $fields[$index . self::VAR_GAP_SIZE] = $field_size;
 
-        $text_method = TextScoring::getScoringTypeSelectionField($index . self::VAR_TEXT_METHOD);
+        $text_scoring = new TextScoring($this->language);
+        $text_method = $text_scoring->getScoringTypeSelectionField($index . self::VAR_TEXT_METHOD);
         $text_method->setValue($gap->getMatchingMethod());
         $fields[$index . self::VAR_TEXT_METHOD] = $text_method;
 
@@ -317,6 +318,12 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function readSelectGapConfiguration(string $i) : SelectGapConfiguration
     {
+        $gap_items = new AsqTableInput(
+            $this->language->txt('asq_label_gap_items'),
+            $i . self::VAR_GAP_ITEMS,
+            [],
+            $this->getClozeGapItemFieldDefinitions());
+
         return SelectGapConfiguration::Create(
             array_map(
                 function ($raw_item)
@@ -325,7 +332,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                         $raw_item[ClozeGapItem::VAR_TEXT],
                         floatval($raw_item[ClozeGapItem::VAR_POINTS]));
                 },
-                AsqTableInput::readValuesFromPost($i . self::VAR_GAP_ITEMS, $this->getClozeGapItemFieldDefinitions())
+                $gap_items->readValues()
             )
         );
     }
@@ -336,6 +343,12 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function readTextGapConfiguration(string $i) : TextGapConfiguration
     {
+        $gap_items = new AsqTableInput(
+            $this->language->txt('asq_label_gap_items'),
+            $i . self::VAR_GAP_ITEMS,
+            [],
+            $this->getClozeGapItemFieldDefinitions());
+
         return TextGapConfiguration::Create(
             array_map(
                 function ($raw_item)
@@ -344,7 +357,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                         $raw_item[ClozeGapItem::VAR_TEXT],
                         floatval($raw_item[ClozeGapItem::VAR_POINTS]));
                 },
-                AsqTableInput::readValuesFromPost($i . self::VAR_GAP_ITEMS, $this->getClozeGapItemFieldDefinitions())
+                $gap_items->readValues()
             ),
             $this->readInt($i . self::VAR_GAP_SIZE),
             $this->readInt($i . self::VAR_TEXT_METHOD)

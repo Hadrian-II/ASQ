@@ -8,6 +8,7 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 use srag\asq\Domain\QuestionDto;
+use ilLanguage;
 
 /**
  * Class FeedbackComponent
@@ -20,32 +21,46 @@ use srag\asq\Domain\QuestionDto;
  */
 class FeedbackComponent
 {
+    use PathHelper;
+
     const FEEDBACK_FOCUS_ANCHOR = 'focus';
 
     /**
      * @var ScoringComponent
      */
     private $scoring_component;
+
     /**
      * @var AnswerFeedbackComponent
      */
     private $answer_feedback_component;
 
-    public function __construct(QuestionDto $question_dto, Answer $answer)
+    /**
+     * @var ilLanguage
+     */
+    private $language;
+
+    /**
+     * @param QuestionDto $question_dto
+     * @param Answer $answer
+     * @param ilLanguage $language
+     */
+    public function __construct(QuestionDto $question_dto, Answer $answer, ilLanguage $language)
     {
-        $this->scoring_component = new ScoringComponent($question_dto, $answer);
+        $this->scoring_component = new ScoringComponent($question_dto, $answer, $language);
         $this->answer_feedback_component = new AnswerFeedbackComponent($question_dto, $answer);
+        $this->language = $language;
     }
 
-
+    /**
+     * @return string
+     */
     public function getHtml() : string
     {
-        global $DIC;
-
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.feedback.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.feedback.html', true, true);
 
         $tpl->setCurrentBlock('feedback_header');
-        $tpl->setVariable('FEEDBACK_HEADER', $DIC->language()->txt('asq_answer_feedback_header'));
+        $tpl->setVariable('FEEDBACK_HEADER', $this->language->txt('asq_answer_feedback_header'));
         $tpl->parseCurrentBlock();
 
         $tpl->setCurrentBlock('answer_feedback');

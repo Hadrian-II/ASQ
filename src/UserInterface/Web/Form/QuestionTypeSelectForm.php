@@ -7,6 +7,7 @@ use ilPropertyFormGUI;
 use ilSelectInputGUI;
 use srag\asq\Domain\Model\QuestionTypeDefinition;
 use srag\asq\AsqGateway;
+use ilLanguage;
 
 /**
  * Class QuestionTypeSelectForm
@@ -28,11 +29,18 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
 	 */
 	private $question_types;
 
+	/**
+	 * @var ilLanguage
+	 */
+	private $language;
+
     /**
      * QuestionTypeSelectForm constructor.
      */
-	public function __construct( )
+	public function __construct(ilLanguage $language)
 	{
+	    $this->language = $language;
+
 		$this->initForm();
 
 		parent::__construct();
@@ -45,21 +53,18 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
 	 */
 	private function initForm() : void
 	{
-
-	    global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
 	    $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
 
-	    $this->setTitle($DIC->language()->txt('asq_create_question_form'));
+	    $this->setTitle($this->language->txt('asq_create_question_form'));
 
 		$select = new ilSelectInputGUI(
-		    $DIC->language()->txt('asq_input_question_type'), self::VAR_QUESTION_TYPE
+		    $this->language->txt('asq_input_question_type'), self::VAR_QUESTION_TYPE
         );
 
 		$options = [];
 
 		foreach ($this->question_types as $ix => $type) {
-            $options[$ix] = $type->getTitle();
+            $options[$ix] = $this->language->txt($type->getTitleKey());
 		}
 
 		$select->setOptions($options);

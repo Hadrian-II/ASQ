@@ -20,10 +20,11 @@ use srag\asq\UserInterface\Web\PathHelper;
  */
 class AnswerFeedbackComponent
 {
+    use PathHelper;
+
     const CSS_CLASS_FEEDBACK_TYPE_CORRECT = 'ilc_qfeedr_FeedbackRight';
     const CSS_CLASS_FEEDBACK_TYPE_WRONG = 'ilc_qfeedw_FeedbackWrong';
-    
-    
+
     /**
      * @var QuestionDto
      */
@@ -50,7 +51,7 @@ class AnswerFeedbackComponent
 
     public function getHtml() : string
     {
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.answer_feedback.html', true, true);
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_feedback.html', true, true);
 
         include_once("./Services/Style/Content/classes/class.ilObjStyleSheet.php");
 

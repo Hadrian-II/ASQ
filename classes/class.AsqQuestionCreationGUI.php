@@ -86,7 +86,7 @@ class AsqQuestionCreationGUI
      */
     protected function buildCreationForm() : QuestionTypeSelectForm
     {
-        $form = new QuestionTypeSelectForm();
+        $form = new QuestionTypeSelectForm($this->language);
         $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_CREATE_FORM));
         $form->addCommandButton(self::CMD_CREATE_QUESTION,$this->language->txt('create'));
         $form->addCommandButton(self::CMD_CANCEL_CREATION,$this->language->txt('cancel'));

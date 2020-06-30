@@ -53,7 +53,8 @@ class AsqTableInput extends ilTextInputGUI
      * @param array $definitions
      * @param array $form_configuration
      */
-    public function __construct(string $title,
+    public function __construct(
+        string $title,
         string $post_var,
         array $values = [],
         array $definitions = [],
@@ -91,8 +92,6 @@ class AsqTableInput extends ilTextInputGUI
      */
     public function render($a_mode = '') : string
     {
-        global $DIC;
-
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
 
         /** @var AsqTableInputFieldDefinition $definition */
@@ -104,7 +103,7 @@ class AsqTableInput extends ilTextInputGUI
 
         if ($this->hasActions()) {
             $tpl->setCurrentBlock('command_header');
-            $tpl->setVariable('COMMANDS_TEXT', $DIC->language()->txt('asq_label_actions'));
+            $tpl->setVariable('COMMANDS_TEXT', $this->lng->txt('asq_label_actions'));
             $tpl->parseCurrentBlock();
         }
 
@@ -182,34 +181,6 @@ class AsqTableInput extends ilTextInputGUI
     }
 
     /**
-     * @param $post_var
-     * @param $definitions
-     * @return array
-     */
-    public function readValuesFromPost($post_var, $definitions) : array
-    {
-        $count = intval($this->getPostValue($post_var));
-
-        $values = [];
-        for ($i = 1; $i <= $count; $i++) {
-            $new_value = [];
-
-            foreach ($definitions as $definition) {
-                $item_post_var = self::getTableItemPostVar($i, $post_var, $definition->getPostVar());
-
-                if ($this->isPostVarSet($item_post_var)) {
-                    $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
-                }
-
-            }
-
-            $values[] = $new_value;
-        }
-
-        return $values;
-    }
-
-    /**
      * @param int $id
      * @param string $postvar
      * @param string $definition_postvar
@@ -228,8 +199,26 @@ class AsqTableInput extends ilTextInputGUI
      */
     public function readValues() : array
     {
-        $this->values = $this->readValuesFromPost($this->getPostVar(), $this->definitions);
-        return $this->values;
+        $count = intval($this->getPostValue($this->getPostVar()));
+
+        $values = [];
+        for ($i = 1; $i <= $count; $i++) {
+            $new_value = [];
+
+            foreach ($this->definitions as $definition) {
+                $item_post_var = self::getTableItemPostVar($i, $this->getPostVar(), $definition->getPostVar());
+
+                if ($this->isPostVarSet($item_post_var)) {
+                    $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
+                }
+
+            }
+
+            $values[] = $new_value;
+        }
+
+        $this->values = $values;
+        return $values;
     }
 
     /**

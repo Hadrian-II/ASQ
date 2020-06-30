@@ -17,21 +17,24 @@ use ilTemplate;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class HintComponent {
+class HintComponent
+{
+    use PathHelper;
+
     /**
      * @var QuestionHints
      */
     private $hints;
-    
+
     public function __construct(QuestionHints $hints)
     {
         $this->hints = $hints;
     }
-    
+
     public function getHtml() : string
-    {        
-        $tpl = new ilTemplate(PathHelper::getBasePath(__DIR__) . 'templates/default/tpl.hint.html', true, true);
-        
+    {
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.hint.html', true, true);
+
         foreach($this->hints->getHints() as $hint) {
             /** @var $hint QuestionHint */
             $tpl->setCurrentBlock('hint');

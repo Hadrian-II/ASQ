@@ -6,6 +6,7 @@ namespace srag\asq\UserInterface\Web;
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ILIAS\Data\UUID\Factory;
+use ILIAS\FileUpload\FileUpload;
 
 /**
  * Class ImageUploader
@@ -32,8 +33,16 @@ class ImageUploader
      */
     private $guid_factory;
 
+    /**
+     * @var FileUpload
+     */
+    private $upload;
+
     public function __construct()
     {
+        global $DIC;
+        $this->upload = $DIC->upload();
+
         $this->request_uploads = [];
         $this->guid_factory = new Factory();
     }
@@ -43,19 +52,17 @@ class ImageUploader
      */
     public function processImage(string $image_key) : string
     {
-        global $DIC;
-        $upload = $DIC->upload();
         $target_file = "";
 
-        if ($upload->hasUploads() && !$upload->hasBeenProcessed()) {
-            $upload->process();
+        if ($this->upload->hasUploads() && !$this->upload->hasBeenProcessed()) {
+            $this->upload->process();
 
-            foreach ($upload->getResults() as $result)
+            foreach ($this->upload->getResults() as $result)
             {
                 if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK) {
                     $pathinfo    = pathinfo($result->getName());
                     $target_file = $this->guid_factory->uuid4AsString() . "." . $pathinfo['extension'];
-                    $upload->moveOneFileTo(
+                    $this->upload->moveOneFileTo(
                         $result,
                         self::processBasePath($target_file),
                         Location::WEB,

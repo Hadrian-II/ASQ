@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Presenter;
 
-
-
+use ILIAS\DI\UIServices;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -17,41 +16,31 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AbstractPresenter {
+abstract class AbstractPresenter
+{
 	/**
 	 * @var QuestionDto
 	 */
 	protected $question;
+
 	/**
-	 * @var AbstractEditor
+	 * @var UIServices
 	 */
-	//protected $editor;
+	protected $ui;
 
     /**
      * AbstractPresenter constructor.
      *
      * @param QuestionDto $question
      */
-	public function __construct(QuestionDto $question) {
+	public function __construct(QuestionDto $question, UIServices $ui)
+	{
 		$this->question = $question;
+		$this->ui = $ui;
 	}
-
-    /**
-     * @return AbstractEditor
-     */
-	/*public function getEditor() {
-		return $this->editor;
-	}*/
 
 	/**
 	 * @return string
 	 */
 	abstract public function generateHtml(AbstractEditor $editor): string;
-
-	/**
-	 * @return array|null
-	 */
-	public static function generateFields(): ?array {
-		return null;
-	}
 }

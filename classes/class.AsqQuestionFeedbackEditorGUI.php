@@ -100,7 +100,7 @@ class AsqQuestionFeedbackEditorGUI
      */
     private function createForm() : QuestionFeedbackFormGUI
     {
-        $form = new QuestionFeedbackFormGUI($this->question_dto);
+        $form = new QuestionFeedbackFormGUI($this->question_dto, $this->language);
         $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_FEEDBACK_FORM));
         $form->addCommandButton(self::CMD_SAVE_FEEDBACK, $this->language->txt('save'));
         $form->addCommandButton(self::CMD_SHOW_FEEDBACK_FORM, $this->language->txt('cancel'));

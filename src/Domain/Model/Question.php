@@ -155,9 +155,10 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     }
 
     /**
-     * @return int
+     * @return QuestionTypeDefinition
      */
-    public function getType() : QuestionTypeDefinition {
+    public function getType() : QuestionTypeDefinition
+    {
         return $this->question_type;
     }
 

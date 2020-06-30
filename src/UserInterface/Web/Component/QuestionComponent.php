@@ -11,6 +11,8 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Component\Presenter\AbstractPresenter;
 use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
 use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
+use ILIAS\DI\UIServices;
+use ilLanguage;
 
 /**
  * Class QuestionComponent
@@ -42,12 +44,23 @@ class QuestionComponent
      */
     private $show_feedback = false;
 
-    public function __construct(QuestionDto $question_dto)
+    /**
+     * @var ilLanguage
+     */
+    private $language;
+
+    /**
+     * @param QuestionDto $question_dto
+     * @param UIServices $ui
+     * @param ilLanguage $language
+     */
+    public function __construct(QuestionDto $question_dto, UIServices $ui, ilLanguage $language)
     {
         $this->question_dto = $question_dto;
+        $this->language = $language;
 
         $presenter_class = DefaultPresenter::class;
-        $presenter = new $presenter_class($question_dto);
+        $presenter = new $presenter_class($question_dto, $ui);
 
         $editor_class = $question_dto->getPlayConfiguration()->getEditorConfiguration()->configurationFor();
         $editor = new $editor_class($question_dto);
@@ -70,7 +83,7 @@ class QuestionComponent
         $tpl->parseCurrentBlock();
 
         if ($this->show_feedback && !is_null($this->question_dto->getFeedback())) {
-            $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer());
+            $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer(), $this->language);
             $tpl->setCurrentBlock('feedback');
             $tpl->setVariable('QUESTION_FEEDBACK',$feedback_component->getHtml());
             $tpl->parseCurrentBlock();

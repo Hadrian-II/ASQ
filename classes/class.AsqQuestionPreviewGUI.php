@@ -151,7 +151,7 @@ class AsqQuestionPreviewGUI
         }
 
         if ($this->show_score) {
-            $score_component = new ScoringComponent($question_dto, $question_component->readAnswer());
+            $score_component = new ScoringComponent($question_dto, $question_component->readAnswer(), $this->language);
             $question_tpl->setVariable('SCORE', $score_component->getHtml());
         }
 

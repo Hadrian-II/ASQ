@@ -95,7 +95,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
 
         $this->initForm($question);
         $this->setMultipart(true);
-        $this->setTitle($question->getType()->getTitle());
+        $this->setTitle($this->language->txt($question->getType()->getTitleKey()));
 
         foreach ($this->form_factory->getScripts() as $script)
         {

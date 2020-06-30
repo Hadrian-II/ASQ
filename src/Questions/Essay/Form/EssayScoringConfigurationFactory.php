@@ -46,7 +46,8 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $text_matching = TextScoring::getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
+        $text_scoring = new TextScoring($this->language);
+        $text_matching = $text_scoring->getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
         $fields[self::VAR_TEXT_MATCHING] = $text_matching;
 
         $scoring_mode = new ilRadioGroupInputGUI($this->language->txt('asq_label_text_matching'), self::VAR_SCORING_MODE);

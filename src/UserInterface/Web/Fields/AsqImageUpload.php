@@ -84,8 +84,6 @@ class AsqImageUpload extends ilFileInputGUI
      */
     function render($a_mode = "")
     {
-        global $DIC;
-
         //TODO create template when definitive
         $additional = '<input type="hidden" name="' . $this->getPostVar() . '" value="' . $this->image_path . '" />';
         $delete = '';
@@ -100,7 +98,7 @@ class AsqImageUpload extends ilFileInputGUI
                                    name="' . $this->getPostVar() . '_delete"
                                    id="' . $this->getPostVar() . '_delete"
                                    value="1" />' .
-                                   $DIC->language()->txt("delete_existing_file") .
+                                   $this->lng->txt("delete_existing_file") .
                                    '</label>
                        </div>';
             }

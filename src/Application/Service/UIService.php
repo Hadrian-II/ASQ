@@ -33,7 +33,7 @@ class UIService {
 
         $DIC->language()->loadLanguageModule('asq');
 
-        return new QuestionComponent($question);
+        return new QuestionComponent($question, $DIC->ui(), $DIC->language());
     }
 
     /**

@@ -4,10 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model\Scoring;
 
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\AbstractConfiguration;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 
 /**
  * Abstract Class AbstractScoring

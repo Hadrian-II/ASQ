@@ -67,7 +67,7 @@ trait PostAccess
      */
     public function getPostValue(string $variable_name) : ?string
     {
-        if (!$this->isVarSet($variable_name)) {
+        if (!$this->isPostVarSet($variable_name)) {
             return null;
         }
 
