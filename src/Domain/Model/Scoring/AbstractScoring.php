@@ -58,18 +58,19 @@ abstract class AbstractScoring
     }
 
 
-    public abstract function isComplete() : bool;
+    abstract public function isComplete() : bool;
 
     /**
      * @param Answer $answer
      * @return float
      */
-    abstract function score(Answer $answer) : float;
+    abstract public function score(Answer $answer) : float;
 
     /**
      * @return float
      */
-    public function getMaxScore() : float {
+    public function getMaxScore() : float
+    {
         if (is_null($this->max_score)) {
             $this->max_score = $this->calculateMaxScore();
         }
@@ -80,12 +81,13 @@ abstract class AbstractScoring
     /**
      * @return float
      */
-    protected abstract function calculateMaxScore() : float;
+    abstract protected function calculateMaxScore() : float;
 
     /**
      * @return float
      */
-    public function getMinScore() : float {
+    public function getMinScore() : float
+    {
         if (is_null($this->max_score)) {
             $this->max_score = $this->calculateMinScore();
         }
@@ -104,9 +106,10 @@ abstract class AbstractScoring
     /**
      * @return float
      */
-    protected function calculateMaxHintDeduction() : float {
+    protected function calculateMaxHintDeduction() : float
+    {
         if ($this->question->hasHints()) {
-            return array_reduce($this->question->getQuestionHints()->getHints(), function($sum, $hint) {
+            return array_reduce($this->question->getQuestionHints()->getHints(), function ($sum, $hint) {
                 return $sum += $hint->getPointDeduction();
             }, 0.0);
         } else {
@@ -124,14 +127,12 @@ abstract class AbstractScoring
     {
         if ($this->getMaxScore() < PHP_FLOAT_EPSILON) {
             return self::ANSWER_CORRECTNESS_NOT_DETERMINABLLE;
-        }
-        else if (abs($reached_points - $this->getMaxScore()) < PHP_FLOAT_EPSILON) {
+        } elseif (abs($reached_points - $this->getMaxScore()) < PHP_FLOAT_EPSILON) {
             return self::ANSWER_CORRECT;
-        }
-        else {
+        } else {
             return self::ANSWER_INCORRECT;
         }
     }
 
-    public abstract function getBestAnswer() : Answer;
+    abstract public function getBestAnswer() : Answer;
 }

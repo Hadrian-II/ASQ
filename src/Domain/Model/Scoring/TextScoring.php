@@ -52,7 +52,8 @@ class TextScoring
                 self::TM_LEVENSHTEIN_2 => $this->language->txt('asq_option_levenshtein_2'),
                 self::TM_LEVENSHTEIN_3 => $this->language->txt('asq_option_levenshtein_3'),
                 self::TM_LEVENSHTEIN_4 => $this->language->txt('asq_option_levenshtein_4'),
-                self::TM_LEVENSHTEIN_5 => $this->language->txt('asq_option_levenshtein_5')]);
+                self::TM_LEVENSHTEIN_5 => $this->language->txt('asq_option_levenshtein_5')]
+        );
         return $text_matching;
     }
 
@@ -62,7 +63,8 @@ class TextScoring
      * @param int $matching_type
      * @return bool
      */
-    public function isMatch(string $a, string $b, int $matching_type) : bool {
+    public function isMatch(string $a, string $b, int $matching_type) : bool
+    {
         switch ($matching_type) {
             case self::TM_CASE_INSENSITIVE:
                 return (strtoupper($a) === strtoupper($b));

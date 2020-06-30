@@ -12,7 +12,8 @@ class PublishedQuestionRepository
     /**
     * @param Question $question
     */
-    public function saveNewQuestionRevision(QuestionDto $question) {        
+    public function saveNewQuestionRevision(QuestionDto $question)
+    {
         $question_ar = QuestionAr::createNew($question);
         $question_ar->create();
         
@@ -20,13 +21,15 @@ class PublishedQuestionRepository
         $question_list->create();
     }
     
-    private function contentEquals(Question $current, QuestionDto $old) {
+    private function contentEquals(Question $current, QuestionDto $old)
+    {
         return $current->getData()->equals($old->getData()) &&
                $current->getPlayConfiguration()->equals($old->getPlayConfiguration()) &&
                $current->getAnswerOptions()->equals($old->getAnswerOptions());
     }
     
-    public function revisionExists(string $question_id, string $name) : bool {
+    public function revisionExists(string $question_id, string $name) : bool
+    {
         return QuestionAr::where(['revision_name' => $name, 'question_id' => $question_id])->count() > 0;
     }
     
@@ -47,7 +50,7 @@ class PublishedQuestionRepository
         /** @var QuestionListItemAr $revision */
         $revisions = QuestionListItemAr::where(['question_id' => $question_id])->get();
         
-        return array_map(function($revision) {
+        return array_map(function ($revision) {
             return new QuestionInfo($revision);
         }, $revisions);
     }

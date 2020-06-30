@@ -62,7 +62,8 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         $thumb_size = new ilNumberInputGUI(
             $this->language->txt('asq_label_thumb_size'),
-            self::VAR_THUMBNAIL_SIZE);
+            self::VAR_THUMBNAIL_SIZE
+        );
         $thumb_size->setInfo($this->language->txt('asq_description_thumb_size'));
         $thumb_size->setSuffix($this->language->txt('asq_pixel'));
         $thumb_size->setMinValue(20);
@@ -76,8 +77,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
         if ($value !== null) {
             $shuffle->setChecked($value->isShuffleAnswers());
             $thumb_size->setValue($value->getThumbnailSize());
-        }
-        else {
+        } else {
             $shuffle->setChecked(true);
         }
 
@@ -92,61 +92,65 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     {
         $optionLabel = new ilRadioGroupInputGUI(
             $this->language->txt('asq_label_obtion_labels'),
-            self::VAR_LABEL_TYPE);
+            self::VAR_LABEL_TYPE
+        );
         $optionLabel->setInfo($this->language->txt('asq_description_options'));
         $optionLabel->setRequired(true);
 
         $right_wrong = new ilRadioOption(
             $this->language->txt('asq_label_right_wrong'),
-            self::LABEL_RIGHT_WRONG);
+            self::LABEL_RIGHT_WRONG
+        );
         $optionLabel->addOption($right_wrong);
 
         $plus_minus = new ilRadioOption(
             $this->language->txt('asq_label_plus_minus'),
-            self::LABEL_PLUS_MINUS);
+            self::LABEL_PLUS_MINUS
+        );
         $optionLabel->addOption($plus_minus);
 
         $applicable = new ilRadioOption(
             $this->language->txt('asq_label_applicable'),
-            self::LABEL_APPLICABLE);
+            self::LABEL_APPLICABLE
+        );
         $optionLabel->addOption($applicable);
 
         $adequate = new ilRadioOption(
             $this->language->txt('asq_label_adequate'),
-            self::LABEL_ADEQUATE);
+            self::LABEL_ADEQUATE
+        );
         $optionLabel->addOption($adequate);
 
         $custom = new ilRadioOption(
             $this->language->txt('asq_label_userdefined'),
-            self::LABEL_CUSTOM);
+            self::LABEL_CUSTOM
+        );
         $optionLabel->addOption($custom);
 
         $customLabelTrue = new ilTextInputGUI(
             $this->language->txt('asq_label_user_true'),
-            self::VAR_LABEL_TRUE);
+            self::VAR_LABEL_TRUE
+        );
         $custom->addSubItem($customLabelTrue);
 
         $customLabelFalse = new ilTextInputGUI(
             $this->language->txt('asq_label_user_false'),
-            self::VAR_LABEL_FALSE);
+            self::VAR_LABEL_FALSE
+        );
         $custom->addSubItem($customLabelFalse);
 
         if ($config !== null) {
-            if($config->getLabelTrue() === self::STR_RIGHT && $config->getLabelFalse() === self::STR_WRONG) {
+            if ($config->getLabelTrue() === self::STR_RIGHT && $config->getLabelFalse() === self::STR_WRONG) {
                 $optionLabel->setValue(self::LABEL_RIGHT_WRONG);
-            }
-            else if ($config->getLabelTrue() === self::STR_PLUS && $config->getLabelFalse() === self::STR_MINUS) {
+            } elseif ($config->getLabelTrue() === self::STR_PLUS && $config->getLabelFalse() === self::STR_MINUS) {
                 $optionLabel->setValue(self::LABEL_PLUS_MINUS);
-            }
-            else if ($config->getLabelTrue() === self::STR_APPLICABLE && $config->getLabelFalse() === self::STR_NOT_APPLICABLE) {
+            } elseif ($config->getLabelTrue() === self::STR_APPLICABLE && $config->getLabelFalse() === self::STR_NOT_APPLICABLE) {
                 $optionLabel->setValue(self::LABEL_APPLICABLE);
-            }
-            else if ($config->getLabelTrue() === self::STR_ADEQUATE && $config->getLabelFalse() === self::STR_NOT_ADEQUATE) {
+            } elseif ($config->getLabelTrue() === self::STR_ADEQUATE && $config->getLabelFalse() === self::STR_NOT_ADEQUATE) {
                 $optionLabel->setValue(self::LABEL_ADEQUATE);
-            } else if (empty($config->getLabelTrue())) {
+            } elseif (empty($config->getLabelTrue())) {
                 $optionLabel->setValue(self::LABEL_RIGHT_WRONG);
-            }
-            else {
+            } else {
                 $optionLabel->setValue(self::LABEL_CUSTOM);
                 $customLabelTrue->setValue($config->getLabelTrue());
                 $customLabelFalse->setValue($config->getLabelFalse());
@@ -191,7 +195,8 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
             $this->readString(self::VAR_SINGLE_LINE) === self::STR_TRUE,
             $thumbsize,
             $label_true,
-            $label_false);
+            $label_false
+        );
     }
 
     /**

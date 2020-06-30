@@ -18,63 +18,68 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AbstractEditor {
-	const EDITOR_DEFINITION_SUFFIX = 'DisplayDefinition';
+abstract class AbstractEditor
+{
+    const EDITOR_DEFINITION_SUFFIX = 'DisplayDefinition';
 
-	/**
-	 * @var QuestionDto
-	 */
-	protected $question;
-	/**
-	 * @var ?AbstractValueObject
-	 */
-	protected $answer;
-	/**
-	 * @var bool
-	 */
-	protected $render_feedback;
+    /**
+     * @var QuestionDto
+     */
+    protected $question;
+    /**
+     * @var ?AbstractValueObject
+     */
+    protected $answer;
+    /**
+     * @var bool
+     */
+    protected $render_feedback;
 
-	/**
-	 * AbstractEditor constructor.
-	 *
-	 * @param QuestionDto   $question
-	 * @param array|null $configuration
-	 */
-	public function __construct(QuestionDto $question) {
-		$this->question = $question;
+    /**
+     * AbstractEditor constructor.
+     *
+     * @param QuestionDto   $question
+     * @param array|null $configuration
+     */
+    public function __construct(QuestionDto $question)
+    {
+        $this->question = $question;
 
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		    $this->setAnswer($this->readAnswer());
-		}
-	}
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->setAnswer($this->readAnswer());
+        }
+    }
 
-	public function setRenderFeedback(bool $render_feedback) {
-	   $this->render_feedback = $render_feedback;
-	}
+    public function setRenderFeedback(bool $render_feedback)
+    {
+        $this->render_feedback = $render_feedback;
+    }
 
-	/**
-	 * @return string
-	 */
-	abstract public function generateHtml(): string;
+    /**
+     * @return string
+     */
+    abstract public function generateHtml() : string;
 
-	/**
-	 * @return Answer
-	 */
-	abstract public function readAnswer() : ?AbstractValueObject;
+    /**
+     * @return Answer
+     */
+    abstract public function readAnswer() : ?AbstractValueObject;
 
-	/**
-	 * @param AbstractValueObject $answer
-	 */
-	public function setAnswer(?AbstractValueObject $answer) : void {
-	    $this->answer = $answer;
-	}
+    /**
+     * @param AbstractValueObject $answer
+     */
+    public function setAnswer(?AbstractValueObject $answer) : void
+    {
+        $this->answer = $answer;
+    }
 
-	public abstract function isComplete() : bool;
+    abstract public function isComplete() : bool;
 
-	/**
-	 * @return string
-	 */
-	static function getDisplayDefinitionClass() : string {
-		return get_called_class() . self::EDITOR_DEFINITION_SUFFIX;
-	}
+    /**
+     * @return string
+     */
+    public static function getDisplayDefinitionClass() : string
+    {
+        return get_called_class() . self::EDITOR_DEFINITION_SUFFIX;
+    }
 }

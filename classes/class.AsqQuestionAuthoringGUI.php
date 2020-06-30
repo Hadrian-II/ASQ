@@ -48,7 +48,7 @@ class AsqQuestionAuthoringGUI
     /**
      * @var AuthoringContextContainer
      */
-	protected $authoring_context_container;
+    protected $authoring_context_container;
     /**
      * @var string
      */
@@ -90,27 +90,27 @@ class AsqQuestionAuthoringGUI
      * @param ilCtrl $ctrl
      * @param ilTabsGUI $tabs
      */
-	function __construct(
-	    AuthoringContextContainer $authoring_context_container,
-	    ilLanguage $language,
-	    UIServices $ui,
-	    ilCtrl $ctrl,
-	    ilTabsGUI $tabs,
-	    ilAccessHandler $access)
-	{
-	    $this->authoring_context_container = $authoring_context_container;
+    public function __construct(
+        AuthoringContextContainer $authoring_context_container,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl,
+        ilTabsGUI $tabs,
+        ilAccessHandler $access
+    ) {
+        $this->authoring_context_container = $authoring_context_container;
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
         $this->tabs = $tabs;
         $this->access = $access;
 
-	    //we could use this in future in constructer
-	    $this->lng_key = $this->language->getDefaultLanguage();
+        //we could use this in future in constructer
+        $this->lng_key = $this->language->getDefaultLanguage();
 
-	    if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
-	        $this->question_id = $_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID];
-	    }
+        if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
+            $this->question_id = $_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID];
+        }
 
         $this->language->loadLanguageModule('asq');
     }
@@ -118,19 +118,19 @@ class AsqQuestionAuthoringGUI
     /**
      * @throws ilCtrlException
      */
-	public function executeCommand() : void
-	{
+    public function executeCommand() : void
+    {
         $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id);
 
-		switch( $this->ctrl->getNextClass() )
-        {
+        switch ($this->ctrl->getNextClass()) {
             case strtolower(AsqQuestionCreationGUI::class):
 
                 $gui = new AsqQuestionCreationGUI(
                     $this->authoring_context_container,
                     $this->language,
                     $this->ui,
-                    $this->ctrl);
+                    $this->ctrl
+                );
 
                 $this->ctrl->forwardCommand($gui);
 
@@ -146,7 +146,8 @@ class AsqQuestionAuthoringGUI
                     $this->question_id,
                     $this->language,
                     $this->ui,
-                    $this->ctrl);
+                    $this->ctrl
+                );
 
                 $this->ctrl->forwardCommand($gui);
 
@@ -159,10 +160,10 @@ class AsqQuestionAuthoringGUI
                 $this->tabs->activateTab(self::TAB_ID_PAGEVIEW);
 
                 $gui = AsqGateway::get()->ui()->getQuestionPage(
-                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id));
+                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id)
+                );
 
-                if (strlen($this->ctrl->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x"))
-                {
+                if (strlen($this->ctrl->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x")) {
                     // workaround for page edit imagemaps, keep in mind
 
                     $this->ctrl->setCmdClass(strtolower(get_class($gui)));
@@ -185,7 +186,8 @@ class AsqQuestionAuthoringGUI
                     $this->question_id,
                     $this->language,
                     $this->ui,
-                    $this->ctrl);
+                    $this->ctrl
+                );
 
                 $this->ctrl->forwardCommand($gui);
 
@@ -216,7 +218,8 @@ class AsqQuestionAuthoringGUI
                 $gui = new AsqQuestionHintEditorGUI(
                     AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
                     $this->language,
-                    $this->ui);
+                    $this->ui
+                );
 
                 $this->ctrl->forwardCommand($gui);
 
@@ -228,9 +231,11 @@ class AsqQuestionAuthoringGUI
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_VERSIONS);
 
-                $gui = new AsqQuestionVersionGUI($this->question_id,
+                $gui = new AsqQuestionVersionGUI(
+                    $this->question_id,
                     $this->language,
-                    $this->ui);
+                    $this->ui
+                );
 
                 $this->ctrl->forwardCommand($gui);
 
@@ -249,7 +254,7 @@ class AsqQuestionAuthoringGUI
                 $cmd = $this->ctrl->getCmd();
                 $this->{$cmd}();
         }
-	}
+    }
 
 
     protected function redrawHeaderAction() : void
@@ -262,17 +267,25 @@ class AsqQuestionAuthoringGUI
     protected function initHeaderAction() : void
     {
         $this->ui->mainTemplate()->setVariable(
-            'HEAD_ACTION', $this->getHeaderAction()
+            'HEAD_ACTION',
+            $this->getHeaderAction()
         );
 
         $notesUrl = $this->ctrl->getLinkTargetByClass(
-            array('ilCommonActionDispatcherGUI', 'ilNoteGUI'), '', '', true, false
+            array('ilCommonActionDispatcherGUI', 'ilNoteGUI'),
+            '',
+            '',
+            true,
+            false
         );
 
-        ilNoteGUI::initJavascript($notesUrl,IL_NOTE_PUBLIC, $this->ui->mainTemplate());
+        ilNoteGUI::initJavascript($notesUrl, IL_NOTE_PUBLIC, $this->ui->mainTemplate());
 
         $redrawActionsUrl = $this->ctrl->getLinkTarget(
-            $this, self::CMD_REDRAW_HEADER_ACTION_ASYNC, '', true
+            $this,
+            self::CMD_REDRAW_HEADER_ACTION_ASYNC,
+            '',
+            true
         );
 
         $this->ui->mainTemplate()->addOnLoadCode("il.Object.setRedrawAHUrl('$redrawActionsUrl');");
@@ -282,7 +295,8 @@ class AsqQuestionAuthoringGUI
     protected function getHeaderAction() : string
     {
         $dispatcher = new ilCommonActionDispatcherGUI(
-            ilCommonActionDispatcherGUI::TYPE_REPOSITORY, $this->access,
+            ilCommonActionDispatcherGUI::TYPE_REPOSITORY,
+            $this->access,
             $this->authoring_context_container->getObjType(),
             $this->authoring_context_container->getRefId(),
             $this->authoring_context_container->getObjId()

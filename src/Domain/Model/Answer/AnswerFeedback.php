@@ -15,9 +15,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-Abstract class AnswerFeedback extends AbstractValueObject implements JsonSerializable
+abstract class AnswerFeedback extends AbstractValueObject implements JsonSerializable
 {
-
     const VAR_ANSWER_FEEDBACK_CORRECT = 'answer_feedback_correct';
     const VAR_ANSWER_FEEDBACK_WRONG = 'answer_feedback_wrong';
     const VAR_ANSWER_FEEDBACK_CORRECT_PAGE_ID = 1;
@@ -41,7 +40,7 @@ Abstract class AnswerFeedback extends AbstractValueObject implements JsonSeriali
     }
 
 
-    function equals(AbstractValueObject $other) : bool
+    public function equals(AbstractValueObject $other) : bool
     {
         if (get_class($this) !== get_class($other)) {
             return false;

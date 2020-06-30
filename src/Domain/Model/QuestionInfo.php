@@ -15,7 +15,8 @@ use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionInfo {
+class QuestionInfo
+{
     /**
      * @var string
      */
@@ -49,7 +50,8 @@ class QuestionInfo {
      */
     protected $created;
     
-    public function __construct(QuestionListItemAr $question) {
+    public function __construct(QuestionListItemAr $question)
+    {
         $this->author = $question->getAuthor();
         $this->created = $question->getCreated();
         $this->description = $question->getDescription();
@@ -103,21 +105,24 @@ class QuestionInfo {
     /**
      * @return string
      */
-    public function getQuestionId() : string {
+    public function getQuestionId() : string
+    {
         return $this->question_id;
     }
     
     /**
      * @return string
      */
-    public function getRevisionName() : string {
+    public function getRevisionName() : string
+    {
         return $this->revision_name;
     }
     
     /**
      * @return ilDateTime
      */
-    public function getCreated(): ilDateTime {
+    public function getCreated() : ilDateTime
+    {
         return $this->created;
     }
 }

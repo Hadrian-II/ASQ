@@ -44,7 +44,7 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return OrderingScoringConfigurationFactory
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return OrderingScoringConfiguration::create($this->readFloat(self::VAR_POINTS));
     }
@@ -52,7 +52,7 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return OrderingScoringConfigurationFactory
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return OrderingScoringConfiguration::create();
     }

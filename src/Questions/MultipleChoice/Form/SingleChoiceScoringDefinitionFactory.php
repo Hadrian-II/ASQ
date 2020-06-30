@@ -28,7 +28,7 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [
             self::VAR_MCSD_SELECTED => $definition->getPointsSelected()
@@ -39,14 +39,15 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];
 
         $fields[self::VAR_MCSD_SELECTED] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_MCSD_SELECTED);
+            self::VAR_MCSD_SELECTED
+        );
 
         return $fields;
     }
@@ -54,17 +55,18 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return MultipleChoiceScoringDefinition
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return MultipleChoiceScoringDefinition::create(
             floatval($values[self::VAR_MCSD_SELECTED]),
-            self::ZERO_BY_DEFAULT);
+            self::ZERO_BY_DEFAULT
+        );
     }
 
     /**
      * @return MultipleChoiceScoringDefinition
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return MultipleChoiceScoringDefinition::create(null, self::ZERO_BY_DEFAULT);
     }

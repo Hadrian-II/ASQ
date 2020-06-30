@@ -49,17 +49,20 @@ class QuestionService extends ASQService
             $this->command_bus->registerCommand(new CommandConfiguration(
                 CreateQuestionCommand::class,
                 new CreateQuestionCommandHandler(),
-                new OpenAccess()));
+                new OpenAccess()
+            ));
 
             $this->command_bus->registerCommand(new CommandConfiguration(
                 CreateQuestionRevisionCommand::class,
                 new CreateQuestionRevisionCommandHandler(),
-                new OpenAccess()));
+                new OpenAccess()
+            ));
 
             $this->command_bus->registerCommand(new CommandConfiguration(
                 SaveQuestionCommand::class,
                 new SaveQuestionCommandHandler(),
-                new OpenAccess()));
+                new OpenAccess()
+            ));
         }
 
         return $this->command_bus;
@@ -110,7 +113,8 @@ class QuestionService extends ASQService
      * @param string $name
      * @param string $question_id
      */
-    public function createQuestionRevision(string $name, string $question_id) {
+    public function createQuestionRevision(string $name, string $question_id)
+    {
         $this->getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }
 
@@ -122,7 +126,7 @@ class QuestionService extends ASQService
      *
      * @return QuestionDto
      */
-    public function createQuestion(QuestionTypeDefinition $type, ?int $container_id = null): QuestionDto
+    public function createQuestion(QuestionTypeDefinition $type, ?int $container_id = null) : QuestionDto
     {
         $uuid_factory = new Factory();
 
@@ -133,7 +137,9 @@ class QuestionService extends ASQService
                 $id,
                 $type,
                 $this->getActiveUser(),
-                $container_id));
+                $container_id
+            )
+        );
 
         return $this->getQuestionByQuestionId($id);
     }
@@ -165,8 +171,9 @@ class QuestionService extends ASQService
      *
      * @return QuestionTypeDefinition[]
      */
-    public function getAvailableQuestionTypes() : array {
-        return array_map(function($type) {
+    public function getAvailableQuestionTypes() : array
+    {
+        return array_map(function ($type) {
             return QuestionTypeDefinition::create($type);
         }, QuestionType::get());
     }
@@ -177,7 +184,8 @@ class QuestionService extends ASQService
      * @param string $title_key
      * @param string $form_class
      */
-    public function addQuestionType(string $title_key, string $factory_class) {
+    public function addQuestionType(string $title_key, string $factory_class)
+    {
         $type = QuestionType::createNew($title_key, $factory_class);
         $type->create();
     }
@@ -187,7 +195,8 @@ class QuestionService extends ASQService
      *
      * @param string $form_class
      */
-    public function removeQuestionType(string $form_class) {
+    public function removeQuestionType(string $form_class)
+    {
         QuestionType::where(['form_class' => $form_class])->first()->delete();
     }
 }

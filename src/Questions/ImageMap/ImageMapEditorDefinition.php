@@ -40,7 +40,8 @@ class ImageMapEditorDefinition extends AbstractValueObject
      * @param int $type
      * @param string $coordinates
      */
-    public static function create(?string $tooltip, ?int $type, ?string $coordinates) : ImageMapEditorDefinition {
+    public static function create(?string $tooltip, ?int $type, ?string $coordinates) : ImageMapEditorDefinition
+    {
         $object = new ImageMapEditorDefinition();
         $object->tooltip = $tooltip;
         $object->type = $type;

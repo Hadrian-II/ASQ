@@ -28,19 +28,20 @@ class FileUploadScoring extends AbstractScoring
     /**
      * @param QuestionDto $question
      */
-    public function __construct($question) {
+    public function __construct($question)
+    {
         parent::__construct($question);
 
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    function score(Answer $answer) : float {
+    public function score(Answer $answer) : float
+    {
         $reached_points = 0;
 
         if ($this->configuration->isCompletedBySubmition()) {
             $reached_points = $this->getMaxScore();
-        }
-        else {
+        } else {
             // TODO go look for manual scoring or throw exception
         }
 
@@ -55,7 +56,7 @@ class FileUploadScoring extends AbstractScoring
     /**
      * Implementation of best answer for upload not possible
      */
-    public function getBestAnswer(): Answer
+    public function getBestAnswer() : Answer
     {
         throw new Exception("Best Answer for File Upload Impossible");
     }
@@ -63,11 +64,12 @@ class FileUploadScoring extends AbstractScoring
     /**
      * @return string
      */
-    public static function getScoringDefinitionClass(): string {
+    public static function getScoringDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         // file upload can roll with all values
         return true;

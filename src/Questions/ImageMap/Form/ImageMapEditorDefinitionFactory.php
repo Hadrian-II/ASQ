@@ -28,7 +28,7 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [
             self::VAR_TOOLTIP => $definition->getTooltip(),
@@ -41,7 +41,7 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];
 
@@ -49,7 +49,7 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
             $this->language->txt('asq_label_tooltip'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_TOOLTIP
-            );
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_type'),
@@ -59,19 +59,20 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
                 ImageMapEditorDefinition::TYPE_RECTANGLE => $this->language->txt('asq_option_rectangle'),
                 ImageMapEditorDefinition::TYPE_CIRCLE => $this->language->txt('asq_option_circle'),
                 ImageMapEditorDefinition::TYPE_POLYGON => $this->language->txt('asq_option_polygon')
-            ]);
+            ]
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_coordinates'),
             AsqTableInputFieldDefinition::TYPE_LABEL,
             self::VAR_COORDINATES
-            );
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             '',
             AsqTableInputFieldDefinition::TYPE_HIDDEN,
             self::VAR_COORDINATES
-            );
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             '',
@@ -80,7 +81,8 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
             [
                 'css' => 'js_select_coordinates',
                 'title' => $this->language->txt('asq_label_select_coordinates')
-            ]);
+            ]
+        );
 
         return $fields;
     }
@@ -88,18 +90,19 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return ImageMapEditorDefinition
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return ImageMapEditorDefinition::create(
             $values[self::VAR_TOOLTIP],
             intval($values[self::VAR_TYPE]),
-            $values[self::VAR_COORDINATES]);
+            $values[self::VAR_COORDINATES]
+        );
     }
 
     /**
      * @return ImageMapEditorDefinition
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return ImageMapEditorDefinition::create(null, null, null);
     }

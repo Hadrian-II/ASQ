@@ -57,16 +57,16 @@ class ImageUploader
         if ($this->upload->hasUploads() && !$this->upload->hasBeenProcessed()) {
             $this->upload->process();
 
-            foreach ($this->upload->getResults() as $result)
-            {
+            foreach ($this->upload->getResults() as $result) {
                 if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK) {
-                    $pathinfo    = pathinfo($result->getName());
+                    $pathinfo = pathinfo($result->getName());
                     $target_file = $this->guid_factory->uuid4AsString() . "." . $pathinfo['extension'];
                     $this->upload->moveOneFileTo(
                         $result,
                         self::processBasePath($target_file),
                         Location::WEB,
-                        $target_file);
+                        $target_file
+                    );
 
                     foreach ($_FILES as $key => $value) {
                         if ($value['name'] === $result->getName()) {
@@ -89,8 +89,7 @@ class ImageUploader
         }
 
         // old file exists
-        if (!empty($this->getPostValue($image_key)))
-        {
+        if (!empty($this->getPostValue($image_key))) {
             return $this->getPostValue($image_key);
         }
 
@@ -104,7 +103,7 @@ class ImageUploader
      */
     private function getImagePath(string $filename) : string
     {
-        return ILIAS_HTTP_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID .  '/' . self::processBasePath($filename) . $filename;
+        return ILIAS_HTTP_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID . '/' . self::processBasePath($filename) . $filename;
     }
 
     /**
@@ -116,8 +115,7 @@ class ImageUploader
         if (strlen($filename) < 2) {
             $first = '0';
             $second = '0';
-        }
-        else {
+        } else {
             $first = $filename[0];
             $second = $filename[1];
         }

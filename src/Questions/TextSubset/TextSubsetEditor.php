@@ -44,13 +44,13 @@ class TextSubsetEditor extends AbstractEditor
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.TextSubsetEditor.html', true, true);
 
-        for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i ++) {
+        for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i++) {
             $tpl->setCurrentBlock('textsubset_row');
             $tpl->setVariable('COUNTER', $i);
             $tpl->setVariable('TEXTFIELD_ID', $this->getPostValue($i));
             $tpl->setVariable('TEXTFIELD_SIZE', $this->calculateSize());
 
-            if (! is_null($this->answer) && ! is_null($this->answer->getAnswers()[$i])) {
+            if (!is_null($this->answer) && !is_null($this->answer->getAnswers()[$i])) {
                 $tpl->setVariable('TEXTFIELD_VALUE', 'value="' . $this->answer->getAnswers()[$i] . '"');
             }
 
@@ -95,7 +95,7 @@ class TextSubsetEditor extends AbstractEditor
 
         $answer = [];
 
-        for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i ++) {
+        for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i++) {
             $answer[$i] = $this->readString($this->getPostValue($i));
         }
 
@@ -105,7 +105,7 @@ class TextSubsetEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return EmptyDefinition::class;
     }

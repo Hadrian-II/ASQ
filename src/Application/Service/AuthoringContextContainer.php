@@ -65,8 +65,7 @@ class AuthoringContextContainer
         string $objType,
         int $actorId,
         ?IAuthoringCaller $caller = null
-    )
-    {
+    ) {
         $this->backLink = $backLink;
         $this->refId = $refId;
         $this->objId = $objId;

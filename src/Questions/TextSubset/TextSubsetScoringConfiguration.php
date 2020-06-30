@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class TextSubsetScoringConfiguration extends AbstractConfiguration {
+class TextSubsetScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?int
      */
@@ -24,7 +25,7 @@ class TextSubsetScoringConfiguration extends AbstractConfiguration {
      * @param int $text_matching
      * @return TextSubsetScoringConfiguration
      */
-    static function create(?int $text_matching = null) : TextSubsetScoringConfiguration
+    public static function create(?int $text_matching = null) : TextSubsetScoringConfiguration
     {
         $object = new TextSubsetScoringConfiguration();
         $object->text_matching = $text_matching;

@@ -24,6 +24,7 @@ class TextSubsetFormFactory extends QuestionFormFactory
             new TextSubsetEditorConfigurationFactory($language),
             new TextSubsetScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new TextSubsetScoringDefinitionFactory($language));
+            new TextSubsetScoringDefinitionFactory($language)
+        );
     }
 }

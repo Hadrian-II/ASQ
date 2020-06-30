@@ -49,9 +49,9 @@ class AsqQuestionVersionGUI
      */
     public function __construct(string $question_id, ilLanguage $language, UIServices $ui)
     {
-            $this->question_id = $question_id;
-            $this->language = $language;
-            $this->ui = $ui;
+        $this->question_id = $question_id;
+        $this->language = $language;
+        $this->ui = $ui;
     }
 
     public function executeCommand() : void
@@ -75,7 +75,7 @@ class AsqQuestionVersionGUI
     private function getRevisionsAsAssocArray() : array
     {
         /** @var $question QuestionInfo */
-        return array_map(function($question) {
+        return array_map(function ($question) {
             $preview = AsqGateway::get()->link()->getPreviewLink($this->question_id, $question->getRevisionName());
 
             return [

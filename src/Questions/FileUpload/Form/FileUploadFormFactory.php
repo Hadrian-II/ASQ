@@ -24,6 +24,7 @@ class FileUploadFormFactory extends QuestionFormFactory
             new FileUploadEditorConfigurationFactory($language),
             new FileUploadScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 }

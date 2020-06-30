@@ -22,7 +22,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [];
     }
@@ -31,7 +31,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         return [];
     }
@@ -40,7 +40,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::readObjectFromValues()
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return EmptyDefinition::create();
     }
@@ -49,7 +49,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getDefaultValue()
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return EmptyDefinition::create();
     }

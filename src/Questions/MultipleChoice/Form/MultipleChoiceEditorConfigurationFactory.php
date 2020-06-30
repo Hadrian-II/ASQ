@@ -34,7 +34,7 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -87,19 +87,20 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return MultipleChoiceEditorConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return MultipleChoiceEditorConfiguration::create(
             $this->readString(self::VAR_MCE_SHUFFLE) === self::STR_TRUE,
             $this->readInt(self::VAR_MCE_MAX_ANSWERS),
             $this->readInt(self::VAR_MCE_THUMB_SIZE),
-            $this->readString(self::VAR_MCE_IS_SINGLELINE) === self::STR_TRUE);
+            $this->readString(self::VAR_MCE_IS_SINGLELINE) === self::STR_TRUE
+        );
     }
 
     /**
      * @return MultipleChoiceEditorConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return MultipleChoiceEditorConfiguration::create();
     }

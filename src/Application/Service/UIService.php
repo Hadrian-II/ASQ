@@ -20,7 +20,8 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class UIService {
+class UIService
+{
     /**
      * Gets a component able to display a question
      *
@@ -49,7 +50,8 @@ class UIService {
         return new QuestionFormGUI(
             $question,
             $DIC->language(),
-            $DIC->ui());
+            $DIC->ui()
+        );
     }
 
     /**
@@ -65,7 +67,8 @@ class UIService {
         $page_gui = new AsqQuestionPageGUI(
             $question_dto->getContainerObjId(),
             $question_dto->getQuestionIntId(),
-            $DIC->ui());
+            $DIC->ui()
+        );
         $page_gui->setRenderPageContainer(false);
         $page_gui->setEditPreview(true);
         $page_gui->setEnabledTabs(false);

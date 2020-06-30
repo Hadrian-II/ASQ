@@ -10,9 +10,8 @@ namespace srag\asq\Infrastructure\Setup\lang;
  */
 class SetupAsqLanguages extends SetupLanguages
 {
-    public function getLanguagePrefix(): string
+    public function getLanguagePrefix() : string
     {
         return "asq";
     }
 }
-

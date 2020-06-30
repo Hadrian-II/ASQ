@@ -24,6 +24,7 @@ class EssayFormFactory extends QuestionFormFactory
             new EssayEditorConfigurationFactory($language),
             new EssayScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 }

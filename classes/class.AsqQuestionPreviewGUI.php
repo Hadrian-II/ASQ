@@ -88,7 +88,9 @@ class AsqQuestionPreviewGUI
             $this->revision_name = $_GET[self::PARAM_REVISON_NAME];
 
             $this->ctrl->setParameter(
-                $this, self::PARAM_REVISON_NAME, $this->revision_name
+                $this,
+                self::PARAM_REVISON_NAME,
+                $this->revision_name
             );
         }
     }
@@ -122,7 +124,7 @@ class AsqQuestionPreviewGUI
             $question_dto = AsqGateway::get()->question()->getQuestionRevision($this->question_id, $this->revision_name);
         }
 
-        if (! $question_dto->isComplete()) {
+        if (!$question_dto->isComplete()) {
             $this->ui->mainTemplate()->setContent($this->language->txt('asq_no_preview_of incomplete_questions'));
             return;
         }

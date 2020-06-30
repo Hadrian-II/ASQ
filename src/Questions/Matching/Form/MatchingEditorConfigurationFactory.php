@@ -54,7 +54,8 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         $shuffle_answers = new ilSelectInputGUI(
             $this->language->txt('asq_label_shuffle_answers'),
-            self::VAR_SHUFFLE);
+            self::VAR_SHUFFLE
+        );
 
         $shuffle_answers->setOptions([
             MatchingEditorConfiguration::SHUFFLE_NONE
@@ -76,15 +77,18 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         $matching_mode->addOption(new ilRadioOption(
             $this->language->txt('asq_option_one_to_one'),
-            MatchingEditorConfiguration::MATCHING_ONE_TO_ONE));
+            MatchingEditorConfiguration::MATCHING_ONE_TO_ONE
+        ));
 
         $matching_mode->addOption(new ilRadioOption(
             $this->language->txt('asq_option_many_to_one'),
-            MatchingEditorConfiguration::MATCHING_MANY_TO_ONE));
+            MatchingEditorConfiguration::MATCHING_MANY_TO_ONE
+        ));
 
         $matching_mode->addOption(new ilRadioOption(
             $this->language->txt('asq_option_many_to_many'),
-            MatchingEditorConfiguration::MATCHING_MANY_TO_MANY));
+            MatchingEditorConfiguration::MATCHING_MANY_TO_MANY
+        ));
 
         $fields[] = $matching_mode;
 
@@ -110,18 +114,24 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     {
         $columns = [];
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_definition_text'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_definition_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_DEFINITION_TEXT);
+            self::VAR_DEFINITION_TEXT
+        );
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_definition_image'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_definition_image'),
             AsqTableInputFieldDefinition::TYPE_IMAGE,
-            self::VAR_DEFINITION_IMAGE);
+            self::VAR_DEFINITION_IMAGE
+        );
 
-        return new AsqTableInput($this->language->txt('asq_label_definitions'),
+        return new AsqTableInput(
+            $this->language->txt('asq_label_definitions'),
             self::VAR_DEFINITIONS,
             !is_null($config) ? $this->getItemValues($config->getDefinitions(), self::VAR_DEFINITION_TEXT, self::VAR_DEFINITION_IMAGE) : [],
-            $columns);
+            $columns
+        );
     }
 
     /**
@@ -131,18 +141,24 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     {
         $columns = [];
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_term_text'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_term_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_TERM_TEXT);
+            self::VAR_TERM_TEXT
+        );
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_term_image'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_term_image'),
             AsqTableInputFieldDefinition::TYPE_IMAGE,
-            self::VAR_TERM_IMAGE);
+            self::VAR_TERM_IMAGE
+        );
 
-        return new AsqTableInput($this->language->txt('asq_label_terms'),
+        return new AsqTableInput(
+            $this->language->txt('asq_label_terms'),
             self::VAR_TERMS,
             !is_null($config) ? $this->getItemValues($config->getTerms(), self::VAR_TERM_TEXT, self::VAR_TERM_IMAGE) : [],
-            $columns);
+            $columns
+        );
     }
 
     /**
@@ -152,7 +168,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     private function getItemValues(array $items, string $text_name, string $image_name) : array
     {
         return array_map(
-            function($item) use ($text_name, $image_name) {
+            function ($item) use ($text_name, $image_name) {
                 return [
                     $text_name => $item->getText(),
                     $image_name => $item->getImage()
@@ -175,10 +191,12 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             $defs[$definition->getId()] = $definition->getText();
         }
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_matches_definition'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_matches_definition'),
             AsqTableInputFieldDefinition::TYPE_DROPDOWN,
             self::VAR_MATCH_DEFINITION,
-            $defs);
+            $defs
+        );
 
         $terms = [];
 
@@ -186,19 +204,25 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             $terms[$term->getId()] = $term->getText();
         }
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_matches_term'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_matches_term'),
             AsqTableInputFieldDefinition::TYPE_DROPDOWN,
             self::VAR_MATCH_TERM,
-            $terms);
+            $terms
+        );
 
-        $columns[] = new AsqTableInputFieldDefinition($this->language->txt('asq_header_points'),
+        $columns[] = new AsqTableInputFieldDefinition(
+            $this->language->txt('asq_header_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_MATCH_POINTS);
+            self::VAR_MATCH_POINTS
+        );
 
-        return new AsqTableInput($this->language->txt('asq_label_matches'),
+        return new AsqTableInput(
+            $this->language->txt('asq_label_matches'),
             self::VAR_MATCHES,
             !is_null($config) ? $this->getMatchesValues($config) : [],
-            $columns);
+            $columns
+        );
     }
 
     /**
@@ -208,7 +232,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     private function getMatchesValues(MatchingEditorConfiguration $config) : array
     {
         return array_map(
-            function($match) {
+            function ($match) {
                 return [
                     self::VAR_MATCH_DEFINITION => $match->getDefinitionId(),
                     self::VAR_MATCH_TERM => $match->getTermId(),
@@ -227,14 +251,14 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         $id = -1;
 
         $def = array_map(
-            function($value) use (&$id)
-            {
+            function ($value) use (&$id) {
                 $id += 1;
 
                 return MatchingItem::create(
                     strval($id),
                     $value[self::VAR_DEFINITION_TEXT],
-                    $value[self::VAR_DEFINITION_IMAGE]);
+                    $value[self::VAR_DEFINITION_IMAGE]
+                );
             },
             $this->createDefinitionsTable($this->getDefaultValue())->readValues()
         );
@@ -242,25 +266,25 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         $id = -1;
 
         $term = array_map(
-            function($value) use (&$id)
-            {
+            function ($value) use (&$id) {
                 $id += 1;
 
                 return MatchingItem::create(
                     strval($id),
                     $value[self::VAR_TERM_TEXT],
-                    $value[self::VAR_TERM_IMAGE]);
+                    $value[self::VAR_TERM_IMAGE]
+                );
             },
             $this->createTermsTable($this->getDefaultValue())->readValues()
         );
 
         $match = array_map(
-            function($value)
-            {
+            function ($value) {
                 return MatchingMapping::create(
                     $value[self::VAR_MATCH_DEFINITION],
                     $value[self::VAR_MATCH_TERM],
-                    floatval($value[self::VAR_MATCH_POINTS]));
+                    floatval($value[self::VAR_MATCH_POINTS])
+                );
             },
             $this->createMatchTable($this->getDefaultValue())->readValues()
         );
@@ -271,7 +295,8 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             $this->readInt(self::VAR_MATCHING_MODE),
             $def,
             $term,
-            $match);
+            $match
+        );
     }
 
     /**

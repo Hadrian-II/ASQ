@@ -70,7 +70,8 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
         return NumericScoringConfiguration::create(
             $this->readFloat(self::VAR_POINTS),
             $this->readFloat(self::VAR_LOWER_BOUND),
-            $this->readFloat(self::VAR_UPPER_BOUND));
+            $this->readFloat(self::VAR_UPPER_BOUND)
+        );
     }
 
     /**

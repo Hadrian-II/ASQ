@@ -14,8 +14,9 @@ use srag\CQRS\Event\EventStore;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionEventStore extends EventStore {
-    protected function getEventArClass(): string
+class QuestionEventStore extends EventStore
+{
+    protected function getEventArClass() : string
     {
         return QuestionEventStoreAr::class;
     }

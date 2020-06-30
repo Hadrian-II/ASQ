@@ -53,7 +53,8 @@ class Feedback extends AbstractValueObject
         return $obj;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->answer_option_feedbacks = [];
     }
 
@@ -85,11 +86,13 @@ class Feedback extends AbstractValueObject
      * @param int $option_id
      * @return bool
      */
-    public function hasAnswerOptionFeedback(string $option_id) : bool {
+    public function hasAnswerOptionFeedback(string $option_id) : bool
+    {
         return array_key_exists($option_id, $this->answer_option_feedbacks);
     }
 
-    public function getFeedbackForAnswerOption(string $option_id) : string {
+    public function getFeedbackForAnswerOption(string $option_id) : string
+    {
         return $this->answer_option_feedbacks[$option_id];
     }
 }

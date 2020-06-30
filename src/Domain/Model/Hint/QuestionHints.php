@@ -15,13 +15,15 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionHints extends AbstractValueObject {
+class QuestionHints extends AbstractValueObject
+{
     /**
      * @var QuestionHint[]
      */
     protected $hints;
 
-    public static function create(array $hints) {
+    public static function create(array $hints)
+    {
         $object = new QuestionHints();
         $object->hints = $hints;
         return $object;

@@ -82,7 +82,8 @@ class Question extends AbstractAggregateRoot implements IsRevisable
                 new ilDateTime(time(), IL_CAL_UNIX),
                 $initiating_user_id,
                 [self::VAR_TYPE => $question_type]
-            ));
+            )
+        );
 
         return $question;
     }
@@ -94,7 +95,8 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     /**
      * @param AggregateCreatedEvent $event
      */
-    protected function applyAggregateCreatedEvent(DomainEvent $event) {
+    protected function applyAggregateCreatedEvent(DomainEvent $event)
+    {
         parent::applyAggregateCreatedEvent($event);
         $this->creator_id = $event->getInitiatingUserId();
         $this->question_type = $event->getAdditionalData()[self::VAR_TYPE];
@@ -178,7 +180,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     public function setData(?QuestionData $data, int $creator_id)
     {
-        if (! QuestionData::isNullableEqual($data, $this->getData())) {
+        if (!QuestionData::isNullableEqual($data, $this->getData())) {
             $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
         }
     }
@@ -187,7 +189,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      *
      * @return QuestionPlayConfiguration
      */
-    public function getPlayConfiguration(): ?QuestionPlayConfiguration
+    public function getPlayConfiguration() : ?QuestionPlayConfiguration
     {
         return $this->play_configuration;
     }
@@ -201,12 +203,13 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         ?QuestionPlayConfiguration $play_configuration,
         int $creator_id
     ) : void {
-        if (! QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
+        if (!QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
             $this->ExecuteEvent(new QuestionPlayConfigurationSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
                 $creator_id,
-                $play_configuration));
+                $play_configuration
+            ));
         }
     }
 
@@ -225,15 +228,16 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     public function setAnswerOptions(?AnswerOptions $options, int $creator_id)
     {
-        if (! AnswerOptions::isNullableEqual($options, $this->getAnswerOptions())) {
+        if (!AnswerOptions::isNullableEqual($options, $this->getAnswerOptions())) {
             $this->ExecuteEvent(
                 new QuestionAnswerOptionsSetEvent(
                     $this->getAggregateId(),
                     new ilDateTime(time(), IL_CAL_UNIX),
                     $creator_id,
-                    $options));
+                    $options
+                )
+            );
         }
-
     }
 
 
@@ -252,12 +256,13 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     public function setHints(?QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
     {
-        if (! QuestionHints::isNullableEqual($hints, $this->getHints())) {
+        if (!QuestionHints::isNullableEqual($hints, $this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
                 $creator_id,
-                $hints));
+                $hints
+            ));
         }
     }
 
@@ -283,7 +288,8 @@ class Question extends AbstractAggregateRoot implements IsRevisable
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
                 $creator_id,
-                $feedback));
+                $feedback
+            ));
         }
     }
 
@@ -323,6 +329,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
             $this->getAggregateId(),
             new ilDateTime(time(), IL_CAL_UNIX),
             $user_id,
-            $id));
+            $id
+        ));
     }
 }

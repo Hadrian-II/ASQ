@@ -31,7 +31,8 @@ class MatchingScoringConfigurationFactory extends AbstractObjectFactory
 
         $wrong_deduction = new ilNumberInputGUI(
             $this->language->txt('asq_label_wrong_deduction'),
-            self::VAR_WRONG_DEDUCTION);
+            self::VAR_WRONG_DEDUCTION
+        );
         $wrong_deduction->setSize(2);
         $fields[self::VAR_WRONG_DEDUCTION] = $wrong_deduction;
 

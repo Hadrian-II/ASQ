@@ -41,7 +41,7 @@ class ClozeEditor extends AbstractEditor
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
      */
-    public function readAnswer(): AbstractValueObject
+    public function readAnswer() : AbstractValueObject
     {
         $answers = [];
 
@@ -58,7 +58,7 @@ class ClozeEditor extends AbstractEditor
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
      */
-    public function generateHtml(): string
+    public function generateHtml() : string
     {
         $output = $this->configuration->getClozeText();
 
@@ -67,11 +67,9 @@ class ClozeEditor extends AbstractEditor
 
             if (get_class($gap_config) === SelectGapConfiguration::class) {
                 $output = $this->createDropdown($i, $gap_config, $output);
-            }
-            else if (get_class($gap_config) === TextGapConfiguration::class) {
+            } elseif (get_class($gap_config) === TextGapConfiguration::class) {
                 $output = $this->createText($i, $gap_config, $output);
-            }
-            else if (get_class($gap_config) === NumericGapConfiguration::class) {
+            } elseif (get_class($gap_config) === NumericGapConfiguration::class) {
                 $output = $this->createText($i, $gap_config, $output);
             }
         }
@@ -89,9 +87,11 @@ class ClozeEditor extends AbstractEditor
     {
         $name = '{' . $index . '}';
 
-        $html = sprintf('<select length="20" name="%s">%s</select>',
+        $html = sprintf(
+            '<select length="20" name="%s">%s</select>',
             $this->getPostVariable($index),
-            $this->createOptions($gap_config->getItems(), $index));
+            $this->createOptions($gap_config->getItems(), $index)
+        );
 
         return str_replace($name, $html, $output);
     }
@@ -103,10 +103,12 @@ class ClozeEditor extends AbstractEditor
     private function createOptions(array $gap_items, int $index) : string
     {
         return implode(array_map(
-            function(ClozeGapItem $gap_item) use ($index) {
-                return sprintf('<option value="%1$s" %2$s>%1$s</option>',
-                               $gap_item->getText(),
-                               $gap_item->getText() === $this->getAnswer($index) ? 'selected="selected"' : '');
+            function (ClozeGapItem $gap_item) use ($index) {
+                return sprintf(
+                    '<option value="%1$s" %2$s>%1$s</option>',
+                    $gap_item->getText(),
+                    $gap_item->getText() === $this->getAnswer($index) ? 'selected="selected"' : ''
+                );
             },
             $gap_items
         ));
@@ -122,10 +124,12 @@ class ClozeEditor extends AbstractEditor
     {
         $name = '{' . $index . '}';
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" style="width: %spx;" />',
+        $html = sprintf(
+            '<input type="text" length="20" name="%s" value="%s" style="width: %spx;" />',
             $this->getPostVariable($index),
             $this->getAnswer($index) ?? '',
-            $gap_config->getFieldLength());
+            $gap_config->getFieldLength()
+        );
 
         return str_replace($name, $html, $output);
     }
@@ -155,7 +159,7 @@ class ClozeEditor extends AbstractEditor
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         if (empty($this->configuration->getClozeText())) {
             return false;
@@ -167,7 +171,7 @@ class ClozeEditor extends AbstractEditor
         }
 
         foreach ($this->configuration->getGaps() as $gap_config) {
-            if (! $gap_config->isComplete()) {
+            if (!$gap_config->isComplete()) {
                 return false;
             }
         }
@@ -178,7 +182,8 @@ class ClozeEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string {
+    public static function getDisplayDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 }

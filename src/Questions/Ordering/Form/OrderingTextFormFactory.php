@@ -29,7 +29,8 @@ class OrderingTextFormFactory extends QuestionFormFactory
             new OrderingTextEditorConfigurationFactory($language),
             new OrderingScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 
     /**
@@ -43,7 +44,7 @@ class OrderingTextFormFactory extends QuestionFormFactory
         $options = [];
 
         $i = 1;
-        if (! empty($text_input)) {
+        if (!empty($text_input)) {
             $words = explode(' ', $text_input);
 
             foreach ($words as $word) {
@@ -51,7 +52,7 @@ class OrderingTextFormFactory extends QuestionFormFactory
                     strval($i),
                     ImageAndTextDisplayDefinition::create($word, ''),
                     EmptyDefinition::create()
-                    );
+                );
 
                 $i += 1;
             }

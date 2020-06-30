@@ -30,7 +30,7 @@ class AsqImageUpload extends ilFileInputGUI
      * @param	string	$a_title	Title
      * @param	string	$a_postvar	Post Variable
      */
-    function __construct($a_title = "", $a_postvar = "")
+    public function __construct($a_title = "", $a_postvar = "")
     {
         parent::__construct($a_title, $a_postvar);
         $this->setType("image_file");
@@ -42,14 +42,13 @@ class AsqImageUpload extends ilFileInputGUI
      *
      * @param	string	$a_value	Value
      */
-    function setImagePath($a_value)
+    public function setImagePath($a_value)
     {
         $this->image_path = $a_value;
 
         if (!empty($a_value)) {
             parent::setValue(' ');
-        }
-        else {
+        } else {
             parent::setValue('');
         }
     }
@@ -59,7 +58,7 @@ class AsqImageUpload extends ilFileInputGUI
      *
      * @return	string	Value
      */
-    function getImagePath()
+    public function getImagePath()
     {
         return $this->image;
     }
@@ -67,7 +66,7 @@ class AsqImageUpload extends ilFileInputGUI
     /**
      * @return	boolean		Input ok, true/false
      */
-    function checkInput()
+    public function checkInput()
     {
         $post = $this->getPostValue($this->getPostVar());
 
@@ -82,7 +81,7 @@ class AsqImageUpload extends ilFileInputGUI
     /**
      * Render html
      */
-    function render($a_mode = "")
+    public function render($a_mode = "")
     {
         //TODO create template when definitive
         $additional = '<input type="hidden" name="' . $this->getPostVar() . '" value="' . $this->image_path . '" />';
@@ -105,11 +104,9 @@ class AsqImageUpload extends ilFileInputGUI
         }
 
         if ($this->getDisabled()) {
-           return $additional;
+            return $additional;
+        } else {
+            return '<div style="width: 333px;">' . parent::render($a_mode) . $additional . $delete . '</div>';
         }
-        else {
-            return '<div style="width: 333px;">' . parent::render($a_mode)  . $additional . $delete . '</div>';
-        }
-
     }
 }

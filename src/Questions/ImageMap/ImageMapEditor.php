@@ -52,7 +52,7 @@ class ImageMapEditor extends AbstractEditor
     /**
      * @return string
      */
-    public function generateHtml(): string
+    public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
 
@@ -83,7 +83,7 @@ class ImageMapEditor extends AbstractEditor
     /**
      * @return string
      */
-    private function getPostName(): string
+    private function getPostName() : string
     {
         return $this->question->getId();
     }
@@ -93,7 +93,7 @@ class ImageMapEditor extends AbstractEditor
      * @param int $id
      * @return string
      */
-    private function generateShape(ImageMapEditorDefinition $display_definition, string $id): string
+    private function generateShape(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         switch ($display_definition->getType()) {
             case ImageMapEditorDefinition::TYPE_CIRCLE:
@@ -112,7 +112,7 @@ class ImageMapEditor extends AbstractEditor
      * @param int $id
      * @return string
      */
-    private function generateCircle(ImageMapEditorDefinition $display_definition, string $id): string
+    private function generateCircle(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
@@ -131,7 +131,7 @@ class ImageMapEditor extends AbstractEditor
      * @param int $id
      * @return string
      */
-    private function generatePolygon(ImageMapEditorDefinition $display_definition, string $id): string
+    private function generatePolygon(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
@@ -145,7 +145,7 @@ class ImageMapEditor extends AbstractEditor
      * @param int $id
      * @return string
      */
-    private function generateRectangle(ImageMapEditorDefinition $display_definition, string $id): string
+    private function generateRectangle(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
 
@@ -169,7 +169,7 @@ class ImageMapEditor extends AbstractEditor
      * @param string $coordinates
      * @return array
      */
-    private function decodeCoordinates(string $coordinates): array
+    private function decodeCoordinates(string $coordinates) : array
     {
         $raw_values = explode(';', $coordinates);
 
@@ -187,11 +187,11 @@ class ImageMapEditor extends AbstractEditor
      * @param int $id
      * @return string
      */
-    private function getClass(string $id): string
+    private function getClass(string $id) : string
     {
         $class = '';
 
-        if (! is_null($this->answer) && in_array($id, $this->answer->getSelectedIds())) {
+        if (!is_null($this->answer) && in_array($id, $this->answer->getSelectedIds())) {
             $class .= ' selected';
         }
 
@@ -205,7 +205,7 @@ class ImageMapEditor extends AbstractEditor
     /**
      * @return Answer
      */
-    public function readAnswer(): ?AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $value = $this->readString($this->getPostName());
 
@@ -219,7 +219,7 @@ class ImageMapEditor extends AbstractEditor
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         if (empty($this->configuration->getImage())) {
             return false;

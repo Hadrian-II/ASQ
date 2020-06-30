@@ -97,8 +97,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
         $this->setMultipart(true);
         $this->setTitle($this->language->txt($question->getType()->getTitleKey()));
 
-        foreach ($this->form_factory->getScripts() as $script)
-        {
+        foreach ($this->form_factory->getScripts() as $script) {
             $this->ui->mainTemplate()->addJavaScript($script);
         }
 
@@ -136,14 +135,14 @@ class QuestionFormGUI extends ilPropertyFormGUI
             $this->addItem($field);
         }
 
-        if ($this->form_factory->hasAnswerOptions())
-        {
+        if ($this->form_factory->hasAnswerOptions()) {
             $this->option_form = new AsqTableInput(
                 $this->language->txt('asq_label_answer'),
                 self::VAR_ANSWER_OPTIONS,
                 $this->form_factory->getAnswerOptionValues($question->getAnswerOptions()),
                 $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()),
-                $this->form_factory->getAnswerOptionConfiguration());
+                $this->form_factory->getAnswerOptionConfiguration()
+            );
 
             $this->addItem($this->option_form);
         }
@@ -162,7 +161,8 @@ class QuestionFormGUI extends ilPropertyFormGUI
             $value = sprintf(
                 'Complete. Max Points: %s Min Points: %s',
                 AsqGateway::get()->answer()->getMaxScore($question),
-                AsqGateway::get()->answer()->getMinScore($question));
+                AsqGateway::get()->answer()->getMinScore($question)
+            );
         } else {
             $value = 'Not Complete';
         }

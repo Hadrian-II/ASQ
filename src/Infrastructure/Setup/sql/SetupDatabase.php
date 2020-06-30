@@ -31,10 +31,8 @@ use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
  */
 class SetupDatabase
 {
-
     private function __construct()
     {
-
     }
 
 
@@ -129,7 +127,8 @@ class SetupDatabase
         );
     }
 
-    public function uninstall() : void{
+    public function uninstall() : void
+    {
         global $DIC;
 
         $DIC->database()->dropTable(QuestionEventStoreAr::STORAGE_NAME, false);

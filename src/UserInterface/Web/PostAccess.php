@@ -24,8 +24,7 @@ trait PostAccess
      */
     private function getPost() : array
     {
-        if (is_null($this->post))
-        {
+        if (is_null($this->post)) {
             global $DIC;
 
             $this->post = $DIC->http()->request()->getParsedBody();
@@ -44,8 +43,7 @@ trait PostAccess
      */
     private function getPurifier() : AsqHtmlPurifier
     {
-        if (is_null($this->purifier))
-        {
+        if (is_null($this->purifier)) {
             $this->purifier = new AsqHtmlPurifier();
         }
 

@@ -69,7 +69,7 @@ class OrderingEditor extends AbstractEditor
     /**
      * @return string
      */
-    public function generateHtml(): string
+    public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
 
@@ -90,7 +90,7 @@ class OrderingEditor extends AbstractEditor
 
         $tpl->setCurrentBlock('editor');
 
-        if (! $this->configuration->isVertical()) {
+        if (!$this->configuration->isVertical()) {
             $tpl->setVariable('ADD_CLASS', 'horizontal');
         }
 
@@ -152,7 +152,7 @@ class OrderingEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return ImageAndTextDisplayDefinition::class;
     }

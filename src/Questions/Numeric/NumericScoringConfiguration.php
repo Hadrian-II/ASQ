@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class NumericScoringConfiguration extends AbstractConfiguration {
+class NumericScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?float
      */
@@ -34,11 +35,11 @@ class NumericScoringConfiguration extends AbstractConfiguration {
      * @param float $upper_bound
      * @return NumericScoringConfiguration
      */
-    static function create(
+    public static function create(
         ?float $points = null,
         ?float $lower_bound = null,
-        ?float $upper_bound = null) : NumericScoringConfiguration
-    {
+        ?float $upper_bound = null
+    ) : NumericScoringConfiguration {
         $object = new NumericScoringConfiguration();
         $object->points = $points;
         $object->lower_bound = $lower_bound;

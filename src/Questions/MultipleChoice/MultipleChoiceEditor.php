@@ -71,9 +71,12 @@ class MultipleChoiceEditor extends AbstractEditor
             $tpl->setCurrentBlock('selection_limit_hint');
             $tpl->setVariable(
                 'SELECTION_LIMIT_HINT',
-                sprintf("Please select %d of %d answers!",
+                sprintf(
+                    "Please select %d of %d answers!",
                     $this->configuration->getMaxAnswers(),
-                    count($this->answer_options)));
+                    count($this->answer_options)
+                )
+            );
 
             $tpl->setVariable('MAX_ANSWERS', $this->configuration->getMaxAnswers());
             $tpl->parseCurrentBlock();
@@ -84,24 +87,25 @@ class MultipleChoiceEditor extends AbstractEditor
             /** @var ImageAndTextDisplayDefinition $display_definition */
             $display_definition = $answer_option->getDisplayDefinition();
 
-            if (! empty($display_definition->getImage())) {
+            if (!empty($display_definition->getImage())) {
                 $tpl->setCurrentBlock('answer_image');
                 $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
                 $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
                 $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
-                $tpl->setVariable('THUMB_SIZE',
+                $tpl->setVariable(
+                    'THUMB_SIZE',
                     is_null($this->configuration->getThumbnailSize()) ?
                         '' :
-                        sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize()));
+                        sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize())
+                );
                 $tpl->parseCurrentBlock();
             }
 
             if ($this->render_feedback &&
-                ! is_null($this->answer) &&
-                ! is_null($this->question->getFeedback()) &&
-                ! is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId())) &&
-                $this->showFeedbackForAnswerOption($answer_option))
-            {
+                !is_null($this->answer) &&
+                !is_null($this->question->getFeedback()) &&
+                !is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId())) &&
+                $this->showFeedbackForAnswerOption($answer_option)) {
                 $tpl->setCurrentBlock('feedback');
                 $tpl->setVariable('FEEDBACK', $this->question->getFeedback()
                     ->getFeedbackForAnswerOption($answer_option->getOptionId()));
@@ -114,7 +118,7 @@ class MultipleChoiceEditor extends AbstractEditor
             $tpl->setVariable('ANSWER_ID', $answer_option->getOptionId());
             $tpl->setVariable('POST_NAME', $this->getPostName($answer_option->getOptionId()));
 
-            if (! is_null($this->answer) && in_array($answer_option->getOptionId(), $this->answer->getSelectedIds())) {
+            if (!is_null($this->answer) && in_array($answer_option->getOptionId(), $this->answer->getSelectedIds())) {
                 $tpl->setVariable('CHECKED', 'checked="checked"');
             }
 
@@ -144,7 +148,7 @@ class MultipleChoiceEditor extends AbstractEditor
             case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT:
                 $points_selected = $option->getScoringDefinition()->getPointsSelected();
                 $points_unselected = $option->getScoringDefinition()->getPointsUnselected();
-                return ($is_selected && ($points_selected > $points_unselected) || (! $is_selected && ($points_unselected > $points_selected)));
+                return ($is_selected && ($points_selected > $points_unselected) || (!$is_selected && ($points_unselected > $points_selected)));
             default:
                 return false;
         }
@@ -193,7 +197,7 @@ class MultipleChoiceEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return ImageAndTextDisplayDefinition::class;
     }

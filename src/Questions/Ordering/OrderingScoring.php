@@ -22,7 +22,7 @@ class OrderingScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    function score(Answer $answer) : float
+    public function score(Answer $answer) : float
     {
         $reached_points = 0.0;
 

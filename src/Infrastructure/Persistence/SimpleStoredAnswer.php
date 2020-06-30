@@ -16,7 +16,8 @@ use ILIAS\Data\UUID\Factory;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SimpleStoredAnswer extends ActiveRecord {
+class SimpleStoredAnswer extends ActiveRecord
+{
     const STORAGE_NAME = "asq_stored_answer";
 
     /**
@@ -59,7 +60,8 @@ class SimpleStoredAnswer extends ActiveRecord {
     protected $answer;
 
 
-    public static function createNew(Answer $answer, ?string $uuid = null) {
+    public static function createNew(Answer $answer, ?string $uuid = null)
+    {
         $object = new SimpleStoredAnswer();
 
         if (is_null($uuid)) {
@@ -72,11 +74,10 @@ class SimpleStoredAnswer extends ActiveRecord {
         $history = SimpleStoredAnswer::where(['uuid' => $object->uuid])->get();
 
         if (count($history) > 0) {
-            $object->version = array_reduce($history, function($max, SimpleStoredAnswer $item) {
+            $object->version = array_reduce($history, function ($max, SimpleStoredAnswer $item) {
                 return max($max, $item->getVersion() + 1);
             }, 0);
-        }
-        else {
+        } else {
             $object->version = 1;
         }
 
@@ -112,7 +113,8 @@ class SimpleStoredAnswer extends ActiveRecord {
     /**
      * @return string
      */
-    public static function returnDbTableName() {
+    public static function returnDbTableName()
+    {
         return self::STORAGE_NAME;
     }
 }

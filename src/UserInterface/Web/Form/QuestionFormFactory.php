@@ -52,8 +52,8 @@ class QuestionFormFactory
         IObjectFactory $editor_config_factory,
         IObjectFactory $scoring_config_factory,
         IAnswerOptionFactory $editor_definition_factory,
-        IAnswerOptionFactory $scoring_definition_factory)
-    {
+        IAnswerOptionFactory $scoring_definition_factory
+    ) {
         $this->editor_config_factory = $editor_config_factory;
         $this->scoring_config_factory = $scoring_config_factory;
         $this->editor_definition_factory = $editor_definition_factory;
@@ -68,7 +68,8 @@ class QuestionFormFactory
     {
         return array_merge(
             $this->editor_config_factory->getFormfields($config->getEditorConfiguration()),
-            $this->scoring_config_factory->getFormfields($config->getScoringConfiguration()));
+            $this->scoring_config_factory->getFormfields($config->getScoringConfiguration())
+        );
     }
 
     /**
@@ -78,7 +79,8 @@ class QuestionFormFactory
     {
         return QuestionPlayConfiguration::create(
             $this->editor_config_factory->readObjectFromPost(),
-            $this->scoring_config_factory->readObjectFromPost());
+            $this->scoring_config_factory->readObjectFromPost()
+        );
     }
 
     /**
@@ -88,7 +90,8 @@ class QuestionFormFactory
     {
         return QuestionPlayConfiguration::create(
             $this->editor_config_factory->getDefaultValue(),
-            $this->scoring_config_factory->getDefaultValue());
+            $this->scoring_config_factory->getDefaultValue()
+        );
     }
 
     /**
@@ -98,7 +101,8 @@ class QuestionFormFactory
     {
         return array_merge(
             $this->editor_definition_factory->getTableColumns($play),
-            $this->scoring_definition_factory->getTableColumns($play));
+            $this->scoring_definition_factory->getTableColumns($play)
+        );
     }
 
     /**
@@ -124,16 +128,16 @@ class QuestionFormFactory
      */
     public function getAnswerOptionValues(?AnswerOptions $options) : array
     {
-        if (is_null($options))
-        {
+        if (is_null($options)) {
             return [];
         }
 
-        return array_map(function($option) {
+        return array_map(function ($option) {
             /** @var $option AnswerOption */
             return array_merge(
                 $this->editor_definition_factory->getValues($option->getDisplayDefinition()),
-                $this->scoring_definition_factory->getValues($option->getScoringDefinition()));
+                $this->scoring_definition_factory->getValues($option->getScoringDefinition())
+            );
         }, $options->getOptions());
     }
 
@@ -150,7 +154,8 @@ class QuestionFormFactory
             $options[] = AnswerOption::create(
                 strval($i),
                 $this->editor_definition_factory->readObjectFromValues($value),
-                $this->scoring_definition_factory->readObjectFromValues($value));
+                $this->scoring_definition_factory->readObjectFromValues($value)
+            );
         }
 
         return AnswerOptions::create($options);

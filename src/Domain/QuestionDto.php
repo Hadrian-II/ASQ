@@ -23,7 +23,6 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
  */
 class QuestionDto implements JsonSerializable
 {
-
     const IL_COMPONENT_ID = 'asq';
 
     /**
@@ -80,7 +79,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return QuestionDto
      */
-    public static function CreateFromQuestion(Question $question): QuestionDto
+    public static function CreateFromQuestion(Question $question) : QuestionDto
     {
         $dto = new QuestionDto();
 
@@ -102,7 +101,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return string
      */
-    public function getId(): string
+    public function getId() : string
     {
         return $this->id;
     }
@@ -110,7 +109,7 @@ class QuestionDto implements JsonSerializable
     /**
      * @return int
      */
-    public function getType(): QuestionTypeDefinition
+    public function getType() : QuestionTypeDefinition
     {
         return $this->type;
     }
@@ -128,13 +127,12 @@ class QuestionDto implements JsonSerializable
      *
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         if (is_null($this->data) ||
             is_null($this->play_configuration) ||
             is_null($this->play_configuration->getEditorConfiguration()) ||
-            is_null($this->play_configuration->getScoringConfiguration()))
-        {
+            is_null($this->play_configuration->getScoringConfiguration())) {
             return false;
         }
 
@@ -162,7 +160,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return string
      */
-    public function getRevisionId(): ?RevisionId
+    public function getRevisionId() : ?RevisionId
     {
         return $this->revision_id;
     }
@@ -171,7 +169,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return QuestionData
      */
-    public function getData(): ?QuestionData
+    public function getData() : ?QuestionData
     {
         return $this->data;
     }
@@ -180,7 +178,7 @@ class QuestionDto implements JsonSerializable
      *
      * @param QuestionData $data
      */
-    public function setData(?QuestionData $data): void
+    public function setData(?QuestionData $data) : void
     {
         $this->data = $data;
     }
@@ -189,7 +187,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return QuestionPlayConfiguration
      */
-    public function getPlayConfiguration(): ?QuestionPlayConfiguration
+    public function getPlayConfiguration() : ?QuestionPlayConfiguration
     {
         return $this->play_configuration;
     }
@@ -198,12 +196,13 @@ class QuestionDto implements JsonSerializable
      *
      * @param QuestionPlayConfiguration $play_configuration
      */
-    public function setPlayConfiguration(?QuestionPlayConfiguration $play_configuration): void
+    public function setPlayConfiguration(?QuestionPlayConfiguration $play_configuration) : void
     {
         $this->play_configuration = $play_configuration;
     }
 
-    public function hasAnswerOptions() : bool {
+    public function hasAnswerOptions() : bool
+    {
         return !is_null($this->answer_options) && count($this->answer_options->getOptions()) > 0;
     }
 
@@ -211,7 +210,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return AnswerOptions
      */
-    public function getAnswerOptions(): ?AnswerOptions
+    public function getAnswerOptions() : ?AnswerOptions
     {
         return $this->answer_options;
     }
@@ -220,7 +219,7 @@ class QuestionDto implements JsonSerializable
      *
      * @param AnswerOptions $answer_options
      */
-    public function setAnswerOptions(?AnswerOptions $answer_options): void
+    public function setAnswerOptions(?AnswerOptions $answer_options) : void
     {
         $this->answer_options = $answer_options;
     }
@@ -228,7 +227,8 @@ class QuestionDto implements JsonSerializable
     /**
      * @return bool
      */
-    public function hasFeedback() : bool {
+    public function hasFeedback() : bool
+    {
         return !is_null($this->feedback);
     }
 
@@ -236,7 +236,7 @@ class QuestionDto implements JsonSerializable
      *
      * @param Feedback $feedback
      */
-    public function setFeedback(?Feedback $feedback): void
+    public function setFeedback(?Feedback $feedback) : void
     {
         $this->feedback = $feedback;
     }
@@ -245,7 +245,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return Feedback
      */
-    public function getFeedback(): ?Feedback
+    public function getFeedback() : ?Feedback
     {
         return $this->feedback;
     }
@@ -262,7 +262,7 @@ class QuestionDto implements JsonSerializable
      *
      * @return QuestionHints
      */
-    public function getQuestionHints(): ?QuestionHints
+    public function getQuestionHints() : ?QuestionHints
     {
         return $this->question_hints;
     }
@@ -271,7 +271,7 @@ class QuestionDto implements JsonSerializable
      *
      * @param QuestionHints $question_hints
      */
-    public function setQuestionHints(?QuestionHints $question_hints): void
+    public function setQuestionHints(?QuestionHints $question_hints) : void
     {
         $this->question_hints = $question_hints;
     }

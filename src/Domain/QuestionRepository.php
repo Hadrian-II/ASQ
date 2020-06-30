@@ -19,47 +19,53 @@ use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionRepository extends AbstractAggregateRepository {
+class QuestionRepository extends AbstractAggregateRepository
+{
 
-	/**
-	 * @var QuestionEventStore
-	 */
-	private $event_store;
+    /**
+     * @var QuestionEventStore
+     */
+    private $event_store;
 
     /**
      * QuestionRepository constructor.
      */
-	protected function __construct() {
-		parent::__construct();
-		$this->event_store = new QuestionEventStore();
-	}
+    protected function __construct()
+    {
+        parent::__construct();
+        $this->event_store = new QuestionEventStore();
+    }
 
-	/**
-	 * @return EventStore
-	 */
-	protected function getEventStore(): EventStore {
-		return $this->event_store;
-	}
+    /**
+     * @return EventStore
+     */
+    protected function getEventStore() : EventStore
+    {
+        return $this->event_store;
+    }
 
     /**
      * @param DomainEvents $event_history
      *
      * @return AbstractAggregateRoot
      */
-	protected function reconstituteAggregate(DomainEvents $event_history): AbstractAggregateRoot {
-		return Question::reconstitute($event_history);
-	}
+    protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot
+    {
+        return Question::reconstitute($event_history);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getNextId() : int {
-	    return $this->event_store->getNextId();
-	}
+    /**
+     * @return int
+     */
+    public function getNextId() : int
+    {
+        return $this->event_store->getNextId();
+    }
 
-	public function getAggregateByIliasId(int $id) : Question {
-	    $aggregate_id = $this->event_store->getAggregateIdOfIliasId($id);
+    public function getAggregateByIliasId(int $id) : Question
+    {
+        $aggregate_id = $this->event_store->getAggregateIdOfIliasId($id);
 
-	    return $this->getAggregateRootById($aggregate_id);
-	}
+        return $this->getAggregateRootById($aggregate_id);
+    }
 }

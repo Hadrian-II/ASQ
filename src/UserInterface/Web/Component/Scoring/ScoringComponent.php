@@ -63,10 +63,14 @@ class ScoringComponent
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_scoring.html', true, true);
 
         $tpl->setCurrentBlock('answer_scoring');
-        $tpl->setVariable('ANSWER_SCORE',
-            sprintf($this->language->txt("you_received_a_of_b_points"),
-                                          $this->scoring->score($this->answer),
-                                          $this->scoring->getMaxScore()));
+        $tpl->setVariable(
+            'ANSWER_SCORE',
+            sprintf(
+                $this->language->txt("you_received_a_of_b_points"),
+                $this->scoring->score($this->answer),
+                $this->scoring->getMaxScore()
+            )
+        );
         $tpl->parseCurrentBlock();
 
         return $tpl->get();

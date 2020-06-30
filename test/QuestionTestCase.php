@@ -17,7 +17,8 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class QuestionTestCase extends TestCase {
+abstract class QuestionTestCase extends TestCase
+{
     const TEST_CONTAINER = -1;
     const DONT_TEST = -1;
     
@@ -29,19 +30,20 @@ abstract class QuestionTestCase extends TestCase {
     
     public function setUp() : void
     {
-         include_once("./Services/PHPUnit/classes/class.ilUnitUtil.php");
-         ilUnitUtil::performInitialisation();
+        include_once("./Services/PHPUnit/classes/class.ilUnitUtil.php");
+        ilUnitUtil::performInitialisation();
     }
     
-    public function questionAnswerProvider() : array {
+    public function questionAnswerProvider() : array
+    {
         $mapping = [];
         
         foreach ($this->getQuestions() as $question_id => $question) {
             foreach ($this->getAnswers() as $answer_id => $answer) {
-                $mapping[sprintf('Question %s with Answer $s', $question_id, $answer_id)] = 
+                $mapping[sprintf('Question %s with Answer $s', $question_id, $answer_id)] =
                     [
-                        $question, 
-                        $answer, 
+                        $question,
+                        $answer,
                         $this->getExpectedScore($question_id, $answer_id)
                     ];
             }
@@ -53,7 +55,8 @@ abstract class QuestionTestCase extends TestCase {
     /**
      * @param QuestionDto $question
      */
-    public function testQuestionCreation() {
+    public function testQuestionCreation()
+    {
         global $DIC;
         
         foreach ($this->getQuestions() as $question) {
@@ -74,18 +77,20 @@ abstract class QuestionTestCase extends TestCase {
     /**
      * @depends testQuestionCreation
      * @dataProvider questionAnswerProvider
-     * 
+     *
      * @param QuestionDto $question
      * @param Answer $answer
      * @param float $expected_score
      */
-    public function testAnswers(QuestionDto $question, Answer $answer, float $expected_score) {
+    public function testAnswers(QuestionDto $question, Answer $answer, float $expected_score)
+    {
         global $DIC;
         
         $this->assertEquals($expected_score, $DIC->assessment()->answer()->getScore($question, $answer));
     }
     
-    public static function TearDownAfterClass() : void {
+    public static function TearDownAfterClass() : void
+    {
         include_once("./Services/PHPUnit/classes/class.ilUnitUtil.php");
         ilUnitUtil::performInitialisation();
         

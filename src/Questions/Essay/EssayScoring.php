@@ -18,7 +18,8 @@ use srag\asq\Domain\Model\Scoring\TextScoring;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayScoring extends AbstractScoring {
+class EssayScoring extends AbstractScoring
+{
     const SCORING_MANUAL = 1;
     const SCORING_AUTOMATIC_ANY = 2;
     const SCORING_AUTOMATIC_ALL = 3;
@@ -53,13 +54,12 @@ class EssayScoring extends AbstractScoring {
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer): float
+    public function score(Answer $answer) : float
     {
         if ($this->configuration->getScoringMode() === self::SCORING_MANUAL) {
             // TODO handle manual scoring
             throw new Exception("Dont run score on manual scoring");
-        }
-        else {
+        } else {
             $reached_points = $this->generateScore($answer->getText());
 
             return $reached_points;
@@ -72,7 +72,6 @@ class EssayScoring extends AbstractScoring {
      */
     private function generateScore(string $text) : float
     {
-
         $text = strip_tags($text);
 
         if ($this->configuration->getMatchingMode() === TextScoring::TM_CASE_INSENSITIVE) {
@@ -82,7 +81,7 @@ class EssayScoring extends AbstractScoring {
         //ignore punctuation
         $this->words = explode(' ', preg_replace("#[[:punct:]]#", "", $text));
 
-        $this->answer_options = array_map(function($definition) {
+        $this->answer_options = array_map(function ($definition) {
             return new EssayScoringProcessedAnswerOption($definition, $this->configuration->getMatchingMode() === TextScoring::TM_CASE_INSENSITIVE);
         }, $this->configuration->getDefinitions());
 
@@ -105,7 +104,6 @@ class EssayScoring extends AbstractScoring {
             if ($found && $this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY) {
                 $points += $answer_option->getPoints();
             }
-
         }
 
         switch ($this->configuration->getScoringMode()) {
@@ -128,7 +126,7 @@ class EssayScoring extends AbstractScoring {
     {
         $answer_words = $answer_option->getWords();
 
-        switch($this->configuration->getMatchingMode()) {
+        switch ($this->configuration->getMatchingMode()) {
             case TextScoring::TM_LEVENSHTEIN_1:
                 $max_distance = 1;
                 break;
@@ -176,13 +174,14 @@ class EssayScoring extends AbstractScoring {
     {
         if ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY) {
             return array_sum(
-                        array_map(function($definition) {
-                            return $definition->getPoints();
-                        },
-                        $this->configuration->getDefinitions()
-                    ));
-        }
-        else {
+                array_map(
+                            function ($definition) {
+                                return $definition->getPoints();
+                            },
+                            $this->configuration->getDefinitions()
+                        )
+            );
+        } else {
             return $this->configuration->getPoints();
         }
     }
@@ -193,7 +192,7 @@ class EssayScoring extends AbstractScoring {
      */
     public function getBestAnswer() : Answer
     {
-        $text = implode(' ',array_map(function($definition) {
+        $text = implode(' ', array_map(function ($definition) {
             return $definition->getText();
         }, $this->configuration->getDefinitions()));
 
@@ -214,8 +213,7 @@ class EssayScoring extends AbstractScoring {
                 /** @var EssayScoringDefinition $option_config */
 
                 if (empty($definition->getText()) ||
-                    ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY && empty($definition->getPoints())))
-                {
+                    ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY && empty($definition->getPoints()))) {
                     return false;
                 }
             }

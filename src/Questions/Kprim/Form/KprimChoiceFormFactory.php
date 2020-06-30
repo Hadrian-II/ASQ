@@ -25,7 +25,8 @@ class KprimChoiceFormFactory extends QuestionFormFactory
             new KprimChoiceEditorConfigurationFactory($language),
             new KprimChoiceScoringConfigurationFactory($language),
             new ImageAndTextDefinitionFactory($language),
-            new KprimChoiceScoringDefinitionFactory($language));
+            new KprimChoiceScoringDefinitionFactory($language)
+        );
     }
 
     /**

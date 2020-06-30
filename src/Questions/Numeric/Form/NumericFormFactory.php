@@ -24,6 +24,7 @@ class NumericFormFactory extends QuestionFormFactory
             new NumericEditorConfigurationFactory($language),
             new NumericScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 }

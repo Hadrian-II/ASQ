@@ -16,7 +16,8 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionTypeDefinition extends AbstractValueObject {
+class QuestionTypeDefinition extends AbstractValueObject
+{
     /**
      * @var string
      */

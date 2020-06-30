@@ -35,10 +35,9 @@ class MatchingScoring extends AbstractScoring
         $score = 0;
 
         foreach ($answer->getMatches() as $given_match) {
-            if(array_key_exists($given_match, $matches)) {
+            if (array_key_exists($given_match, $matches)) {
                 $score += $matches[$given_match];
-            }
-            else {
+            } else {
                 $score -= $wrong_deduction;
             }
         }

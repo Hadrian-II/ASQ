@@ -37,7 +37,8 @@ class ImageFormPopup extends ilTextInputGUI
      * @return string
      * @throws \ilTemplateException
      */
-    public function render($a_mode = '') {
+    public function render($a_mode = '')
+    {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
         $tpl->setVariable('POPUP_TITLE', $this->language->txt('asq_imagemap_popup_title'));
         $tpl->setVariable('IMAGE_SRC', $this->getValue());
@@ -46,7 +47,8 @@ class ImageFormPopup extends ilTextInputGUI
         return $tpl->get();
     }
 
-    public function setValueByArray($values) {
+    public function setValueByArray($values)
+    {
         //do nothing as it has no post value and setvaluebypost resets value
     }
 }

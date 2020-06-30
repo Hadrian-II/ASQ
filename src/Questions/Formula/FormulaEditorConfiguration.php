@@ -14,8 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaEditorConfiguration extends AbstractConfiguration {
-
+class FormulaEditorConfiguration extends AbstractConfiguration
+{
     public static function create() : FormulaEditorConfiguration
     {
         return new FormulaEditorConfiguration();

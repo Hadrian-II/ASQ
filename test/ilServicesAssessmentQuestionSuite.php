@@ -33,8 +33,7 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
         
         $suite = new ilServicesAssessmentQuestionSuite();
         
-        foreach(self::$testSuites as $classFile => $className)
-        {
+        foreach (self::$testSuites as $classFile => $className) {
             require_once $classFile;
             $suite->addTestSuite($className);
         }

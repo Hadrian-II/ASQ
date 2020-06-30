@@ -27,14 +27,15 @@ class ClozeFormFactory extends QuestionFormFactory
             new ClozeEditorConfigurationFactory($language),
             new ClozeScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 
     /**
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getScripts()
      */
-    public function getScripts(): array
+    public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Cloze/ClozeAuthoring.js' ];
     }

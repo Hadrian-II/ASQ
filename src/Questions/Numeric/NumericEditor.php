@@ -72,7 +72,7 @@ class NumericEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return EmptyDefinition::class;
     }

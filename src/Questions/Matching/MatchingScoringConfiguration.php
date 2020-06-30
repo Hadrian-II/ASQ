@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class MatchingScoringConfiguration extends AbstractConfiguration {
+class MatchingScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?float
      */
@@ -34,7 +35,8 @@ class MatchingScoringConfiguration extends AbstractConfiguration {
     /**
      * @return float
      */
-    public function getWrongDeduction() : float {
+    public function getWrongDeduction() : float
+    {
         return $this->wrong_deduction ?? 0.0;
     }
 }

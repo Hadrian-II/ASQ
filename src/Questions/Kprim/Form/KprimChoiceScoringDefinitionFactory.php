@@ -39,13 +39,10 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         /** @var $conf KprimChoiceEditorConfiguration */
-        if (is_null($play) || is_null($play->getEditorConfiguration()))
-        {
+        if (is_null($play) || is_null($play->getEditorConfiguration())) {
             $label_true = $this->language->txt('asq_label_right');
             $label_false = $this->language->txt('asq_label_wrong');
-        }
-        else
-        {
+        } else {
             $conf = $play->getEditorConfiguration();
             $label_true = $conf->getLabelTrue();
             $label_false = $conf->getLabelFalse();

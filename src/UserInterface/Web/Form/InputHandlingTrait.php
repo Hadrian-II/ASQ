@@ -34,9 +34,8 @@ trait InputHandlingTrait
      */
     protected function readFloat(string $postvar) : ?float
     {
-        if (! $this->isPostVarSet($postvar) ||
-            ! is_numeric($this->getPostValue($postvar)))
-        {
+        if (!$this->isPostVarSet($postvar) ||
+            !is_numeric($this->getPostValue($postvar))) {
             return null;
         }
 
@@ -51,9 +50,8 @@ trait InputHandlingTrait
      */
     protected function readInt(string $postvar) : ?int
     {
-        if (! $this->isPostVarSet($postvar) ||
-            ! is_numeric($this->getPostValue($postvar)))
-        {
+        if (!$this->isPostVarSet($postvar) ||
+            !is_numeric($this->getPostValue($postvar))) {
             return null;
         }
 
@@ -74,8 +72,7 @@ trait InputHandlingTrait
      */
     private function getUploader() : ImageUploader
     {
-        if (is_null($this->image_uploader))
-        {
+        if (is_null($this->image_uploader)) {
             $this->image_uploader = new ImageUploader();
         }
 

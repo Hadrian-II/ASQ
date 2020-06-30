@@ -48,11 +48,12 @@ class FormulaScoringVariable extends AbstractValueObject
      * @param ?float $divisor
      * @return FormulaScoringVariable
      */
-    public static function create(?float $min,
-                                  ?float $max,
-                                  ?string $unit,
-                                  ?float $multiple_of) :  FormulaScoringVariable
-    {
+    public static function create(
+        ?float $min,
+        ?float $max,
+        ?string $unit,
+        ?float $multiple_of
+    ) : FormulaScoringVariable {
         $object = new FormulaScoringVariable();
         $object->min = $min;
         $object->max = $max;
@@ -96,7 +97,8 @@ class FormulaScoringVariable extends AbstractValueObject
     /**
      * @return array
      */
-    public function getAsArray() : array {
+    public function getAsArray() : array
+    {
         return [
             self::VAR_MIN => $this->min,
             self::VAR_MAX => $this->max,
@@ -111,8 +113,8 @@ class FormulaScoringVariable extends AbstractValueObject
      */
     public function isComplete() : bool
     {
-        return ! is_null($this->getMax()) &&
-               ! is_null($this->getMin()) &&
-               ! is_null($this->getMultipleOf());
+        return !is_null($this->getMax()) &&
+               !is_null($this->getMin()) &&
+               !is_null($this->getMultipleOf());
     }
 }

@@ -14,7 +14,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ErrorTextScoringDefinition extends AbstractValueObject {
+class ErrorTextScoringDefinition extends AbstractValueObject
+{
     /**
      * @var ?int
      */
@@ -43,8 +44,8 @@ class ErrorTextScoringDefinition extends AbstractValueObject {
         ?int $wrong_word_index,
         ?int $wrong_word_length,
         ?string $correct_text,
-        ?float $points) : ErrorTextScoringDefinition
-    {
+        ?float $points
+    ) : ErrorTextScoringDefinition {
         $object = new ErrorTextScoringDefinition();
         $object->wrong_word_index = $wrong_word_index;
         $object->wrong_word_length = $wrong_word_length;

@@ -22,7 +22,8 @@ use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AnswerService extends ASQService {
+class AnswerService extends ASQService
+{
     /**
      * Gets the score of an answer to a question
      *
@@ -72,7 +73,8 @@ class AnswerService extends ASQService {
      * @param QuestionDto $question
      * @return Answer
      */
-    public function getBestAnswer(QuestionDto $question) : Answer {
+    public function getBestAnswer(QuestionDto $question) : Answer
+    {
         $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
         /** @var $scoring AbstractScoring */
         $scoring = new $scoring_class($question);
@@ -104,8 +106,7 @@ class AnswerService extends ASQService {
     {
         if (is_null($version)) {
             $stored = SimpleStoredAnswer::where(['uuid' => $uuid])->orderBy('version', 'DESC')->first();
-        }
-        else {
+        } else {
             $stored = SimpleStoredAnswer::where(['uuid' => $uuid, 'version' => $version])->first();
         }
 
@@ -128,7 +129,7 @@ class AnswerService extends ASQService {
 
         $answers = [];
 
-        foreach($history as $stored_answer) {
+        foreach ($history as $stored_answer) {
             $answers[$stored_answer->getVersion()] = $stored_answer->getAnswer();
         }
 

@@ -28,7 +28,8 @@ class MultipleChoiceFormFactory extends QuestionFormFactory
             new MultipleChoiceEditorConfigurationFactory($language),
             new MultipleChoiceScoringConfigurationFactory($language),
             new ImageAndTextDefinitionFactory($language),
-            new MultipleChoiceScoringDefinitionFactory($language));
+            new MultipleChoiceScoringDefinitionFactory($language)
+        );
     }
 
     /**

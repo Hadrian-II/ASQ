@@ -101,12 +101,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             if (get_class($gap) === TextGapConfiguration::class) {
                 $fields = array_merge($fields, self::createTextGapFields($gap, $index));
                 $gap_type->setValue(ClozeGapConfiguration::TYPE_TEXT);
-            }
-            else if (get_class($gap) === SelectGapConfiguration::class) {
+            } elseif (get_class($gap) === SelectGapConfiguration::class) {
                 $fields = array_merge($fields, self::createSelectGapFields($gap, $index));
                 $gap_type->setValue(ClozeGapConfiguration::TYPE_DROPDOWN);
-            }
-            else if (get_class($gap) === NumericGapConfiguration::class) {
+            } elseif (get_class($gap) === NumericGapConfiguration::class) {
                 $fields = array_merge($fields, self::createNumberGapFields($gap, $index));
                 $gap_type->setValue(ClozeGapConfiguration::TYPE_NUMBER);
             }
@@ -130,14 +128,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_label_gap_items'),
             $index . self::VAR_GAP_ITEMS,
             $items,
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
         $gap_items->setRequired(true);
 
-        $fields[$index .self::VAR_GAP_ITEMS] = $gap_items;
+        $fields[$index . self::VAR_GAP_ITEMS] = $gap_items;
 
         $field_size = new ilNumberInputGUI(
             $this->language->txt('asq_textfield_size'),
-            $index . self::VAR_GAP_SIZE);
+            $index . self::VAR_GAP_SIZE
+        );
         $field_size->setValue($gap->getFieldLength());
         $fields[$index . self::VAR_GAP_SIZE] = $field_size;
 
@@ -164,9 +164,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_label_gap_items'),
             $index . self::VAR_GAP_ITEMS,
             $items,
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
         $gap_items->setRequired(true);
-        $fields[$index .self::VAR_GAP_ITEMS] = $gap_items;
+        $fields[$index . self::VAR_GAP_ITEMS] = $gap_items;
 
         return $fields;
     }
@@ -190,7 +191,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $upper->setRequired(true);
         $upper->allowDecimals(true);
         $upper->setValue($gap->getUpper());
-        $fields[$index . self::VAR_GAP_UPPER]= $upper;
+        $fields[$index . self::VAR_GAP_UPPER] = $upper;
 
         $lower = new ilNumberInputGUI($this->language->txt('asq_label_lower_bound'), $index . self::VAR_GAP_LOWER);
         $lower->setRequired(true);
@@ -205,7 +206,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
         $field_size = new ilNumberInputGUI(
             $this->language->txt('asq_textfield_size'),
-            $index . self::VAR_GAP_SIZE);
+            $index . self::VAR_GAP_SIZE
+        );
         $field_size->setValue($gap->getFieldLength());
         $fields[$index . self::VAR_GAP_SIZE] = $field_size;
 
@@ -217,14 +219,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function createTemplates() : string
     {
-        return sprintf('<div class="cloze_template" style="display: none;">
+        return sprintf(
+            '<div class="cloze_template" style="display: none;">
                             <div class="text">%s</div>
                             <div class="number">%s</div>
                             <div class="select">%s</div>
                         </div>',
             $this->createTemplate(TextGapConfiguration::Create()),
             $this->createTemplate(NumericGapConfiguration::Create()),
-            $this->createTemplate(SelectGapConfiguration::Create()));
+            $this->createTemplate(SelectGapConfiguration::Create())
+        );
     }
 
     /**
@@ -253,11 +257,13 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_header_value'),
                 AsqTableInputFieldDefinition::TYPE_TEXT,
-                ClozeGapItem::VAR_TEXT),
+                ClozeGapItem::VAR_TEXT
+            ),
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_header_points'),
                 AsqTableInputFieldDefinition::TYPE_TEXT,
-                ClozeGapItem::VAR_POINTS)
+                ClozeGapItem::VAR_POINTS
+            )
         ];
     }
 
@@ -268,7 +274,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         return ClozeEditorConfiguration::create(
             $this->readString(self::VAR_CLOZE_TEXT),
-            $this->readGapConfigs());
+            $this->readGapConfigs()
+        );
     }
 
     /**
@@ -284,11 +291,9 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
             if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_TEXT) {
                 $gap_configs[] = self::readTextGapConfiguration($istr);
-            }
-            else if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_DROPDOWN) {
+            } elseif ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_DROPDOWN) {
                 $gap_configs[] = self::readSelectGapConfiguration($istr);
-            }
-            else if ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_NUMBER) {
+            } elseif ($this->readString($istr . self::VAR_GAP_TYPE) === ClozeGapConfiguration::TYPE_NUMBER) {
                 $gap_configs[] = self::readNumericGapConfiguration($istr);
             }
 
@@ -309,7 +314,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->readFloat($i . self::VAR_GAP_UPPER),
             $this->readFloat($i . self::VAR_GAP_LOWER),
             $this->readFloat($i . self::VAR_GAP_POINTS),
-            $this->readInt($i . self::VAR_GAP_SIZE));
+            $this->readInt($i . self::VAR_GAP_SIZE)
+        );
     }
 
     /**
@@ -322,15 +328,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_label_gap_items'),
             $i . self::VAR_GAP_ITEMS,
             [],
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
 
         return SelectGapConfiguration::Create(
             array_map(
-                function ($raw_item)
-                {
+                function ($raw_item) {
                     return ClozeGapItem::create(
                         $raw_item[ClozeGapItem::VAR_TEXT],
-                        floatval($raw_item[ClozeGapItem::VAR_POINTS]));
+                        floatval($raw_item[ClozeGapItem::VAR_POINTS])
+                    );
                 },
                 $gap_items->readValues()
             )
@@ -347,15 +354,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_label_gap_items'),
             $i . self::VAR_GAP_ITEMS,
             [],
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
 
         return TextGapConfiguration::Create(
             array_map(
-                function ($raw_item)
-                {
+                function ($raw_item) {
                     return ClozeGapItem::create(
                         $raw_item[ClozeGapItem::VAR_TEXT],
-                        floatval($raw_item[ClozeGapItem::VAR_POINTS]));
+                        floatval($raw_item[ClozeGapItem::VAR_POINTS])
+                    );
                 },
                 $gap_items->readValues()
             ),

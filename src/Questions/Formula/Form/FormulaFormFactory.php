@@ -28,7 +28,8 @@ class FormulaFormFactory extends QuestionFormFactory
             new FormulaEditorConfigurationFactory($language),
             new FormulaScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new FormulaScoringDefinitionFactory($language));
+            new FormulaScoringDefinitionFactory($language)
+        );
     }
 
     /**

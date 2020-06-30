@@ -33,12 +33,14 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
         $columns[self::VAR_MCDD_TEXT] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_answer_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_MCDD_TEXT);
+            self::VAR_MCDD_TEXT
+        );
 
         $columns[self::VAR_MCDD_IMAGE] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_answer_image'),
             AsqTableInputFieldDefinition::TYPE_IMAGE,
-            self::VAR_MCDD_IMAGE);
+            self::VAR_MCDD_IMAGE
+        );
 
         return $columns;
     }
@@ -47,14 +49,15 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::readObjectFromPost()
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return ImageAndTextDisplayDefinition::create(
             $values[self::VAR_MCDD_TEXT],
-            $values[self::VAR_MCDD_IMAGE]);
+            $values[self::VAR_MCDD_IMAGE]
+        );
     }
 
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return ImageAndTextDisplayDefinition::create();
     }
@@ -62,7 +65,7 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @param ImageAndTextDisplayDefinition $definition
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [
             self::VAR_MCDD_TEXT => $definition->getText(),

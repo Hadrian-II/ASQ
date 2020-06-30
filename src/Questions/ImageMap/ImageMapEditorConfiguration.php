@@ -33,11 +33,11 @@ class ImageMapEditorConfiguration extends AbstractConfiguration
      * @param string $image
      * @return ImageMapEditorConfiguration
      */
-    static function create(
+    public static function create(
         ?string $image = null,
         ?bool $multiple_choice = true,
-        ?int $max_answers = null) : ImageMapEditorConfiguration
-    {
+        ?int $max_answers = null
+    ) : ImageMapEditorConfiguration {
         $object = new ImageMapEditorConfiguration();
         $object->image = $image;
         $object->multiple_choice = $multiple_choice;

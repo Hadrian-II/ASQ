@@ -12,7 +12,8 @@ namespace srag\asq\Questions\Cloze;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SelectGapConfiguration extends ClozeGapConfiguration {
+class SelectGapConfiguration extends ClozeGapConfiguration
+{
     /**
      * @var ?ClozeGapItem[]
      */
@@ -40,11 +41,12 @@ class SelectGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return array
      */
-    public function getItemsArray() : array {
+    public function getItemsArray() : array
+    {
         $var_array = [];
 
         if (!is_null($this->items)) {
-            foreach($this->items as $variable) {
+            foreach ($this->items as $variable) {
                 $var_array[] = $variable->getAsArray();
             }
         }
@@ -60,7 +62,7 @@ class SelectGapConfiguration extends ClozeGapConfiguration {
         $gap_max = 0;
 
         /** @var $gap ClozeGapItem */
-        foreach($this->items as $gap_item) {
+        foreach ($this->items as $gap_item) {
             if ($gap_item->getPoints() > $gap_max) {
                 $gap_max = $gap_item->getPoints();
             }
@@ -72,14 +74,14 @@ class SelectGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         if (count($this->getItems()) < 2) {
             return false;
         }
 
         foreach ($this->getItems() as $gap_item) {
-            if (! $gap_item->isComplete()) {
+            if (!$gap_item->isComplete()) {
                 return false;
             }
         }

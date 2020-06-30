@@ -12,7 +12,8 @@ namespace srag\asq\Questions\Cloze;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class NumericGapConfiguration extends ClozeGapConfiguration {
+class NumericGapConfiguration extends ClozeGapConfiguration
+{
     /**
      * @var ?float
      */
@@ -51,8 +52,8 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
         ?float $upper = null,
         ?float $lower = null,
         ?float $points = null,
-        ?int $field_length = null) : NumericGapConfiguration
-    {
+        ?int $field_length = null
+    ) : NumericGapConfiguration {
         $object = new NumericGapConfiguration();
         $object->value = $value;
         $object->upper = $upper;
@@ -105,7 +106,7 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return ?float
      */
-    public function getMaxPoints(): ?float
+    public function getMaxPoints() : ?float
     {
         return $this->points;
     }
@@ -113,11 +114,11 @@ class NumericGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
-        return ! is_null($this->getPoints()) &&
-               ! is_null($this->getLower()) &&
-               ! is_null($this->getUpper()) &&
-               ! is_null($this->getValue());
+        return !is_null($this->getPoints()) &&
+               !is_null($this->getLower()) &&
+               !is_null($this->getUpper()) &&
+               !is_null($this->getValue());
     }
 }

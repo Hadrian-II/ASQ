@@ -26,7 +26,9 @@ class AsqGateway
      */
     private static $instance;
 
-    private function __construct() { }
+    private function __construct()
+    {
+    }
 
     /**
      * @return AsqGateway

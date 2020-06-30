@@ -43,12 +43,12 @@ class MultipleChoiceEditorConfiguration extends AbstractConfiguration
      *
      * @return MultipleChoiceEditorConfiguration
      */
-    static function create(
-        ?bool $shuffle_answers = false, 
-        ?int $max_answers = 1, 
-        ?int $thumbnail_size = null, 
-        ?bool $single_line = true): MultipleChoiceEditorConfiguration
-    {
+    public static function create(
+        ?bool $shuffle_answers = false,
+        ?int $max_answers = 1,
+        ?int $thumbnail_size = null,
+        ?bool $single_line = true
+    ) : MultipleChoiceEditorConfiguration {
         $object = new MultipleChoiceEditorConfiguration();
         $object->shuffle_answers = $shuffle_answers;
         $object->max_answers = $max_answers;

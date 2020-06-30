@@ -14,7 +14,8 @@ use ActiveRecord;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionType extends ActiveRecord {
+class QuestionType extends ActiveRecord
+{
     const STORAGE_NAME = "asq_question_type";
     /**
      * @var int
@@ -46,7 +47,8 @@ class QuestionType extends ActiveRecord {
      */
     protected $factory_class;
 
-    public static function createNew(string $title_key, string $factory_class) : QuestionType {
+    public static function createNew(string $title_key, string $factory_class) : QuestionType
+    {
         $object = new QuestionType();
         $object->title_key = $title_key;
         $object->factory_class = $factory_class;
@@ -56,21 +58,24 @@ class QuestionType extends ActiveRecord {
     /**
      * @return string
      */
-    public function getTitleKey() : string {
+    public function getTitleKey() : string
+    {
         return $this->title_key;
     }
 
     /**
      * @return string
      */
-    public function getFactoryClass() : string {
+    public function getFactoryClass() : string
+    {
         return $this->factory_class;
     }
 
     /**
      * @return string
      */
-    public static function returnDbTableName() {
+    public static function returnDbTableName()
+    {
         return self::STORAGE_NAME;
     }
 }

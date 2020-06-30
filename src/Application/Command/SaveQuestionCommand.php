@@ -17,12 +17,13 @@ use srag\asq\Domain\Model\Question;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SaveQuestionCommand extends AbstractCommand {
+class SaveQuestionCommand extends AbstractCommand
+{
 
-	/**
-	 * @var Question
-	 */
-	private $question;
+    /**
+     * @var Question
+     */
+    private $question;
 
     /**
      * SaveQuestionCommand constructor.
@@ -30,17 +31,17 @@ class SaveQuestionCommand extends AbstractCommand {
      * @param Question $question
      * @param int      $issuing_user_id
      */
-	public function __construct(Question $question, int $issuing_user_id)
-	{
-		parent::__construct($issuing_user_id);
-		$this->question = $question;
-	}
+    public function __construct(Question $question, int $issuing_user_id)
+    {
+        parent::__construct($issuing_user_id);
+        $this->question = $question;
+    }
 
     /**
      * @return Question
      */
-	public function GetQuestion() : Question
-	{
-		return $this->question;
-	}
+    public function GetQuestion() : Question
+    {
+        return $this->question;
+    }
 }

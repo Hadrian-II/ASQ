@@ -22,60 +22,61 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
 {
     use InputHandlingTrait;
 
-	const VAR_QUESTION_TYPE = "question_type";
+    const VAR_QUESTION_TYPE = "question_type";
 
-	/**
-	 * @var QuestionTypeDefinition[]
-	 */
-	private $question_types;
+    /**
+     * @var QuestionTypeDefinition[]
+     */
+    private $question_types;
 
-	/**
-	 * @var ilLanguage
-	 */
-	private $language;
+    /**
+     * @var ilLanguage
+     */
+    private $language;
 
     /**
      * QuestionTypeSelectForm constructor.
      */
-	public function __construct(ilLanguage $language)
-	{
-	    $this->language = $language;
+    public function __construct(ilLanguage $language)
+    {
+        $this->language = $language;
 
-		$this->initForm();
+        $this->initForm();
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	/**
-	 * Init settings property form
-	 *
-	 * @access private
-	 */
-	private function initForm() : void
-	{
-	    $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
+    /**
+     * Init settings property form
+     *
+     * @access private
+     */
+    private function initForm() : void
+    {
+        $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
 
-	    $this->setTitle($this->language->txt('asq_create_question_form'));
+        $this->setTitle($this->language->txt('asq_create_question_form'));
 
-		$select = new ilSelectInputGUI(
-		    $this->language->txt('asq_input_question_type'), self::VAR_QUESTION_TYPE
+        $select = new ilSelectInputGUI(
+            $this->language->txt('asq_input_question_type'),
+            self::VAR_QUESTION_TYPE
         );
 
-		$options = [];
+        $options = [];
 
-		foreach ($this->question_types as $ix => $type) {
+        foreach ($this->question_types as $ix => $type) {
             $options[$ix] = $this->language->txt($type->getTitleKey());
-		}
+        }
 
-		$select->setOptions($options);
-		$this->addItem($select);
-	}
+        $select->setOptions($options);
+        $this->addItem($select);
+    }
 
     /**
      * @return QuestionTypeDefinition
      */
-	public function getQuestionType() : QuestionTypeDefinition
-	{
-		return $this->question_types[$this->readInt(self::VAR_QUESTION_TYPE)];
-	}
+    public function getQuestionType() : QuestionTypeDefinition
+    {
+        return $this->question_types[$this->readInt(self::VAR_QUESTION_TYPE)];
+    }
 }

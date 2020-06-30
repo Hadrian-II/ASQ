@@ -18,7 +18,7 @@ class ErrorTextScoring extends AbstractScoring
      * {@inheritdoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    function score(Answer $answer) : float
+    public function score(Answer $answer) : float
     {
         $reached_points = 0.0;
 
@@ -34,18 +34,17 @@ class ErrorTextScoring extends AbstractScoring
                 if ($scoring_definition->getWrongWordLength() > 1) {
                     $correct = true;
 
-                    for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i ++) {
-
+                    for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i++) {
                         $current = $scoring_definition->getWrongWordIndex() + $i;
 
-                        if (! in_array($current, $selected_words)) {
+                        if (!in_array($current, $selected_words)) {
                             $correct = false;
                             break;
                         }
                     }
 
                     if ($correct) {
-                        for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i ++) {
+                        for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i++) {
                             $correct_words[] = $scoring_definition->getWrongWordIndex() + $i;
                         }
                         $reached_points += $scoring_definition->getPoints();
@@ -93,8 +92,7 @@ class ErrorTextScoring extends AbstractScoring
             /** @var ErrorTextScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
 
-            for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i ++) {
-
+            for ($i = 0; $i < $scoring_definition->getWrongWordLength(); $i++) {
                 $selected_word_indexes[] = $scoring_definition->getWrongWordIndex() + $i;
             }
         }
@@ -124,8 +122,7 @@ class ErrorTextScoring extends AbstractScoring
 
             if (empty($option_config->getPoints()) ||
                 empty($option_config->getWrongWordIndex() ||
-                empty($option_config->getWrongWordLength())))
-            {
+                empty($option_config->getWrongWordLength()))) {
                 return false;
             }
         }

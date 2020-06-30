@@ -38,14 +38,15 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
         $points->setSize(2);
         $fields[self::VAR_POINTS] = $points;
 
-        $completed_by_submition = new ilCheckboxInputGUI($this->language->txt('asq_label_completed_by_submition'),
-            self::VAR_COMPLETED_ON_UPLOAD);
+        $completed_by_submition = new ilCheckboxInputGUI(
+            $this->language->txt('asq_label_completed_by_submition'),
+            self::VAR_COMPLETED_ON_UPLOAD
+        );
         $completed_by_submition->setInfo($this->language->txt('asq_description_completed_by_submition'));
         $completed_by_submition->setValue(self::CHECKED);
         $fields[self::VAR_COMPLETED_ON_UPLOAD] = $completed_by_submition;
 
-        if ($value !== null)
-        {
+        if ($value !== null) {
             $points->setValue($value->getPoints());
             $completed_by_submition->setChecked($value->isCompletedBySubmition());
         }
@@ -60,7 +61,8 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
     {
         return FileUploadScoringConfiguration::create(
             $this->readFloat(self::VAR_POINTS),
-            $this->readString(self::VAR_COMPLETED_ON_UPLOAD) === self::CHECKED);
+            $this->readString(self::VAR_COMPLETED_ON_UPLOAD) === self::CHECKED
+        );
     }
 
     /**

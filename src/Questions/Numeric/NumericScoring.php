@@ -22,7 +22,7 @@ class NumericScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    function score(Answer $answer) : float
+    public function score(Answer $answer) : float
     {
         $reached_points = 0;
 
@@ -64,22 +64,22 @@ class NumericScoring extends AbstractScoring
     /**
      * @return string
      */
-    public static function getScoringDefinitionClass(): string {
+    public static function getScoringDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         /** @var NumericScoringConfiguration $config */
         $config = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         if (empty($config->getPoints()) ||
             empty($config->getLowerBound() ||
-            empty($config->getUpperBound())))
-        {
+            empty($config->getUpperBound()))) {
             return false;
         }
 

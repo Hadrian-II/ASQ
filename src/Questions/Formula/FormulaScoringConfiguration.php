@@ -59,13 +59,14 @@ class FormulaScoringConfiguration extends AbstractConfiguration
      * @param array $variables
      * @return FormulaScoringConfiguration
      */
-    public static function create(?string $formula = null,
-                                  ?string $units = null,
-                                  ?int $precision = null,
-                                  ?float $tolerance = null,
-                                  ?int $result_type = null,
-                                  ?array $variables = []) : FormulaScoringConfiguration
-    {
+    public static function create(
+        ?string $formula = null,
+        ?string $units = null,
+        ?int $precision = null,
+        ?float $tolerance = null,
+        ?int $result_type = null,
+        ?array $variables = []
+    ) : FormulaScoringConfiguration {
         $object = new FormulaScoringConfiguration();
         $object->formula = $formula;
         $object->units = $units;
@@ -93,7 +94,7 @@ class FormulaScoringConfiguration extends AbstractConfiguration
             return null;
         }
 
-        return array_map(function($unit) {
+        return array_map(function ($unit) {
             return trim($unit);
         }, explode(',', $this->units));
     }
@@ -141,10 +142,11 @@ class FormulaScoringConfiguration extends AbstractConfiguration
     /**
      * @return array
      */
-    public function getVariablesArray(): array {
+    public function getVariablesArray() : array
+    {
         $var_array = [];
 
-        foreach($this->variables as $variable) {
+        foreach ($this->variables as $variable) {
             $var_array[] = $variable->getAsArray();
         }
 

@@ -73,10 +73,11 @@ class QuestionAr extends ActiveRecord
     protected $data;
 
     /**
-     * 
+     *
      * @param QuestionDto $question
      */
-    public static function createNew(QuestionDto $question) {        
+    public static function createNew(QuestionDto $question)
+    {
         global $DIC;
         $object = new QuestionAr();
         
@@ -88,7 +89,6 @@ class QuestionAr extends ActiveRecord
         $object->data = json_encode($question);
         
         return $object;
-        
     }
 
     /**
@@ -110,7 +110,7 @@ class QuestionAr extends ActiveRecord
     /**
      * @return int
      */
-    public function getCreator(): int
+    public function getCreator() : int
     {
         return $this->creator;
     }
@@ -131,14 +131,15 @@ class QuestionAr extends ActiveRecord
         return $this->revision_name;
     }
     
-    public function getQuestion(): QuestionDto {
+    public function getQuestion() : QuestionDto
+    {
         return QuestionDto::deserialize($this->data);
     }
     
     /**
      * @return string
      */
-    static function returnDbTableName()
+    public static function returnDbTableName()
     {
         return self::STORAGE_NAME;
     }

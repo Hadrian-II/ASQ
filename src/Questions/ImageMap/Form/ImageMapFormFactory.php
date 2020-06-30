@@ -28,7 +28,8 @@ class ImageMapFormFactory extends QuestionFormFactory
             new ImageMapEditorConfigurationFactory($language),
             new MultipleChoiceScoringConfigurationFactory($language),
             new ImageMapEditorDefinitionFactory($language),
-            new MultipleChoiceScoringDefinitionFactory($language));
+            new MultipleChoiceScoringDefinitionFactory($language)
+        );
     }
 
     /**

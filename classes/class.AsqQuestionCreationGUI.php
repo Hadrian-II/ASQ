@@ -56,8 +56,8 @@ class AsqQuestionCreationGUI
         AuthoringContextContainer $contextContainer,
         ilLanguage $language,
         UIServices $ui,
-        ilCtrl $ctrl)
-    {
+        ilCtrl $ctrl
+    ) {
         $this->contextContainer = $contextContainer;
         $this->language = $language;
         $this->ui = $ui;
@@ -70,8 +70,7 @@ class AsqQuestionCreationGUI
      */
     public function executeCommand() : void
     {
-        switch( $this->ctrl->getNextClass() )
-        {
+        switch ($this->ctrl->getNextClass()) {
             case strtolower(self::class):
             default:
 
@@ -88,8 +87,8 @@ class AsqQuestionCreationGUI
     {
         $form = new QuestionTypeSelectForm($this->language);
         $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_CREATE_FORM));
-        $form->addCommandButton(self::CMD_CREATE_QUESTION,$this->language->txt('create'));
-        $form->addCommandButton(self::CMD_CANCEL_CREATION,$this->language->txt('cancel'));
+        $form->addCommandButton(self::CMD_CREATE_QUESTION, $this->language->txt('create'));
+        $form->addCommandButton(self::CMD_CANCEL_CREATION, $this->language->txt('cancel'));
 
         return $form;
     }
@@ -99,8 +98,7 @@ class AsqQuestionCreationGUI
      */
     protected function showCreationForm(QuestionTypeSelectForm $form = null) : void
     {
-        if( $form === null )
-        {
+        if ($form === null) {
             $form = $this->buildCreationForm();
         }
 
@@ -115,15 +113,15 @@ class AsqQuestionCreationGUI
     {
         $form = $this->buildCreationForm();
 
-        if( !$form->checkInput() )
-        {
+        if (!$form->checkInput()) {
             $this->showCreationForm($form);
             return;
         }
 
         $new_question = AsqGateway::get()->question()->createQuestion(
             $form->getQuestionType(),
-            $this->contextContainer->getObjId());
+            $this->contextContainer->getObjId()
+        );
 
         if (!is_null($this->contextContainer->getCaller())) {
             $this->contextContainer->getCaller()->afterQuestionCreated($new_question);
@@ -143,7 +141,9 @@ class AsqQuestionCreationGUI
 
     protected function cancelCreation() : void
     {
-        $this->ctrl->redirectToURL( str_replace('&amp;', '&',
+        $this->ctrl->redirectToURL(str_replace(
+            '&amp;',
+            '&',
             $this->contextContainer->getBackLink()->getAction()
         ));
     }

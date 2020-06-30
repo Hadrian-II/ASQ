@@ -24,7 +24,6 @@ use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
  */
 class AsqQuestionFeedbackEditorGUI
 {
-
     const CMD_SHOW_FEEDBACK_FORM = 'showFeedbackForm';
     const CMD_SAVE_FEEDBACK = 'saveFeedback';
 
@@ -77,8 +76,7 @@ class AsqQuestionFeedbackEditorGUI
         $form = $this->createForm();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
-            $form->checkInput())
-        {
+            $form->checkInput()) {
             $new_feedback = $form->getFeedbackFromPost();
             $this->question_dto->setFeedback($new_feedback);
             AsqGateway::get()->question()->saveQuestion($this->question_dto);
@@ -106,5 +104,4 @@ class AsqQuestionFeedbackEditorGUI
         $form->addCommandButton(self::CMD_SHOW_FEEDBACK_FORM, $this->language->txt('cancel'));
         return $form;
     }
-
 }

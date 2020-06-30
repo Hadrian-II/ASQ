@@ -27,7 +27,7 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [
             self::VAR_TSSD_POINTS => $definition->getPoints(),
@@ -39,19 +39,21 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_answer_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_TSSD_TEXT);
+            self::VAR_TSSD_TEXT
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_TSSD_POINTS);
+            self::VAR_TSSD_POINTS
+        );
 
         return $fields;
     }
@@ -59,17 +61,18 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return TextSubsetScoringDefinition
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return TextSubsetScoringDefinition::create(
             floatval($values[self::VAR_TSSD_POINTS]),
-            $values[self::VAR_TSSD_TEXT]);
+            $values[self::VAR_TSSD_TEXT]
+        );
     }
 
     /**
      * @return TextSubsetScoringDefinition
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return TextSubsetScoringDefinition::create();
     }

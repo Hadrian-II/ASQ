@@ -78,7 +78,8 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
         return ImageMapEditorConfiguration::create(
             $this->readImage(self::VAR_IMAGE),
             $multiple_choice === self::STR_MULTICHOICE,
-            $multiple_choice === self::STR_MULTICHOICE ? $this->readInt(self::VAR_MAX_ANSWERS) : 1);
+            $multiple_choice === self::STR_MULTICHOICE ? $this->readInt(self::VAR_MAX_ANSWERS) : 1
+        );
     }
 
     /**

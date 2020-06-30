@@ -25,17 +25,17 @@ class DefaultPresenter extends AbstractPresenter
      * @return string
      * @throws \ilTemplateException
      */
-	public function generateHtml(AbstractEditor $editor, bool $show_feedback = false) : string
-	{
-	    $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
+    public function generateHtml(AbstractEditor $editor, bool $show_feedback = false) : string
+    {
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.DefaultPresenter.html', true, true);
 
-		$tpl->setCurrentBlock('question');
-		$tpl->setVariable('QUESTIONTEXT', $this->question->getData()->getQuestionText());
-		$tpl->setVariable('EDITOR', $editor->generateHtml($show_feedback));
-		$tpl->parseCurrentBlock();
+        $tpl->setCurrentBlock('question');
+        $tpl->setVariable('QUESTIONTEXT', $this->question->getData()->getQuestionText());
+        $tpl->setVariable('EDITOR', $editor->generateHtml($show_feedback));
+        $tpl->parseCurrentBlock();
 
-		$this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
+        $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
-		return $tpl->get();
-	}
+        return $tpl->get();
+    }
 }

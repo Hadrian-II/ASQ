@@ -48,17 +48,20 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_header_formula'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_FORMULA);
+            self::VAR_FORMULA
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_header_unit'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_UNIT);
+            self::VAR_UNIT
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_POINTS);
+            self::VAR_POINTS
+        );
 
         return $fields;
     }
@@ -71,7 +74,8 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
         return FormulaScoringDefinition::create(
             $values[self::VAR_FORMULA],
             empty($values[self::VAR_UNIT]) ? null : $values[self::VAR_UNIT],
-            floatval($values[self::VAR_POINTS]));
+            floatval($values[self::VAR_POINTS])
+        );
     }
 
     /**

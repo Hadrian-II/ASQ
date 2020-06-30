@@ -16,7 +16,8 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class StatisticsRecord extends ActiveRecord {
+class StatisticsRecord extends ActiveRecord
+{
     const STORAGE_NAME = "asq_statistics_record";
 
     /**
@@ -97,8 +98,8 @@ class StatisticsRecord extends ActiveRecord {
         string $context,
         int $user_id,
         float $points,
-        ilDateTime $timestamp)
-    {
+        ilDateTime $timestamp
+    ) {
         parent::__construct();
 
         $this->question_id = $question_id;
@@ -160,7 +161,8 @@ class StatisticsRecord extends ActiveRecord {
     /**
      * @return string
      */
-    public static function returnDbTableName() {
+    public static function returnDbTableName()
+    {
         return self::STORAGE_NAME;
     }
 }

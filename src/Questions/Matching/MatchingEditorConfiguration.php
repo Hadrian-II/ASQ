@@ -14,8 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class MatchingEditorConfiguration extends AbstractConfiguration {
-
+class MatchingEditorConfiguration extends AbstractConfiguration
+{
     const SHUFFLE_NONE = 0;
     const SHUFFLE_DEFINITIONS = 1;
     const SHUFFLE_TERMS = 2;
@@ -65,14 +65,13 @@ class MatchingEditorConfiguration extends AbstractConfiguration {
      * @return MatchingEditorConfiguration
      */
     public static function create(
-            ?int $shuffle = self::SHUFFLE_NONE,
-            ?int $thumbnail_size = 100,
-            ?int $matching_mode = self::MATCHING_ONE_TO_ONE,
-            ?array $definitions = [],
-            ?array $terms = [],
-            ?array $matches = []
-        ) : MatchingEditorConfiguration
-    {
+        ?int $shuffle = self::SHUFFLE_NONE,
+        ?int $thumbnail_size = 100,
+        ?int $matching_mode = self::MATCHING_ONE_TO_ONE,
+        ?array $definitions = [],
+        ?array $terms = [],
+        ?array $matches = []
+    ) : MatchingEditorConfiguration {
         $object = new MatchingEditorConfiguration();
         $object->shuffle = $shuffle;
         $object->thumbnail_size = $thumbnail_size;

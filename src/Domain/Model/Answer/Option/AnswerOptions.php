@@ -14,23 +14,26 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AnswerOptions extends AbstractValueObject {
+class AnswerOptions extends AbstractValueObject
+{
 
-	/**
-	 * @var array
-	 */
-	protected $options;
+    /**
+     * @var array
+     */
+    protected $options;
 
-	public static function create(array $options) : AnswerOptions {
-	   $object = new AnswerOptions();
-	   $object->options = $options;
-	   return $object;
-	}
+    public static function create(array $options) : AnswerOptions
+    {
+        $object = new AnswerOptions();
+        $object->options = $options;
+        return $object;
+    }
 
     /**
      * @return AnswerOption[]
      */
-	public function getOptions() : ?array {
-		return $this->options;
-	}
+    public function getOptions() : ?array
+    {
+        return $this->options;
+    }
 }

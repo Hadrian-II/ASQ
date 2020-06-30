@@ -13,6 +13,6 @@ namespace srag\asq\Statistics;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class StatisticsRepository {
-
+class StatisticsRepository
+{
 }

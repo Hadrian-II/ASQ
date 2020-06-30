@@ -22,7 +22,7 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         return [];
     }
@@ -30,7 +30,7 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return MultipleChoiceScoringConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return MultipleChoiceScoringConfiguration::create();
     }
@@ -38,7 +38,7 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return MultipleChoiceScoringConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return MultipleChoiceScoringConfiguration::create();
     }

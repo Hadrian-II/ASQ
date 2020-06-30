@@ -44,7 +44,7 @@ class AsqQuestionHintEditorGUI
      * @param ilLanguage $language
      * @param UIServices $ui
      */
-    function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui)
+    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui)
     {
         $this->language = $language;
         $this->ui = $ui;

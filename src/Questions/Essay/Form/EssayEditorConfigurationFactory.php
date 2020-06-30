@@ -25,7 +25,7 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -44,7 +44,7 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return EssayEditorConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return EssayEditorConfiguration::create($this->readInt(self::VAR_MAX_LENGTH));
     }
@@ -52,7 +52,7 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return EssayEditorConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return EssayEditorConfiguration::create();
     }

@@ -14,19 +14,22 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class MultipleChoiceAnswer extends Answer {
+class MultipleChoiceAnswer extends Answer
+{
     /**
      * @var int[]
      */
     protected $selected_ids;
     
-    public static function create(array $selected_ids) : MultipleChoiceAnswer {
+    public static function create(array $selected_ids) : MultipleChoiceAnswer
+    {
         $object = new MultipleChoiceAnswer();
         $object->selected_ids = $selected_ids;
         return $object;
     }
     
-    public function getSelectedIds() : array {
+    public function getSelectedIds() : array
+    {
         return $this->selected_ids;
     }
 }

@@ -28,7 +28,8 @@ class SingleChoiceFormFactory extends QuestionFormFactory
             new SingleChoiceEditorConfigurationFactory($language),
             new MultipleChoiceScoringConfigurationFactory($language),
             new ImageAndTextDefinitionFactory($language),
-            new SingleChoiceScoringDefinitionFactory($language));
+            new SingleChoiceScoringDefinitionFactory($language)
+        );
     }
 
     /**

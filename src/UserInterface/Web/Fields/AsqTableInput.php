@@ -58,8 +58,8 @@ class AsqTableInput extends ilTextInputGUI
         string $post_var,
         array $values = [],
         array $definitions = [],
-        array $form_configuration = [])
-    {
+        array $form_configuration = []
+    ) {
         parent::__construct($title, $post_var);
 
         $this->definitions = $definitions;
@@ -77,7 +77,7 @@ class AsqTableInput extends ilTextInputGUI
      */
     public function getMinRows() : int
     {
-        if(array_key_exists(self::OPTION_MIN_ROWS, $this->form_configuration)) {
+        if (array_key_exists(self::OPTION_MIN_ROWS, $this->form_configuration)) {
             return $this->form_configuration[self::OPTION_MIN_ROWS];
         }
 
@@ -168,7 +168,6 @@ class AsqTableInput extends ilTextInputGUI
     {
         return array_key_exists(self::OPTION_ORDER, $this->form_configuration) ||
         !array_key_exists(self::OPTION_HIDE_ADD_REMOVE, $this->form_configuration);
-
     }
 
     /**
@@ -211,7 +210,6 @@ class AsqTableInput extends ilTextInputGUI
                 if ($this->isPostVarSet($item_post_var)) {
                     $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
                 }
-
             }
 
             $values[] = $new_value;
@@ -338,8 +336,7 @@ class AsqTableInput extends ilTextInputGUI
 
         $this->setFieldValue($post_var, $value, $field);
 
-        foreach ($options as $key=>$value)
-        {
+        foreach ($options as $key => $value) {
             $option = new ilRadioOption($key, $value);
             $field->addOption($option);
         }
@@ -400,7 +397,7 @@ class AsqTableInput extends ilTextInputGUI
      */
     private function generateLabel($text, $name) : string
     {
-        return sprintf('<span class="%s">%s</span>', $name,  $text);
+        return sprintf('<span class="%s">%s</span>', $name, $text);
     }
 
     /**
@@ -412,8 +409,7 @@ class AsqTableInput extends ilTextInputGUI
     {
         if ($this->isPostVarSet($post_var)) {
             $field->setValue($this->getPostValue($post_var));
-        }
-        else if ($value !== null) {
+        } elseif ($value !== null) {
             $field->setValue($value);
         }
     }

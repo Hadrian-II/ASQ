@@ -66,11 +66,9 @@ class KprimChoiceEditor extends AbstractEditor
 
             if ($answer === self::STR_TRUE) {
                 $answers[$answer_option->getOptionId()] = true;
-            }
-            else if ($answer === self::STR_FALSE) {
+            } elseif ($answer === self::STR_FALSE) {
                 $answers[$answer_option->getOptionId()] = false;
-            }
-            else {
+            } else {
                 $answers[$answer_option->getOptionId()] = null;
             }
         }
@@ -81,7 +79,7 @@ class KprimChoiceEditor extends AbstractEditor
     /**
      * @return string
      */
-    public function generateHtml(): string
+    public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.KprimChoiceEditor.html', true, true);
 
@@ -101,10 +99,12 @@ class KprimChoiceEditor extends AbstractEditor
                 $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
                 $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
                 $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
-                $tpl->setVariable('THUMB_SIZE',
+                $tpl->setVariable(
+                    'THUMB_SIZE',
                     is_null($this->configuration->getThumbnailSize()) ?
                     '' :
-                    sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize()));
+                    sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize())
+                );
                 $tpl->parseCurrentBlock();
             }
 
@@ -112,8 +112,7 @@ class KprimChoiceEditor extends AbstractEditor
                 && !is_null($this->answer)
                 && !is_null($this->question->getFeedback())
                 && !is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()))
-                && $this->showFeedbackForAnswerOption($answer_option))
-            {
+                && $this->showFeedbackForAnswerOption($answer_option)) {
                 $tpl->setCurrentBlock('feedback');
                 $tpl->setVariable('FEEDBACK', $this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId()));
                 $tpl->parseCurrentBlock();
@@ -127,10 +126,9 @@ class KprimChoiceEditor extends AbstractEditor
 
             if (!is_null($this->answer)) {
                 $answer = $this->answer->getAnswerForId($answer_option->getOptionId());
-                if($answer === true) {
+                if ($answer === true) {
                     $tpl->setVariable('CHECKED_ANSWER_TRUE', 'checked="checked"');
-                }
-                else if ($answer === false) {
+                } elseif ($answer === false) {
                     $tpl->setVariable('CHECKED_ANSWER_FALSE', 'checked="checked"');
                 }
             }
@@ -171,7 +169,7 @@ class KprimChoiceEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return ImageAndTextDisplayDefinition::class;
     }
@@ -182,8 +180,7 @@ class KprimChoiceEditor extends AbstractEditor
     public function isComplete() : bool
     {
         if (empty($this->configuration->getLabelFalse()) ||
-            empty($this->configuration->getLabelTrue()))
-        {
+            empty($this->configuration->getLabelTrue())) {
             return false;
         }
 
@@ -191,8 +188,7 @@ class KprimChoiceEditor extends AbstractEditor
             /** @var ImageAndTextDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 
-            if (empty($option_config->getText()))
-            {
+            if (empty($option_config->getText())) {
                 return false;
             }
         }

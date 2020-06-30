@@ -97,8 +97,8 @@ class FormulaEditor extends AbstractEditor
 
         $varindex = 1;
         foreach ($this->configuration->getVariables() as $variable) {
-                $output = $this->createVariable($varindex, $output, $variable);
-                $varindex += 1;
+            $output = $this->createVariable($varindex, $output, $variable);
+            $varindex += 1;
         }
 
         return $output;
@@ -114,7 +114,7 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$r' . $index;
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariable($name), !is_null($this->answer) ? $this->answer->getValues()[$name] : '', ! empty($units) ? $this->createUnitSelection($units, $name) : '');
+        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariable($name), !is_null($this->answer) ? $this->answer->getValues()[$name] : '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
 
         return str_replace($name, $html, $output);
     }
@@ -126,13 +126,17 @@ class FormulaEditor extends AbstractEditor
      */
     private function createUnitSelection(array $units, string $name) : string
     {
-        return sprintf('<select name="%s">%s</select>',
-                       $this->getUnitPostVariable($name),
-                       implode(array_map(function($unit) use ($name) {
-                           return sprintf('<option value="%1$s" %2$s>%1$s</option>',
+        return sprintf(
+            '<select name="%s">%s</select>',
+            $this->getUnitPostVariable($name),
+            implode(array_map(function ($unit) use ($name) {
+                return sprintf(
+                               '<option value="%1$s" %2$s>%1$s</option>',
                                $unit,
-                               !is_null($this->answer) && $this->answer->getValues()[$name . self::VAR_UNIT] === $unit ? 'selected="selected"' : '');
-                       }, $units)));
+                               !is_null($this->answer) && $this->answer->getValues()[$name . self::VAR_UNIT] === $unit ? 'selected="selected"' : ''
+                           );
+            }, $units))
+        );
     }
 
     /**
@@ -145,12 +149,14 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$v' . $index;
 
-        $html = sprintf('<input type="hidden" name="%1$s" value="%2$s" />%2$s %3$s',
+        $html = sprintf(
+            '<input type="hidden" name="%1$s" value="%2$s" />%2$s %3$s',
             $this->getPostVariable($name),
             !is_null($this->answer) ?
                 $this->answer->getValues()[$name] :
                 $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
-            $def->getUnit());
+            $def->getUnit()
+        );
 
         return str_replace($name, $html, $output);
     }
@@ -176,7 +182,8 @@ class FormulaEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string {
+    public static function getDisplayDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 

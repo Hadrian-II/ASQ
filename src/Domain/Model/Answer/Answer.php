@@ -14,6 +14,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class Answer extends AbstractValueObject {
-
+abstract class Answer extends AbstractValueObject
+{
 }

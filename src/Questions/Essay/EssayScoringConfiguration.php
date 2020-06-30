@@ -15,7 +15,8 @@ use srag\asq\Domain\Model\Scoring\TextScoring;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayScoringConfiguration extends AbstractConfiguration {
+class EssayScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?int
      */
@@ -42,12 +43,12 @@ class EssayScoringConfiguration extends AbstractConfiguration {
      * @param float $points
      * @return EssayScoringConfiguration
      */
-    public static function create(?int $matching_mode = TextScoring::TM_CASE_INSENSITIVE,
-                                  ?int $scoring_mode = EssayScoring::SCORING_MANUAL,
-                                  ?float $points = null,
-                                  ?array $definitions = null) : EssayScoringConfiguration
-    {
-
+    public static function create(
+        ?int $matching_mode = TextScoring::TM_CASE_INSENSITIVE,
+        ?int $scoring_mode = EssayScoring::SCORING_MANUAL,
+        ?float $points = null,
+        ?array $definitions = null
+    ) : EssayScoringConfiguration {
         $object = new EssayScoringConfiguration();
 
         $object->matching_mode = $matching_mode;

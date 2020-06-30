@@ -27,7 +27,8 @@ class ErrorTextFormFactory extends QuestionFormFactory
             new ErrorTextEditorConfigurationFactory($language),
             new ErrorTextScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new ErrorTextScoringDefinitionFactory($language));
+            new ErrorTextScoringDefinitionFactory($language)
+        );
     }
 
     /**

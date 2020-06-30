@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class OrderingScoringConfiguration extends AbstractConfiguration {
+class OrderingScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?float
      */
@@ -24,7 +25,7 @@ class OrderingScoringConfiguration extends AbstractConfiguration {
      * @param float $points
      * @return OrderingScoringConfiguration
      */
-    static function create(?float $points = null) : OrderingScoringConfiguration
+    public static function create(?float $points = null) : OrderingScoringConfiguration
     {
         $object = new OrderingScoringConfiguration();
         $object->points = $points;
@@ -34,7 +35,7 @@ class OrderingScoringConfiguration extends AbstractConfiguration {
     /**
      * @return ?float
      */
-    public function getPoints(): ?float
+    public function getPoints() : ?float
     {
         return $this->points;
     }

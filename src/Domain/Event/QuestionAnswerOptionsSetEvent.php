@@ -16,11 +16,12 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent {
-	/**
-	 * @var AnswerOptions
-	 */
-	protected $answer_options;
+class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
+{
+    /**
+     * @var AnswerOptions
+     */
+    protected $answer_options;
 
     /**
      * @param string $aggregate_id
@@ -29,43 +30,47 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent {
      * @param int $question_int_id
      * @param AnswerOptions $options
      */
-	public function __construct(string $aggregate_id,
-	                            ilDateTime $occured_on,
-	                            int $initiating_user_id,
-	                            AnswerOptions $options = null)
-	{
-	    parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
+    public function __construct(
+        string $aggregate_id,
+        ilDateTime $occured_on,
+        int $initiating_user_id,
+        AnswerOptions $options = null
+    ) {
+        parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
 
-		$this->answer_options = $options;
-	}
+        $this->answer_options = $options;
+    }
 
-	/**
-	 * @return AnswerOptions
-	 */
-	public function getAnswerOptions() : AnswerOptions {
-		return $this->answer_options;
-	}
+    /**
+     * @return AnswerOptions
+     */
+    public function getAnswerOptions() : AnswerOptions
+    {
+        return $this->answer_options;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getEventBody() : string {
-		return json_encode($this->answer_options);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getEventBody() : string
+    {
+        return json_encode($this->answer_options);
+    }
 
-	/**
-	 * @param string $json_data
-	 */
-	public function restoreEventBody(string $json_data) : void {
+    /**
+     * @param string $json_data
+     */
+    public function restoreEventBody(string $json_data) : void
+    {
         $this->answer_options = AnswerOptions::deserialize($json_data);
-	}
+    }
 
-	/**
-	 * @return int
-	 */
-	public static function getEventVersion() : int
-	{
-	    // initial version 1
-	    return 1;
-	}
+    /**
+     * @return int
+     */
+    public static function getEventVersion() : int
+    {
+        // initial version 1
+        return 1;
+    }
 }

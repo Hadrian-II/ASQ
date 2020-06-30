@@ -15,8 +15,7 @@ use srag\asq\UserInterface\Web\PathHelper;
  */
 abstract class SetupLanguages
 {
-
-    abstract function getLanguagePrefix() : string;
+    abstract public function getLanguagePrefix() : string;
 
     public static function new() : SetupLanguages
     {
@@ -97,7 +96,7 @@ abstract class SetupLanguages
                         && substr($file, strlen($file) - 5) == ".lang"
                     ) {
                         $langs[] = array(
-                            "key"  => substr($file, 6, 2),
+                            "key" => substr($file, 6, 2),
                             "file" => $file,
                             "path" => $a_lang_directory . "/" . $file,
                         );
@@ -116,4 +115,3 @@ abstract class SetupLanguages
         return PathHelper::getBasePath($class_info->getFileName()) . 'lang';
     }
 }
-

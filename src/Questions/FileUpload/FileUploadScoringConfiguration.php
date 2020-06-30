@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadScoringConfiguration extends AbstractConfiguration {
+class FileUploadScoringConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?float
      */
@@ -30,7 +31,7 @@ class FileUploadScoringConfiguration extends AbstractConfiguration {
      * @param bool $completed_by_submition
      * @return FileUploadScoringConfiguration
      */
-    static function create(?float $points = null, ?bool $completed_by_submition = null) : FileUploadScoringConfiguration
+    public static function create(?float $points = null, ?bool $completed_by_submition = null) : FileUploadScoringConfiguration
     {
         $object = new FileUploadScoringConfiguration();
         $object->points = $points;
@@ -41,14 +42,16 @@ class FileUploadScoringConfiguration extends AbstractConfiguration {
     /**
      * @return int
      */
-    public function getPoints() : ?float {
+    public function getPoints() : ?float
+    {
         return $this->points;
     }
     
     /**
      * @return boolean
      */
-    public function isCompletedBySubmition() : ?bool {
+    public function isCompletedBySubmition() : ?bool
+    {
         return $this->completed_by_submition;
     }
 }

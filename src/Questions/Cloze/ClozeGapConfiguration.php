@@ -21,7 +21,7 @@ abstract class ClozeGapConfiguration extends AbstractValueObject
 
     const TYPE_DROPDOWN = 'clz_dropdown';
 
-    abstract function getMaxPoints() : ?float;
+    abstract public function getMaxPoints() : ?float;
 
-    abstract function isComplete() : bool;
+    abstract public function isComplete() : bool;
 }

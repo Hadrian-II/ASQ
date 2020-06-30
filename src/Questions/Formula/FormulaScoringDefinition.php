@@ -37,7 +37,8 @@ class FormulaScoringDefinition extends AbstractValueObject
      * @param ?float $points
      * @return FormulaScoringDefinition
      */
-    public static function create(?string $formula, ?string $unit, ?float $points) : FormulaScoringDefinition {
+    public static function create(?string $formula, ?string $unit, ?float $points) : FormulaScoringDefinition
+    {
         $object = new FormulaScoringDefinition();
         $object->formula = $formula;
         $object->unit = $unit;
@@ -79,8 +80,8 @@ class FormulaScoringDefinition extends AbstractValueObject
             return false;
         }
 
-        if (! empty($this->getUnit()) &&
-            ! in_array($this->getUnit(), $config->getUnits())) {
+        if (!empty($this->getUnit()) &&
+            !in_array($this->getUnit(), $config->getUnits())) {
             return false;
         }
 

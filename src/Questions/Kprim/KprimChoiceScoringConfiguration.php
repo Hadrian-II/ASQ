@@ -29,7 +29,7 @@ class KprimChoiceScoringConfiguration extends AbstractConfiguration
      * @param ?int $half_points_at
      * @return KprimChoiceScoringConfiguration
      */
-    static function create(?float $points = null, ?int $half_points_at = null) : KprimChoiceScoringConfiguration
+    public static function create(?float $points = null, ?int $half_points_at = null) : KprimChoiceScoringConfiguration
     {
         $object = new KprimChoiceScoringConfiguration();
         $object->points = $points;

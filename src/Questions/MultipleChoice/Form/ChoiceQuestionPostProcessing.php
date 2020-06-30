@@ -30,15 +30,16 @@ trait ChoiceQuestionPostProcessing
             // remove from question
             $stripped_options = AnswerOptions::create(
                 array_map(
-                    function($option) {
+                    function ($option) {
                         return AnswerOption::create(
                             $option->getOptionId(),
                             ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
-                            $option->getScoringDefinition());
+                            $option->getScoringDefinition()
+                        );
                     },
                     $question->getAnswerOptions()->getOptions()
-                    )
-                );
+                )
+            );
 
             $question->setAnswerOptions($stripped_options);
             $this->option_form->setAnswerOptions($stripped_options);

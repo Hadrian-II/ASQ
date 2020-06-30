@@ -22,7 +22,8 @@ class KprimChoiceScoring extends AbstractScoring
      * @param KprimChoiceAnswer $answer
      * @return float
      */
-    function score(Answer $answer) : float {
+    public function score(Answer $answer) : float
+    {
         $count = 0;
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
             /** @var KprimChoiceScoringDefinition $scoring_definition */
@@ -41,12 +42,10 @@ class KprimChoiceScoring extends AbstractScoring
 
         if ($count === count($this->question->getAnswerOptions()->getOptions())) {
             return $scoring_conf->getPoints();
-        }
-        else if (!is_null($scoring_conf->getHalfPointsAt()) &&
+        } elseif (!is_null($scoring_conf->getHalfPointsAt()) &&
                  $count >= $scoring_conf->getHalfPointsAt()) {
             return floor($scoring_conf->getPoints() / 2);
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -66,8 +65,7 @@ class KprimChoiceScoring extends AbstractScoring
 
             if ($scoring_definition->isCorrectValue()) {
                 $answers[$option->getOptionId()] = true;
-            }
-            else {
+            } else {
                 $answers[$option->getOptionId()] = false;
             }
         }
@@ -80,7 +78,6 @@ class KprimChoiceScoring extends AbstractScoring
      */
     public function isComplete() : bool
     {
-
         if (is_null($this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints())) {
             return false;
         }
@@ -93,8 +90,7 @@ class KprimChoiceScoring extends AbstractScoring
             /** @var KprimChoiceScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 
-            if (is_null($option_config->isCorrectValue()))
-            {
+            if (is_null($option_config->isCorrectValue())) {
                 return false;
             }
         }

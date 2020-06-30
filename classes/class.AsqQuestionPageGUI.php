@@ -56,7 +56,7 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
      * @param int $page_int_id
      * @param UIServices $ui
      */
-    function __construct(int $parent_int_id, int $page_int_id, UIServices $ui)
+    public function __construct(int $parent_int_id, int $page_int_id, UIServices $ui)
     {
         $this->ui = $ui;
 
@@ -78,7 +78,7 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
     private function createPageIfNotExists(string $page_type, int $parent_int_id, int $page_int_id)
     {
         if (ilPageObject::_exists($page_type, $page_int_id) === false) {
-            include_once(PathHelper::getBasePath(__DIR__)  . "/src/UserInterface/Web/Page/class.AsqPageObject.php");
+            include_once(PathHelper::getBasePath(__DIR__) . "/src/UserInterface/Web/Page/class.AsqPageObject.php");
             $page = new AsqPageObject();
             $page->setParentType($page_type);
             $page->setParentId($parent_int_id);
@@ -139,12 +139,14 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
         $this->questionActionsHTML = $a_html;
     }
 
-    function setQuestionComponent(QuestionComponent $component) {
+    public function setQuestionComponent(QuestionComponent $component)
+    {
         $this->component = $component;
         $this->setQuestionHTML([$this->getId() => $component->renderHtml()]);
     }
 
-    function getQuestionComponent() : QuestionComponent {
+    public function getQuestionComponent() : QuestionComponent
+    {
         return $this->component;
     }
 }

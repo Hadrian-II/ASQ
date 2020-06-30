@@ -71,7 +71,7 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
 
     protected function initForm() : void
     {
-        $feedback_correct = new ilTextAreaInputGUI($this->language->txt('asq_input_feedback_correct'),  self::VAR_ANSWER_FEEDBACK_CORRECT);
+        $feedback_correct = new ilTextAreaInputGUI($this->language->txt('asq_input_feedback_correct'), self::VAR_ANSWER_FEEDBACK_CORRECT);
         $feedback_correct->setUseRte(true);
         $feedback_correct->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
         $this->addItem($feedback_correct);
@@ -93,7 +93,7 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
             $header->setTitle($this->language->txt('asq_header_feedback_answers'));
             $this->addItem($header);
 
-            $feedback_setting = new ilRadioGroupInputGUI($this->language->txt('asq_label_feedback_setting'),  self::VAR_ANSWER_OPTION_FEEDBACK_MODE);
+            $feedback_setting = new ilRadioGroupInputGUI($this->language->txt('asq_label_feedback_setting'), self::VAR_ANSWER_OPTION_FEEDBACK_MODE);
             $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_all'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL));
             $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_checked'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED));
             $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_correct'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT));
@@ -124,7 +124,6 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
      */
     public function getFeedbackFromPost() : Feedback
     {
-
         $feedback_correct = $this->readString(self::VAR_ANSWER_FEEDBACK_CORRECT);
         $feedback_wrong = $this->readString(self::VAR_ANSWER_FEEDBACK_WRONG);
         $answer_option_feedback_mode = $this->readInt(self::VAR_ANSWER_OPTION_FEEDBACK_MODE);
@@ -137,7 +136,7 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
                 $post_key = $this->getPostKey($answer_option);
                 $post_val = $this->readString($post_key);
 
-                if(!empty($post_val)) {
+                if (!empty($post_val)) {
                     $answer_option_feedbacks[$answer_option->getOptionId()] = $post_val;
                 }
             }
@@ -150,7 +149,7 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
      * @param AnswerOption $answer_option
      * @return string
      */
-    private function getPostKey(AnswerOption $answer_option)  : string
+    private function getPostKey(AnswerOption $answer_option) : string
     {
         return self::VAR_FEEDBACK_FOR_ANSWER . $answer_option->getOptionId();
     }

@@ -35,7 +35,7 @@ class HintComponent
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.hint.html', true, true);
 
-        foreach($this->hints->getHints() as $hint) {
+        foreach ($this->hints->getHints() as $hint) {
             /** @var $hint QuestionHint */
             $tpl->setCurrentBlock('hint');
             $tpl->setVariable('HINT_CONTENT', $hint->getContent());

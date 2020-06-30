@@ -62,12 +62,11 @@ class FileUploadEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    public function readAnswer(): AbstractValueObject
+    public function readAnswer() : AbstractValueObject
     {
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
 
-        if (!$this->isPostVarSet($postkey))
-        {
+        if (!$this->isPostVarSet($postkey)) {
             return null;
         }
 
@@ -86,8 +85,7 @@ class FileUploadEditor extends AbstractEditor
     {
         $this->upload->process();
 
-        foreach ($this->upload->getResults() as $result)
-        {
+        foreach ($this->upload->getResults() as $result) {
             $folder = self::UPLOADPATH . $this->question->getId() . '/';
             $pathinfo = pathinfo($result->getName());
 
@@ -96,17 +94,17 @@ class FileUploadEditor extends AbstractEditor
             $filename = $uuid_factory->uuid4AsString() . '.' . $pathinfo['extension'];
 
             if ($result && $result->getStatus()->getCode() === ProcessingStatus::OK &&
-                $this->checkAllowedExtension($pathinfo['extension']))
-            {
+                $this->checkAllowedExtension($pathinfo['extension'])) {
                 $this->upload->moveOneFileTo(
                     $result,
                     $folder,
                     Location::WEB,
-                    $filename);
+                    $filename
+                );
 
                 $this->files[$pathinfo['basename']] = ILIAS_HTTP_PATH . '/' .
                                             ILIAS_WEB_DIR . '/' .
-                                            CLIENT_ID .  '/' .
+                                            CLIENT_ID . '/' .
                                             $folder .
                                             $filename;
             }
@@ -115,7 +113,7 @@ class FileUploadEditor extends AbstractEditor
 
     private function deleteOldFiles() : void
     {
-        if(!empty($this->files)) {
+        if (!empty($this->files)) {
             $answers = $this->files;
 
             foreach (array_keys($answers) as $key) {
@@ -130,20 +128,23 @@ class FileUploadEditor extends AbstractEditor
      * @param string $extension
      * @return bool
      */
-    private function checkAllowedExtension(string $extension) :bool
+    private function checkAllowedExtension(string $extension) : bool
     {
         return empty($this->configuration->getAllowedExtensions()) ||
                in_array($extension, explode(',', $this->configuration->getAllowedExtensions()));
     }
 
-    public function generateHtml(): string
+    public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
         $tpl->setVariable('TXT_UPLOAD_FILE', $this->language->txt('asq_header_upload_file'));
-        $tpl->setVariable('TXT_MAX_SIZE',
+        $tpl->setVariable(
+            'TXT_MAX_SIZE',
             sprintf(
                 $this->language->txt('asq_text_max_size'),
-                $this->configuration->getMaximumSize() ?? ini_get('upload_max_filesize')));
+                $this->configuration->getMaximumSize() ?? ini_get('upload_max_filesize')
+            )
+        );
 
         $tpl->setVariable('POST_VAR', $this->getPostVar());
         $tpl->setVariable('CURRENT_ANSWER_NAME', $this->getPostVar() . self::VAR_CURRENT_ANSWER);
@@ -151,13 +152,15 @@ class FileUploadEditor extends AbstractEditor
 
         if (!empty($this->configuration->getAllowedExtensions())) {
             $tpl->setCurrentBlock('allowed_extensions');
-            $tpl->setVariable('TXT_ALLOWED_EXTENSIONS',
+            $tpl->setVariable(
+                'TXT_ALLOWED_EXTENSIONS',
                 sprintf(
                     $this->language->txt('asq_text_allowed_extensions'),
-                    $this->configuration->getAllowedExtensions()));
+                    $this->configuration->getAllowedExtensions()
+                )
+            );
 
             $tpl->parseCurrentBlock();
-
         }
 
         $tpl->setCurrentBlock('files');
@@ -188,15 +191,17 @@ class FileUploadEditor extends AbstractEditor
         return $this->question->getId();
     }
 
-    private function getFileKey(string $filename) {
+    private function getFileKey(string $filename)
+    {
         return $this->getPostVar() . str_replace('.', '', $filename);
     }
 
-    public static function getDisplayDefinitionClass() : string {
+    public static function getDisplayDefinitionClass() : string
+    {
         return EmptyDefinition::class;
     }
 
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         return true;
     }

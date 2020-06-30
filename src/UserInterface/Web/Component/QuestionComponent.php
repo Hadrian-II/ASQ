@@ -69,7 +69,8 @@ class QuestionComponent
         $this->editor = $editor;
     }
 
-    public function setRenderFeedback(bool $show_feedback) {
+    public function setRenderFeedback(bool $show_feedback)
+    {
         $this->show_feedback = $show_feedback;
         $this->editor->setRenderFeedback($show_feedback);
     }
@@ -85,7 +86,7 @@ class QuestionComponent
         if ($this->show_feedback && !is_null($this->question_dto->getFeedback())) {
             $feedback_component = new FeedbackComponent($this->question_dto, $this->editor->readAnswer(), $this->language);
             $tpl->setCurrentBlock('feedback');
-            $tpl->setVariable('QUESTION_FEEDBACK',$feedback_component->getHtml());
+            $tpl->setVariable('QUESTION_FEEDBACK', $feedback_component->getHtml());
             $tpl->parseCurrentBlock();
         }
 

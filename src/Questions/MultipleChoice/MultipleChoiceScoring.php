@@ -18,8 +18,7 @@ use srag\asq\Domain\Model\Scoring\AbstractScoring;
  */
 class MultipleChoiceScoring extends AbstractScoring
 {
-
-    function score(Answer $answer): float
+    public function score(Answer $answer) : float
     {
         $reached_points = 0;
 
@@ -41,7 +40,7 @@ class MultipleChoiceScoring extends AbstractScoring
         return $this->score($this->getBestAnswer());
     }
 
-    public function getBestAnswer(): Answer
+    public function getBestAnswer() : Answer
     {
         $answers = [];
 
@@ -64,7 +63,8 @@ class MultipleChoiceScoring extends AbstractScoring
         return MultipleChoiceAnswer::create($answers);
     }
 
-    protected function calculateMinScore() : float {
+    protected function calculateMinScore() : float
+    {
         $min = 0.0;
 
         /** @var AnswerOption $answer_option */
@@ -96,8 +96,7 @@ class MultipleChoiceScoring extends AbstractScoring
             $option_config = $option->getScoringDefinition();
 
             if (is_null($option_config->getPointsSelected()) ||
-                ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMaxAnswers() > 1 && is_null($option_config->getPointsUnselected())))
-            {
+                ($this->question->getPlayConfiguration()->getEditorConfiguration()->getMaxAnswers() > 1 && is_null($option_config->getPointsUnselected()))) {
                 return false;
             }
         }

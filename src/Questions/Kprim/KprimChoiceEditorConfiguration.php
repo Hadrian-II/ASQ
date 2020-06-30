@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class KprimChoiceEditorConfiguration extends AbstractConfiguration {
+class KprimChoiceEditorConfiguration extends AbstractConfiguration
+{
     /**
      * @var ?bool
      */
@@ -44,20 +45,21 @@ class KprimChoiceEditorConfiguration extends AbstractConfiguration {
      * @param string $label_false
      * @return KprimChoiceEditorConfiguration
      */
-    static function create(?bool $shuffle_answers,
-                           ?bool $single_line,
-                           ?int $thumbnail_size,
-                           ?string $label_true,
-                           ?string $label_false) : KprimChoiceEditorConfiguration
-        {
-            $object = new KprimChoiceEditorConfiguration();
-            $object->single_line = $single_line;
-            $object->shuffle_answers = $shuffle_answers;
-            $object->thumbnail_size = $thumbnail_size;
-            $object->label_true = $label_true;
-            $object->label_false = $label_false;
+    public static function create(
+        ?bool $shuffle_answers,
+        ?bool $single_line,
+        ?int $thumbnail_size,
+        ?string $label_true,
+        ?string $label_false
+    ) : KprimChoiceEditorConfiguration {
+        $object = new KprimChoiceEditorConfiguration();
+        $object->single_line = $single_line;
+        $object->shuffle_answers = $shuffle_answers;
+        $object->thumbnail_size = $thumbnail_size;
+        $object->label_true = $label_true;
+        $object->label_false = $label_false;
 
-            return $object;
+        return $object;
     }
 
     /**

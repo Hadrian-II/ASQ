@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\Scoring\TextScoring;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class TextGapConfiguration extends ClozeGapConfiguration {
+class TextGapConfiguration extends ClozeGapConfiguration
+{
     /**
      * @var ?ClozeGapItem[]
      */
@@ -39,8 +40,8 @@ class TextGapConfiguration extends ClozeGapConfiguration {
     public static function Create(
         ?array $items = [],
         ?int $field_length = self::DEFAULT_FIELD_LENGTH,
-        ?int $matching_method = TextScoring::TM_CASE_SENSITIVE) : TextGapConfiguration
-    {
+        ?int $matching_method = TextScoring::TM_CASE_SENSITIVE
+    ) : TextGapConfiguration {
         $object = new TextGapConfiguration();
         $object->items = $items;
         $object->field_length = $field_length;
@@ -75,12 +76,12 @@ class TextGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return array
      */
-    public function getItemsArray(): array
+    public function getItemsArray() : array
     {
         $var_array = [];
 
         if (!is_null($this->items)) {
-            foreach($this->items as $variable) {
+            foreach ($this->items as $variable) {
                 $var_array[] = $variable->getAsArray();
             }
         }
@@ -91,12 +92,12 @@ class TextGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return float
      */
-    public function getMaxPoints(): float
+    public function getMaxPoints() : float
     {
         $gap_max = 0;
 
         /** @var $gap ClozeGapItem */
-        foreach($this->items as $gap_item) {
+        foreach ($this->items as $gap_item) {
             if ($gap_item->getPoints() > $gap_max) {
                 $gap_max = $gap_item->getPoints();
             }
@@ -108,14 +109,14 @@ class TextGapConfiguration extends ClozeGapConfiguration {
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
         if (count($this->getItems()) < 1) {
             return false;
         }
 
         foreach ($this->getItems() as $gap_item) {
-            if (! $gap_item->isComplete()) {
+            if (!$gap_item->isComplete()) {
                 return false;
             }
         }

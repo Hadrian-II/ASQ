@@ -15,7 +15,8 @@ use srag\asq\Domain\Model\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadEditorConfiguration extends AbstractConfiguration {
+class FileUploadEditorConfiguration extends AbstractConfiguration
+{
     
     /**
      * @var ?int
@@ -33,7 +34,8 @@ class FileUploadEditorConfiguration extends AbstractConfiguration {
      * @param int $upload_type
      * @return FileUploadEditorConfiguration
      */
-    public static function create(?int $maximum_size = null, ?string $allowed_extensions = null) : FileUploadEditorConfiguration {
+    public static function create(?int $maximum_size = null, ?string $allowed_extensions = null) : FileUploadEditorConfiguration
+    {
         $object = new FileUploadEditorConfiguration();
         $object->maximum_size = $maximum_size;
         $object->allowed_extensions = $allowed_extensions;
@@ -43,18 +45,20 @@ class FileUploadEditorConfiguration extends AbstractConfiguration {
     /**
      * @return int|NULL
      */
-    public function getMaximumSize() : ?int {
+    public function getMaximumSize() : ?int
+    {
         return $this->maximum_size;
     }
     
     /**
      * @return string|NULL
      */
-    public function getAllowedExtensions() : ?string {
+    public function getAllowedExtensions() : ?string
+    {
         return $this->allowed_extensions;
     }
 
-    public function equals(AbstractValueObject $other): bool
+    public function equals(AbstractValueObject $other) : bool
     {
         /** @var FileUploadEditorConfiguration $other */
         return get_class($this) === get_class($other) &&

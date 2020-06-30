@@ -67,8 +67,8 @@ class AsqQuestionConfigEditorGUI
         string $questionId,
         ilLanguage $language,
         UIServices $ui,
-        ilCtrl $ctrl)
-    {
+        ilCtrl $ctrl
+    ) {
         $this->contextContainer = $contextContainer;
         $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId);
         $this->language = $language;
@@ -79,8 +79,7 @@ class AsqQuestionConfigEditorGUI
 
     public function executeCommand() : void
     {
-        switch( $this->ctrl->getNextClass() )
-        {
+        switch ($this->ctrl->getNextClass()) {
             case strtolower(self::class):
             default:
 
@@ -96,8 +95,7 @@ class AsqQuestionConfigEditorGUI
      */
     protected function showForm(ilPropertyFormGUI $form = null) : void
     {
-        if( $form === null )
-        {
+        if ($form === null) {
             $form = $this->buildForm();
         }
 
@@ -129,13 +127,14 @@ class AsqQuestionConfigEditorGUI
 
         $this->saveQuestion($form);
 
-        if( !$form->checkInput() )
-        {
+        if (!$form->checkInput()) {
             $this->showForm($form);
             return;
         }
 
-        $this->ctrl->redirectToUrl(str_replace('&amp;', '&',
+        $this->ctrl->redirectToUrl(str_replace(
+            '&amp;',
+            '&',
             $this->contextContainer->getBackLink()->getAction()
         ));
     }
@@ -175,7 +174,7 @@ class AsqQuestionConfigEditorGUI
             try {
                 AsqGateway::get()->question()->createQuestionRevision($rev_name, $this->question->getId());
                 ilUtil::sendSuccess($this->language->txt('asq_revision_created'));
-            } catch(AsqException $e) {
+            } catch (AsqException $e) {
                 ilutil::sendFailure($e->getMessage());
             }
         }

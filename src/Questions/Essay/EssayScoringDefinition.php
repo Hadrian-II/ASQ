@@ -14,7 +14,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayScoringDefinition extends AbstractValueObject {
+class EssayScoringDefinition extends AbstractValueObject
+{
     /**
      * @var ?float
      */
@@ -30,7 +31,8 @@ class EssayScoringDefinition extends AbstractValueObject {
      * @param float $points
      * @return EssayScoringDefinition
      */
-    public static function create(?string $text, ?float $points) : EssayScoringDefinition {
+    public static function create(?string $text, ?float $points) : EssayScoringDefinition
+    {
         $object = new EssayScoringDefinition();
         $object->points = $points;
         $object->text = $text;
@@ -48,7 +50,7 @@ class EssayScoringDefinition extends AbstractValueObject {
     /**
      * @return string|NULL
      */
-    public function getText()  : ?string
+    public function getText() : ?string
     {
         return $this->text;
     }

@@ -25,32 +25,35 @@ use ILIAS\Data\Result\Ok;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class CreateQuestionRevisionCommandHandler implements CommandHandlerContract {
+class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
+{
 
     /**
      * @param CommandContract $command
      */
-	public function handle(CommandContract $command) : Result
-	{
-	    /** @var CreateQuestionRevisionCommand $command */
-	    $repository = new PublishedQuestionRepository();
+    public function handle(CommandContract $command) : Result
+    {
+        /** @var CreateQuestionRevisionCommand $command */
+        $repository = new PublishedQuestionRepository();
 
-	    if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
-	       return new Error(new AsqException(
-	           sprintf(
-	               'A revision with the Name: "%s" already exists for Question: "%s"',
-	               $command->getRevisionName(),
-	               $command->getQuestionId())));
-	    }
+        if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
+            return new Error(new AsqException(
+               sprintf(
+                   'A revision with the Name: "%s" already exists for Question: "%s"',
+                   $command->getRevisionName(),
+                   $command->getQuestionId()
+               )
+           ));
+        }
 
 
-		$question = QuestionRepository::getInstance()->getAggregateRootById($command->getQuestionId());
-		RevisionFactory::setRevisionId($question, $command->getRevisionName());
+        $question = QuestionRepository::getInstance()->getAggregateRootById($command->getQuestionId());
+        RevisionFactory::setRevisionId($question, $command->getRevisionName());
 
-		$repository->saveNewQuestionRevision(QuestionDto::CreateFromQuestion($question));
+        $repository->saveNewQuestionRevision(QuestionDto::CreateFromQuestion($question));
 
-		QuestionRepository::getInstance()->save($question);
+        QuestionRepository::getInstance()->save($question);
 
-		return new Ok(null);
-	}
+        return new Ok(null);
+    }
 }

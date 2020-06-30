@@ -27,7 +27,7 @@ class MultipleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
      */
-    public function getValues(AbstractValueObject $definition): array
+    public function getValues(AbstractValueObject $definition) : array
     {
         return [
             self::VAR_MCSD_SELECTED => $definition->getPointsSelected(),
@@ -39,19 +39,21 @@ class MultipleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
      */
-    public function getTableColumns(?QuestionPlayConfiguration $play): array
+    public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];
 
         $fields[self::VAR_MCSD_SELECTED] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_checked'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_MCSD_SELECTED);
+            self::VAR_MCSD_SELECTED
+        );
 
         $fields[self::VAR_MCSD_UNSELECTED] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_unchecked'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_MCSD_UNSELECTED);
+            self::VAR_MCSD_UNSELECTED
+        );
 
         return $fields;
     }
@@ -59,17 +61,18 @@ class MultipleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     /**
      * @return MultipleChoiceScoringDefinition
      */
-    public function readObjectFromValues(array $values): AbstractValueObject
+    public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return MultipleChoiceScoringDefinition::create(
             floatval($values[self::VAR_MCSD_SELECTED]),
-            floatval($values[self::VAR_MCSD_UNSELECTED]));
+            floatval($values[self::VAR_MCSD_UNSELECTED])
+        );
     }
 
     /**
      * @return MultipleChoiceScoringDefinition
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return MultipleChoiceScoringDefinition::create(null, null);
     }

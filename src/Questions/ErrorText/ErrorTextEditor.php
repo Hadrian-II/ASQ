@@ -109,16 +109,15 @@ class ErrorTextEditor extends AbstractEditor
     {
         $answers = $this->readString($this->getPostKey());
 
-        if(!is_null($answers) && strlen($answers) > 0) {
+        if (!is_null($answers) && strlen($answers) > 0) {
             $answers = explode(',', $answers);
 
-            $answers = array_map(function($answer) {
+            $answers = array_map(function ($answer) {
                 return intval($answer);
             }, $answers);
 
             return ErrorTextAnswer::create($answers);
-        }
-        else {
+        } else {
             return ErrorTextAnswer::create();
         }
     }
@@ -126,7 +125,7 @@ class ErrorTextEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return EmptyDefinition::class;
     }
@@ -136,8 +135,7 @@ class ErrorTextEditor extends AbstractEditor
      */
     public function isComplete() : bool
     {
-        if (empty($this->configuration->getErrorText()))
-        {
+        if (empty($this->configuration->getErrorText())) {
             return false;
         }
 

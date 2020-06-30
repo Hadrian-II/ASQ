@@ -51,8 +51,7 @@ class MatchingEditor extends AbstractEditor
     {
         $value = $this->readString($this->question->getId());
 
-        if (! empty($value))
-        {
+        if (!empty($value)) {
             return null;
         }
 
@@ -92,17 +91,13 @@ class MatchingEditor extends AbstractEditor
      */
     private function renderTerms($config, $tpl)
     {
-        foreach ($config->getTerms() as $term)
-        {
-            if (!empty($term->getImage()))
-            {
+        foreach ($config->getTerms() as $term) {
+            if (!empty($term->getImage())) {
                 $tpl->setCurrentBlock('term_picture');
                 $tpl->setVariable('TERM', $term->getText());
                 $tpl->setVariable('IMAGE', $term->getImage());
                 $tpl->parseCurrentBlock();
-            }
-            else
-            {
+            } else {
                 $tpl->setCurrentBlock('term_text');
                 $tpl->setVariable('TERM', $term->getText());
                 $tpl->parseCurrentBlock();
@@ -120,17 +115,13 @@ class MatchingEditor extends AbstractEditor
      */
     private function renderDefinitions($config, $tpl)
     {
-        foreach ($config->getDefinitions() as $definition)
-        {
-            if (!empty($definition->getImage()))
-            {
+        foreach ($config->getDefinitions() as $definition) {
+            if (!empty($definition->getImage())) {
                 $tpl->setCurrentBlock('definition_picture');
                 $tpl->setVariable('DEFINITION', $definition->getText());
                 $tpl->setVariable('IMAGE', $definition->getImage());
                 $tpl->parseCurrentBlock();
-            }
-            else
-            {
+            } else {
                 $tpl->setCurrentBlock('definition_text');
                 $tpl->setVariable('DEFINITION', $definition->getText());
                 $tpl->parseCurrentBlock();
@@ -145,7 +136,7 @@ class MatchingEditor extends AbstractEditor
     /**
      * @return string
      */
-    static function getDisplayDefinitionClass() : string
+    public static function getDisplayDefinitionClass() : string
     {
         return EmptyDefinition::class;
     }
@@ -160,8 +151,7 @@ class MatchingEditor extends AbstractEditor
 
         if (count($config->getDefinitions()) < 1 ||
             count($config->getTerms()) < 1 ||
-            count($config->getMatches()) < 1)
-        {
+            count($config->getMatches()) < 1) {
             return false;
         }
 

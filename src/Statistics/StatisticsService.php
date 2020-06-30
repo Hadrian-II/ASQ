@@ -39,7 +39,6 @@ class StatisticsService extends ASQService
      */
     public function getQuestionScoreStatistics(string $question_id, string $question_version) : object
     {
-
     }
 
     /**
@@ -49,6 +48,5 @@ class StatisticsService extends ASQService
      */
     public function getQuestionUsageStatistics(string $question_id, string $question_version) : object
     {
-
     }
 }

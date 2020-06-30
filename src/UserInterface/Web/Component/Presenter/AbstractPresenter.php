@@ -18,29 +18,29 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
  */
 abstract class AbstractPresenter
 {
-	/**
-	 * @var QuestionDto
-	 */
-	protected $question;
+    /**
+     * @var QuestionDto
+     */
+    protected $question;
 
-	/**
-	 * @var UIServices
-	 */
-	protected $ui;
+    /**
+     * @var UIServices
+     */
+    protected $ui;
 
     /**
      * AbstractPresenter constructor.
      *
      * @param QuestionDto $question
      */
-	public function __construct(QuestionDto $question, UIServices $ui)
-	{
-		$this->question = $question;
-		$this->ui = $ui;
-	}
+    public function __construct(QuestionDto $question, UIServices $ui)
+    {
+        $this->question = $question;
+        $this->ui = $ui;
+    }
 
-	/**
-	 * @return string
-	 */
-	abstract public function generateHtml(AbstractEditor $editor): string;
+    /**
+     * @return string
+     */
+    abstract public function generateHtml(AbstractEditor $editor) : string;
 }

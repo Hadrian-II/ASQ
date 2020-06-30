@@ -19,7 +19,8 @@ use srag\asq\Domain\Model\Scoring\AbstractScoring;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaScoring extends AbstractScoring {
+class FormulaScoring extends AbstractScoring
+{
     /**
      * @var FormulaScoringConfiguration
      */
@@ -50,7 +51,7 @@ class FormulaScoring extends AbstractScoring {
             $answers = $answer->getValues();
             $formula = $result->getFormula();
 
-            foreach($answers as $key => $value) {
+            foreach ($answers as $key => $value) {
                 $formula = str_replace($key, $value, $formula);
             }
 
@@ -65,16 +66,14 @@ class FormulaScoring extends AbstractScoring {
             //get decimal value of answer if allowed
             if (($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_ALL ||
                 $this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_DECIMAL) &&
-                is_numeric($raw_result))
-            {
+                is_numeric($raw_result)) {
                 $result_given = floatval($raw_result);
             }
 
             //get compound result if no value yet and it is allowed
             if (is_null($result_given) &&
                 $this->configuration->getResultType() !== FormulaScoringConfiguration::TYPE_DECIMAL &&
-                strpos($raw_result, '/'))
-            {
+                strpos($raw_result, '/')) {
                 $split = explode('/', $raw_result);
                 $numerator = floatval($split[0]);
                 $denominator = floatval($split[1]);
@@ -83,8 +82,7 @@ class FormulaScoring extends AbstractScoring {
 
                 // invalidate result if not coprime and option is set
                 if ($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_COPRIME_FRACTION &&
-                    $this->greatest_common_divisor($numerator, $denominator) !== 1)
-                {
+                    $this->greatest_common_divisor($numerator, $denominator) !== 1) {
                     $result_given = null;
                 }
             }
@@ -112,7 +110,7 @@ class FormulaScoring extends AbstractScoring {
      */
     private function greatest_common_divisor(int $a, int $b) : int
     {
-        return ($a % $b) ? $this->greatest_common_divisor($b,$a % $b) : $b;
+        return ($a % $b) ? $this->greatest_common_divisor($b, $a % $b) : $b;
     }
 
     /**
@@ -151,11 +149,11 @@ class FormulaScoring extends AbstractScoring {
         }
 
         foreach ($this->configuration->getVariables() as $var) {
-            if (! $var->isComplete()) {
+            if (!$var->isComplete()) {
                 return false;
             }
 
-            if (! $this->isVarValid($var)) {
+            if (!$this->isVarValid($var)) {
                 return false;
             }
         }
@@ -164,12 +162,11 @@ class FormulaScoring extends AbstractScoring {
             /** @var FormulaScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 
-            if (! $option_config->isComplete($this->configuration))
-            {
+            if (!$option_config->isComplete($this->configuration)) {
                 return false;
             }
 
-            if (! $this->isResultValid($option_config)) {
+            if (!$this->isResultValid($option_config)) {
                 return false;
             }
         }
@@ -183,17 +180,15 @@ class FormulaScoring extends AbstractScoring {
      */
     private function isVarValid(FormulaScoringVariable $var) : bool
     {
-        if (! $this->inPrecision($var->getMax(), $this->configuration->getPrecision()) ||
-            ! $this->inPrecision($var->getMin(), $this->configuration->getPrecision()) ||
-            ! $this->inPrecision($var->getMultipleOf(), $this->configuration->getPrecision()))
-        {
+        if (!$this->inPrecision($var->getMax(), $this->configuration->getPrecision()) ||
+            !$this->inPrecision($var->getMin(), $this->configuration->getPrecision()) ||
+            !$this->inPrecision($var->getMultipleOf(), $this->configuration->getPrecision())) {
             return false;
         }
 
-        if (! empty($var->getUnit()) &&
+        if (!empty($var->getUnit()) &&
             (is_null($this->configuration->getUnits()) ||
-            ! in_array($var->getUnit(), $this->configuration->getUnits())))
-        {
+            !in_array($var->getUnit(), $this->configuration->getUnits()))) {
             return false;
         }
 
@@ -219,10 +214,9 @@ class FormulaScoring extends AbstractScoring {
      */
     private function isResultValid(FormulaScoringDefinition $result) : bool
     {
-        if (! empty($result->getUnit()) &&
+        if (!empty($result->getUnit()) &&
             (is_null($this->configuration->getUnits()) ||
-            ! in_array($result->getUnit(), $this->configuration->getUnits())))
-        {
+            !in_array($result->getUnit(), $this->configuration->getUnits()))) {
             return false;
         }
 
@@ -236,7 +230,7 @@ class FormulaScoring extends AbstractScoring {
 
         $formula = $result->getFormula();
 
-        foreach($variables as $key => $value) {
+        foreach ($variables as $key => $value) {
             $formula = str_replace($key, $value, $formula);
         }
 
@@ -244,8 +238,7 @@ class FormulaScoring extends AbstractScoring {
 
         try {
             $math->evaluate($formula);
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return false;
         }
 

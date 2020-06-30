@@ -51,7 +51,8 @@ class LinkService
 
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_config'),
-            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionConfigEditorGUI::class]));
+            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionConfigEditorGUI::class])
+        );
     }
 
 
@@ -74,7 +75,8 @@ class LinkService
 
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_preview'),
-            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class]));
+            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class])
+        );
     }
 
     /**
@@ -89,7 +91,8 @@ class LinkService
         return $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('asq_authoring_tab_pageview'),
             $DIC->ctrl()->getLinkTargetByClass(
-                [AsqQuestionAuthoringGUI::class, AsqQuestionPageGUI::class], 'edit'
+                [AsqQuestionAuthoringGUI::class, AsqQuestionPageGUI::class],
+                'edit'
             )
         );
     }

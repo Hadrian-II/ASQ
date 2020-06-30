@@ -14,7 +14,8 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozeAnswer extends Answer {
+class ClozeAnswer extends Answer
+{
     /**
      * @var ?array
      */
@@ -24,7 +25,8 @@ class ClozeAnswer extends Answer {
      * @param array $answers
      * @return ClozeAnswer
      */
-    public static function create(?array $answers = []) : ClozeAnswer {
+    public static function create(?array $answers = []) : ClozeAnswer
+    {
         $object = new ClozeAnswer();
         $object->answers = $answers;
         return $object;
@@ -33,7 +35,8 @@ class ClozeAnswer extends Answer {
     /**
      * @return array|NULL
      */
-    public function getAnswers() : ?array {
+    public function getAnswers() : ?array
+    {
         return $this->answers;
     }
 }

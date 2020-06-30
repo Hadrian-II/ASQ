@@ -70,7 +70,8 @@ class HintFormGUI extends \ilPropertyFormGUI
             self::HINT_POSTVAR,
             $this->getHintData(),
             $this->getTableDefinitions(),
-            [AsqTableInput::OPTION_ORDER]);
+            [AsqTableInput::OPTION_ORDER]
+        );
 
         $this->addItem($this->hint_table);
 
@@ -91,7 +92,7 @@ class HintFormGUI extends \ilPropertyFormGUI
             return [];
         }
 
-        return array_map(function($hint) {
+        return array_map(function ($hint) {
             return [
                 self::HINT_CONTENT_POSTVAR => $hint->getContent(),
                 self::HINT_POINTS_POSTVAR => $hint->getPointDeduction()];
@@ -107,11 +108,13 @@ class HintFormGUI extends \ilPropertyFormGUI
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_question_hints_label_hint'),
                 AsqTableInputFieldDefinition::TYPE_TEXT_AREA,
-                self::HINT_CONTENT_POSTVAR),
+                self::HINT_CONTENT_POSTVAR
+            ),
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_question_hints_label_points_deduction'),
                 AsqTableInputFieldDefinition::TYPE_NUMBER,
-                self::HINT_POINTS_POSTVAR)
+                self::HINT_POINTS_POSTVAR
+            )
         ];
     }
 
@@ -124,13 +127,14 @@ class HintFormGUI extends \ilPropertyFormGUI
 
         return QuestionHints::create(
             array_map(
-                function($raw_hint) use ($index) {
+                function ($raw_hint) use ($index) {
                     $index += 1;
 
                     return QuestionHint::create(
                         strval($index),
                         $raw_hint[self::HINT_CONTENT_POSTVAR],
-                        floatval($raw_hint[self::HINT_POINTS_POSTVAR]));
+                        floatval($raw_hint[self::HINT_POINTS_POSTVAR])
+                    );
                 },
                 $this->hint_table->readValues()
             )

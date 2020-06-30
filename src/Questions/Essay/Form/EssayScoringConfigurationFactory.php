@@ -42,7 +42,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -59,30 +59,40 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
 
         $any = new ilRadioOption($this->language->txt('asq_label_automatic_any'), EssayScoring::SCORING_AUTOMATIC_ANY);
         $any->setInfo($this->language->txt('asq_info_automatic_any'));
-        $any_options = new AsqTableInput($this->language->txt('asq_label_answers'),
+        $any_options = new AsqTableInput(
+            $this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ANY,
             $this->readAnswerOptionValues($value->getDefinitions()),
             [
-                new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
+                new AsqTableInputFieldDefinition(
+                    $this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT),
-                new AsqTableInputFieldDefinition($this->language->txt('asq_label_points'),
+                    self::VAR_DEF_TEXT
+                ),
+                new AsqTableInputFieldDefinition(
+                    $this->language->txt('asq_label_points'),
                     AsqTableInputFieldDefinition::TYPE_NUMBER,
-                    self::VAR_DEF_POINTS)
-            ]);
+                    self::VAR_DEF_POINTS
+                )
+            ]
+        );
         $any->addSubItem($any_options);
         $scoring_mode->addOption($any);
 
         $all = new ilRadioOption($this->language->txt('asq_label_automatic_all'), EssayScoring::SCORING_AUTOMATIC_ALL);
         $all->setInfo($this->language->txt('asq_info_automatic_all'));
-        $all_options = new AsqTableInput($this->language->txt('asq_label_answers'),
+        $all_options = new AsqTableInput(
+            $this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ALL,
             $this->readAnswerOptionValues($value->getDefinitions()),
             [
-                new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
+                new AsqTableInputFieldDefinition(
+                    $this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT)
-            ]);
+                    self::VAR_DEF_TEXT
+                )
+            ]
+        );
 
         $all_points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_ANSWERS_ALL . self::VAR_POINTS);
         $all_points->setSize(2);
@@ -95,14 +105,18 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         $one = new ilRadioOption($this->language->txt('asq_label_automatic_one'), EssayScoring::SCORING_AUTOMATIC_ONE);
         $one->setInfo($this->language->txt('asq_info_automatic_one'));
 
-        $one_options = new AsqTableInput($this->language->txt('asq_label_answers'),
+        $one_options = new AsqTableInput(
+            $this->language->txt('asq_label_answers'),
             self::VAR_ANSWERS_ONE,
             $this->readAnswerOptionValues($value->getDefinitions()),
             [
-                new AsqTableInputFieldDefinition($this->language->txt('asq_label_answer_text'),
+                new AsqTableInputFieldDefinition(
+                    $this->language->txt('asq_label_answer_text'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT)
-            ]);
+                    self::VAR_DEF_TEXT
+                )
+            ]
+        );
 
         $one_points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_ANSWERS_ONE . self::VAR_POINTS);
         $one_points->setSize(2);
@@ -128,14 +142,15 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      * @param Answeroptions $options
      * @return array
      */
-    private function readAnswerOptionValues(?Answeroptions $options) : array {
+    private function readAnswerOptionValues(?Answeroptions $options) : array
+    {
         if (is_null($options) || count($options->getOptions()) === 0) {
             return [];
         }
 
         $values = [];
 
-        foreach($options->getOptions() as $option) {
+        foreach ($options->getOptions() as $option) {
             /** @var EssayScoringDefinition $definition */
             $definition = $option->getScoringDefinition();
 
@@ -151,15 +166,14 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return EssayScoringConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         $scoring_mode = $this->readInt(self::VAR_SCORING_MODE);
         $points = 0.0;
 
         if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ALL) {
             $points = $this->readFloat(self::VAR_ANSWERS_ALL . self::VAR_POINTS);
-        }
-        else if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE) {
+        } elseif ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE) {
             $points = $this->readFloat(self::VAR_ANSWERS_ONE . self::VAR_POINTS);
         }
 
@@ -167,7 +181,8 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
             $this->readInt(self::VAR_TEXT_MATCHING),
             $scoring_mode,
             $points,
-            $this->readDefinitions());
+            $this->readDefinitions()
+        );
     }
 
     /**
@@ -182,11 +197,9 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         if ($selected !== EssayScoring::SCORING_MANUAL) {
             if ($selected === EssayScoring::SCORING_AUTOMATIC_ALL) {
                 $prefix = self::VAR_ANSWERS_ALL;
-            }
-            else if ($selected === EssayScoring::SCORING_AUTOMATIC_ANY) {
+            } elseif ($selected === EssayScoring::SCORING_AUTOMATIC_ANY) {
                 $prefix = self::VAR_ANSWERS_ANY;
-            }
-            else if ($selected === EssayScoring::SCORING_AUTOMATIC_ONE) {
+            } elseif ($selected === EssayScoring::SCORING_AUTOMATIC_ONE) {
                 $prefix = self::VAR_ANSWERS_ONE;
             }
 
@@ -222,7 +235,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     /**
      * @return EssayScoringConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return EssayScoringConfiguration::create(null, null, null, null);
     }

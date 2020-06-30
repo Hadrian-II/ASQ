@@ -67,18 +67,26 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
 
         $result_type = new ilRadioGroupInputGUI($this->language->txt('asq_label_result_type'), self::VAR_RESULT_TYPE);
         $result_type->setRequired(true);
-        $result_type->addOption(new ilRadioOption($this->language->txt('asq_label_result_all'),
+        $result_type->addOption(new ilRadioOption(
+            $this->language->txt('asq_label_result_all'),
             FormulaScoringConfiguration::TYPE_ALL,
-            $this->language->txt('asq_description_result_all')));
-        $result_type->addOption(new ilRadioOption($this->language->txt('asq_label_result_decimal'),
+            $this->language->txt('asq_description_result_all')
+        ));
+        $result_type->addOption(new ilRadioOption(
+            $this->language->txt('asq_label_result_decimal'),
             FormulaScoringConfiguration::TYPE_DECIMAL,
-            $this->language->txt('asq_description_result_decimal')));
-        $result_type->addOption(new ilRadioOption($this->language->txt('asq_label_result_fraction'),
+            $this->language->txt('asq_description_result_decimal')
+        ));
+        $result_type->addOption(new ilRadioOption(
+            $this->language->txt('asq_label_result_fraction'),
             FormulaScoringConfiguration::TYPE_FRACTION,
-            $this->language->txt('asq_description_result_fraction')));
-        $result_type->addOption(new ilRadioOption($this->language->txt('asq_label_result_coprime_fraction'),
+            $this->language->txt('asq_description_result_fraction')
+        ));
+        $result_type->addOption(new ilRadioOption(
+            $this->language->txt('asq_label_result_coprime_fraction'),
             FormulaScoringConfiguration::TYPE_COPRIME_FRACTION,
-            $this->language->txt('asq_description_result_coprime_fraction')));
+            $this->language->txt('asq_description_result_coprime_fraction')
+        ));
         $fields[self::VAR_RESULT_TYPE] = $result_type;
 
         $fields[self::VAR_VARIABLES] = $this->getVariablesTable($value);
@@ -89,8 +97,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $precision->setValue($value->getPrecision());
             $tolerance->setValue($value->getTolerance());
             $result_type->setValue($value->getResultType());
-        }
-        else {
+        } else {
             $tolerance->setValue(0);
             $result_type->setValue(FormulaScoringConfiguration::TYPE_ALL);
         }
@@ -113,7 +120,8 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
                 $raw_variable[FormulaScoringVariable::VAR_UNIT],
                 empty($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]) ?
                     null:
-                    floatval($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]));
+                    floatval($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF])
+            );
         }
 
         return FormulaScoringConfiguration::create(
@@ -122,7 +130,8 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $this->readInt(self::VAR_PRECISION),
             $this->readFloat(self::VAR_TOLERANCE),
             $this->readInt(self::VAR_RESULT_TYPE),
-            $variables);
+            $variables
+        );
     }
 
     /**
@@ -131,8 +140,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
      */
     private function getVariablesTable(FormulaScoringConfiguration $value) : AsqTableInput
     {
-        if (is_null($this->variables_table))
-        {
+        if (is_null($this->variables_table)) {
             $this->variables_table = new AsqTableInput(
                 $this->language->txt('asq_label_variables'),
                 self::VAR_VARIABLES,
@@ -141,23 +149,28 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
                     new AsqTableInputFieldDefinition(
                         $this->language->txt('asq_header_min'),
                         AsqTableInputFieldDefinition::TYPE_TEXT,
-                        FormulaScoringVariable::VAR_MIN),
+                        FormulaScoringVariable::VAR_MIN
+                    ),
                     new AsqTableInputFieldDefinition(
                         $this->language->txt('asq_header_max'),
                         AsqTableInputFieldDefinition::TYPE_TEXT,
-                        FormulaScoringVariable::VAR_MAX),
+                        FormulaScoringVariable::VAR_MAX
+                    ),
                     new AsqTableInputFieldDefinition(
                         $this->language->txt('asq_header_unit'),
                         AsqTableInputFieldDefinition::TYPE_TEXT,
-                        FormulaScoringVariable::VAR_UNIT),
+                        FormulaScoringVariable::VAR_UNIT
+                    ),
                     new AsqTableInputFieldDefinition(
                         $this->language->txt('asq_header_multiple_of'),
                         AsqTableInputFieldDefinition::TYPE_TEXT,
-                        FormulaScoringVariable::VAR_MULTIPLE_OF)
+                        FormulaScoringVariable::VAR_MULTIPLE_OF
+                    )
                 ],
                 [
                     AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
-                ]);
+                ]
+            );
             $this->variables_table->setRequired(true);
         }
 

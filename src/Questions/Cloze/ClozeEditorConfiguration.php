@@ -31,7 +31,8 @@ class ClozeEditorConfiguration extends AbstractConfiguration
      * @param array $gaps
      * @return ClozeEditorConfiguration
      */
-    public static function create(string $cloze_text, array $gaps) : ClozeEditorConfiguration {
+    public static function create(string $cloze_text, array $gaps) : ClozeEditorConfiguration
+    {
         $config = new ClozeEditorConfiguration();
         $config->cloze_text = $cloze_text;
         $config->gaps = $gaps;

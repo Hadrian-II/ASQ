@@ -15,22 +15,25 @@ use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadQuestionGUI extends QuestionFormGUI {
-    protected function createDefaultPlayConfiguration(): QuestionPlayConfiguration
+class FileUploadQuestionGUI extends QuestionFormGUI
+{
+    protected function createDefaultPlayConfiguration() : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
             FileUploadEditorConfiguration::create(),
-            FileUploadScoringConfiguration::create());
+            FileUploadScoringConfiguration::create()
+        );
     }
     
-    protected function readPlayConfiguration(): QuestionPlayConfiguration
+    protected function readPlayConfiguration() : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
             FileUploadEditor::readConfig(),
-            FileUploadScoring::readConfig());
+            FileUploadScoring::readConfig()
+        );
     }
     
-    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play): void
+    protected function initiatePlayConfiguration(?QuestionPlayConfiguration $play) : void
     {
         foreach (FileUploadEditor::generateFields($play->getEditorConfiguration()) as $field) {
             $this->addItem($field);

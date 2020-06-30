@@ -27,7 +27,7 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
      * {@inheritDoc}
      * @see \srag\asq\UserInterface\Web\Form\IObjectFactory::getFormfields()
      */
-    public function getFormfields(?AbstractValueObject $value): array
+    public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
 
@@ -35,8 +35,10 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
         $max_upload->setInfo($this->language->txt('asq_description_max_upload'));
         $fields[self::VAR_MAX_UPLOAD] = $max_upload;
 
-        $allowed_extensions = new ilTextInputGUI($this->language->txt('asq_label_allowed_extensions'),
-            self::VAR_ALLOWED_EXTENSIONS);
+        $allowed_extensions = new ilTextInputGUI(
+            $this->language->txt('asq_label_allowed_extensions'),
+            self::VAR_ALLOWED_EXTENSIONS
+        );
         $allowed_extensions->setInfo($this->language->txt('asq_description_allowed_extensions'));
         $fields[self::VAR_ALLOWED_EXTENSIONS] = $allowed_extensions;
 
@@ -51,18 +53,18 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
     /**
      * @return FileUploadEditorConfiguration
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return FileUploadEditorConfiguration::create(
             $this->readInt(self::VAR_MAX_UPLOAD),
-            str_replace(' ', '', $this->readString(self::VAR_ALLOWED_EXTENSIONS)));
-
+            str_replace(' ', '', $this->readString(self::VAR_ALLOWED_EXTENSIONS))
+        );
     }
 
     /**
      * @return FileUploadEditorConfiguration
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return FileUploadEditorConfiguration::create();
     }

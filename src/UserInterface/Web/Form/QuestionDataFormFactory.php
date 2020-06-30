@@ -107,7 +107,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
     /**
      * @return AbstractValueObject
      */
-    public function readObjectFromPost(): AbstractValueObject
+    public function readObjectFromPost() : AbstractValueObject
     {
         return QuestionData::create(
             $this->readString(self::VAR_TITLE),
@@ -115,7 +115,8 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             $this->readString(self::VAR_AUTHOR),
             $this->readString(self::VAR_DESCRIPTION),
             $this->readWorkingTime(self::VAR_WORKING_TIME),
-            $this->readInt(self::VAR_LIFECYCLE));
+            $this->readInt(self::VAR_LIFECYCLE)
+        );
     }
 
     /**
@@ -123,7 +124,8 @@ class QuestionDataFormFactory extends AbstractObjectFactory
      * @throws Exception
      * @return int
      */
-    private function readWorkingTime(string $post_name) : int {
+    private function readWorkingTime(string $post_name) : int
+    {
         $HOURS = 'hh';
         $MINUTES = 'mm';
         $SECONDS = 'ss';
@@ -135,16 +137,16 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             array_key_exists($HOURS, $postval) &&
             array_key_exists($MINUTES, $postval) &&
             array_key_exists($SECONDS, $postval)) {
-                return $postval[$HOURS] * self::SECONDS_IN_HOUR + $postval[$MINUTES] * self::SECONDS_IN_MINUTE + $postval[$SECONDS];
-            } else {
-                throw new Exception("Variable is not an ilDurationInput");
-            }
+            return $postval[$HOURS] * self::SECONDS_IN_HOUR + $postval[$MINUTES] * self::SECONDS_IN_MINUTE + $postval[$SECONDS];
+        } else {
+            throw new Exception("Variable is not an ilDurationInput");
+        }
     }
 
     /**
      * @return AbstractValueObject
      */
-    public function getDefaultValue(): AbstractValueObject
+    public function getDefaultValue() : AbstractValueObject
     {
         return null;
     }

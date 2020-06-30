@@ -50,8 +50,7 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
         if ($value !== null) {
             $error_text->setValue($value->getErrorText());
             $text_size->setValue($value->getTextSize());
-        }
-        else {
+        } else {
             $text_size->setValue(self::DEFAULT_TEXTSIZE_PERCENT);
         }
 
@@ -65,7 +64,8 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
     {
         return ErrorTextEditorConfiguration::create(
             $this->readString(self::VAR_ERROR_TEXT),
-            $this->readInt(self::VAR_TEXT_SIZE));
+            $this->readInt(self::VAR_TEXT_SIZE)
+        );
     }
 
     /**

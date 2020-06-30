@@ -14,14 +14,15 @@ use srag\CQRS\Event\AbstractStoredEvent;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionEventStoreAr extends AbstractStoredEvent {
+class QuestionEventStoreAr extends AbstractStoredEvent
+{
+    const STORAGE_NAME = "asq_qst_event_store";
 
-	const STORAGE_NAME = "asq_qst_event_store";
-
-	/**
-	 * @return string
-	 */
-	static function returnDbTableName() {
-		return self::STORAGE_NAME;
-	}
+    /**
+     * @return string
+     */
+    public static function returnDbTableName()
+    {
+        return self::STORAGE_NAME;
+    }
 }

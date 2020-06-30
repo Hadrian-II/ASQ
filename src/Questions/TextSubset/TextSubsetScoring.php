@@ -60,7 +60,7 @@ class TextSubsetScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer(): Answer
+    public function getBestAnswer() : Answer
     {
         $answers = [];
 
@@ -79,11 +79,11 @@ class TextSubsetScoring extends AbstractScoring
     {
         $amount = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();
 
-        if(empty($amount)) {
+        if (empty($amount)) {
             return 0;
         }
 
-        $points = array_map(function($option) {
+        $points = array_map(function ($option) {
             return $option->getScoringDefinition()->getPoints();
         }, $this->question->getAnswerOptions()->getOptions());
 
@@ -96,7 +96,8 @@ class TextSubsetScoring extends AbstractScoring
      * @param array $answer_arr
      * @return int
      */
-    private function caseInsensitiveScoring() : float {
+    private function caseInsensitiveScoring() : float
+    {
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
@@ -115,7 +116,8 @@ class TextSubsetScoring extends AbstractScoring
      * @param array $answer_arr
      * @return int
      */
-    private function caseSensitiveScoring() : float {
+    private function caseSensitiveScoring() : float
+    {
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
@@ -135,7 +137,8 @@ class TextSubsetScoring extends AbstractScoring
      * @param int $distance
      * @return int
      */
-    private function levenshteinScoring(int $distance) : float {
+    private function levenshteinScoring(int $distance) : float
+    {
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
@@ -153,7 +156,8 @@ class TextSubsetScoring extends AbstractScoring
     /**
      * @return array
      */
-    private function getAnswers() : array {
+    private function getAnswers() : array
+    {
         return array_unique($this->answer->getAnswers());
     }
 
@@ -174,8 +178,7 @@ class TextSubsetScoring extends AbstractScoring
             $option_config = $option->getScoringDefinition();
 
             if (empty($option_config->getText()) ||
-                empty($option_config->getPoints()))
-            {
+                empty($option_config->getPoints())) {
                 return false;
             }
         }

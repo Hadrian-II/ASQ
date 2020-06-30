@@ -49,27 +49,32 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_wrong_text'),
             AsqTableInputFieldDefinition::TYPE_LABEL,
-            self::VAR_WRONG_TEXT);
+            self::VAR_WRONG_TEXT
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             '',
             AsqTableInputFieldDefinition::TYPE_HIDDEN,
-            self::VAR_WORD_INDEX);
+            self::VAR_WORD_INDEX
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             '',
             AsqTableInputFieldDefinition::TYPE_HIDDEN,
-            self::VAR_WORD_LENGTH);
+            self::VAR_WORD_LENGTH
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_correct_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_CORRECT_TEXT);
+            self::VAR_CORRECT_TEXT
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
-            self::VAR_POINTS);
+            self::VAR_POINTS
+        );
 
         return $fields;
     }

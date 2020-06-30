@@ -58,7 +58,8 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
     {
         return KprimChoiceScoringConfiguration::create(
             $this->readFloat(self::VAR_POINTS),
-            $this->readInt(self::VAR_HALF_POINTS));
+            $this->readInt(self::VAR_HALF_POINTS)
+        );
     }
 
     /**

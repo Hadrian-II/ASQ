@@ -14,7 +14,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozeGapItem extends AbstractValueObject {
+class ClozeGapItem extends AbstractValueObject
+{
     const VAR_TEXT = 'cgi_text';
     const VAR_POINTS = 'cgi_points';
 
@@ -33,7 +34,8 @@ class ClozeGapItem extends AbstractValueObject {
      * @param ?float $points
      * @return ClozeGapItem
      */
-    public static function create(?string $text, ?float $points) : ClozeGapItem {
+    public static function create(?string $text, ?float $points) : ClozeGapItem
+    {
         $item = new ClozeGapItem();
         $item->text = $text;
         $item->points = $points;
@@ -59,7 +61,8 @@ class ClozeGapItem extends AbstractValueObject {
     /**
      * @return array
      */
-    public function getAsArray() : array {
+    public function getAsArray() : array
+    {
         return [
             self::VAR_TEXT => $this->text,
             self::VAR_POINTS => $this->points
@@ -69,9 +72,9 @@ class ClozeGapItem extends AbstractValueObject {
     /**
      * @return bool
      */
-    public function isComplete(): bool
+    public function isComplete() : bool
     {
-        return ! is_null($this->getText()) &&
-               ! is_null($this->getPoints());
+        return !is_null($this->getText()) &&
+               !is_null($this->getPoints());
     }
 }

@@ -16,11 +16,12 @@ use srag\asq\Domain\Model\Feedback;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionFeedbackSetEvent extends AbstractDomainEvent {
-	/**
-	 * @var ?Feedback
-	 */
-	protected $feedback;
+class QuestionFeedbackSetEvent extends AbstractDomainEvent
+{
+    /**
+     * @var ?Feedback
+     */
+    protected $feedback;
 
 
     /**
@@ -30,43 +31,47 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent {
      * @param int $question_int_id
      * @param Feedback $feedback
      */
-	public function __construct(string $aggregate_id,
-                        	    ilDateTime $occured_on,
-                        	    int $initiating_user_id,
-                                ?Feedback $feedback = null)
-	{
-	    parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
+    public function __construct(
+        string $aggregate_id,
+        ilDateTime $occured_on,
+        int $initiating_user_id,
+        ?Feedback $feedback = null
+    ) {
+        parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
 
-		$this->feedback = $feedback;
-	}
+        $this->feedback = $feedback;
+    }
 
-	/**
-	 * @return Feedback
-	 */
-	public function getFeedback() : ?Feedback {
-		return $this->feedback;
-	}
+    /**
+     * @return Feedback
+     */
+    public function getFeedback() : ?Feedback
+    {
+        return $this->feedback;
+    }
 
     /**
      * @return string
      */
-	public function getEventBody() : string {
-		return json_encode($this->feedback);
-	}
+    public function getEventBody() : string
+    {
+        return json_encode($this->feedback);
+    }
 
-	/**
-	 * @param string $json_data
-	 */
-	public function restoreEventBody(string $json_data) : void {
-		$this->feedback = Feedback::deserialize($json_data);
-	}
+    /**
+     * @param string $json_data
+     */
+    public function restoreEventBody(string $json_data) : void
+    {
+        $this->feedback = Feedback::deserialize($json_data);
+    }
 
-	/**
-	 * @return int
-	 */
-	public static function getEventVersion() : int
-	{
-	    // initial version 1
-	    return 1;
-	}
+    /**
+     * @return int
+     */
+    public static function getEventVersion() : int
+    {
+        // initial version 1
+        return 1;
+    }
 }

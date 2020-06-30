@@ -20,16 +20,17 @@ use ILIAS\Data\Result\Ok;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SaveQuestionCommandHandler implements CommandHandlerContract {
+class SaveQuestionCommandHandler implements CommandHandlerContract
+{
 
-	/**
-	 * @param CommandContract $command
-	 */
-	public function handle(CommandContract $command) : Result
-	{
-	    /** @var SaveQuestionCommand $command */
-		QuestionRepository::getInstance()->save($command->GetQuestion());
+    /**
+     * @param CommandContract $command
+     */
+    public function handle(CommandContract $command) : Result
+    {
+        /** @var SaveQuestionCommand $command */
+        QuestionRepository::getInstance()->save($command->GetQuestion());
 
-		return new Ok(null);
-	}
+        return new Ok(null);
+    }
 }

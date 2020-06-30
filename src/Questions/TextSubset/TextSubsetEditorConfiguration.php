@@ -34,7 +34,7 @@ class TextSubsetEditorConfiguration extends AbstractConfiguration
     /**
      * @return ?int
      */
-    public function getNumberOfRequestedAnswers(): ?int
+    public function getNumberOfRequestedAnswers() : ?int
     {
         return $this->number_of_requested_answers;
     }

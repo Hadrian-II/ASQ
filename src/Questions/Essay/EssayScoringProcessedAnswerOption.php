@@ -12,7 +12,8 @@ namespace srag\asq\Questions\Essay;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayScoringProcessedAnswerOption { 
+class EssayScoringProcessedAnswerOption
+{
     /**
      * @var string[]
      */
@@ -23,7 +24,8 @@ class EssayScoringProcessedAnswerOption {
      */
     private $points;
     
-    public function __construct(EssayScoringDefinition $def, bool $is_case_insensitive) {
+    public function __construct(EssayScoringDefinition $def, bool $is_case_insensitive)
+    {
         $this->points = $def->getPoints();
         
         $text = $def->getText();

@@ -26,7 +26,8 @@ class OrderingFormFactory extends QuestionFormFactory
             new OrderingEditorConfigurationFactory($language),
             new OrderingScoringConfigurationFactory($language),
             new ImageAndTextDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 
     /**

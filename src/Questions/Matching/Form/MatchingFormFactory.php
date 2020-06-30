@@ -27,7 +27,8 @@ class MatchingFormFactory extends QuestionFormFactory
             new MatchingEditorConfigurationFactory($language),
             new MatchingScoringConfigurationFactory($language),
             new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language));
+            new EmptyDefinitionFactory($language)
+        );
     }
 
     /**

@@ -19,13 +19,12 @@ use ilDateTime;
  */
 class QuestionListItemAr extends ActiveRecord
 {
-
     const STORAGE_NAME = "asq_question_list_item";
 
     /**
      * @return string
      */
-    static function returnDbTableName()
+    public static function returnDbTableName()
     {
         return self::STORAGE_NAME;
     }
@@ -103,13 +102,13 @@ class QuestionListItemAr extends ActiveRecord
     protected $working_time;
     /**
      * @var ilDateTime
-     * 
+     *
      * @con_has_field true
      * @con_fieldtype timestamp
      */
     protected $created;
     
-    public static function createNew(QuestionDto $question) : QuestionListItemAr 
+    public static function createNew(QuestionDto $question) : QuestionListItemAr
     {
         $object = new QuestionListItemAr();
         $object->question_id = $question->getId();
@@ -166,21 +165,24 @@ class QuestionListItemAr extends ActiveRecord
     /**
      * @return string
      */
-    public function getQuestionId() : string {
+    public function getQuestionId() : string
+    {
         return $this->question_id;
     }
     
     /**
      * @return string
      */
-    public function getRevisionName() : string {
+    public function getRevisionName() : string
+    {
         return $this->revision_name;
     }
     
     /**
      * @return ilDateTime
      */
-    public function getCreated(): ilDateTime {
+    public function getCreated() : ilDateTime
+    {
         return $this->created;
     }
     

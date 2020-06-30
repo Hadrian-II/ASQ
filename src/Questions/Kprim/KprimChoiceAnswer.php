@@ -14,19 +14,22 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class KprimChoiceAnswer extends Answer {
+class KprimChoiceAnswer extends Answer
+{
     /**
      * @var int[]
      */
     protected $answers;
     
-    public static function create(array $answers) : KprimChoiceAnswer {
+    public static function create(array $answers) : KprimChoiceAnswer
+    {
         $object = new KprimChoiceAnswer();
         $object->answers = $answers;
         return $object;
     }
     
-    public function getAnswerForId(string $id) : ?bool {
+    public function getAnswerForId(string $id) : ?bool
+    {
         return $this->answers[$id];
     }
 }
