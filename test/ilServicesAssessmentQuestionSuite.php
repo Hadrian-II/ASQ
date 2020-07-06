@@ -1,7 +1,13 @@
 <?php
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
+
+require_once("../../../../../../../../../libs/composer/vendor/autoload.php");
+require_once("../../vendor/composer/autoload_static.php");
+require_once('ASQTestDIC.php');
+
 use PHPUnit\Framework\TestSuite;
+use ILIAS\AssessmentQuestion\Test\AsqTestDIC;
 
 /**
  * Class ilServicesAssessmentQuestionSuite
@@ -18,26 +24,20 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
      * @var array
      */
     protected static $testSuites = array(
-        'Services/AssessmentQuestion/test/ClozeQuestionTest.php' => 'ILIAS\AssessmentQuestion\Questions\Cloze\ClozeQuestionTest'
+        'ClozeQuestionTest.php' => 'ILIAS\AssessmentQuestion\Test\ClozeQuestionTest'
     );
-    
+
     public static function suite()
     {
-        if (defined('ILIAS_PHPUNIT_CONTEXT')) {
-            include_once("./Services/PHPUnit/classes/class.ilUnitUtil.php");
-            ilUnitUtil::performInitialisation();
-        } else {
-            chdir(dirname(__FILE__));
-            chdir('../../../');
-        }
-        
+        AsqTestDIC::init();
+
         $suite = new ilServicesAssessmentQuestionSuite();
-        
+
         foreach (self::$testSuites as $classFile => $className) {
             require_once $classFile;
             $suite->addTestSuite($className);
         }
-        
+
         return $suite;
     }
 }
