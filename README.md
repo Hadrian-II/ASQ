@@ -1,5 +1,7 @@
 # ILIAS - ASQ - Assessment Question Service
 
+![](2020-07-07_asq_ddd.png)
+
 The ILIAS ASQ is designed as a component that offers services around assessment questions. The way other components can interact with ASQ is as easy and flexible as possible. The ASQ provides a complete authoring and scoring environment for assessment questions.
 
 ![](asq_authoring_environment.png)
