@@ -37,7 +37,7 @@ class AsqTestDIC extends Container
 
         $container['ilClientIniFile'] = function ($c) {
             //TODO bad
-            $base_dir = '/home/al/vagrant-ilias/ilias/';
+            $base_dir = '/var/www/ilias/';
 
             $ilIliasIniFile = new ilIniFile($base_dir . "ilias.ini.php");
             $ilIliasIniFile->read();
@@ -104,7 +104,7 @@ class AsqTestDIC extends Container
                 define("IL_DB_TYPE", $val);
             }
 
-            return $ilIliasIniFile;
+            return $ilClientIniFile;
         };
         $force_init = $container['ilClientIniFile'];
 
