@@ -7,6 +7,12 @@ use PHPUnit\Framework\TestCase;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\QuestionData;
+use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\UserInterface\Web\Component\QuestionComponent;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionTestCase
@@ -22,11 +28,33 @@ abstract class QuestionTestCase extends TestCase
     const TEST_CONTAINER = -1;
     const DONT_TEST = -1;
 
+    private static $ids = [];
+
     abstract public function getQuestions() : array;
+
+    /**
+     * @param QuestionData $data
+     * @param QuestionPlayConfiguration $play
+     * @param AnswerOptions $options
+     * @return QuestionDto
+     */
+    protected function createQuestion(QuestionData $data, QuestionPlayConfiguration $play, ?AnswerOptions $options) : QuestionDto
+    {
+        $factory = new Factory();
+
+        $question = new QuestionDto();
+        $question->setId($factory->uuid4AsString());
+        $question->setData($data);
+        $question->setPlayConfiguration($play);
+        $question->setAnswerOptions($options);
+        return $question;
+    }
 
     abstract public function getAnswers() : array;
 
     abstract public function getExpectedScore(string $question_id, string $answer_id) : float;
+
+    abstract public function getTypeDefinition() : QuestionTypeDefinition;
 
     public function setUp() : void
     {
@@ -39,7 +67,7 @@ abstract class QuestionTestCase extends TestCase
 
         foreach ($this->getQuestions() as $question_id => $question) {
             foreach ($this->getAnswers() as $answer_id => $answer) {
-                $mapping[sprintf('Question %s with Answer $s', $question_id, $answer_id)] =
+                $mapping[sprintf('Question "%s" with Answer "%s"', $question_id, $answer_id)] =
                     [
                         $question,
                         $answer,
@@ -57,7 +85,8 @@ abstract class QuestionTestCase extends TestCase
     public function testQuestionCreation()
     {
         foreach ($this->getQuestions() as $question) {
-            $created = AsqGateway::get()->question()->createQuestion($question->getLegacyData()->getAnswerTypeId(), self::TEST_CONTAINER);
+            $created = AsqGateway::get()->question()->createQuestion($this->getTypeDefinition());
+            self::$ids[] = sprintf('"%s"', $created->getId());
             $created->setData($question->getData());
             $created->setAnswerOptions($question->getAnswerOptions());
             $created->setPlayConfiguration($question->getPlayConfiguration());
@@ -66,7 +95,9 @@ abstract class QuestionTestCase extends TestCase
             $loaded_created = AsqGateway::get()->question()->getQuestionByQuestionId($created->getId());
 
             $this->assertTrue($question->getData()->equals($loaded_created->getData()));
-            $this->assertTrue($question->getAnswerOptions()->equals($loaded_created->getAnswerOptions()));
+            if (!is_null($question->getAnswerOptions())) {
+                $this->assertTrue($question->getAnswerOptions()->equals($loaded_created->getAnswerOptions()));
+            }
             $this->assertTrue($question->getPlayConfiguration()->equals($loaded_created->getPlayConfiguration()));
         }
     }
@@ -79,17 +110,36 @@ abstract class QuestionTestCase extends TestCase
      * @param Answer $answer
      * @param float $expected_score
      */
+    public function testComponentRendering(QuestionDto $question, Answer $answer, float $expected_score)
+    {
+            global $DIC;
+
+            $q = new QuestionComponent($question, $DIC->ui(), $DIC->language());
+            $q->setAnswer($answer);
+            $output = $q->renderHtml();
+
+            $this->assertTrue(strlen($output) > 0);
+    }
+
+    /**
+     * @depends testQuestionCreation
+     * @dataProvider questionAnswerProvider
+     *
+     * @param QuestionDto $question
+     * @param Answer $answer
+     * @param float $expected_score
+     */
     public function testAnswers(QuestionDto $question, Answer $answer, float $expected_score)
     {
-        global $DIC;
-
-        $this->assertEquals($expected_score, $DIC->assessment()->answer()->getScore($question, $answer));
+        $this->assertEquals($expected_score, AsqGateway::get()->answer()->getScore($question, $answer));
     }
 
     public static function TearDownAfterClass() : void
     {
         global $DIC;
 
-        $DIC->database()->manipulate(sprintf('DELETE FROM asq_qst_event_store WHERE container_id = %s;', self::TEST_CONTAINER));
+        if (count(self::$ids) > 0) {
+            $DIC->database()->manipulate(sprintf('DELETE FROM asq_qst_event_store WHERE aggregate_id in (%s);', implode(', ', self::$ids)));
+        }
     }
 }

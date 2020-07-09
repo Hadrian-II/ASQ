@@ -24,11 +24,6 @@ class CreateQuestionCommand extends AbstractCommand
     protected $question_uuid;
 
     /**
-     * @var ?int;
-     */
-    protected $container_id;
-
-    /**
      * @var QuestionTypeDefinition
      */
     protected $question_type;
@@ -42,12 +37,10 @@ class CreateQuestionCommand extends AbstractCommand
     public function __construct(
         string $question_uuid,
         QuestionTypeDefinition $question_type,
-        int $initiating_user_id,
-        ?int $container_id = null
+        int $initiating_user_id
     ) {
         parent::__construct($initiating_user_id);
         $this->question_uuid = $question_uuid;
-        $this->container_id = $container_id;
         $this->question_type = $question_type;
     }
 
@@ -57,14 +50,6 @@ class CreateQuestionCommand extends AbstractCommand
     public function getQuestionUuid() : string
     {
         return $this->question_uuid;
-    }
-
-    /**
-     * @return int
-     */
-    public function getQuestionContainerId() : ?int
-    {
-        return $this->container_id;
     }
 
     /**

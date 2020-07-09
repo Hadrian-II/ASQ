@@ -126,7 +126,7 @@ class QuestionService extends ASQService
      *
      * @return QuestionDto
      */
-    public function createQuestion(QuestionTypeDefinition $type, ?int $container_id = null) : QuestionDto
+    public function createQuestion(QuestionTypeDefinition $type) : QuestionDto
     {
         $uuid_factory = new Factory();
 
@@ -136,8 +136,7 @@ class QuestionService extends ASQService
             new CreateQuestionCommand(
                 $id,
                 $type,
-                $this->getActiveUser(),
-                $container_id
+                $this->getActiveUser()
             )
         );
 

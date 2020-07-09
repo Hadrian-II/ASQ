@@ -4,13 +4,20 @@
 namespace ILIAS\AssessmentQuestion\Test;
 
 use ILIAS\DI\UIServices;
-use Pimple\Container;
 use ilCtrl;
 use ilDBWrapperFactory;
 use ilIniFile;
 use ilLanguage;
 use ilLoggerFactory;
 use ilObjUser;
+use ilBenchmark;
+use ilSetting;
+use ilGlobalPageTemplate;
+use ILIAS\GlobalScreen\Services;
+use ILIAS\DI\HTTPServices;
+use ilStyleDefinition;
+
+require_once 'NullLogger.php';
 
 /**
  * Class AsqTestDIC
@@ -21,12 +28,16 @@ use ilObjUser;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AsqTestDIC extends Container
+class AsqTestDIC extends \ILIAS\DI\Container
 {
     public static function init() : void
     {
         //TODO bad
         define('CLIENT_ID', 'default');
+        define("IL_COMP_MODULE", "Modules");
+        define("IL_COMP_SERVICE", "Services");
+        define("IL_COMP_PLUGIN", "Plugins");
+        define("IL_COMP_SLOTS", "Slots");
 
         $container = new AsqTestDIC();
         $GLOBALS['DIC'] = $container;
@@ -41,6 +52,7 @@ class AsqTestDIC extends Container
 
             $ilIliasIniFile = new ilIniFile($base_dir . "ilias.ini.php");
             $ilIliasIniFile->read();
+            $c['ilIliasIniFile'] = $ilIliasIniFile;
 
             // initialize constants
             define("ILIAS_DATA_DIR", $ilIliasIniFile->readVariable("clients", "datadir"));
@@ -120,14 +132,98 @@ class AsqTestDIC extends Container
         };
 
         $container['ilUser'] = function($c) {
-            return new ilObjUser();
+            return new class() {
+                public $prefs = [
+                    'language' => 'en',
+                    'style' => 'asdf'
+                ];
+
+                public function getId() {
+                    return 6;
+                }
+            };
         };
 
-        $container['lng'] = function ($c) {
+        $container['lng'] = function($c) {
             return new ilLanguage('en');
         };
 
+        $container['ilias'] = function ($c) {
+            return new class() {
+                public $account;
+                public $ini;
 
+                public function __construct() {
+                    $this->account = new class() {
+                        public $id = 6;
+                        public $fullname = 'Testa Testy';
+                    };
+
+                    $this->ini = new class() {
+                        public function readVariable() {
+                            return '';
+                        }
+                    };
+                }
+            };
+        };
+
+        $container['ilLog'] = function ($c) {
+            return new NullLogger();
+        };
+
+        $container['ilBench'] = function ($c) {
+            return new ilBenchmark();
+        };
+
+        $container['ilErr'] = function ($c) {
+            return null;
+        };
+
+        $container['ilAppEventHandler'] = function($c) {
+            return null;
+        };
+
+        $container['objDefinition'] = function($c) {
+            return null;
+        };
+
+        $container['ilSetting'] = function($c) {
+            return new ilSetting();
+        };
+
+        $container['ilPluginAdmin'] = function($c) {
+            return new class() {
+                public function getActivePluginsForSlot() {
+                    return [];
+                }
+            };
+        };
+
+        $container['tpl'] = function($c) {
+            return new ilGlobalPageTemplate(
+                new class() extends Services {
+                    public function __construct() {
+
+                    }
+                },
+                new UIServices($c),
+                new class() extends HTTPServices {
+                    public function __construct() {
+
+                    }
+                }
+            );
+        };
+
+        $container['styleDefinition'] = function($c) {
+            return new ilStyleDefinition();
+        };
+    }
+
+    public function repositoryTree()
+    {
+        return null;
     }
 
     /**
@@ -178,5 +274,38 @@ class AsqTestDIC extends Container
     public function ui()
     {
         return new UIServices($this);
+    }
+
+    /**
+     * @return \ilIniFile
+     */
+    public function iliasIni()
+    {
+        return $this['ilIliasIniFile'];
+    }
+
+    public function clientIni()
+    {
+        return $this['ilClientIniFile'];
+    }
+
+    public function logger()
+    {
+        return $this['ilLog'];
+    }
+
+    /**
+     * Get the interface to the settings
+     *
+     * @return \ilSetting
+     */
+    public function settings()
+    {
+        return $this["ilSetting"];
+    }
+
+    public function isDependencyAvailable($name)
+    {
+        false;
     }
 }

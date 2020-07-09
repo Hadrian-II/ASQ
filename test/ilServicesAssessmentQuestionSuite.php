@@ -2,8 +2,8 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 
-require_once("../../../../../../../../../libs/composer/vendor/autoload.php");
-require_once("../../vendor/composer/autoload_static.php");
+require_once("./libs/composer/vendor/autoload.php");
+require_once(__DIR__ . "../../../vendor/autoload.php");
 require_once('ASQTestDIC.php');
 
 use PHPUnit\Framework\TestSuite;
@@ -24,7 +24,7 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
      * @var array
      */
     protected static $testSuites = array(
-        'ClozeQuestionTest.php' => 'ILIAS\AssessmentQuestion\Test\ClozeQuestionTest'
+        'NumericQuestionTest.php' => 'ILIAS\AssessmentQuestion\Test\NumericQuestionTest'
     );
 
     public static function suite()
