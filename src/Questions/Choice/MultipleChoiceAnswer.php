@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\MultipleChoice;
+namespace srag\asq\Questions\Choice;
 
 use srag\asq\Domain\Model\Answer\Answer;
 
@@ -20,14 +20,14 @@ class MultipleChoiceAnswer extends Answer
      * @var int[]
      */
     protected $selected_ids;
-    
+
     public static function create(array $selected_ids) : MultipleChoiceAnswer
     {
         $object = new MultipleChoiceAnswer();
         $object->selected_ids = $selected_ids;
         return $object;
     }
-    
+
     public function getSelectedIds() : array
     {
         return $this->selected_ids;

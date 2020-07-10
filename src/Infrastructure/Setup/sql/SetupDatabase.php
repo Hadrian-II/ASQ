@@ -9,19 +9,19 @@ use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionAr;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
+use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageMapFormFactory;
+use srag\asq\Questions\Choice\Form\Editor\MultipleChoice\MultipleChoiceFormFactory;
+use srag\asq\Questions\Choice\Form\Editor\MultipleChoice\SingleChoiceFormFactory;
 use srag\asq\Questions\Cloze\Form\ClozeFormFactory;
 use srag\asq\Questions\ErrorText\Form\ErrorTextFormFactory;
 use srag\asq\Questions\Essay\Form\EssayFormFactory;
 use srag\asq\Questions\FileUpload\Form\FileUploadFormFactory;
 use srag\asq\Questions\Formula\Form\FormulaFormFactory;
-use srag\asq\Questions\ImageMap\Form\ImageMapFormFactory;
 use srag\asq\Questions\Kprim\Form\KprimChoiceFormFactory;
 use srag\asq\Questions\Matching\Form\MatchingFormFactory;
-use srag\asq\Questions\MultipleChoice\Form\MultipleChoiceFormFactory;
-use srag\asq\Questions\MultipleChoice\Form\SingleChoiceFormFactory;
 use srag\asq\Questions\Numeric\Form\NumericFormFactory;
 use srag\asq\Questions\Ordering\Form\OrderingFormFactory;
-use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
+use srag\asq\Questions\Ordering\Form\Editor\OrderingTextFormFactory;
 use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 
 /**

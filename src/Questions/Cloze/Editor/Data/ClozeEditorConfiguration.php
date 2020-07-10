@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\Cloze;
+namespace srag\asq\Questions\Cloze\Editor\Data;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class ClozeEditorConfiguration

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ErrorText;
+namespace srag\asq\Questions\ErrorText\Scoring\Data;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class ErrorTextScoringConfiguration
@@ -20,14 +20,14 @@ class ErrorTextScoringConfiguration extends AbstractConfiguration
      * @var ?float
      */
     protected $points_wrong;
-    
+
     public static function create(?float $points_wrong = null) : ErrorTextScoringConfiguration
     {
         $object = new ErrorTextScoringConfiguration();
         $object->points_wrong = $points_wrong;
         return $object;
     }
-    
+
     /**
      * @return int
      */

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\MultipleChoice;
+namespace srag\asq\Questions\Choice\Scoring\Data;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class MultipleChoiceScoringConfiguration

@@ -3,11 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\Domain\Model\Answer\Option\ImageAndTextDefinitionFactory;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use ilLanguage;
+use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\Questions\Ordering\Form\Editor\OrderingEditorConfigurationFactory;
+use srag\asq\Questions\Ordering\Form\Scoring\OrderingScoringConfigurationFactory;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class OrderingFormFactory
@@ -31,8 +33,7 @@ class OrderingFormFactory extends QuestionFormFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getAnswerOptionConfiguration()
+     * @return array
      */
     public function getAnswerOptionConfiguration() : array
     {

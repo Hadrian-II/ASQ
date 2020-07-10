@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\MultipleChoice;
+
+namespace srag\asq\Questions\Choice\Scoring\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 

@@ -1,9 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\UserInterface\Web\Form;
+namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use ilLanguage;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Abstract Class AbstractQuestionFormFactory

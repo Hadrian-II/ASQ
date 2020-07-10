@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Numeric\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use ilLanguage;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\Questions\Numeric\Form\Editor\NumericEditorConfigurationFactory;
+use srag\asq\Questions\Numeric\Form\Scoring\NumericScoringConfigurationFactory;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class NumericFormFactory

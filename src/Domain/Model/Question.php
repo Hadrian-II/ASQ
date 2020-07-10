@@ -16,6 +16,8 @@ use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
 use srag\asq\Domain\Event\QuestionHintsSetEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 
 /**

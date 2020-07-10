@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Event;
 
+use ilDateTime;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Event\AbstractDomainEvent;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use ilDateTime;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 
 /**
  * Class QuestionPlayConfigurationSetEvent

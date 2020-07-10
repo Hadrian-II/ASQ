@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ImageMap;
+namespace srag\asq\Questions\Choice\Editor\ImageMap\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 

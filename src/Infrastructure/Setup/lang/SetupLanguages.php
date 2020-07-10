@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Setup\lang;
 
+use ReflectionClass;
 use ilGlobalCache;
 use ilObjLanguage;
-use ReflectionClass;
-use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\PathHelper;
 
 /**
  * Class SetupDatabase
@@ -15,6 +15,8 @@ use srag\asq\UserInterface\Web\PathHelper;
  */
 abstract class SetupLanguages
 {
+    use PathHelper;
+
     abstract public function getLanguagePrefix() : string;
 
     public static function new() : SetupLanguages
@@ -112,6 +114,6 @@ abstract class SetupLanguages
     public function getLanguageDirectory() : string
     {
         $class_info = new ReflectionClass($this);
-        return PathHelper::getBasePath($class_info->getFileName()) . 'lang';
+        return $this->getBasePath($class_info->getFileName()) . 'lang';
     }
 }

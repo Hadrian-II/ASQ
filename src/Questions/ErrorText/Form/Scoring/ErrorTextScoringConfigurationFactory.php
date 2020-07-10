@@ -1,12 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Questions\ErrorText\Form;
+namespace srag\asq\Questions\ErrorText\Form\Scoring;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\UserInterface\Web\Form\AbstractObjectFactory;
-use srag\asq\Questions\ErrorText\ErrorTextScoringConfiguration;
 use ilNumberInputGUI;
+use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;
+use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
 /**
  * Class ErrorTextScoringConfigurationFactory

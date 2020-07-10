@@ -1,13 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\UserInterface\Web\Form;
+namespace srag\asq\UserInterface\Web\Form\Factory;
 
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\Domain\QuestionDto;
 
 /**
  * Class QuestionFormFactory

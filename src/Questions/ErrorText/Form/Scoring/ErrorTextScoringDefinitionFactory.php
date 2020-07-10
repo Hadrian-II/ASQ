@@ -1,13 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Questions\ErrorText\Form;
+namespace srag\asq\Questions\ErrorText\Form\Scoring;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\Form\AbstractAnswerOptionFactory;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\Questions\ErrorText\ErrorTextScoringDefinition;
+use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**
  * Class ErrorTextScoringDefinitionFactory
@@ -40,8 +40,8 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
+     * @param QuestionPlayConfiguration $play
+     * @return array
      */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
@@ -80,14 +81,14 @@ class QuestionAr extends ActiveRecord
     {
         global $DIC;
         $object = new QuestionAr();
-        
+
         $created = new ilDateTime(time(), IL_CAL_UNIX);
         $object->created = $created->get(IL_CAL_DATETIME);
         $object->creator = $DIC->user()->getId();
         $object->question_id = $question->getId();
         $object->revision_name = $question->getRevisionId()->getName();
         $object->data = json_encode($question);
-        
+
         return $object;
     }
 
@@ -98,7 +99,7 @@ class QuestionAr extends ActiveRecord
     {
         return $this->id;
     }
-    
+
     /**
      * @return mixed
      */
@@ -114,7 +115,7 @@ class QuestionAr extends ActiveRecord
     {
         return $this->creator;
     }
-    
+
     /**
      * @return string
      */
@@ -130,12 +131,12 @@ class QuestionAr extends ActiveRecord
     {
         return $this->revision_name;
     }
-    
+
     public function getQuestion() : QuestionDto
     {
         return QuestionDto::deserialize($this->data);
     }
-    
+
     /**
      * @return string
      */

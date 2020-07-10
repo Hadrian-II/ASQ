@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\Cloze;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+namespace srag\asq\Questions\Cloze\Scoring\Data;
+
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class ClozeScoringConfiguration

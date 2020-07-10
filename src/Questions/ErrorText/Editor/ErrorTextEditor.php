@@ -1,17 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ErrorText;
+namespace srag\asq\Questions\ErrorText\Editor;
 
+use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
-use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\Questions\ErrorText\ErrorTextAnswer;
+use srag\asq\Questions\ErrorText\Editor\Data\ErrorTextEditorConfiguration;
+use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
-use ILIAS\DI\UIServices;
 
 /**
  * Class ErrorTextEditor

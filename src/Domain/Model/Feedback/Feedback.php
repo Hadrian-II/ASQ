@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Domain\Model;
+namespace srag\asq\Domain\Model\Feedback;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 

@@ -1,14 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\Cloze;
+namespace srag\asq\Questions\Cloze\Scoring;
 
 use ILIAS\UI\NotImplementedException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinition;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
+use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
+use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
+use srag\asq\Questions\Generic\Data\EmptyDefinition;
 
 /**
  * Class ClozeScoring

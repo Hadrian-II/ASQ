@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ErrorText;
+namespace srag\asq\Questions\ErrorText\Scoring\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 
@@ -38,7 +38,7 @@ class ErrorTextScoringDefinition extends AbstractValueObject
      * @param int $wrong_word_length
      * @param string $correct_text
      * @param float $points
-     * @return \srag\asq\Questions\ErrorText\ErrorTextScoringDefinition
+     * @return ErrorTextScoringDefinition
      */
     public static function create(
         ?int $wrong_word_index,

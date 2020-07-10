@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\ErrorText;
+namespace srag\asq\Questions\ErrorText\Editor\Data;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class ErrorTextEditorConfiguration

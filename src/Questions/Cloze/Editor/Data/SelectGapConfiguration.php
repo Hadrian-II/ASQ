@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\Cloze;
+namespace srag\asq\Questions\Cloze\Editor\Data;
 
 /**
  * Class SelectGapConfiguration

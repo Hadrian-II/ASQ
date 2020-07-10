@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace srag\asq\Application\Command;
 
 use srag\CQRS\Command\AbstractCommand;

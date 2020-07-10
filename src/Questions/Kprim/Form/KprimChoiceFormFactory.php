@@ -3,10 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Kprim\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\Domain\Model\Answer\Option\ImageAndTextDefinitionFactory;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use ilLanguage;
+use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
+use srag\asq\Questions\Kprim\Form\Editor\KprimChoiceEditorConfigurationFactory;
+use srag\asq\Questions\Kprim\Form\Scoring\KprimChoiceScoringConfigurationFactory;
+use srag\asq\Questions\Kprim\Form\Scoring\KprimChoiceScoringDefinitionFactory;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class KprimFormFactory
@@ -30,8 +33,7 @@ class KprimChoiceFormFactory extends QuestionFormFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getAnswerOptionConfiguration()
+     * @return array
      */
     public function getAnswerOptionConfiguration() : array
     {

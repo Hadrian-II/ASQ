@@ -1,9 +1,13 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\ErrorText;
+
+namespace srag\asq\Questions\ErrorText\Scoring;
 
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Questions\ErrorText\ErrorTextAnswer;
+use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;
+use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringDefinition;
 
 /**
  * Class ErrorTextScoring

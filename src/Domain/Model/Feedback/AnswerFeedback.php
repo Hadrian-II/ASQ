@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Domain\Model\Answer;
+namespace srag\asq\Domain\Model\Feedback;
 
 use JsonSerializable;
 use srag\CQRS\Aggregate\AbstractValueObject;

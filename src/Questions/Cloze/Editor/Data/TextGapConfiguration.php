@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\Cloze;
+namespace srag\asq\Questions\Cloze\Editor\Data;
 
 use srag\asq\Domain\Model\Scoring\TextScoring;
 
@@ -32,10 +32,10 @@ class TextGapConfiguration extends ClozeGapConfiguration
     protected $matching_method;
 
     /**
-     * @param ?array $items
-     * @param ?int $field_length
-     * @param ?int $matching_method
-     * @return \srag\asq\Questions\Cloze\TextGapConfiguration
+     * @param array $items
+     * @param int $field_length
+     * @param int $matching_method
+     * @return TextGapConfiguration
      */
     public static function Create(
         ?array $items = [],

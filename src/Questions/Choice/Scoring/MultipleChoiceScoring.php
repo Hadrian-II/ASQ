@@ -1,11 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\MultipleChoice;
+namespace srag\asq\Questions\Choice\Scoring;
 
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Questions\Choice\MultipleChoiceAnswer;
+use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
 
 /**
  * Class MultipleChoiceScoring
@@ -75,11 +77,6 @@ class MultipleChoiceScoring extends AbstractScoring
         }
 
         return $this->calculateMaxHintDeduction() + $min;
-    }
-
-    public static function readConfig()
-    {
-        return MultipleChoiceScoringConfiguration::create();
     }
 
     /**

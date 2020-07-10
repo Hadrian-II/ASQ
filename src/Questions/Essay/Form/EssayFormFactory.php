@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Essay\Form;
 
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
 use ilLanguage;
+use srag\asq\Questions\Essay\Form\Editor\EssayEditorConfigurationFactory;
+use srag\asq\Questions\Essay\Form\Scoring\EssayScoringConfigurationFactory;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class EssayFormFactory

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Domain\Model\Answer\Option;
+namespace srag\asq\Questions\Generic\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 

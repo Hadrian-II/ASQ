@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web\Form;
+namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
 
 /**
  * Interface AnswerOption Factory

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\MultipleChoice;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+namespace srag\asq\Questions\Choice\Editor\MultipleChoice\Data;
+
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class MultipleChoiceEditorConfiguration

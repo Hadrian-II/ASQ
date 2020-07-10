@@ -3,10 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\ErrorText\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
-use srag\asq\UserInterface\Web\PathHelper;
 use ilLanguage;
+use srag\asq\PathHelper;
+use srag\asq\Questions\ErrorText\Form\Editor\ErrorTextEditorConfigurationFactory;
+use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringConfigurationFactory;
+use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringDefinitionFactory;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class ErrorTextFormFactory
@@ -32,8 +35,7 @@ class ErrorTextFormFactory extends QuestionFormFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getScripts()
+     * @return array
      */
     public function getScripts() : array
     {

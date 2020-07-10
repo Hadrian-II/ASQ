@@ -1,18 +1,21 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\ImageMap;
 
+namespace srag\asq\Questions\Choice\Editor\ImageMap;
+
+use ILIAS\DI\UIServices;
 use Exception;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Questions\MultipleChoice\MultipleChoiceAnswer;
-use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\Questions\Choice\MultipleChoiceAnswer;
+use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
+use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorDefinition;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
-use ILIAS\DI\UIServices;
 
 /**
  * Class ImageMapEditor

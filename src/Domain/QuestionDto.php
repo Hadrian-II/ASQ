@@ -1,15 +1,16 @@
 <?php
 declare(strict_types = 1);
+
 namespace srag\asq\Domain;
 
 use JsonSerializable;
 use srag\CQRS\Aggregate\RevisionId;
-use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\QuestionTypeDefinition;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 
 /**

@@ -3,9 +3,12 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\TextSubset\Form;
 
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
 use ilLanguage;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\Questions\TextSubset\Form\Editor\TextSubsetEditorConfigurationFactory;
+use srag\asq\Questions\TextSubset\Form\Scoring\TextSubsetScoringConfigurationFactory;
+use srag\asq\Questions\TextSubset\Form\Scoring\TextSubsetScoringDefinitionFactory;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class TextSubsetFormFactory

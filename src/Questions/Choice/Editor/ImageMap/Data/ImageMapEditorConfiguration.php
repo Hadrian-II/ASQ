@@ -1,8 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\ImageMap;
+namespace srag\asq\Questions\Choice\Editor\ImageMap\Data;
 
-use srag\asq\Domain\Model\AbstractConfiguration;
+use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class ImageMapEditorConfiguration

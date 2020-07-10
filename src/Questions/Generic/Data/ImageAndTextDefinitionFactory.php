@@ -1,12 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Domain\Model\Answer\Option;
+namespace srag\asq\Questions\Generic\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\UserInterface\Web\Form\AbstractAnswerOptionFactory;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**
  * Class ImageAndTextDefinitionFactory
@@ -23,8 +24,8 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_MCDD_IMAGE = 'mcdd_image';
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
+     * @param QuestionPlayConfiguration $play
+     * @return array
      */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
@@ -46,8 +47,8 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::readObjectFromPost()
+     * @param array $values
+     * @return AbstractValueObject
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {

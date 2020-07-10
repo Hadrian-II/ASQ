@@ -1,17 +1,20 @@
 <?php
 declare(strict_types = 1);
-namespace srag\asq\Questions\MultipleChoice;
 
+namespace srag\asq\Questions\Choice\Editor\MultipleChoice;
+
+use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\ImageAndTextDisplayDefinition;
-use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\Domain\Model\Feedback\Feedback;
+use srag\asq\Questions\Choice\MultipleChoiceAnswer;
+use srag\asq\Questions\Choice\Editor\MultipleChoice\Data\MultipleChoiceEditorConfiguration;
+use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PostAccess;
-use ILIAS\DI\UIServices;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
 /**
  * Class MultipleChoiceEditor

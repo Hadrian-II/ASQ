@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web;
+namespace srag\asq;
 
 /**
  * Trait PathHelper

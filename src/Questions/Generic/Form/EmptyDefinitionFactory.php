@@ -1,11 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Domain\Model\Answer\Option;
+namespace srag\asq\Questions\Generic\Form;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\UserInterface\Web\Form\AbstractAnswerOptionFactory;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Questions\Generic\Data\EmptyDefinition;
+use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**
  * Class EmptyDefinitionFactory
@@ -19,8 +20,8 @@ use srag\asq\Domain\Model\QuestionPlayConfiguration;
 class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
 {
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getValues()
+     * @param AbstractValueObject $definition
+     * @return array
      */
     public function getValues(AbstractValueObject $definition) : array
     {
@@ -28,8 +29,8 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getTableColumns()
+     * @param QuestionPlayConfiguration $play
+     * @return array
      */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
@@ -37,8 +38,8 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::readObjectFromValues()
+     * @param array $values
+     * @return AbstractValueObject
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
@@ -46,8 +47,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\IAnswerOptionFactory::getDefaultValue()
+     * @return AbstractValueObject
      */
     public function getDefaultValue() : AbstractValueObject
     {

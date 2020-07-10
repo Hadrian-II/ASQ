@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
+use srag\asq\PathHelper;
 use srag\asq\Domain\Model\QuestionInfo;
-use srag\asq\UserInterface\Web\PathHelper;
 
 /**
  * Class AsqQuestionVersionGUI

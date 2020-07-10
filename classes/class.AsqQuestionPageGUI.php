@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use ILIAS\DI\UIServices;
+use srag\asq\PathHelper;
+use srag\asq\UserInterface\Web\Component\QuestionComponent;
 
 /**
  * Class AsqQuestionPageGUI

@@ -3,11 +3,14 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Formula\Form;
 
-use srag\asq\Domain\Model\Answer\Option\EmptyDefinitionFactory;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Form\QuestionFormFactory;
-use srag\asq\UserInterface\Web\PathHelper;
 use ilLanguage;
+use srag\asq\PathHelper;
+use srag\asq\Questions\Formula\Form\Editor\FormulaEditorConfigurationFactory;
+use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringConfigurationFactory;
+use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringDefinitionFactory;
+use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class FormulaFormFactory
@@ -33,8 +36,7 @@ class FormulaFormFactory extends QuestionFormFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getScripts()
+     * @return array
      */
     public function getScripts() : array
     {
@@ -42,8 +44,7 @@ class FormulaFormFactory extends QuestionFormFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\QuestionFormFactory::getAnswerOptionConfiguration()
+     * @return array
      */
     public function getAnswerOptionConfiguration() : array
     {
