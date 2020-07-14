@@ -17,30 +17,30 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 class QuestionPlayConfiguration extends AbstractValueObject
 {
     /**
-     * @var AbstractConfiguration
+     * @var AbstractValueObject
      */
     protected $presenter_configuration;
 
     /**
-     * @var AbstractConfiguration
+     * @var AbstractValueObject
      */
     protected $editor_configuration;
 
     /**
-     * @var AbstractConfiguration
+     * @var AbstractValueObject
      */
     protected $scoring_configuration;
 
     /**
-     * @param AbstractConfiguration $editor_configuration
-     * @param AbstractConfiguration $scoring_configuration
-     * @param AbstractConfiguration $presenter_configuration
+     * @param AbstractValueObject $editor_configuration
+     * @param AbstractValueObject $scoring_configuration
+     * @param AbstractValueObject $presenter_configuration
      * @return QuestionPlayConfiguration
      */
     public static function create(
-        AbstractConfiguration $editor_configuration = null,
-        AbstractConfiguration $scoring_configuration = null,
-        AbstractConfiguration $presenter_configuration = null
+        AbstractValueObject $editor_configuration = null,
+        AbstractValueObject $scoring_configuration = null,
+        AbstractValueObject $presenter_configuration = null
     ) : QuestionPlayConfiguration {
         $object = new QuestionPlayConfiguration();
         $object->editor_configuration = $editor_configuration;
@@ -52,7 +52,7 @@ class QuestionPlayConfiguration extends AbstractValueObject
     /**
      * @return AbstractValueObject
      */
-    public function getEditorConfiguration() : ?AbstractConfiguration
+    public function getEditorConfiguration() : ?AbstractValueObject
     {
         return $this->editor_configuration;
     }
@@ -60,7 +60,7 @@ class QuestionPlayConfiguration extends AbstractValueObject
     /**
      * @return AbstractValueObject
      */
-    public function getPresenterConfiguration() : ?AbstractConfiguration
+    public function getPresenterConfiguration() : ?AbstractValueObject
     {
         return $this->presenter_configuration;
     }
@@ -68,7 +68,7 @@ class QuestionPlayConfiguration extends AbstractValueObject
     /**
      * @return AbstractValueObject
      */
-    public function getScoringConfiguration() : ?AbstractConfiguration
+    public function getScoringConfiguration() : ?AbstractValueObject
     {
         return $this->scoring_configuration;
     }

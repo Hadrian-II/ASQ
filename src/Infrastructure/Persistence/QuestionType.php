@@ -46,12 +46,43 @@ class QuestionType extends ActiveRecord
      * @con_is_notnull true
      */
     protected $factory_class;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     128
+     * @con_is_notnull true
+     */
+    protected $editor_class;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     128
+     * @con_is_notnull true
+     */
+    protected $scoring_class;
 
-    public static function createNew(string $title_key, string $factory_class) : QuestionType
+    /**
+     * @param string $title_key
+     * @param string $factory_class
+     * @param string $editor_class
+     * @param string $scoring_class
+     * @return QuestionType
+     */
+    public static function createNew(
+        string $title_key,
+        string $factory_class,
+        string $editor_class,
+        string $scoring_class) : QuestionType
     {
         $object = new QuestionType();
         $object->title_key = $title_key;
         $object->factory_class = $factory_class;
+        $object->editor_class = $editor_class;
+        $object->scoring_class = $scoring_class;
         return $object;
     }
 
@@ -74,8 +105,55 @@ class QuestionType extends ActiveRecord
     /**
      * @return string
      */
+    public function getEditorClass() : string
+    {
+        return $this->editor_class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScoringClass() : string
+    {
+        return $this->scoring_class;
+    }
+
+    /**
+     * @return string
+     */
     public static function returnDbTableName()
     {
         return self::STORAGE_NAME;
+    }
+
+    const KEY = 'key';
+    const FORM_FACOTRY = 'form_factory';
+    const EDITOR = 'editor';
+    const SCORING = 'scoring';
+
+    /**
+     * @return array
+     */
+    public function serialize() : array
+    {
+        $data = [];
+        $data[self::KEY] = $this->getTitleKey();
+        $data[self::FORM_FACOTRY] = $this->getFactoryClass();
+        $data[self::EDITOR] = $this->getEditorClass();
+        $data[self::SCORING] = $this->getScoringClass();
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @return QuestionType
+     */
+    public static function deserialize(array $data) : QuestionType
+    {
+        return self::createNew(
+            $data[self::KEY],
+            $data[self::FORM_FACOTRY],
+            $data[self::EDITOR],
+            $data[self::SCORING]);
     }
 }

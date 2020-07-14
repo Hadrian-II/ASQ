@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Scoring\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Essay\Scoring\EssayScoring;
 
@@ -16,7 +16,7 @@ use srag\asq\Questions\Essay\Scoring\EssayScoring;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class EssayScoringConfiguration extends AbstractConfiguration
+class EssayScoringConfiguration extends AbstractValueObject
 {
     /**
      * @var ?int

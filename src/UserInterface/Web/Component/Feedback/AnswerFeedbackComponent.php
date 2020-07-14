@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Feedback;
 
 use ilTemplate;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\PathHelper;
 
 /**
  * Class AnswerFeedbackComponent
@@ -44,7 +44,7 @@ class AnswerFeedbackComponent
         $this->question_dto = $question_dto;
         $this->answer = $answer;
 
-        $scoring_class = $question_dto->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question->getType()->getScoringClass();
         $this->scoring = new $scoring_class($question_dto);
     }
 

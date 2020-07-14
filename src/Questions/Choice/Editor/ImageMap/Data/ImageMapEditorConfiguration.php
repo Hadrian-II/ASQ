@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\Choice\Editor\ImageMap\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class ImageMapEditorConfiguration
@@ -11,7 +11,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class ImageMapEditorConfiguration extends AbstractConfiguration
+class ImageMapEditorConfiguration extends AbstractValueObject
 {
 
     /**

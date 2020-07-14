@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Matching\Editor\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class MultipleChoiceEditorConfiguration
@@ -14,7 +14,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class MatchingEditorConfiguration extends AbstractConfiguration
+class MatchingEditorConfiguration extends AbstractValueObject
 {
     const SHUFFLE_NONE = 0;
     const SHUFFLE_DEFINITIONS = 1;

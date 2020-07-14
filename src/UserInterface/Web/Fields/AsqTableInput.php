@@ -9,8 +9,8 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTemplate;
 use ilTextInputGUI;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\PathHelper;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;
 
 /**

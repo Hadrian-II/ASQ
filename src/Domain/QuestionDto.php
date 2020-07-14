@@ -7,11 +7,11 @@ use JsonSerializable;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 
 /**
  * Class QuestionDto
@@ -34,7 +34,7 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @var QuestionTypeDefinition
+     * @var QuestionType
      */
     private $type;
 
@@ -80,12 +80,12 @@ class QuestionDto implements JsonSerializable
      *
      * @return QuestionDto
      */
-    public static function CreateFromQuestion(Question $question) : QuestionDto
+    public static function CreateFromQuestion(Question $question, QuestionType $type) : QuestionDto
     {
         $dto = new QuestionDto();
 
         $dto->id = $question->getAggregateId();
-        $dto->type = $question->getType();
+        $dto->type = $type;
 
         $dto->revision_id = $question->getRevisionId();
         $dto->data = $question->getData();
@@ -108,18 +108,34 @@ class QuestionDto implements JsonSerializable
     }
 
     /**
+     * @param string $id
+     */
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return int
      */
-    public function getType() : QuestionTypeDefinition
+    public function getType() : QuestionType
     {
         return $this->type;
+    }
+
+    /**
+     * @param QuestionType $type
+     */
+    public function setType(QuestionType $type) : void
+    {
+        $this->type = $type;
     }
 
     /**
      *
      * @param bool $complete
      */
-    public function setComplete(bool $complete)
+    public function setComplete(bool $complete) : void
     {
         $this->complete = $complete;
     }
@@ -137,24 +153,15 @@ class QuestionDto implements JsonSerializable
             return false;
         }
 
-        $editor_class = $this->getPlayConfiguration()->getEditorConfiguration()->configurationFor();
+        $editor_class = $this->getType()->getEditorClass();
         $editor = new $editor_class($this);
 
-        $scoring_class = $this->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $this->getType()->getScoringClass();
         $scoring = new $scoring_class($this);
 
         return $this->data->isComplete() &&
                $editor->isComplete() &&
                $scoring->isComplete();
-    }
-
-    /**
-     *
-     * @param string $id
-     */
-    public function setId(string $id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -235,20 +242,20 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @param Feedback $feedback
-     */
-    public function setFeedback(?Feedback $feedback) : void
-    {
-        $this->feedback = $feedback;
-    }
-
-    /**
-     *
      * @return Feedback
      */
     public function getFeedback() : ?Feedback
     {
         return $this->feedback;
+    }
+
+    /**
+     *
+     * @param Feedback $feedback
+     */
+    public function setFeedback(?Feedback $feedback) : void
+    {
+        $this->feedback = $feedback;
     }
 
     /**
@@ -283,20 +290,22 @@ class QuestionDto implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return get_object_vars($this);
+        $vars = get_object_vars($this);
+        $vars['type'] = $this->getType()->serialize();
+        return $vars;
     }
 
     /**
      * @param string $json_data
      * @return QuestionDto
      */
-    public static function deserialize(string $json_data)
+    public static function deserialize(string $json_data) : QuestionDto
     {
         $data = json_decode($json_data, true);
 
         $object = new QuestionDto();
         $object->id = $data['id'];
-        $object->type = QuestionTypeDefinition::createFromArray($data['type']);
+        $object->type = QuestionType::deserialize($data['type']);
         $object->answer_options = AnswerOptions::createFromArray($data['answer_options']);
         $object->data = QuestionData::createFromArray($data['data']);
         $object->feedback = Feedback::createFromArray($data['feedback']);

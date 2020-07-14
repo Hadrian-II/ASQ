@@ -6,10 +6,10 @@ namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 use ILIAS\DI\UIServices;
 use ilLanguage;
 use ilRTE;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
-use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 

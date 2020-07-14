@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Scoring;
 
+use ilLanguage;
 use ilTemplate;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\PathHelper;
-use ilLanguage;
 
 /**
  * Class ScoringComponent
@@ -48,7 +48,7 @@ class ScoringComponent
     {
         $this->language = $language;
 
-        $scoring_class = $question_dto->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question_dto->getType()->getScoringClass();
         $this->scoring = new $scoring_class($question_dto);
 
         $this->answer = $answer;

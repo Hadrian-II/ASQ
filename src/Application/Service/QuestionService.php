@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
+use ILIAS\Data\UUID\Factory;
 use srag\CQRS\Command\CommandBus;
 use srag\CQRS\Command\CommandConfiguration;
 use srag\CQRS\Command\Access\OpenAccess;
@@ -15,10 +16,9 @@ use srag\asq\Application\Command\SaveQuestionCommandHandler;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\QuestionRepository;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
-use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionService
@@ -77,9 +77,16 @@ class QuestionService extends ASQService
      */
     public function getQuestionByQuestionId(string $id) : QuestionDto
     {
+        /** @var $question Question */
         $question = QuestionRepository::getInstance()->getAggregateRootById($id);
 
-        return QuestionDto::CreateFromQuestion($question);
+        $question_type = QuestionType::where(["title_key" => $question->getType()])->first();
+
+        if (is_null($question_type)) {
+            throw new AsqException(sprintf('Unknown Question Type "%s"', $question->getType()));
+        }
+
+        return QuestionDto::CreateFromQuestion($question, $question_type);
     }
 
     /**
@@ -126,7 +133,7 @@ class QuestionService extends ASQService
      *
      * @return QuestionDto
      */
-    public function createQuestion(QuestionTypeDefinition $type) : QuestionDto
+    public function createQuestion(QuestionType $type) : QuestionDto
     {
         $uuid_factory = new Factory();
 
@@ -168,24 +175,28 @@ class QuestionService extends ASQService
     /**
      * Gets a list of all available question types
      *
-     * @return QuestionTypeDefinition[]
+     * @return QuestionType[]
      */
     public function getAvailableQuestionTypes() : array
     {
-        return array_map(function ($type) {
-            return QuestionTypeDefinition::create($type);
-        }, QuestionType::get());
+        return QuestionType::get();
     }
 
     /**
      * Add a new question type
      *
      * @param string $title_key
-     * @param string $form_class
+     * @param string $factory_class
+     * @param string $editor_class
+     * @param string $scoring_class
      */
-    public function addQuestionType(string $title_key, string $factory_class)
+    public function addQuestionType(
+        string $title_key,
+        string $factory_class,
+        string $editor_class,
+        string $scoring_class) : void
     {
-        $type = QuestionType::createNew($title_key, $factory_class);
+        $type = QuestionType::createNew($title_key, $factory_class, $editor_class, $scoring_class);
         $type->create();
     }
 

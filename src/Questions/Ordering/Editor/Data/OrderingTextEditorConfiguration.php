@@ -42,9 +42,4 @@ class OrderingTextEditorConfiguration extends OrderingEditorConfiguration
     {
         return $this->text;
     }
-
-    public function configurationFor() : string
-    {
-        return OrderingEditor::class;
-    }
 }

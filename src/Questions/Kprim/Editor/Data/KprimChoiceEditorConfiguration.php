@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Kprim\Editor\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class KprimChoiceEditorConfiguration
@@ -14,7 +14,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class KprimChoiceEditorConfiguration extends AbstractConfiguration
+class KprimChoiceEditorConfiguration extends AbstractValueObject
 {
     /**
      * @var ?bool

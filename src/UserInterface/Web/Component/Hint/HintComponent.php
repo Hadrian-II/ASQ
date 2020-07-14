@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Hint;
 
+use ilTemplate;
+use srag\asq\PathHelper;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
-use srag\asq\UserInterface\Web\PathHelper;
-use ilTemplate;
 
 /**
  * Class FeedbackComponent

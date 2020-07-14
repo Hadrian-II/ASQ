@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Questions\Ordering\Form\Editor;
+namespace srag\asq\Questions\Ordering\Form;
 
 use ilLanguage;
 use srag\asq\Domain\QuestionDto;
@@ -12,6 +12,7 @@ use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Ordering\Form\Scoring\OrderingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\Questions\Ordering\Form\Editor\OrderingTextEditorConfigurationFactory;
 
 /**
  * Class OrderingFormFactory

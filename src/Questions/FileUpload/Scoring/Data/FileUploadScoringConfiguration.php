@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\FileUpload\Scoring\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class FileUploadScoringConfiguration
@@ -14,7 +14,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadScoringConfiguration extends AbstractConfiguration
+class FileUploadScoringConfiguration extends AbstractValueObject
 {
     /**
      * @var ?float

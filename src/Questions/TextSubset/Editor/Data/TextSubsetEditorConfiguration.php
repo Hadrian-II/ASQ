@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\TextSubset\Editor\Data;
 
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class TextSubsetEditorConfiguration
@@ -12,7 +12,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class TextSubsetEditorConfiguration extends AbstractConfiguration
+class TextSubsetEditorConfiguration extends AbstractValueObject
 {
 
     /**

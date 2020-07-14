@@ -34,7 +34,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     const VAR_TYPE = 'question_type';
 
     /**
-     * @var QuestionTypeDefinition
+     * @var string
      */
     private $question_type;
     /**
@@ -83,7 +83,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
                 $question_uuid,
                 new ilDateTime(time(), IL_CAL_UNIX),
                 $initiating_user_id,
-                [self::VAR_TYPE => $question_type]
+                [self::VAR_TYPE => $question_type->getTitleKey()]
             )
         );
 
@@ -159,9 +159,9 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     }
 
     /**
-     * @return QuestionTypeDefinition
+     * @return string
      */
-    public function getType() : QuestionTypeDefinition
+    public function getType() : string
     {
         return $this->question_type;
     }

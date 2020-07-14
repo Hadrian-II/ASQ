@@ -43,7 +43,7 @@ abstract class AbstractEditor
     {
         $this->question = $question;
 
-        if (array_key_exists('REQUEST_METHID', $_SERVER) &&
+        if (array_key_exists('REQUEST_METHOD', $_SERVER) &&
             $_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setAnswer($this->readAnswer());
         }

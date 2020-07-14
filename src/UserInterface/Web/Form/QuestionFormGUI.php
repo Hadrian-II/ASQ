@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
+use ILIAS\DI\UIServices;
 use ilFormSectionHeaderGUI;
 use ilHiddenInputGUI;
+use ilLanguage;
 use ilNonEditableValueGUI;
 use ilPropertyFormGUI;
 use ilTextInputGUI;
 use srag\asq\AsqGateway;
+use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\PathHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use ilLanguage;
-use ILIAS\DI\UIServices;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionDataFormFactory;
+use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
  * Class QuestionFormGUI
@@ -28,8 +30,6 @@ class QuestionFormGUI extends ilPropertyFormGUI
 {
     use PathHelper;
     use InputHandlingTrait;
-
-    const VAR_AGGREGATE_ID = 'aggregate_id';
 
     const VAR_REVISION_NAME = 'rev_name';
     const VAR_STATUS = 'status';
@@ -103,7 +103,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->setValuesByPost();
-            $this->post_question = $this->readQuestionFromPost();
+            $this->post_question = $this->readQuestionFromPost($question);
         }
 
         $this->showQuestionState($this->post_question ?? $question);
@@ -119,10 +119,6 @@ class QuestionFormGUI extends ilPropertyFormGUI
      */
     private function initForm(QuestionDto $question) : void
     {
-        $id = new ilHiddenInputGUI(self::VAR_AGGREGATE_ID);
-        $id->setValue($question->getId());
-        $this->addItem($id);
-
         foreach ($this->question_data_factory->getFormfields($question->getData()) as $field) {
             $this->addItem($field);
         }
@@ -199,10 +195,11 @@ class QuestionFormGUI extends ilPropertyFormGUI
     /**
      * @return QuestionDto
      */
-    private function readQuestionFromPost() : QuestionDto
+    private function readQuestionFromPost(QuestionDto $original_question) : QuestionDto
     {
         $question = new QuestionDto();
-        $question->setId($this->readString(self::VAR_AGGREGATE_ID));
+        $question->setId($original_question->getId());
+        $question->setType($original_question->getType());
 
         $question->setData($this->question_data_factory->readObjectFromPost());
 

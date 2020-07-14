@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Presenter;
 
 use ilTemplate;
-use srag\asq\UserInterface\Web\PathHelper;
+use srag\asq\PathHelper;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
 /**

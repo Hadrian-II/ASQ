@@ -5,7 +5,7 @@ namespace srag\asq\Domain\Event;
 
 use ilDateTime;
 use srag\CQRS\Event\AbstractDomainEvent;
-use srag\asq\Domain\Model\Feedback;
+use srag\asq\Domain\Model\Feedback\Feedback;
 
 /**
  * Class QuestionFeedbackSetEvent

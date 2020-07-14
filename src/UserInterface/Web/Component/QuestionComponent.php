@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component;
 
-use ilTemplate;
-use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\UserInterface\Web\PathHelper;
-use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Component\Presenter\AbstractPresenter;
-use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
-use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
 use ILIAS\DI\UIServices;
 use ilLanguage;
+use ilTemplate;
+use srag\asq\PathHelper;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
+use srag\asq\UserInterface\Web\Component\Presenter\AbstractPresenter;
+use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
 
 /**
  * Class QuestionComponent
@@ -62,7 +62,7 @@ class QuestionComponent
         $presenter_class = DefaultPresenter::class;
         $presenter = new $presenter_class($question_dto, $ui);
 
-        $editor_class = $question_dto->getPlayConfiguration()->getEditorConfiguration()->configurationFor();
+        $editor_class = $question_dto->getType()->getEditorClass();
         $editor = new $editor_class($question_dto);
 
         $this->presenter = $presenter;

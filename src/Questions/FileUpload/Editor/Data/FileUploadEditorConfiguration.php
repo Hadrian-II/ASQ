@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\asq\Questions\FileUpload\Editor\Data;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 
 /**
  * Class FileUploadEditorConfiguration
@@ -15,7 +14,7 @@ use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadEditorConfiguration extends AbstractConfiguration
+class FileUploadEditorConfiguration extends AbstractValueObject
 {
 
     /**

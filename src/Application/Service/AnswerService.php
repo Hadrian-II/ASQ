@@ -33,7 +33,7 @@ class AnswerService extends ASQService
      */
     public function getScore(QuestionDto $question, Answer $answer) : float
     {
-        $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
         $scoring = new $scoring_class($question);
         return $scoring->score($answer);
@@ -47,7 +47,7 @@ class AnswerService extends ASQService
      */
     public function getMaxScore(QuestionDto $question) : float
     {
-        $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
         $scoring = new $scoring_class($question);
         return $scoring->getMaxScore();
@@ -61,7 +61,7 @@ class AnswerService extends ASQService
      */
     public function getMinScore(QuestionDto $question) : float
     {
-        $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
         $scoring = new $scoring_class($question);
         return $scoring->getMinScore();
@@ -75,7 +75,7 @@ class AnswerService extends ASQService
      */
     public function getBestAnswer(QuestionDto $question) : Answer
     {
-        $scoring_class = $question->getPlayConfiguration()->getScoringConfiguration()->configurationFor();
+        $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
         $scoring = new $scoring_class($question);
         return $scoring->getBestAnswer();

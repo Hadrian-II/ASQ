@@ -61,7 +61,7 @@ trait PostAccess
 
     /**
      * @param string $variable_name
-     * @return string
+     * @return ?string
      */
     public function getPostValue(string $variable_name) : ?string
     {
@@ -70,5 +70,19 @@ trait PostAccess
         }
 
         return $this->getPurifier()->purify($this->getPost()[$variable_name]);
+    }
+
+    /**
+     * @param string $variable_name
+     * @return ?array
+     */
+    public function getPostArray(string $variable_name) : ?array
+    {
+        if (!$this->isPostVarSet($variable_name) ||
+            !is_array($this->getPost()[$variable_name])) {
+            return null;
+        }
+
+        return $this->getPost()[$variable_name];
     }
 }

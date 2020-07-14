@@ -130,7 +130,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         $MINUTES = 'mm';
         $SECONDS = 'ss';
 
-        $postval = $this->getPostValue($post_name);
+        $postval = $this->getPostArray($post_name);
 
         if (
             is_array($postval) &&

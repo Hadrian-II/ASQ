@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Solution;
 
-use ilTemplate;
-use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\PathHelper;
 use ilLanguage;
+use ilTemplate;
+use srag\asq\PathHelper;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
 
 /**
  * Class SolutionComponent
