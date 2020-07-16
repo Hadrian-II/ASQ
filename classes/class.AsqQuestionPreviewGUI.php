@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
@@ -72,20 +73,27 @@ class AsqQuestionPreviewGUI
     private $ctrl;
 
     /**
+     * @var HTTPServices
+     */
+    private $http;
+
+    /**
      * @param string $question_id
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
      */
-    public function __construct(string $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
+    public function __construct(string $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl, HTTPServices $http)
     {
         $this->question_id = $question_id;
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
+        $this->http = $http;
 
-        if (isset($_GET[self::PARAM_REVISON_NAME])) {
-            $this->revision_name = $_GET[self::PARAM_REVISON_NAME];
+        $query = $this->http->request()->getQueryParams();
+        if (isset($query[self::PARAM_REVISON_NAME])) {
+            $this->revision_name = $query[self::PARAM_REVISON_NAME];
 
             $this->ctrl->setParameter(
                 $this,

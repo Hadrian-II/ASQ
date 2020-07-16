@@ -4,6 +4,7 @@ declare(strict_types=1);
 use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
+use ILIAS\DI\HTTPServices;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -81,11 +82,18 @@ class AsqQuestionAuthoringGUI
     private $access;
 
     /**
+     * @var HTTPServices
+     */
+    private $http;
+
+    /**
      * @param AuthoringContextContainer $authoring_context_container
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
      * @param ilTabsGUI $tabs
+     * @param ilAccessHandler $access
+     * @param HTTPServices $http
      */
     public function __construct(
         AuthoringContextContainer $authoring_context_container,
@@ -93,23 +101,24 @@ class AsqQuestionAuthoringGUI
         UIServices $ui,
         ilCtrl $ctrl,
         ilTabsGUI $tabs,
-        ilAccessHandler $access
+        ilAccessHandler $access,
+        HTTPServices $http
     ) {
         $this->authoring_context_container = $authoring_context_container;
         $this->language = $language;
+        $this->language->loadLanguageModule('asq');
+        $this->lng_key = $this->language->getDefaultLanguage();
+
         $this->ui = $ui;
         $this->ctrl = $ctrl;
         $this->tabs = $tabs;
         $this->access = $access;
+        $this->http = $http;
 
-        //we could use this in future in constructer
-        $this->lng_key = $this->language->getDefaultLanguage();
-
-        if (isset($_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID])) {
-            $this->question_id = $_GET[\AsqQuestionAuthoringGUI::VAR_QUESTION_ID];
+        $query = $this->http->request()->getQueryParams();
+        if (isset($query[self::VAR_QUESTION_ID])) {
+            $this->question_id = $query[self::VAR_QUESTION_ID];
         }
-
-        $this->language->loadLanguageModule('asq');
     }
 
     /**
@@ -143,7 +152,8 @@ class AsqQuestionAuthoringGUI
                     $this->question_id,
                     $this->language,
                     $this->ui,
-                    $this->ctrl
+                    $this->ctrl,
+                    $this->http
                 );
 
                 $this->ctrl->forwardCommand($gui);
