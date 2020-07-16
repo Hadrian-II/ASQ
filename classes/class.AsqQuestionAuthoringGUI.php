@@ -4,7 +4,6 @@ declare(strict_types=1);
 use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
-use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -30,8 +29,6 @@ use srag\asq\UserInterface\Web\PostAccess;
  */
 class AsqQuestionAuthoringGUI
 {
-    use PostAccess;
-
     const TAB_ID_PREVIEW = 'qst_preview_tab';
     const TAB_ID_PAGEVIEW = 'qst_pageview_tab';
     const TAB_ID_CONFIG = 'qst_config_tab';

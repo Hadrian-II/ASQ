@@ -3,16 +3,16 @@
 
 namespace ILIAS\AssessmentQuestion\Test;
 
+use ILIAS\Data\UUID\Factory;
 use PHPUnit\Framework\TestCase;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
-use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
-use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionTestCase
@@ -54,7 +54,7 @@ abstract class QuestionTestCase extends TestCase
 
     abstract public function getExpectedScore(string $question_id, string $answer_id) : float;
 
-    abstract public function getTypeDefinition() : QuestionTypeDefinition;
+    abstract public function getTypeDefinition() : QuestionType;
 
     public function setUp() : void
     {

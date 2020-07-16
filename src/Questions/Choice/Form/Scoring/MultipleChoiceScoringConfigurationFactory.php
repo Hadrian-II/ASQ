@@ -28,9 +28,10 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @return MultipleChoiceScoringConfiguration
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return MultipleChoiceScoringConfiguration::create();
     }

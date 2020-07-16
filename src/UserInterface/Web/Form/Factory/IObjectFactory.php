@@ -28,11 +28,11 @@ interface IObjectFactory
     public function getFormfields(?AbstractValueObject $value) : array;
 
     /**
-     * Reads configuration object from POST
+     * Reads configuration object from postdata
      *
      * @return AbstractValueObject
      */
-    public function readObjectFromPost() : AbstractValueObject;
+    public function readObjectFromPost(array $postdata) : AbstractValueObject;
 
     /**
      * Creates new object containing the default values

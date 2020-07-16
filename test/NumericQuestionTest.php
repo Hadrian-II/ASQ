@@ -4,13 +4,14 @@
 namespace ILIAS\AssessmentQuestion\Test;
 
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\QuestionPlayConfiguration;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
-use srag\asq\Questions\Numeric\NumericEditorConfiguration;
-use srag\asq\Questions\Numeric\NumericScoringConfiguration;
-use srag\asq\Questions\Numeric\NumericAnswer;
-use srag\asq\Questions\Numeric\Form\NumericFormFactory;
+use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
+use srag\asq\Questions\Numeric\NumericAnswer;
+use srag\asq\Questions\Numeric\Editor\Data\NumericEditorConfiguration;
+use srag\asq\Questions\Numeric\Form\NumericFormFactory;
+use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
+use srag\asq\Questions\Numeric\Editor\NumericEditor;
+use srag\asq\Questions\Numeric\Scoring\NumericScoring;
 
 require_once 'QuestionTestCase.php';
 
@@ -77,8 +78,13 @@ class NumericQuestionTest extends QuestionTestCase
     }
 
 
-    public function getTypeDefinition(): QuestionTypeDefinition
+    public function getTypeDefinition(): QuestionType
     {
-        return QuestionTypeDefinition::create(QuestionType::createNew('numeric', NumericFormFactory::class));
+        return QuestionType::create(
+            QuestionType::createNew(
+                'numeric',
+                NumericFormFactory::class,
+                NumericEditor::class,
+                NumericScoring::class));
     }
 }

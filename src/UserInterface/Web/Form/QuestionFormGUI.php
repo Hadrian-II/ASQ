@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Form;
 
 use ILIAS\DI\UIServices;
+use ILIAS\UI\Component\Input\Container\Form\Standard;
+use Psr\Http\Message\RequestInterface;
 use ilFormSectionHeaderGUI;
-use ilHiddenInputGUI;
 use ilLanguage;
-use ilNonEditableValueGUI;
-use ilPropertyFormGUI;
 use ilTextInputGUI;
 use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
@@ -26,10 +25,9 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionFormGUI extends ilPropertyFormGUI
+class QuestionFormGUI
 {
     use PathHelper;
-    use InputHandlingTrait;
 
     const VAR_REVISION_NAME = 'rev_name';
     const VAR_STATUS = 'status';
@@ -77,59 +75,91 @@ class QuestionFormGUI extends ilPropertyFormGUI
     protected $question_data_factory;
 
     /**
+     * @var array
+     */
+    protected $inputs;
+
+    /**
+     * @var Standard
+     */
+    protected $form;
+
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
      * QuestionFormGUI constructor.
      *
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question, ilLanguage $language, UIServices $ui)
+    public function __construct(QuestionDto $question, ilLanguage $language, UIServices $ui, RequestInterface $request)
     {
         $this->language = $language;
         $this->ui = $ui;
+        $this->request = $request;
 
         $this->initial_question = $question;
 
-        $this->question_data_factory = new QuestionDataFormFactory($this->language);
+        $this->question_data_factory = new QuestionDataFormFactory($this->language, $this->ui);
 
         $factory_class = $question->getType()->getFactoryClass();
-        $this->form_factory = new $factory_class($this->language);
+        $this->form_factory = new $factory_class($this->language, $this->ui);
 
-        $this->initForm($question);
-        $this->setMultipart(true);
-        $this->setTitle($this->language->txt($question->getType()->getTitleKey()));
+        $this->initInputs($question);
 
         foreach ($this->form_factory->getScripts() as $script) {
             $this->ui->mainTemplate()->addJavaScript($script);
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->setValuesByPost();
-            $this->post_question = $this->readQuestionFromPost($question);
-        }
+
 
         $this->showQuestionState($this->post_question ?? $question);
 
         $this->addRevisionForm();
 
-        parent::__construct();
+        $this->form = $this->ui->factory()->input()->container()->form()->standard('#', $this->inputs);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->post_question = $this->readQuestionFromPost($question);
+        }
     }
 
+    /**
+     * @param string $action
+     */
+    public function setFormAction(string $action) : void
+    {
+        $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->inputs);
+    }
+
+    /**
+     * @return string
+     */
+    public function getHTML() : string
+    {
+        $panel = $this->ui->factory()->panel()->standard(
+            $this->language->txt($this->initial_question->getType()->getTitleKey()),
+            $this->form);
+
+        return $this->ui->renderer()->render($panel);
+    }
 
     /**
      * @param QuestionDto $question
      */
-    private function initForm(QuestionDto $question) : void
+    private function initInputs(QuestionDto $question) : void
     {
-        foreach ($this->question_data_factory->getFormfields($question->getData()) as $field) {
-            $this->addItem($field);
-        }
+        $this->inputs = $this->question_data_factory->getFormfields($question->getData());
 
         if (is_null($question->getPlayConfiguration())) {
             $question->setPlayConfiguration($this->form_factory->getDefaultPlayConfiguration());
         }
 
-        foreach ($this->form_factory->getFormfields($question->getPlayConfiguration()) as $field) {
-            $this->addItem($field);
-        }
+        $this->inputs = array_merge(
+            $this->inputs,
+            $this->form_factory->getFormfields($question->getPlayConfiguration()));
 
         if ($this->form_factory->hasAnswerOptions()) {
             $this->option_form = new AsqTableInput(
@@ -140,7 +170,7 @@ class QuestionFormGUI extends ilPropertyFormGUI
                 $this->form_factory->getAnswerOptionConfiguration()
             );
 
-            $this->addItem($this->option_form);
+            $this->inputs[] = $this->option_form;
         }
 
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
@@ -151,8 +181,6 @@ class QuestionFormGUI extends ilPropertyFormGUI
      */
     private function showQuestionState(QuestionDto $question) : void
     {
-        $state = new ilNonEditableValueGUI($this->language->txt('Status'), self::VAR_STATUS);
-
         if ($question->isComplete()) {
             $value = sprintf(
                 'Complete. Max Points: %s Min Points: %s',
@@ -163,13 +191,18 @@ class QuestionFormGUI extends ilPropertyFormGUI
             $value = 'Not Complete';
         }
 
-        $state->setValue($value);
+        $state = $this->ui->factory()->input()->field()
+                    ->text($this->language->txt('Status'))
+                    ->withDisabled(true)
+                    ->withValue($value);
 
-        $this->addItem($state);
+        $this->inputs[] = $state;
     }
 
     private function addRevisionForm() : void
     {
+        return;
+
         $spacer = new ilFormSectionHeaderGUI();
         $spacer->setTitle($this->language->txt('asq_version_title'));
         $this->addItem($spacer);
@@ -197,13 +230,16 @@ class QuestionFormGUI extends ilPropertyFormGUI
      */
     private function readQuestionFromPost(QuestionDto $original_question) : QuestionDto
     {
+        $this->form = $this->form->withRequest($this->request);
+        $postdata = $this->form->getData();
+
         $question = new QuestionDto();
         $question->setId($original_question->getId());
         $question->setType($original_question->getType());
 
-        $question->setData($this->question_data_factory->readObjectFromPost());
+        $question->setData($this->question_data_factory->readObjectFromPost($postdata));
 
-        $question->setPlayConfiguration($this->form_factory->readQuestionPlayConfiguration());
+        $question->setPlayConfiguration($this->form_factory->readQuestionPlayConfiguration($postdata));
 
         if ($this->form_factory->hasAnswerOptions()) {
             $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));

@@ -9,6 +9,7 @@ use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFac
 use srag\asq\Questions\Choice\Form\Scoring\SingleChoiceScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class SingleChoiceFormFactory
@@ -24,13 +25,13 @@ class SingleChoiceFormFactory extends QuestionFormFactory
     use ChoiceQuestionPostProcessing;
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new SingleChoiceEditorConfigurationFactory($language),
-            new MultipleChoiceScoringConfigurationFactory($language),
-            new ImageAndTextDefinitionFactory($language),
-            new SingleChoiceScoringDefinitionFactory($language)
+            new SingleChoiceEditorConfigurationFactory($language, $ui),
+            new MultipleChoiceScoringConfigurationFactory($language, $ui),
+            new ImageAndTextDefinitionFactory($language, $ui),
+            new SingleChoiceScoringDefinitionFactory($language, $ui)
         );
     }
 
@@ -40,5 +41,14 @@ class SingleChoiceFormFactory extends QuestionFormFactory
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceAuthoring.js' ];
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function hasAnswerOptions() : bool
+    {
+        return false;
     }
 }

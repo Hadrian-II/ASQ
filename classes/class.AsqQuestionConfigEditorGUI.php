@@ -7,7 +7,6 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
-use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -24,8 +23,6 @@ use srag\asq\UserInterface\Web\PostAccess;
  */
 class AsqQuestionConfigEditorGUI
 {
-    use PostAccess;
-
     const CMD_SHOW_FORM = 'showForm';
     const CMD_SAVE_FORM = 'saveForm';
     const CMD_SAVE_AND_RETURN = 'saveAndReturn';
@@ -155,9 +152,9 @@ class AsqQuestionConfigEditorGUI
     private function buildForm() : QuestionFormGUI
     {
         $form = AsqGateway::get()->ui()->getQuestionEditForm($this->question);
-        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_FORM));
-        $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
-        $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
+        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SAVE_FORM));
+//         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
+//         $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
 
         return $form;
     }

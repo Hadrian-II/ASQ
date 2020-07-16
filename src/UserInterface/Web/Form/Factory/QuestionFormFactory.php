@@ -73,13 +73,14 @@ class QuestionFormFactory
     }
 
     /**
+     * @param array $postdata
      * @return QuestionPlayConfiguration
      */
-    public function readQuestionPlayConfiguration() : QuestionPlayConfiguration
+    public function readQuestionPlayConfiguration(array $postdata) : QuestionPlayConfiguration
     {
         return QuestionPlayConfiguration::create(
-            $this->editor_config_factory->readObjectFromPost(),
-            $this->scoring_config_factory->readObjectFromPost()
+            $this->editor_config_factory->readObjectFromPost($postdata),
+            $this->scoring_config_factory->readObjectFromPost($postdata)
         );
     }
 

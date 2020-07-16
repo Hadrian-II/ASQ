@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
+use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\ImageUploader;
-use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Trait Input Handling
@@ -19,53 +19,10 @@ use srag\asq\UserInterface\Web\PostAccess;
  */
 trait InputHandlingTrait
 {
-    use PostAccess;
-
     /**
      * @var ImageUploader
      */
     protected $image_uploader;
-
-    /**
-     * Reads float value from POST
-     *
-     * @param string $postvar
-     * @return ?float
-     */
-    protected function readFloat(string $postvar) : ?float
-    {
-        if (!$this->isPostVarSet($postvar) ||
-            !is_numeric($this->getPostValue($postvar))) {
-            return null;
-        }
-
-        return floatval($this->getPostValue($postvar));
-    }
-
-    /**
-     * Reads int value from POST
-     *
-     * @param string $postvar
-     * @return ?int
-     */
-    protected function readInt(string $postvar) : ?int
-    {
-        if (!$this->isPostVarSet($postvar) ||
-            !is_numeric($this->getPostValue($postvar))) {
-            return null;
-        }
-
-        return intval($this->getPostValue($postvar));
-    }
-
-    /**
-     * @param string $postvar
-     * @return ?string
-     */
-    protected function readString(string $postvar) : ?string
-    {
-        return $this->getPostValue($postvar);
-    }
 
     /**
      * @return ImageUploader
@@ -77,6 +34,64 @@ trait InputHandlingTrait
         }
 
         return $this->image_uploader;
+    }
+
+    /**
+     * @var AsqHtmlPurifier
+     */
+    protected $purifier;
+
+    /**
+     * @return AsqHtmlPurifier
+     */
+    private function getPurifier() : AsqHtmlPurifier
+    {
+        if (is_null($this->purifier)) {
+            $this->purifier = new AsqHtmlPurifier();
+        }
+
+        return $this->purifier;
+    }
+
+    /**
+     * Reads float value from POST
+     *
+     * @param string $value
+     * @return ?float
+     */
+    protected function readFloat(string $value) : ?float
+    {
+        if (empty($value) ||
+            ! is_numeric($value)) {
+            return null;
+        }
+
+        return floatval($value);
+    }
+
+    /**
+     * Reads int value from POST
+     *
+     * @param string $value
+     * @return ?int
+     */
+    protected function readInt(string $value) : ?int
+    {
+        if (empty($value) ||
+            ! is_numeric($value)) {
+            return null;
+        }
+
+        return intval($value);
+    }
+
+    /**
+     * @param string $postvar
+     * @return ?string
+     */
+    protected function readString(string $value) : ?string
+    {
+        return $this->getPurifier()->purify($value);
     }
 
     /**
