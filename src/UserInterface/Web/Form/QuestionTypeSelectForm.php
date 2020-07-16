@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
+use ilLanguage;
 use ilPropertyFormGUI;
 use ilSelectInputGUI;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
 use srag\asq\AsqGateway;
-use ilLanguage;
+use srag\asq\Infrastructure\Persistence\QuestionType;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class QuestionTypeSelectForm
@@ -20,12 +21,12 @@ use ilLanguage;
  */
 class QuestionTypeSelectForm extends ilPropertyFormGUI
 {
-    use InputHandlingTrait;
+    use PostAccess;
 
     const VAR_QUESTION_TYPE = "question_type";
 
     /**
-     * @var QuestionTypeDefinition[]
+     * @var QuestionType[]
      */
     private $question_types;
 
@@ -73,10 +74,10 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
     }
 
     /**
-     * @return QuestionTypeDefinition
+     * @return QuestionType
      */
-    public function getQuestionType() : QuestionTypeDefinition
+    public function getQuestionType() : QuestionType
     {
-        return $this->question_types[$this->readInt(self::VAR_QUESTION_TYPE)];
+        return $this->question_types[intval($this->getPostValue(self::VAR_QUESTION_TYPE))];
     }
 }

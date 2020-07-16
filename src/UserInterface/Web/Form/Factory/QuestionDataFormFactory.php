@@ -37,12 +37,10 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         $fields = [];
 
         $title = $this->factory->input()->field()
-                    ->text($this->language->txt('asq_label_title'))
-                    ->withRequired(true);
+                    ->text($this->language->txt('asq_label_title'));
 
         $author = $this->factory->input()->field()
-                     ->text($this->language->txt('asq_label_author'))
-                     ->withRequired(true);
+                     ->text($this->language->txt('asq_label_author'));
 
         $description = $this->factory->input()->field()->text($this->language->txt('asq_label_description'));
 
@@ -58,8 +56,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             ]);
 
         $question_text = $this->factory->input()->field()
-                            ->textarea($this->language->txt('asq_label_question'))
-                            ->withRequired(true);
+                            ->textarea($this->language->txt('asq_label_question'));
 
         $working_time = $this->factory->input()->field()->numeric($this->language->txt('asq_label_working_time'));
 

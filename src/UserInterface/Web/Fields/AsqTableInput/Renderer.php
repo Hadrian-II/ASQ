@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web\Fields;
+namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
 
 use Exception;
 use ilNumberInputGUI;
@@ -9,9 +9,14 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilTemplate;
 use ilTextInputGUI;
+use ilSelectInputGUI;
 use srag\asq\PathHelper;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 use srag\asq\UserInterface\Web\PostAccess;
+use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
+use ILIAS\UI\Renderer as RendererInterface;
+use ILIAS\UI\Component;
 
 /**
  * Class AsqTableInput
@@ -22,67 +27,15 @@ use srag\asq\UserInterface\Web\PostAccess;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AsqTableInput extends ilTextInputGUI
+class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
     use PostAccess;
 
-    const OPTION_ORDER = 'TableInputOrder';
-    const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
-    const OPTION_HIDE_EMPTY = 'TableInputHideEmpty';
-    const OPTION_MIN_ROWS = 'TableInputMinRows';
-    const DEFAULT_MIN_ROWS = 1;
-
     /**
-     * @var AsqTableInputFieldDefinition[]
+     * @var AsqTableInput
      */
-    private $definitions;
-    /**
-     * @var array
-     */
-    protected $values;
-    /**
-     * @var array
-     */
-    private $form_configuration;
-
-    /**
-     * @param string $title
-     * @param string $post_var
-     * @param array $values
-     * @param array $definitions
-     * @param array $form_configuration
-     */
-    public function __construct(
-        string $title,
-        string $post_var,
-        array $values = [],
-        array $definitions = [],
-        array $form_configuration = []
-    ) {
-        parent::__construct($title, $post_var);
-
-        $this->definitions = $definitions;
-        $this->form_configuration = $form_configuration;
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->readValues();
-        } else {
-            $this->values = $values;
-        }
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinRows() : int
-    {
-        if (array_key_exists(self::OPTION_MIN_ROWS, $this->form_configuration)) {
-            return $this->form_configuration[self::OPTION_MIN_ROWS];
-        }
-
-        return self::DEFAULT_MIN_ROWS;
-    }
+    private $component;
 
     /**
      * @param string $a_mode
@@ -90,12 +43,16 @@ class AsqTableInput extends ilTextInputGUI
      * @return string
      * @throws \ilTemplateException
      */
-    public function render($a_mode = '') : string
+    public function render(Component\Component $component, RendererInterface $default_renderer) : string
     {
+        $this->component = $component;
+
+        $values = $this->component->getValue() ?? [];
+
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
 
         /** @var AsqTableInputFieldDefinition $definition */
-        foreach ($this->definitions as $definition) {
+        foreach ($this->component->getDefinitions() as $definition) {
             $tpl->setCurrentBlock('header_entry');
             $tpl->setVariable('HEADER_TEXT', $definition->getHeader());
             $tpl->parseCurrentBlock();
@@ -103,26 +60,27 @@ class AsqTableInput extends ilTextInputGUI
 
         if ($this->hasActions()) {
             $tpl->setCurrentBlock('command_header');
-            $tpl->setVariable('COMMANDS_TEXT', $this->lng->txt('asq_label_actions'));
+            $tpl->setVariable('COMMANDS_TEXT', $this->txt('asq_label_actions'));
             $tpl->parseCurrentBlock();
         }
 
         $row_id = 1;
 
         $empty = false;
+
         //add dummy object if no options are defined so that one empty line will be printed
-        while (count($this->values) < $this->getMinRows()) {
-            $this->values[] = null;
+        while (count($values) < $this->getMinRows()) {
+            $values[] = null;
             $empty = true;
         }
 
-        if ($empty && array_key_exists(self::OPTION_HIDE_EMPTY, $this->form_configuration)) {
+        if ($empty && array_key_exists(AsqTableInput::OPTION_HIDE_EMPTY, $this->component->getOptions())) {
             $tpl->touchBlock('hide');
         }
 
-        foreach ($this->values as $value) {
+        foreach ($values as $value) {
             /** @var AsqTableInputFieldDefinition $definition */
-            foreach ($this->definitions as $definition) {
+            foreach ($this->component->getDefinitions() as $definition) {
                 $tpl->setCurrentBlock('body_entry');
                 $tpl->setVariable('ENTRY_CLASS', '');
                 $tpl->setVariable('ENTRY', $this->generateField($definition, $row_id, $value[$definition->getPostVar()]));
@@ -130,15 +88,15 @@ class AsqTableInput extends ilTextInputGUI
             }
 
             if ($this->hasActions()) {
-                if (array_key_exists(self::OPTION_ORDER, $this->form_configuration)) {
+                if (array_key_exists(AsqTableInput::OPTION_ORDER, $this->component->getOptions())) {
                     $tpl->touchBlock('move');
                 }
 
-                if (!array_key_exists(self::OPTION_HIDE_ADD_REMOVE, $this->form_configuration)) {
+                if (!array_key_exists(AsqTableInput::OPTION_HIDE_ADD_REMOVE, $this->component->getOptions())) {
                     $tpl->touchBlock('add');
                 }
 
-                if (!array_key_exists(self::OPTION_HIDE_ADD_REMOVE, $this->form_configuration)) {
+                if (!array_key_exists(AsqTableInput::OPTION_HIDE_ADD_REMOVE, $this->component->getOptions())) {
                     $tpl->touchBlock('remove');
                 }
 
@@ -152,13 +110,19 @@ class AsqTableInput extends ilTextInputGUI
             $row_id += 1;
         }
 
-        $tpl->setCurrentBlock('count');
-        $tpl->setVariable('COUNT_POST_VAR', $this->getPostVar());
-        $tpl->setVariable('COUNT', sizeof($this->values));
-        $tpl->parseCurrentBlock();
-
-
         return $tpl->get();
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinRows() : int
+    {
+        if (array_key_exists(AsqTableInput::OPTION_MIN_ROWS, $this->component->getOptions())) {
+            return $this->component->getOptions()[AsqTableInput::OPTION_MIN_ROWS];
+        }
+
+        return AsqTableInput::DEFAULT_MIN_ROWS;
     }
 
     /**
@@ -166,17 +130,8 @@ class AsqTableInput extends ilTextInputGUI
      */
     private function hasActions() : bool
     {
-        return array_key_exists(self::OPTION_ORDER, $this->form_configuration) ||
-        !array_key_exists(self::OPTION_HIDE_ADD_REMOVE, $this->form_configuration);
-    }
-
-    /**
-     * @return bool
-     */
-    public function checkInput() : bool
-    {
-        //TODO required etc.
-        return true;
+        return array_key_exists(AsqTableInput::OPTION_ORDER, $this->component->getOptions()) ||
+        !array_key_exists(AsqTableInput::OPTION_HIDE_ADD_REMOVE, $this->component->getOptions());
     }
 
     /**
@@ -185,9 +140,9 @@ class AsqTableInput extends ilTextInputGUI
      * @param string $definition_postvar
      * @return string
      */
-    private static function getTableItemPostVar(int $id, string $postvar, string $definition_postvar) : string
+    private function getTableItemPostVar(int $id, string $definition_postvar) : string
     {
-        return sprintf('%s_%s_%s', $id, $postvar, $definition_postvar);
+        return sprintf('%s_%s', $id, $definition_postvar);
     }
 
 
@@ -204,8 +159,8 @@ class AsqTableInput extends ilTextInputGUI
         for ($i = 1; $i <= $count; $i++) {
             $new_value = [];
 
-            foreach ($this->definitions as $definition) {
-                $item_post_var = self::getTableItemPostVar($i, $this->getPostVar(), $definition->getPostVar());
+            foreach ($this->component->getDefinitions() as $definition) {
+                $item_post_var = AsqTableInput::getTableItemPostVar($i, $this->getPostVar(), $definition->getPostVar());
 
                 if ($this->isPostVarSet($item_post_var)) {
                     $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
@@ -215,16 +170,7 @@ class AsqTableInput extends ilTextInputGUI
             $values[] = $new_value;
         }
 
-        $this->values = $values;
         return $values;
-    }
-
-    /**
-     * @param array $values
-     */
-    public function setValues(array $values) : void
-    {
-        $this->values = $values;
     }
 
     /**
@@ -239,21 +185,21 @@ class AsqTableInput extends ilTextInputGUI
     {
         switch ($definition->getType()) {
             case AsqTableInputFieldDefinition::TYPE_TEXT:
-                return $this->generateTextField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value);
+                return $this->generateTextField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_TEXT_AREA:
-                return $this->generateTextArea(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value);
+                return $this->generateTextArea($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_IMAGE:
-                return $this->generateImageField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value);
+                return $this->generateImageField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_NUMBER:
-                return $this->generateNumberField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value);
+                return $this->generateNumberField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_RADIO:
-                return $this->generateRadioField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value, $definition->getOptions());
+                return $this->generateRadioField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value, $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_DROPDOWN:
-                return $this->generateDropDownField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value, $definition->getOptions());
+                return $this->generateDropDownField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value, $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_BUTTON:
-                return $this->generateButton(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $definition->getOptions());
+                return $this->generateButton($this->getTableItemPostVar($row_id, $definition->getPostVar()), $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_HIDDEN:
-                return $this->generateHiddenField(self::getTableItemPostVar($row_id, $this->getPostVar(), $definition->getPostVar()), $value ?? $definition->getOptions()[0]);
+                return $this->generateHiddenField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value ?? $definition->getOptions()[0]);
             case AsqTableInputFieldDefinition::TYPE_LABEL:
                 return $this->generateLabel($value, $definition->getPostVar());
             default:
@@ -271,7 +217,7 @@ class AsqTableInput extends ilTextInputGUI
     {
         $field = new ilTextInputGUI('', $post_var);
 
-        $this->setFieldValue($post_var, $value, $field);
+        $field->setValue($value);
 
         return $field->render();
     }
@@ -319,7 +265,7 @@ class AsqTableInput extends ilTextInputGUI
         $field = new ilNumberInputGUI('', $post_var);
         $field->setSize(2);
 
-        $this->setFieldValue($post_var, $value, $field);
+        $field->setValue($value);
 
         return $field->render();
     }
@@ -334,7 +280,7 @@ class AsqTableInput extends ilTextInputGUI
     {
         $field = new ilRadioGroupInputGUI('', $post_var);
 
-        $this->setFieldValue($post_var, $value, $field);
+        $field->setValue($value);
 
         foreach ($options as $key => $value) {
             $option = new ilRadioOption($key, $value);
@@ -351,11 +297,11 @@ class AsqTableInput extends ilTextInputGUI
      */
     private function generateDropDownField(string $post_var, $value, $options) : string
     {
-        $field = new \ilSelectInputGUI('', $post_var);
+        $field = new ilSelectInputGUI('', $post_var);
 
         $field->setOptions($options);
 
-        $this->setFieldValue($post_var, $value, $field);
+        $field->setValue($value);
 
         return $field->render();
     }
@@ -400,17 +346,8 @@ class AsqTableInput extends ilTextInputGUI
         return sprintf('<span class="%s">%s</span>', $name, $text);
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @param $field
-     */
-    private function setFieldValue(string $post_var, $value, $field) : void
+    protected function getComponentInterfaceName()
     {
-        if ($this->isPostVarSet($post_var)) {
-            $field->setValue($this->getPostValue($post_var));
-        } elseif ($value !== null) {
-            $field->setValue($value);
-        }
+        return [AsqTableInput::class];
     }
 }

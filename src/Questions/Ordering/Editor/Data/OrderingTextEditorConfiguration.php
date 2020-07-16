@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering\Editor\Data;
 
-use srag\asq\Questions\Ordering\Editor\OrderingEditor;
-
 /**
  * Class OrderingTextEditorConfiguration
  *

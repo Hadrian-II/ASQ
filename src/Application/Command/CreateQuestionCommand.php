@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace srag\asq\Application\Command;
 
 use srag\CQRS\Command\AbstractCommand;
-use srag\asq\Domain\Model\QuestionTypeDefinition;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 
 /**
  * Class CreateQuestionCommand
@@ -25,19 +25,19 @@ class CreateQuestionCommand extends AbstractCommand
     protected $question_uuid;
 
     /**
-     * @var QuestionTypeDefinition
+     * @var QuestionType
      */
     protected $question_type;
 
     /**
      * @param string $question_uuid
-     * @param QuestionTypeDefinition $question_type
+     * @param QuestionType $question_type
      * @param int $initiating_user_id
      * @param int $container_id
      */
     public function __construct(
         string $question_uuid,
-        QuestionTypeDefinition $question_type,
+        QuestionType $question_type,
         int $initiating_user_id
     ) {
         parent::__construct($initiating_user_id);
@@ -54,9 +54,9 @@ class CreateQuestionCommand extends AbstractCommand
     }
 
     /**
-     * @return int
+     * @return QuestionType
      */
-    public function getQuestionType() : QuestionTypeDefinition
+    public function getQuestionType() : QuestionType
     {
         return $this->question_type;
     }

@@ -19,6 +19,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 
 /**
  * Class Question
@@ -69,13 +70,13 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     /**
      * @param string $question_uuid
      * @param int $initiating_user_id
-     * @param QuestionTypeDefinition $question_type
+     * @param QuestionType $question_type
      * @return Question
      */
     public static function createNewQuestion(
         string $question_uuid,
         int $initiating_user_id,
-        QuestionTypeDefinition $question_type
+        QuestionType $question_type
     ) : Question {
         $question = new Question();
         $question->ExecuteEvent(

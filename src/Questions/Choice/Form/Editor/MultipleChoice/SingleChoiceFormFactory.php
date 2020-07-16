@@ -3,13 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
 use srag\asq\PathHelper;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFactory;
 use srag\asq\Questions\Choice\Form\Scoring\SingleChoiceScoringDefinitionFactory;
-use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
+use srag\asq\Questions\Generic\Form\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use ILIAS\DI\UIServices;
 
 /**
  * Class SingleChoiceFormFactory
@@ -41,14 +41,5 @@ class SingleChoiceFormFactory extends QuestionFormFactory
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceAuthoring.js' ];
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function hasAnswerOptions() : bool
-    {
-        return false;
     }
 }

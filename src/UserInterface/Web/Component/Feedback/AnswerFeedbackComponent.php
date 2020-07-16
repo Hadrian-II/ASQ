@@ -28,7 +28,7 @@ class AnswerFeedbackComponent
     /**
      * @var QuestionDto
      */
-    private $question_dto;
+    private $question;
     /**
      * @var Answer
      */
@@ -38,17 +38,22 @@ class AnswerFeedbackComponent
      */
     private $scoring;
 
-
-    public function __construct(QuestionDto $question_dto, Answer $answer)
+    /**
+     * @param QuestionDto $question
+     * @param Answer $answer
+     */
+    public function __construct(QuestionDto $question, Answer $answer)
     {
-        $this->question_dto = $question_dto;
+        $this->question = $question;
         $this->answer = $answer;
 
         $scoring_class = $question->getType()->getScoringClass();
-        $this->scoring = new $scoring_class($question_dto);
+        $this->scoring = new $scoring_class($question);
     }
 
-
+    /**
+     * @return string
+     */
     public function getHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_feedback.html', true, true);
@@ -58,10 +63,10 @@ class AnswerFeedbackComponent
         $tpl->setCurrentBlock('answer_feedback');
 
         if ($this->scoring->getAnswerFeedbackType($this->scoring->score($this->answer)) === AbstractScoring::ANSWER_CORRECT) {
-            $answer_feedback = $this->question_dto->getFeedback()->getAnswerCorrectFeedback();
+            $answer_feedback = $this->question->getFeedback()->getAnswerCorrectFeedback();
             $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_CORRECT;
         } elseif ($this->scoring->getAnswerFeedbackType($this->scoring->score($this->answer)) === AbstractScoring::ANSWER_INCORRECT) {
-            $answer_feedback = $this->question_dto->getFeedback()->getAnswerWrongFeedback();
+            $answer_feedback = $this->question->getFeedback()->getAnswerWrongFeedback();
             $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_WRONG;
         }
 

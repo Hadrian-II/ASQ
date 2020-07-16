@@ -7,6 +7,10 @@ use AsqQuestionPageGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
+use ILIAS\Data\Factory as DataFactory;
+use ILIAS\Refinery\Factory;
 
 /**
  * Class UIService
@@ -53,6 +57,27 @@ class UIService
             $DIC->ui(),
             $DIC->http()->request()
         );
+    }
+
+    /**
+     * @param string $label
+     * @param AsqTableInputFieldDefinition $columns
+     * @param string $byline
+     * @return AsqTableInput
+     */
+    public function getAsqTableInput(string $label, array $columns, string $byline = null) : AsqTableInput
+    {
+        global $DIC;
+
+        $data_factory = new DataFactory();
+        $refinery = new Factory($data_factory, $DIC->language());
+
+        return new AsqTableInput(
+            $label,
+            $columns,
+            $data_factory,
+            $refinery,
+            $byline);
     }
 
     /**

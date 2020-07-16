@@ -12,7 +12,6 @@ use ilTextInputGUI;
 use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionDataFormFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
@@ -38,11 +37,6 @@ class QuestionFormGUI
     const FORM_PART_LINK = 'form_part_link';
 
     const CMD_CREATE_REVISON = 'createRevision';
-
-    /**
-     * @var AsqTableInput
-     */
-    protected $option_form;
 
     /**
      * @var ilLanguage
@@ -113,15 +107,13 @@ class QuestionFormGUI
             $this->ui->mainTemplate()->addJavaScript($script);
         }
 
-
-
         $this->showQuestionState($this->post_question ?? $question);
 
         $this->addRevisionForm();
 
         $this->form = $this->ui->factory()->input()->container()->form()->standard('#', $this->inputs);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->request->getMethod() === 'POST') {
             $this->post_question = $this->readQuestionFromPost($question);
         }
     }
@@ -161,16 +153,17 @@ class QuestionFormGUI
             $this->inputs,
             $this->form_factory->getFormfields($question->getPlayConfiguration()));
 
-        if ($this->form_factory->hasAnswerOptions()) {
-            $this->option_form = new AsqTableInput(
+        if ($this->form_factory->hasAnswerOptions())
+        {
+            $option_form = AsqGateway::get()->ui()->getAsqTableInput(
                 $this->language->txt('asq_label_answer'),
-                self::VAR_ANSWER_OPTIONS,
-                $this->form_factory->getAnswerOptionValues($question->getAnswerOptions()),
-                $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()),
-                $this->form_factory->getAnswerOptionConfiguration()
-            );
+                $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()));
 
-            $this->inputs[] = $this->option_form;
+            $option_form = $option_form
+                ->withOptions($this->form_factory->getAnswerOptionConfiguration())
+                ->withValue($this->form_factory->getAnswerOptionValues($question->getAnswerOptions()));
+
+            $this->inputs[self::VAR_ANSWER_OPTIONS] = $option_form;
         }
 
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
@@ -242,7 +235,7 @@ class QuestionFormGUI
         $question->setPlayConfiguration($this->form_factory->readQuestionPlayConfiguration($postdata));
 
         if ($this->form_factory->hasAnswerOptions()) {
-            $question->setAnswerOptions($this->form_factory->readAnswerOptions($this->option_form->readValues()));
+            $question->setAnswerOptions($this->form_factory->readAnswerOptions($postdata[self::VAR_ANSWER_OPTIONS]));
         }
 
         $question = $this->form_factory->performQuestionPostProcessing($question);

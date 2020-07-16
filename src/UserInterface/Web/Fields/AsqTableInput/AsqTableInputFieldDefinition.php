@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\UserInterface\Web\Fields;
+namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
 
 /**
  * Class AsqTableInputFieldDefinition

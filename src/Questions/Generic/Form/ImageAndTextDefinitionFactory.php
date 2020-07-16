@@ -1,12 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace srag\asq\Questions\Generic\Data;
+namespace srag\asq\Questions\Generic\Form;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**
