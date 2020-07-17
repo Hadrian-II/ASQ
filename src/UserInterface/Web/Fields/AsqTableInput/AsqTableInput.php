@@ -5,6 +5,7 @@ namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
 
 use ILIAS\Data\Factory as DataFactory;
 use ILIAS\Refinery\Factory;
+use ILIAS\UI\Implementation\Component\Input\InputData;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
 use Closure;
 use InvalidArgumentException;
@@ -20,6 +21,8 @@ use InvalidArgumentException;
  */
 class AsqTableInput extends Input
 {
+    use AsqTablePostTrait;
+
     const OPTION_ORDER = 'TableInputOrder';
     const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
     const OPTION_HIDE_EMPTY = 'TableInputHideEmpty';
@@ -116,5 +119,72 @@ class AsqTableInput extends Input
     public function getUpdateOnLoadCode(): Closure
     {
         return null;
+    }
+
+    /**
+     * Collects the input, applies trafos on the input and returns
+     * a new input reflecting the data that was putted in.
+     *
+     * @inheritdoc
+     */
+    public function withInput(InputData $input)
+    {
+        if ($this->getName() === null) {
+            throw new \LogicException("Can only collect if input has a name.");
+        }
+
+        //TODO: Discuss, is this correct here. If there is no input contained in this post
+        //We assign null. Note that unset checkboxes are not contained in POST.
+        if (!$this->isDisabled()) {
+            $value = $this->readValues($input);
+            // ATTENTION: There was a special case for the Filter Input Container here,
+            // which lead to #27909. The issue will most certainly appear again in. If
+            // you are the one debugging it and came here: Please don't put knowledge
+            // of the special case for the filter in this general class. Have a look
+            // into https://mantis.ilias.de/view.php?id=27909 for the according discussion.
+            $clone = $this->withValue($value);
+        } else {
+            $clone = $this;
+        }
+
+        $clone->content = $this->applyOperationsTo($clone->getValue());
+        if ($clone->content->isError()) {
+            return $clone->withError("" . $clone->content->error());
+        }
+
+        return $clone;
+    }
+
+    /**
+     * @return array
+     */
+    public function readValues(InputData $input) : array
+    {
+        $values = [];
+        $i = 0;
+        $finished = false;
+        while (! $finished) {
+            $i += 1;
+            $new_value = [];
+
+            foreach ($this->getDefinitions() as $definition) {
+                $item_post_var = $this->getTableItemPostVar($i, $this->getName(), $definition->getPostVar());
+
+                $value = $input->getOr($item_post_var, null);
+                if (is_null($value))  {
+                    $finished = true;
+                    break;
+                }
+                else {
+                    $new_value[$definition->getPostVar()] = $value;
+                }
+            }
+
+            if (! $finished) {
+                $values[] = $new_value;
+            }
+        }
+
+        return $values;
     }
 }

@@ -24,27 +24,27 @@ class QuestionData extends AbstractValueObject
     const LIFECYCLE_OUTDATED = 6;
 
     /**
-    * @var string
+    * @var ?string
     */
     protected $title;
     /**
-     * @var string
+     * @var ?string
      */
     protected $description;
     /**
-     * @var int
+     * @var ?int
      */
     protected $lifecycle = self::LIFECYCLE_DRAFT;
     /**
-     * @var string
+     * @var ?string
      */
     protected $question_text;
     /**
-     * @var string
+     * @var ?string
      */
     protected $author;
     /**
-     * @var int
+     * @var ?int
      */
     protected $working_time = 0;
 
@@ -95,7 +95,7 @@ class QuestionData extends AbstractValueObject
     /**
      * @return int
      */
-    public function getLifecycle() : int
+    public function getLifecycle() : ?int
     {
         return $this->lifecycle;
     }
@@ -119,7 +119,7 @@ class QuestionData extends AbstractValueObject
     /**
      * @return int
      */
-    public function getWorkingTime() : int
+    public function getWorkingTime() : ?int
     {
         return $this->working_time;
     }
@@ -129,7 +129,9 @@ class QuestionData extends AbstractValueObject
         return !empty($this->title) &&
                !empty($this->working_time) &&
                !empty($this->author) &&
-               !empty($this->question_text);
+               !empty($this->question_text) &&
+               !empty($this->lifecycle) &&
+               !empty($this->getWorkingTime());
     }
 
     /**

@@ -85,12 +85,10 @@ class AsqQuestionConfigEditorGUI
         }
     }
 
-
     /**
-     * @param ilPropertyFormGUI|null $form
-     * @throws Exception
+     * @param ?QuestionFormGUI $form
      */
-    protected function showForm(ilPropertyFormGUI $form = null) : void
+    protected function showForm(?QuestionFormGUI $form = null) : void
     {
         if ($form === null) {
             $form = $this->buildForm();
@@ -151,8 +149,10 @@ class AsqQuestionConfigEditorGUI
      */
     private function buildForm() : QuestionFormGUI
     {
-        $form = AsqGateway::get()->ui()->getQuestionEditForm($this->question);
-        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SAVE_FORM));
+        $form = AsqGateway::get()->ui()->getQuestionEditForm(
+            $this->question,
+            $this->ctrl->getFormAction($this, self::CMD_SAVE_FORM));
+
 //         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
 //         $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
 

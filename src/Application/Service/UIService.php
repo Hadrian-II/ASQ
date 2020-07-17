@@ -45,14 +45,16 @@ class UIService
      * Gets the question authoring form for a question
      *
      * @param QuestionDto $question
+     * @param string $action
      * @return QuestionFormGUI
      */
-    public function getQuestionEditForm(QuestionDto $question) : QuestionFormGUI
+    public function getQuestionEditForm(QuestionDto $question, string $action) : QuestionFormGUI
     {
         global $DIC;
 
         return new QuestionFormGUI(
             $question,
+            $action,
             $DIC->language(),
             $DIC->ui(),
             $DIC->http()->request()

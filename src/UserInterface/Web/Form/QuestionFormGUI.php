@@ -74,21 +74,21 @@ class QuestionFormGUI
     protected $inputs;
 
     /**
-     * @var Standard
-     */
-    protected $form;
-
-    /**
      * @var RequestInterface
      */
     protected $request;
+
+    /**
+     * @var Standard
+     */
+    protected $form;
 
     /**
      * QuestionFormGUI constructor.
      *
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question, ilLanguage $language, UIServices $ui, RequestInterface $request)
+    public function __construct(QuestionDto $question, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
     {
         $this->language = $language;
         $this->ui = $ui;
@@ -111,19 +111,11 @@ class QuestionFormGUI
 
         $this->addRevisionForm();
 
-        $this->form = $this->ui->factory()->input()->container()->form()->standard('#', $this->inputs);
+        $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->inputs);
 
         if ($this->request->getMethod() === 'POST') {
             $this->post_question = $this->readQuestionFromPost($question);
         }
-    }
-
-    /**
-     * @param string $action
-     */
-    public function setFormAction(string $action) : void
-    {
-        $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->inputs);
     }
 
     /**
@@ -241,5 +233,10 @@ class QuestionFormGUI
         $question = $this->form_factory->performQuestionPostProcessing($question);
 
         return $question;
+    }
+
+    public function checkInput() : bool
+    {
+        return true;
     }
 }

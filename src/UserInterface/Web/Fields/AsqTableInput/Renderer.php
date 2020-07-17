@@ -3,22 +3,19 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
 
+use ILIAS\UI\Renderer as RendererInterface;
+use ILIAS\UI\Component\Component;
+use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
 use Exception;
 use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
+use ilSelectInputGUI;
 use ilTemplate;
 use ilTextInputGUI;
-use ilSelectInputGUI;
 use srag\asq\PathHelper;
-use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 use srag\asq\UserInterface\Web\PostAccess;
-use ILIAS\UI\Component\Input\Field\Input;
-use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
-use ILIAS\UI\Implementation\Render\Template;
-use ILIAS\UI\Renderer as RendererInterface;
-use ILIAS\UI\Component;
+use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 
 /**
  * Class AsqTableInput
@@ -32,7 +29,7 @@ use ILIAS\UI\Component;
 class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
-    use PostAccess;
+    use AsqTablePostTrait;
 
     /**
      * @var AsqTableInput
@@ -44,7 +41,7 @@ class Renderer extends AbstractComponentRenderer
      * {@inheritDoc}
      * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
      */
-    public function render(Component\Component $input, RendererInterface $default_renderer) : string
+    public function render(Component $input, RendererInterface $default_renderer) : string
     {
         $this->component = $input;
 
@@ -181,45 +178,6 @@ class Renderer extends AbstractComponentRenderer
     }
 
     /**
-     * @param int $id
-     * @param string $postvar
-     * @param string $definition_postvar
-     * @return string
-     */
-    private function getTableItemPostVar(int $id, string $definition_postvar) : string
-    {
-        return sprintf('%s_%s_%s', $id, $this->component->getName(), $definition_postvar);
-    }
-
-
-    /**
-     * @param QuestionPlayConfiguration $play
-     *
-     * @return array
-     */
-    public function readValues() : array
-    {
-        $count = intval($this->getPostValue($this->getPostVar()));
-
-        $values = [];
-        for ($i = 1; $i <= $count; $i++) {
-            $new_value = [];
-
-            foreach ($this->component->getDefinitions() as $definition) {
-                $item_post_var = AsqTableInput::getTableItemPostVar($i, $this->getPostVar(), $definition->getPostVar());
-
-                if ($this->isPostVarSet($item_post_var)) {
-                    $new_value[$definition->getPostVar()] = $this->getPostValue($item_post_var);
-                }
-            }
-
-            $values[] = $new_value;
-        }
-
-        return $values;
-    }
-
-    /**
      * @param AsqTableInputFieldDefinition $definition
      * @param int                             $row_id
      * @param                                 $value
@@ -231,21 +189,21 @@ class Renderer extends AbstractComponentRenderer
     {
         switch ($definition->getType()) {
             case AsqTableInputFieldDefinition::TYPE_TEXT:
-                return $this->generateTextField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
+                return $this->generateTextField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_TEXT_AREA:
-                return $this->generateTextArea($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
+                return $this->generateTextArea($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_IMAGE:
-                return $this->generateImageField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
+                return $this->generateImageField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_NUMBER:
-                return $this->generateNumberField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value);
+                return $this->generateNumberField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_RADIO:
-                return $this->generateRadioField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value, $definition->getOptions());
+                return $this->generateRadioField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value, $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_DROPDOWN:
-                return $this->generateDropDownField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value, $definition->getOptions());
+                return $this->generateDropDownField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value, $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_BUTTON:
-                return $this->generateButton($this->getTableItemPostVar($row_id, $definition->getPostVar()), $definition->getOptions());
+                return $this->generateButton($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_HIDDEN:
-                return $this->generateHiddenField($this->getTableItemPostVar($row_id, $definition->getPostVar()), $value ?? $definition->getOptions()[0]);
+                return $this->generateHiddenField($this->getTableItemPostVar($row_id, $this->component->getName(), $definition->getPostVar()), $value ?? $definition->getOptions()[0]);
             case AsqTableInputFieldDefinition::TYPE_LABEL:
                 return $this->generateLabel($value, $definition->getPostVar());
             default:
