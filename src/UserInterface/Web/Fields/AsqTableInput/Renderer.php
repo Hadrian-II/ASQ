@@ -14,7 +14,9 @@ use srag\asq\PathHelper;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 use srag\asq\UserInterface\Web\PostAccess;
+use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
+use ILIAS\UI\Implementation\Render\Template;
 use ILIAS\UI\Renderer as RendererInterface;
 use ILIAS\UI\Component;
 
@@ -37,16 +39,60 @@ class Renderer extends AbstractComponentRenderer
      */
     private $component;
 
+    //TODO stole method from Input/Field/Renderer, see to integrate this into input field renderer
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
+     */
+    public function render(Component\Component $input, RendererInterface $default_renderer) : string
+    {
+        $this->component = $input;
+
+        $tpl = new ilTemplate("src/UI/templates/default/Input/tpl.context_form.html", true, true);
+        /**
+         * TODO: should we throw an error in case for no name or render without name?
+         *
+         * if(!$input->getName()){
+         * throw new \LogicException("Cannot render '".get_class($input)."' no input name given.
+         * Is there a name source attached (is this input packed into a container attaching
+         * a name source)?");
+         * } */
+        if ($input->getName()) {
+            $tpl->setVariable("NAME", $input->getName());
+        } else {
+            $tpl->setVariable("NAME", "");
+        }
+
+        $tpl->setVariable("LABEL", $input->getLabel());
+        $tpl->setVariable("INPUT", $this->renderInputField());
+
+        if ($input->getByline() !== null) {
+            $tpl->setCurrentBlock("byline");
+            $tpl->setVariable("BYLINE", $input->getByline());
+            $tpl->parseCurrentBlock();
+        }
+
+        if ($input->isRequired()) {
+            $tpl->touchBlock("required");
+        }
+
+        if ($input->getError() !== null) {
+            $tpl->setCurrentBlock("error");
+            $tpl->setVariable("ERROR", $input->getError());
+            $tpl->parseCurrentBlock();
+        }
+
+        return $tpl->get();
+    }
+
     /**
      * @param string $a_mode
      *
      * @return string
      * @throws \ilTemplateException
      */
-    public function render(Component\Component $component, RendererInterface $default_renderer) : string
+    private function renderInputField() : string
     {
-        $this->component = $component;
-
         $values = $this->component->getValue() ?? [];
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
@@ -142,7 +188,7 @@ class Renderer extends AbstractComponentRenderer
      */
     private function getTableItemPostVar(int $id, string $definition_postvar) : string
     {
-        return sprintf('%s_%s', $id, $definition_postvar);
+        return sprintf('%s_%s_%s', $id, $this->component->getName(), $definition_postvar);
     }
 
 
