@@ -11,6 +11,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use ILIAS\Data\Factory as DataFactory;
 use ILIAS\Refinery\Factory;
+use srag\asq\UserInterface\Web\Fields\DurationInput\DurationInput;
 
 /**
  * Class UIService
@@ -79,6 +80,26 @@ class UIService
             $columns,
             $data_factory,
             $refinery,
+            $byline);
+    }
+
+    /**
+     * @param string $label
+     * @param AsqTableInputFieldDefinition $columns
+     * @param string $byline
+     * @return DurationInput
+     */
+    public function getDurationInput(string $label, string $byline = null) : DurationInput
+    {
+        global $DIC;
+
+        $data_factory = new DataFactory();
+        $refinery = new Factory($data_factory, $DIC->language());
+
+        return new DurationInput(
+            $data_factory,
+            $refinery,
+            $label,
             $byline);
     }
 

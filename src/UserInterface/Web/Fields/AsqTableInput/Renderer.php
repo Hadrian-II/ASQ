@@ -7,18 +7,15 @@ use ILIAS\UI\Renderer as RendererInterface;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
 use Exception;
-use ilNumberInputGUI;
 use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilSelectInputGUI;
 use ilTemplate;
-use ilTextInputGUI;
 use srag\asq\PathHelper;
-use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 
 /**
- * Class AsqTableInput
+ * Class Renderer
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -219,11 +216,7 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateTextField(string $post_var, $value) : string
     {
-        $field = new ilTextInputGUI('', $post_var);
-
-        $field->setValue($value);
-
-        return $field->render();
+        return sprintf('<input type="text" maxlength="200" id="%1$s" name="%1$s" class="form-control" value="%2$s" />', $post_var, $value);
     }
 
     /**
@@ -233,14 +226,7 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateTextArea(string $post_var, $value) : string
     {
-        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.TextAreaField.html', true, true);
-
-        $tpl->setCurrentBlock('textarea');
-        $tpl->setVariable('POST_NAME', $post_var);
-        $tpl->setVariable('VALUE', $value);
-        $tpl->parseCurrentBlock();
-
-        return $tpl->get();
+        return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm" value="%2$s" />', $post_var, $value);
     }
 
     /**
@@ -266,12 +252,7 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateNumberField(string $post_var, $value) : string
     {
-        $field = new ilNumberInputGUI('', $post_var);
-        $field->setSize(2);
-
-        $field->setValue($value);
-
-        return $field->render();
+        return sprintf('<input type="text" size="2" style="text-align: right;" maxlength="200" id="%1$s" name="%1$s" class="form-control" value="%2$s" />', $post_var, $value);
     }
 
     /**

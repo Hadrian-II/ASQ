@@ -121,6 +121,7 @@ class AsqTableInput extends Input
         return null;
     }
 
+    //TODO stole from base Input
     /**
      * Collects the input, applies trafos on the input and returns
      * a new input reflecting the data that was putted in.

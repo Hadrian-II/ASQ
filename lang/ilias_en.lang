@@ -231,3 +231,6 @@ range#:#Range
 score_button_title#:#Show score
 label_btn_delete_gap#:#Delete gap
 no_preview_of incomplete_questions#:#Preview only possible with completed question
+asq_header_hours#:#Hours
+asq_header_minutes#:#Minutes
+asq_header_seconds#:#Seconds
