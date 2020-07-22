@@ -12,8 +12,8 @@ use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Questions\ErrorText\ErrorTextAnswer;
 use srag\asq\Questions\ErrorText\Editor\Data\ErrorTextEditorConfiguration;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class ErrorTextEditor
@@ -26,7 +26,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class ErrorTextEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     /**
@@ -67,7 +67,7 @@ class ErrorTextEditor extends AbstractEditor
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());
         $tpl->parseCurrentBlock();
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextEditor.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Editor/ErrorTextEditor.js');
 
         return $tpl->get();
     }
@@ -109,7 +109,7 @@ class ErrorTextEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        $answers = $this->readString($this->getPostKey());
+        $answers = $this->getPostValue($this->getPostKey());
 
         if (!is_null($answers) && strlen($answers) > 0) {
             $answers = explode(',', $answers);

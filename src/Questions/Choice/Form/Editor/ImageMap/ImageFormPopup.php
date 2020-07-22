@@ -17,7 +17,7 @@ use srag\asq\PathHelper;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ImageFormPopup extends ilTextInputGUI
+class ImageFormPopup extends Input
 {
     use PathHelper;
 

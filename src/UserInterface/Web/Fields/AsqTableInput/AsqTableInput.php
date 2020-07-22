@@ -163,25 +163,23 @@ class AsqTableInput extends Input
     {
         $values = [];
         $i = 0;
-        $finished = false;
-        while (! $finished) {
+        $found = true;
+        while ($found) {
             $i += 1;
             $new_value = [];
+            $found = false;
 
             foreach ($this->getDefinitions() as $definition) {
                 $item_post_var = $this->getTableItemPostVar($i, $this->getName(), $definition->getPostVar());
 
                 $value = $input->getOr($item_post_var, null);
-                if (is_null($value))  {
-                    $finished = true;
-                    break;
-                }
-                else {
+                if (! is_null($value))  {
                     $new_value[$definition->getPostVar()] = $value;
+                    $found = true;
                 }
             }
 
-            if (! $finished) {
+            if ($found) {
                 $values[] = $new_value;
             }
         }

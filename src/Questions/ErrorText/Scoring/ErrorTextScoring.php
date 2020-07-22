@@ -62,7 +62,7 @@ class ErrorTextScoring extends AbstractScoring
         }
 
         // deduct wrong selections
-        $reached_points -= count(array_diff($selected_words, $correct_words));
+        $reached_points -= $this->question->getPlayConfiguration()->getScoringConfiguration()->getPointsWrong() * count(array_diff($selected_words, $correct_words));
 
         return $reached_points;
     }

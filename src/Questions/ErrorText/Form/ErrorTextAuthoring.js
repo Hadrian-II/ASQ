@@ -51,12 +51,14 @@
     }
 
     function storeErrors(errors) {
+        const name = $('.aot_table').attr('name');
+        
         $('.aot_table tbody').children().each((i, rrow) => {
             const error = errors[i];
             const row = $(rrow);
 
-            row.find(`#${i + 1}_answer_options_etsd_word_index`).val(error.start);
-            row.find(`#${i + 1}_answer_options_etsd_word_length`).val(error.length);
+            row.find(`#${i + 1}_${name}_etsd_word_index`).val(error.start);
+            row.find(`#${i + 1}_${name}_etsd_word_length`).val(error.length);
         });
     }
 
@@ -72,7 +74,7 @@
     }
 
     function processErrorText() {
-        const text = $('#ete_error_text').val().split(' ');
+        const text = getErrorText();
 
         const errors = findErrors(text);
 
@@ -85,14 +87,23 @@
         storeErrors(errors);
         displayErrors(errors, text);
     }
+    
+    function getErrorText() {
+        return $('#process_error_text').parent().siblings('textarea').val().split(' ');
+    }
 
     $(document).on('click', '#process_error_text', processErrorText);
 
     $(document).ready(() => {
-        const text = $('#ete_error_text').val().split(' ');
+        const text = getErrorText();
 
         const errors = findErrors(text);
 
+        if (errors.length === 0) {
+            $('.aot_table_div').hide();
+        }
+
+        storeErrors(errors);
         displayErrors(errors, text);
     });
 }(jQuery));

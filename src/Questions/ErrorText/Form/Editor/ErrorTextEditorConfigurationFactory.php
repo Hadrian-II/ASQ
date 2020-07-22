@@ -33,38 +33,43 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $error_text = new ilTextAreaInputGUI($this->language->txt('asq_label_error_text'), self::VAR_ERROR_TEXT);
-        $error_text->setInfo('<input type="button" id="process_error_text" value="' .
-            $this->language->txt('asq_label_process_error_text') .
-            '" class="btn btn-default btn-sm" /><br />' .
-            $this->language->txt('asq_description_error_text'));
-        $error_text->setRequired(true);
-        $fields[self::VAR_ERROR_TEXT] = $error_text;
+        $error_text = $this->factory->input()->field()->textarea(
+            $this->language->txt('asq_label_error_text'),
+            $this->createErrorTextInfo());
 
-
-        $text_size = new ilNumberInputGUI($this->language->txt('asq_label_text_size'), self::VAR_TEXT_SIZE);
-        $text_size->setSize(6);
-        $text_size->setSuffix('%');
-        $fields[self::VAR_TEXT_SIZE] = $text_size;
+        $text_size = $this->factory->input()->field()->text($this->language->txt('asq_label_text_size'));
 
         if ($value !== null) {
-            $error_text->setValue($value->getErrorText());
-            $text_size->setValue($value->getTextSize());
+            $error_text = $error_text->withValue($value->getErrorText());
+            $text_size = $text_size->withValue(strval($value->getTextSize()));
         } else {
-            $text_size->setValue(self::DEFAULT_TEXTSIZE_PERCENT);
+            $text_size = $text_size->withValue(self::DEFAULT_TEXTSIZE_PERCENT);
         }
+
+        $fields[self::VAR_ERROR_TEXT] = $error_text;
+        $fields[self::VAR_TEXT_SIZE] = $text_size;
 
         return $fields;
     }
 
     /**
+     * @return string
+     */
+    private function createErrorTextInfo() : string
+    {
+        return sprintf('<input type="button" id="process_error_text" value="%s" class="btn btn-default btn-sm" /><br />%s',
+                    $this->language->txt('asq_label_process_error_text'),
+                    $this->language->txt('asq_description_error_text'));
+    }
+
+    /**
      * @return ErrorTextEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postvalues) : AbstractValueObject
     {
         return ErrorTextEditorConfiguration::create(
-            $this->readString(self::VAR_ERROR_TEXT),
-            $this->readInt(self::VAR_TEXT_SIZE)
+            $this->readString($postvalues[self::VAR_ERROR_TEXT]),
+            $this->readInt($postvalues[self::VAR_TEXT_SIZE])
         );
     }
 

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Fields\DurationInput;
 
-use Closure;
 use ILIAS\UI\Implementation\Component\Input\InputData;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
+use Closure;
 
 /**
  * Class DurationInput

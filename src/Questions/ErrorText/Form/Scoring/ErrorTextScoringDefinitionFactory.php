@@ -6,7 +6,7 @@ namespace srag\asq\Questions\ErrorText\Form\Scoring;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**

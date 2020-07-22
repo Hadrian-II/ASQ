@@ -29,26 +29,26 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points_wrong = new ilNumberInputGUI($this->language->txt('asq_label_points_wrong'), self::VAR_POINTS_WRONG);
-        $points_wrong->setSize(6);
-        $points_wrong->setRequired(true);
-        $points_wrong->setMaxValue(0);
-        $points_wrong->setInfo($this->language->txt('asq_info_points_wrong'));
-        $fields[self::VAR_POINTS_WRONG] = $points_wrong;
+        $points_wrong = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_points_wrong'),
+            $this->language->txt('asq_info_points_wrong'));
 
         if ($value !== null) {
-            $points_wrong->setValue($value->getPointsWrong());
+            $points_wrong = $points_wrong->withValue(strval($value->getPointsWrong()));
         }
+
+        $fields[self::VAR_POINTS_WRONG] = $points_wrong;
 
         return $fields;
     }
 
     /**
-     * @return ErrorTextScoringConfiguration
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postvalue) : AbstractValueObject
     {
-        return ErrorTextScoringConfiguration::create($this->readFloat(self::VAR_POINTS_WRONG));
+        return ErrorTextScoringConfiguration::create($this->readFloat($postvalue[self::VAR_POINTS_WRONG]));
     }
 
     /**

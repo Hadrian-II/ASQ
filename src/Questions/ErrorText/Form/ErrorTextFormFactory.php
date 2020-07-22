@@ -10,6 +10,7 @@ use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringConfigurationFacto
 use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class ErrorTextFormFactory
@@ -24,13 +25,13 @@ class ErrorTextFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new ErrorTextEditorConfigurationFactory($language),
-            new ErrorTextScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new ErrorTextScoringDefinitionFactory($language)
+            new ErrorTextEditorConfigurationFactory($language, $ui),
+            new ErrorTextScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new ErrorTextScoringDefinitionFactory($language, $ui)
         );
     }
 
@@ -39,6 +40,6 @@ class ErrorTextFormFactory extends QuestionFormFactory
      */
     public function getScripts() : array
     {
-        return [ $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/ErrorTextAuthoring.js' ];
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Form/ErrorTextAuthoring.js' ];
     }
 }

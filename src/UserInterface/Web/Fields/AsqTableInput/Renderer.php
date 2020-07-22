@@ -91,6 +91,10 @@ class Renderer extends AbstractComponentRenderer
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
 
+        $tpl->setCurrentBlock('name');
+        $tpl->setVariable('NAME', $this->component->getName());
+        $tpl->parseCurrentBlock();
+
         /** @var AsqTableInputFieldDefinition $definition */
         foreach ($this->component->getDefinitions() as $definition) {
             $tpl->setCurrentBlock('header_entry');
