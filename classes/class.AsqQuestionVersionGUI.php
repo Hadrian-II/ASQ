@@ -19,6 +19,8 @@ use srag\asq\Domain\Model\QuestionInfo;
  */
 class AsqQuestionVersionGUI
 {
+    use PathHelper;
+
     const CMD_SHOW_VERSIONS = 'showVersions';
     const COL_NAME = 'REVISION_NAME';
     const COL_DATE = 'REVISION_DATE';
@@ -57,7 +59,7 @@ class AsqQuestionVersionGUI
     public function executeCommand() : void
     {
         $question_table = new ilTable2GUI($this);
-        $question_table->setRowTemplate("tpl.versions_row.html", PathHelper::getBasePath(__DIR__));
+        $question_table->setRowTemplate("tpl.versions_row.html", $this->getBasePath(__DIR__));
         $question_table->addColumn($this->language->txt('asq_header_revision_name'), self::COL_NAME);
         $question_table->addColumn($this->language->txt('asq_header_revision_date'), self::COL_DATE);
         $question_table->addColumn($this->language->txt('asq_header_revision_creator'), self::COL_CREATOR);

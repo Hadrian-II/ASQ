@@ -5,7 +5,7 @@ namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 
 /**
  * Interface AnswerOption Factory

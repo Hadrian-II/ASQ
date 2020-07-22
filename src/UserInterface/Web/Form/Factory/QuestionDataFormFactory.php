@@ -72,6 +72,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             global $DIC;
             $author = $author->withValue($DIC->user()->fullname);
             $working_time = $working_time->withValue(60);
+            $lifecycle = $lifecycle->withValue(QuestionData::LIFECYCLE_DRAFT);
         }
 
         $fields[self::VAR_TITLE] = $title;

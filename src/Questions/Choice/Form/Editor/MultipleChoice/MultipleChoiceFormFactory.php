@@ -7,8 +7,9 @@ use ilLanguage;
 use srag\asq\PathHelper;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFactory;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringDefinitionFactory;
-use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
+use srag\asq\Questions\Generic\Form\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class MultipleChoiceFormFactory
@@ -24,13 +25,13 @@ class MultipleChoiceFormFactory extends QuestionFormFactory
     use ChoiceQuestionPostProcessing;
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new MultipleChoiceEditorConfigurationFactory($language),
-            new MultipleChoiceScoringConfigurationFactory($language),
-            new ImageAndTextDefinitionFactory($language),
-            new MultipleChoiceScoringDefinitionFactory($language)
+            new MultipleChoiceEditorConfigurationFactory($language, $ui),
+            new MultipleChoiceScoringConfigurationFactory($language, $ui),
+            new ImageAndTextDefinitionFactory($language, $ui),
+            new MultipleChoiceScoringDefinitionFactory($language, $ui)
         );
     }
 

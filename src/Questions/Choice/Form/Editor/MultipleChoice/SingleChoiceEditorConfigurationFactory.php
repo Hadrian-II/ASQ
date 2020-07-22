@@ -44,9 +44,9 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
                 self::STR_FALSE => $this->language->txt('asq_option_multi_line')
             ]);
 
-            $thumb_size = $this->factory->input()->field()->text(
-                $this->language->txt('asq_label_thumb_size'),
-                $this->language->txt('asq_description_thumb_size'));
+        $thumb_size = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_thumb_size'),
+            $this->language->txt('asq_description_thumb_size'));
 
         if ($value !== null) {
             $shuffle = $shuffle->withValue($value->isShuffleAnswers());

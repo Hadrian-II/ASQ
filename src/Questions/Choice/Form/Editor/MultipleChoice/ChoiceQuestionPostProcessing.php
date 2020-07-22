@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 
 /**
  * Trait ChoiceQuestionPostProcessing

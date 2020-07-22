@@ -7,7 +7,7 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 
 /**
  * Class QuestionFormFactory
