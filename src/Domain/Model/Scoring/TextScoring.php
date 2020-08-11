@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Scoring;
 
-use ilSelectInputGUI;
 use ilLanguage;
+use ILIAS\UI\Factory;
+use ILIAS\UI\Component\Input\Field\Select;
 
 /**
  * Class TextScoring
@@ -39,22 +40,21 @@ class TextScoring
     }
 
     /**
-     * @param string $postvar
-     * @return ilSelectInputGUI
+     *
+     * @param Factory $factory
+     * @return Select
      */
-    public function getScoringTypeSelectionField(string $postvar) : ilSelectInputGUI
+    public function getScoringTypeSelectionField(Factory $factory) : Select
     {
-        $text_matching = new ilSelectInputGUI($this->language->txt('asq_label_text_matching'), $postvar);
-        $text_matching->setOptions(
+        return $factory->input()->field()->select(
+            $this->language->txt('asq_label_text_matching'),
             [self::TM_CASE_INSENSITIVE => $this->language->txt('asq_option_case_insensitive'),
                 self::TM_CASE_SENSITIVE => $this->language->txt('asq_option_case_sensitive'),
                 self::TM_LEVENSHTEIN_1 => $this->language->txt('asq_option_levenshtein_1'),
                 self::TM_LEVENSHTEIN_2 => $this->language->txt('asq_option_levenshtein_2'),
                 self::TM_LEVENSHTEIN_3 => $this->language->txt('asq_option_levenshtein_3'),
                 self::TM_LEVENSHTEIN_4 => $this->language->txt('asq_option_levenshtein_4'),
-                self::TM_LEVENSHTEIN_5 => $this->language->txt('asq_option_levenshtein_5')]
-        );
-        return $text_matching;
+                self::TM_LEVENSHTEIN_5 => $this->language->txt('asq_option_levenshtein_5')]);
     }
 
     /**

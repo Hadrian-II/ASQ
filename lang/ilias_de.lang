@@ -222,6 +222,7 @@ range#:#Bereich
 score_button_title#:#Punkte Anzeigen
 label_btn_delete_gap#:#Lücke Löschen
 no_preview_of incomplete_questions#:#Vorschau nur mit Kompletter Frage möglich
-asq_header_hours#:#Stunden
-asq_header_minutes#:#Minuten
-asq_header_seconds#:#Sekunden
+header_hours#:#Stunden
+header_minutes#:#Minuten
+header_seconds#:#Sekunden
+label_scoring_type#:#Scoring Art

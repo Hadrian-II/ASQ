@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Essay\Form\Editor;
 
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Essay\Editor\Data\EssayEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,24 +28,26 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_length = new ilNumberInputGUI($this->language->txt('asq_label_max_length'), self::VAR_MAX_LENGTH);
-        $max_length->setSize(2);
-        $max_length->setInfo($this->language->txt('asq_info_max_length'));
-        $fields[self::VAR_MAX_LENGTH] = $max_length;
+        $max_length = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_max_length'),
+            $this->language->txt('asq_info_max_length'));
 
         if (!is_null($value)) {
-            $max_length->setValue($value->getMaxLength());
+            $max_length = $max_length->withValue(strval($value->getMaxLength()));
         }
+
+        $fields[self::VAR_MAX_LENGTH] = $max_length;
 
         return $fields;
     }
 
     /**
-     * @return EssayEditorConfiguration
+     * {@inheritDoc}
+     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return EssayEditorConfiguration::create($this->readInt(self::VAR_MAX_LENGTH));
+        return EssayEditorConfiguration::create($this->readInt($postdata[self::VAR_MAX_LENGTH]));
     }
 
     /**

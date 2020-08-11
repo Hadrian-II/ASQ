@@ -3,17 +3,10 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Essay\Form\Scoring;
 
-use ilNumberInputGUI;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Essay\Scoring\EssayScoring;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringConfiguration;
-use srag\asq\Questions\Essay\Scoring\Data\EssayScoringDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
 /**
@@ -30,13 +23,11 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_TEXT_MATCHING = 'es_text_matching';
     const VAR_SCORING_MODE = 'es_scoring_mode';
     const VAR_POINTS = 'es_points';
-    const VAR_DEF_POINTS = 'es_def_points';
-    const VAR_DEF_TEXT = 'es_def_text';
 
-    const VAR_ANSWERS_ANY = 'es_answers_any';
-    const VAR_ANSWERS_ALL = 'es_answers_all';
-    const VAR_ANSWERS_ONE = 'es_answers_one';
-    const VAR_ANSWERS_COUNT = 'es_answers_count';
+    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
+    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
+    // Add some string to value to prevent autocast
+    const USELESS_PREFIX = 'x';
 
     /**
      * @param AbstractValueObject $value
@@ -47,189 +38,61 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         $fields = [];
 
         $text_scoring = new TextScoring($this->language);
-        $text_matching = $text_scoring->getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
-        $fields[self::VAR_TEXT_MATCHING] = $text_matching;
+        $text_matching = $text_scoring->getScoringTypeSelectionField($this->factory);
 
-        $scoring_mode = new ilRadioGroupInputGUI($this->language->txt('asq_label_text_matching'), self::VAR_SCORING_MODE);
-        $scoring_mode->setRequired(true);
+        $scoring_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_scoring_type'))
+            ->withOption(
+                self::USELESS_PREFIX . strval(EssayScoring::SCORING_MANUAL),
+                $this->language->txt('asq_label_manual_scoring'),
+                $this->language->txt('asq_info_manual_scoring'))
+            ->withOption(
+                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ANY),
+                $this->language->txt('asq_label_automatic_any'),
+                $this->language->txt('asq_info_automatic_any'))
+            ->withOption(
+                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ALL),
+                $this->language->txt('asq_label_automatic_all'),
+                $this->language->txt('asq_info_automatic_all'))
+            ->withOption(
+                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ONE),
+                $this->language->txt('asq_info_automatic_one'),
+                $this->language->txt('asq_info_automatic_one'));
 
-        $manual = new ilRadioOption($this->language->txt('asq_label_manual_scoring'), EssayScoring::SCORING_MANUAL);
-        $manual->setInfo($this->language->txt('asq_info_manual_scoring'));
-        $scoring_mode->addOption($manual);
-
-        $any = new ilRadioOption($this->language->txt('asq_label_automatic_any'), EssayScoring::SCORING_AUTOMATIC_ANY);
-        $any->setInfo($this->language->txt('asq_info_automatic_any'));
-        $any_options = new AsqTableInput(
-            $this->language->txt('asq_label_answers'),
-            self::VAR_ANSWERS_ANY,
-            $this->readAnswerOptionValues($value->getDefinitions()),
-            [
-                new AsqTableInputFieldDefinition(
-                    $this->language->txt('asq_label_answer_text'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT
-                ),
-                new AsqTableInputFieldDefinition(
-                    $this->language->txt('asq_label_points'),
-                    AsqTableInputFieldDefinition::TYPE_NUMBER,
-                    self::VAR_DEF_POINTS
-                )
-            ]
-        );
-        $any->addSubItem($any_options);
-        $scoring_mode->addOption($any);
-
-        $all = new ilRadioOption($this->language->txt('asq_label_automatic_all'), EssayScoring::SCORING_AUTOMATIC_ALL);
-        $all->setInfo($this->language->txt('asq_info_automatic_all'));
-        $all_options = new AsqTableInput(
-            $this->language->txt('asq_label_answers'),
-            self::VAR_ANSWERS_ALL,
-            $this->readAnswerOptionValues($value->getDefinitions()),
-            [
-                new AsqTableInputFieldDefinition(
-                    $this->language->txt('asq_label_answer_text'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT
-                )
-            ]
-        );
-
-        $all_points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_ANSWERS_ALL . self::VAR_POINTS);
-        $all_points->setSize(2);
-        $all_points->setRequired(true);
-
-        $all->addSubItem($all_options);
-        $all->addSubItem($all_points);
-        $scoring_mode->addOption($all);
-
-        $one = new ilRadioOption($this->language->txt('asq_label_automatic_one'), EssayScoring::SCORING_AUTOMATIC_ONE);
-        $one->setInfo($this->language->txt('asq_info_automatic_one'));
-
-        $one_options = new AsqTableInput(
-            $this->language->txt('asq_label_answers'),
-            self::VAR_ANSWERS_ONE,
-            $this->readAnswerOptionValues($value->getDefinitions()),
-            [
-                new AsqTableInputFieldDefinition(
-                    $this->language->txt('asq_label_answer_text'),
-                    AsqTableInputFieldDefinition::TYPE_TEXT,
-                    self::VAR_DEF_TEXT
-                )
-            ]
-        );
-
-        $one_points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_ANSWERS_ONE . self::VAR_POINTS);
-        $one_points->setSize(2);
-        $one_points->setRequired(true);
-
-        $one->addSubItem($one_options);
-        $one->addSubItem($one_points);
-        $scoring_mode->addOption($one);
-
-        $fields[self::VAR_SCORING_MODE] = $scoring_mode;
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
         if ($value !== null) {
-            $text_matching->setValue($value->getMatchingMode());
-            $scoring_mode->setValue($value->getScoringMode());
-            $all_points->setValue($value->getPoints());
-            $one_points->setValue($value->getPoints());
+            $text_matching = $text_matching->withValue($value->getMatchingMode());
+            $scoring_mode = $scoring_mode->withValue(self::USELESS_PREFIX . strval($value->getScoringMode() ?? EssayScoring::SCORING_MANUAL));
+            $points = $points->withValue(strval($value->getPoints()));
         }
+
+        $fields[self::VAR_TEXT_MATCHING] = $text_matching;
+        $fields[self::VAR_SCORING_MODE] = $scoring_mode;
+        $fields[self::VAR_POINTS] = $points;
 
         return $fields;
     }
 
     /**
-     * @param Answeroptions $options
-     * @return array
-     */
-    private function readAnswerOptionValues(?Answeroptions $options) : array
-    {
-        if (is_null($options) || count($options->getOptions()) === 0) {
-            return [];
-        }
-
-        $values = [];
-
-        foreach ($options->getOptions() as $option) {
-            /** @var EssayScoringDefinition $definition */
-            $definition = $option->getScoringDefinition();
-
-            $new_item = [];
-            $new_item[self::VAR_DEF_TEXT] = $definition->getText();
-            $new_item[self::VAR_DEF_POINTS] = $definition->getPoints();
-            $values[] = $new_item;
-        }
-
-        return $values;
-    }
-
-    /**
+     * @param $postdata array
      * @return EssayScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        $scoring_mode = $this->readInt(self::VAR_SCORING_MODE);
-        $points = 0.0;
+        $scoring_mode = $this->readInt(substr($postdata[self::VAR_SCORING_MODE], strlen(self::USELESS_PREFIX)));
+        $points = null;
 
-        if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ALL) {
-            $points = $this->readFloat(self::VAR_ANSWERS_ALL . self::VAR_POINTS);
-        } elseif ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE) {
-            $points = $this->readFloat(self::VAR_ANSWERS_ONE . self::VAR_POINTS);
+        if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ALL ||
+            $scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE)
+        {
+            $points = $this->readFloat($postdata[self::VAR_POINTS]);
         }
 
         return EssayScoringConfiguration::create(
-            $this->readInt(self::VAR_TEXT_MATCHING),
+            $this->readInt($postdata[self::VAR_TEXT_MATCHING]),
             $scoring_mode,
-            $points,
-            $this->readDefinitions()
+            $points
         );
-    }
-
-    /**
-     * @return EssayScoringDefinition[]
-     */
-    public function readDefinitions() : array
-    {
-        $selected = $this->readInt(self::VAR_SCORING_MODE);
-
-        $definitions = [];
-
-        if ($selected !== EssayScoring::SCORING_MANUAL) {
-            if ($selected === EssayScoring::SCORING_AUTOMATIC_ALL) {
-                $prefix = self::VAR_ANSWERS_ALL;
-            } elseif ($selected === EssayScoring::SCORING_AUTOMATIC_ANY) {
-                $prefix = self::VAR_ANSWERS_ANY;
-            } elseif ($selected === EssayScoring::SCORING_AUTOMATIC_ONE) {
-                $prefix = self::VAR_ANSWERS_ONE;
-            }
-
-            $i = 1;
-
-            while ($this->isPostVarSet($this->getPostKey($i, $prefix, self::VAR_DEF_TEXT))) {
-                $istr = strval($i);
-
-                $definitions[] =
-                    EssayScoringDefinition::create(
-                        $this->readString($this->getPostKey($istr, $prefix, EssayScoringConfigurationFactory::VAR_DEF_TEXT)),
-                        $this->readFloat($this->getPostKey($istr, $prefix, EssayScoringConfigurationFactory::VAR_DEF_POINTS))
-                    );
-
-                $i += 1;
-            }
-        }
-
-        return $definitions;
-    }
-
-    /**
-     * @param string $i
-     * @param string $prefix
-     * @param string $suffix
-     * @return string
-     */
-    private function getPostKey($i, $prefix, $suffix) : string
-    {
-        return sprintf('%s_%s_%s', $i, $prefix, $suffix);
     }
 
     /**

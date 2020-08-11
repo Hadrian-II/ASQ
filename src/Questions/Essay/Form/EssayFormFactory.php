@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Essay\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
 use srag\asq\Questions\Essay\Form\Editor\EssayEditorConfigurationFactory;
 use srag\asq\Questions\Essay\Form\Scoring\EssayScoringConfigurationFactory;
+use srag\asq\Questions\Essay\Form\Scoring\EssayScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
@@ -20,13 +22,13 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class EssayFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new EssayEditorConfigurationFactory($language),
-            new EssayScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language)
+            new EssayEditorConfigurationFactory($language, $ui),
+            new EssayScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new EssayScoringDefinitionFactory($language, $ui)
         );
     }
 }
