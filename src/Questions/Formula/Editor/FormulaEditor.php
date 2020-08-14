@@ -9,8 +9,8 @@ use srag\asq\Questions\Formula\FormulaAnswer;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class FormulaEditor
@@ -23,7 +23,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class FormulaEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
 
     const VAR_UNIT = 'fe_unit';
 
@@ -69,15 +69,15 @@ class FormulaEditor extends AbstractEditor
      */
     private function processVar(string $name, array &$answers) : bool
     {
-        $value = $this->readString($this->getPostVariable($name));
+        $postvar = $this->getPostVariableName($name);
 
-        if (!empty($value)) {
-            $answers[$name] = $value;
+        if ($this->isPostVarSet($postvar)) {
+            $answers[$name] = $this->getPostValue($postvar);
 
-            $unit = $this->readString($this->getUnitPostVariable($name));
+            $unitpostvar = $this->getUnitPostVariableName($name);
 
-            if (!empty($unit)) {
-                $answers[$name . self::VAR_UNIT] = $unit;
+            if ($this->isPostVarSet($unitpostvar)) {
+                $answers[$name . self::VAR_UNIT] = $this->getPostValue($unitpostvar);
             }
 
             return true;
@@ -117,7 +117,7 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$r' . $index;
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariable($name), !is_null($this->answer) ? $this->answer->getValues()[$name] : '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
+        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), !is_null($this->answer) ? $this->answer->getValues()[$name] : '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
 
         return str_replace($name, $html, $output);
     }
@@ -131,7 +131,7 @@ class FormulaEditor extends AbstractEditor
     {
         return sprintf(
             '<select name="%s">%s</select>',
-            $this->getUnitPostVariable($name),
+            $this->getUnitPostVariableName($name),
             implode(array_map(function ($unit) use ($name) {
                 return sprintf(
                                '<option value="%1$s" %2$s>%1$s</option>',
@@ -154,7 +154,7 @@ class FormulaEditor extends AbstractEditor
 
         $html = sprintf(
             '<input type="hidden" name="%1$s" value="%2$s" />%2$s %3$s',
-            $this->getPostVariable($name),
+            $this->getPostVariableName($name),
             !is_null($this->answer) ?
                 $this->answer->getValues()[$name] :
                 $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
@@ -168,7 +168,7 @@ class FormulaEditor extends AbstractEditor
      * @param string $name
      * @return string
      */
-    private function getPostVariable(string $name) : string
+    private function getPostVariableName(string $name) : string
     {
         return $name . $this->question->getId();
     }
@@ -177,7 +177,7 @@ class FormulaEditor extends AbstractEditor
      * @param string $name
      * @return string
      */
-    private function getUnitPostVariable(string $name) : string
+    private function getUnitPostVariableName(string $name) : string
     {
         return $name . $this->question->getId() . self::VAR_UNIT;
     }

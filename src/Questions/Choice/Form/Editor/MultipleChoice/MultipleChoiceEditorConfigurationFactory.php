@@ -3,10 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 
-use ilCheckboxInputGUI;
-use ilHiddenInputGUI;
-use ilNumberInputGUI;
-use ilSelectInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Choice\Editor\MultipleChoice\Data\MultipleChoiceEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;

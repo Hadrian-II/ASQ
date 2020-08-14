@@ -13,10 +13,10 @@
     }
 
     function addTableItems() {
-        clearTable('#il_prop_cont_fs_variables');
-        clearTable('#il_prop_cont_answer_options');
+        clearTable('table[name=form_input_12]');
+        clearTable('table[name=form_input_13]');
 
-        const variables = $('#fs_formula').val().match(varRegex);
+        const variables = $('input[name=form_input_7]').val().match(varRegex);
 
         let vars = 0;
         let res = 0;
@@ -30,14 +30,14 @@
         });
 
         for (vars; vars > 1; vars -= 1) {
-            addRowTo('#il_prop_cont_fs_variables');
+            addRowTo('table[name=form_input_12]');
         }
-        asqAuthoring.setInputIds($('#il_prop_cont_fs_variables tbody'));
+        asqAuthoring.setInputIds($('table[name=form_input_12] tbody'));
 
         for (res; res > 1; res -= 1) {
-            addRowTo('#il_prop_cont_answer_options');
+            addRowTo('table[name=form_input_13]');
         }
-        asqAuthoring.setInputIds($('#il_prop_cont_answer_options tbody'));
+        asqAuthoring.setInputIds($('table[name=form_input_13] tbody'));
     }
 
     $(document).on('click', '.js_parse_question', addTableItems);

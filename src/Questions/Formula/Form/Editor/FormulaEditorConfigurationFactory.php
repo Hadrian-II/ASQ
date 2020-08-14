@@ -28,9 +28,10 @@ class FormulaEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
+     * @param array $postdata
      * @return FormulaEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return FormulaEditorConfiguration::create();
     }

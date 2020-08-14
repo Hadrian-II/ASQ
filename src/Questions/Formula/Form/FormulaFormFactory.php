@@ -9,8 +9,9 @@ use srag\asq\Questions\Formula\Form\Editor\FormulaEditorConfigurationFactory;
 use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringConfigurationFactory;
 use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class FormulaFormFactory
@@ -25,13 +26,13 @@ class FormulaFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new FormulaEditorConfigurationFactory($language),
-            new FormulaScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new FormulaScoringDefinitionFactory($language)
+            new FormulaEditorConfigurationFactory($language, $ui),
+            new FormulaScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new FormulaScoringDefinitionFactory($language, $ui)
         );
     }
 
@@ -40,7 +41,7 @@ class FormulaFormFactory extends QuestionFormFactory
      */
     public function getScripts() : array
     {
-        return [ $this->getBasePath(__DIR__) . 'src/Questions/Formula/FormulaAuthoring.js' ];
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/Formula/Form/FormulaAuthoring.js' ];
     }
 
     /**

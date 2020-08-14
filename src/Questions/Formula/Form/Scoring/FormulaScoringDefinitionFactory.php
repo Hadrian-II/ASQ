@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Formula\Form\Scoring;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**

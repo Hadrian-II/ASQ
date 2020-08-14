@@ -59,7 +59,7 @@ class FormulaScoringDefinition extends AbstractValueObject
      */
     public function getUnit() : ?string
     {
-        return $this->unit;
+        return $this->unit ?? '';
     }
 
     /**

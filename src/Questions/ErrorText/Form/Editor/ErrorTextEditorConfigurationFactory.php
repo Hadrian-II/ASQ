@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\ErrorText\Form\Editor;
 
-use ilNumberInputGUI;
-use ilTextAreaInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\ErrorText\Editor\Data\ErrorTextEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
