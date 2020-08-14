@@ -12,7 +12,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Editor\MultipleChoice\Data\MultipleChoiceEditorConfiguration;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 

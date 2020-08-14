@@ -10,6 +10,7 @@ use srag\asq\Questions\Essay\Form\Scoring\EssayScoringConfigurationFactory;
 use srag\asq\Questions\Essay\Form\Scoring\EssayScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\PathHelper;
 
 /**
  * Class EssayFormFactory
@@ -22,6 +23,8 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class EssayFormFactory extends QuestionFormFactory
 {
+    use PathHelper;
+
     public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
@@ -30,5 +33,13 @@ class EssayFormFactory extends QuestionFormFactory
             new EmptyDefinitionFactory($language, $ui),
             new EssayScoringDefinitionFactory($language, $ui)
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getScripts() : array
+    {
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/Essay/Form/EssayAuthoring.js' ];
     }
 }

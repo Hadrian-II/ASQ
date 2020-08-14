@@ -13,7 +13,7 @@ use srag\asq\Questions\Essay\EssayAnswer;
 use srag\asq\Questions\Essay\Editor\Data\EssayEditorConfiguration;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class EssayEditor
@@ -26,7 +26,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class EssayEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     /**
@@ -97,7 +97,7 @@ class EssayEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return EssayAnswer::create($this->readString($this->question->getId()));
+        return EssayAnswer::create($this->getPostValue($this->question->getId()));
     }
 
     /**
