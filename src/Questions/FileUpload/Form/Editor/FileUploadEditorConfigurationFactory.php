@@ -31,33 +31,35 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_upload = new ilNumberInputGUI($this->language->txt('asq_label_max_upload'), self::VAR_MAX_UPLOAD);
-        $max_upload->setInfo($this->language->txt('asq_description_max_upload'));
-        $fields[self::VAR_MAX_UPLOAD] = $max_upload;
+        $max_upload = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_max_upload'),
+            $this->language->txt('asq_description_max_upload'));
 
-        $allowed_extensions = new ilTextInputGUI(
+        $allowed_extensions = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_allowed_extensions'),
-            self::VAR_ALLOWED_EXTENSIONS
-        );
-        $allowed_extensions->setInfo($this->language->txt('asq_description_allowed_extensions'));
-        $fields[self::VAR_ALLOWED_EXTENSIONS] = $allowed_extensions;
+            $this->language->txt('asq_description_allowed_extensions'));
+
 
         if ($value !== null) {
-            $max_upload->setValue($value->getMaximumSize());
-            $allowed_extensions->setValue($value->getAllowedExtensions());
+            $max_upload = $max_upload->withValue(strval($value->getMaximumSize()));
+            $allowed_extensions = $allowed_extensions->withValue($value->getAllowedExtensions() ?? '');
         }
+
+        $fields[self::VAR_MAX_UPLOAD] = $max_upload;
+        $fields[self::VAR_ALLOWED_EXTENSIONS] = $allowed_extensions;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return FileUploadEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return FileUploadEditorConfiguration::create(
-            $this->readInt(self::VAR_MAX_UPLOAD),
-            str_replace(' ', '', $this->readString(self::VAR_ALLOWED_EXTENSIONS))
+            $this->readInt($postdata[self::VAR_MAX_UPLOAD]),
+            str_replace(' ', '', $this->readString($postdata[self::VAR_ALLOWED_EXTENSIONS]))
         );
     }
 

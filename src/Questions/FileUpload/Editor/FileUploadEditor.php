@@ -63,7 +63,7 @@ class FileUploadEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
 

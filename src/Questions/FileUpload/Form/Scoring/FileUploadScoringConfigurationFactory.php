@@ -33,36 +33,32 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
-        $completed_by_submition = new ilCheckboxInputGUI(
-            $this->language->txt('asq_label_completed_by_submition'),
-            self::VAR_COMPLETED_ON_UPLOAD
-        );
-        $completed_by_submition->setInfo($this->language->txt('asq_description_completed_by_submition'));
-        $completed_by_submition->setValue(self::CHECKED);
-        $fields[self::VAR_COMPLETED_ON_UPLOAD] = $completed_by_submition;
+        $completed_by_submition = $this->factory->input()->field()->checkbox(
+            $this->language->txt('asq_label_completed_by_submition',
+            $this->language->txt('asq_description_completed_by_submition')));
 
         if ($value !== null) {
-            $points->setValue($value->getPoints());
-            $completed_by_submition->setChecked($value->isCompletedBySubmition());
+            $points = $points->withValue(strval($value->getPoints()));
+            $completed_by_submition = $completed_by_submition->withValue($value->isCompletedBySubmition() ?? false);
         }
+
+        $fields[self::VAR_POINTS] = $points;
+        $fields[self::VAR_COMPLETED_ON_UPLOAD] = $completed_by_submition;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return FileUploadScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return FileUploadScoringConfiguration::create(
-            $this->readFloat(self::VAR_POINTS),
-            $this->readString(self::VAR_COMPLETED_ON_UPLOAD) === self::CHECKED
-        );
+            $this->readFloat($postdata[self::VAR_POINTS]),
+            $postdata[self::VAR_COMPLETED_ON_UPLOAD]);
     }
 
     /**
