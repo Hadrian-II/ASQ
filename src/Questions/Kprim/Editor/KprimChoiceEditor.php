@@ -9,11 +9,11 @@ use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Kprim\KprimChoiceAnswer;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class KprimChoiceEditor
@@ -26,7 +26,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class KprimChoiceEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     const STR_TRUE = "True";
@@ -63,7 +63,7 @@ class KprimChoiceEditor extends AbstractEditor
 
         /** @var AnswerOption $answer_option */
         foreach ($this->answer_options as $answer_option) {
-            $answer = $this->readString($this->getPostName($answer_option->getOptionId()));
+            $answer = $this->getPostValue($this->getPostName($answer_option->getOptionId()));
 
 
             if ($answer === self::STR_TRUE) {

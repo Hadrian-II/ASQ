@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Kprim\Form\Scoring;
 
-use ilCheckboxInputGUI;
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -33,32 +31,32 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
-        $half_points_at = new ilCheckboxInputGUI($this->language->txt('asq_label_half_points'), self::VAR_HALF_POINTS);
-        $half_points_at->setInfo($this->language->txt('asq_description_half_points'));
-        $half_points_at->setValue(self::HALFPOINTS_AT);
-        $fields[self::VAR_HALF_POINTS] = $half_points_at;
+        $half_points_at = $this->factory->input()->field()->checkbox(
+            $this->language->txt('asq_label_half_points'),
+            $this->language->txt('asq_description_half_points'));
 
         if ($value !== null) {
-            $points->setValue($value->getPoints());
-            $half_points_at->setChecked($value->getHalfPointsAt() === self::HALFPOINTS_AT);
+            $points = $points->withValue(strval($value->getPoints()));
+            $half_points_at = $half_points_at->withValue($value->getHalfPointsAt() === self::HALFPOINTS_AT);
         }
+
+        $fields[self::VAR_POINTS] = $points;
+        $fields[self::VAR_HALF_POINTS] = $half_points_at;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return KprimChoiceScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return KprimChoiceScoringConfiguration::create(
-            $this->readFloat(self::VAR_POINTS),
-            $this->readInt(self::VAR_HALF_POINTS)
+            $this->readFloat($postdata[self::VAR_POINTS]),
+            $postdata[self::VAR_HALF_POINTS] ? self::HALFPOINTS_AT : null
         );
     }
 

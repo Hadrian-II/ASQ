@@ -8,7 +8,7 @@ use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Questions\Kprim\Editor\KprimChoiceEditor;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringDefinition;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
 
 /**

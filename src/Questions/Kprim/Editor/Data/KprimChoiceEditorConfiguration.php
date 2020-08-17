@@ -21,10 +21,6 @@ class KprimChoiceEditorConfiguration extends AbstractValueObject
      */
     protected $shuffle_answers;
     /**
-     * @var ?bool
-     */
-    protected $single_line;
-    /**
      * @var ?int
      */
     protected $thumbnail_size;
@@ -47,13 +43,11 @@ class KprimChoiceEditorConfiguration extends AbstractValueObject
      */
     public static function create(
         ?bool $shuffle_answers,
-        ?bool $single_line,
         ?int $thumbnail_size,
         ?string $label_true,
         ?string $label_false
     ) : KprimChoiceEditorConfiguration {
         $object = new KprimChoiceEditorConfiguration();
-        $object->single_line = $single_line;
         $object->shuffle_answers = $shuffle_answers;
         $object->thumbnail_size = $thumbnail_size;
         $object->label_true = $label_true;
@@ -68,14 +62,6 @@ class KprimChoiceEditorConfiguration extends AbstractValueObject
     public function isShuffleAnswers() : ?bool
     {
         return $this->shuffle_answers;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSingleLine() : ?bool
-    {
-        return $this->single_line;
     }
 
     /**

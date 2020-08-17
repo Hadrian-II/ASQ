@@ -3,13 +3,8 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Kprim\Form\Editor;
 
-use ilCheckboxInputGUI;
-use ilNumberInputGUI;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
-use ilTextInputGUI;
+use ILIAS\UI\Component\Input\Field\SwitchableGroup;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Domain\Model\Configuration\AbstractConfiguration;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
@@ -56,116 +51,100 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $shuffle = new ilCheckboxInputGUI($this->language->txt('asq_label_shuffle'), self::VAR_SHUFFLE_ANSWERS);
-        $shuffle->setValue(self::STR_TRUE);
-        $fields[self::VAR_SHUFFLE_ANSWERS] = $shuffle;
+        $shuffle = $this->factory->input()->field()->checkbox($this->language->txt('asq_label_shuffle'));
 
-        $thumb_size = new ilNumberInputGUI(
+        $thumb_size = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_thumb_size'),
-            self::VAR_THUMBNAIL_SIZE
-        );
-        $thumb_size->setInfo($this->language->txt('asq_description_thumb_size'));
-        $thumb_size->setSuffix($this->language->txt('asq_pixel'));
-        $thumb_size->setMinValue(20);
-        $thumb_size->setDecimals(0);
-        $thumb_size->setSize(6);
-        $fields[self::VAR_THUMBNAIL_SIZE] = $thumb_size;
+            $this->language->txt('asq_description_thumb_size'));
 
         $optionLabel = $this->GenerateOptionLabelField($value);
-        $fields[self::VAR_LABEL_TYPE] = $optionLabel;
+
 
         if ($value !== null) {
-            $shuffle->setChecked($value->isShuffleAnswers());
-            $thumb_size->setValue($value->getThumbnailSize());
-        } else {
-            $shuffle->setChecked(true);
+            $shuffle = $shuffle->withValue($value->isShuffleAnswers() ?? false);
+            $thumb_size = $thumb_size->withValue($value->getThumbnailSize() ?? '');
         }
+
+        $fields[self::VAR_SHUFFLE_ANSWERS] = $shuffle;
+        $fields[self::VAR_THUMBNAIL_SIZE] = $thumb_size;
+        $fields[self::VAR_LABEL_TYPE] = $optionLabel;
 
         return $fields;
     }
 
     /**
-     * @param AbstractConfiguration $config
-     * @return \ilRadioGroupInputGUI
+     * @param KprimChoiceEditorConfiguration $config
+     * @return SwitchableGroup
      */
-    private function GenerateOptionLabelField(?KprimChoiceEditorConfiguration $config) : ilRadioGroupInputGUI
+    private function GenerateOptionLabelField(?KprimChoiceEditorConfiguration $config) : SwitchableGroup
     {
-        $optionLabel = new ilRadioGroupInputGUI(
-            $this->language->txt('asq_label_obtion_labels'),
-            self::VAR_LABEL_TYPE
-        );
-        $optionLabel->setInfo($this->language->txt('asq_description_options'));
-        $optionLabel->setRequired(true);
-
-        $right_wrong = new ilRadioOption(
-            $this->language->txt('asq_label_right_wrong'),
-            self::LABEL_RIGHT_WRONG
-        );
-        $optionLabel->addOption($right_wrong);
-
-        $plus_minus = new ilRadioOption(
-            $this->language->txt('asq_label_plus_minus'),
-            self::LABEL_PLUS_MINUS
-        );
-        $optionLabel->addOption($plus_minus);
-
-        $applicable = new ilRadioOption(
-            $this->language->txt('asq_label_applicable'),
-            self::LABEL_APPLICABLE
-        );
-        $optionLabel->addOption($applicable);
-
-        $adequate = new ilRadioOption(
-            $this->language->txt('asq_label_adequate'),
-            self::LABEL_ADEQUATE
-        );
-        $optionLabel->addOption($adequate);
-
-        $custom = new ilRadioOption(
-            $this->language->txt('asq_label_userdefined'),
-            self::LABEL_CUSTOM
-        );
-        $optionLabel->addOption($custom);
-
-        $customLabelTrue = new ilTextInputGUI(
-            $this->language->txt('asq_label_user_true'),
-            self::VAR_LABEL_TRUE
-        );
-        $custom->addSubItem($customLabelTrue);
-
-        $customLabelFalse = new ilTextInputGUI(
-            $this->language->txt('asq_label_user_false'),
-            self::VAR_LABEL_FALSE
-        );
-        $custom->addSubItem($customLabelFalse);
+        $selected_value = self::LABEL_RIGHT_WRONG;
 
         if ($config !== null) {
             if ($config->getLabelTrue() === self::STR_RIGHT && $config->getLabelFalse() === self::STR_WRONG) {
-                $optionLabel->setValue(self::LABEL_RIGHT_WRONG);
+                $selected_value = self::LABEL_RIGHT_WRONG;
             } elseif ($config->getLabelTrue() === self::STR_PLUS && $config->getLabelFalse() === self::STR_MINUS) {
-                $optionLabel->setValue(self::LABEL_PLUS_MINUS);
+                $selected_value = self::LABEL_PLUS_MINUS;
             } elseif ($config->getLabelTrue() === self::STR_APPLICABLE && $config->getLabelFalse() === self::STR_NOT_APPLICABLE) {
-                $optionLabel->setValue(self::LABEL_APPLICABLE);
+                $selected_value = self::LABEL_APPLICABLE;
             } elseif ($config->getLabelTrue() === self::STR_ADEQUATE && $config->getLabelFalse() === self::STR_NOT_ADEQUATE) {
-                $optionLabel->setValue(self::LABEL_ADEQUATE);
+                $selected_value = self::LABEL_ADEQUATE;
             } elseif (empty($config->getLabelTrue())) {
-                $optionLabel->setValue(self::LABEL_RIGHT_WRONG);
+                $selected_value = self::LABEL_RIGHT_WRONG;
             } else {
-                $optionLabel->setValue(self::LABEL_CUSTOM);
-                $customLabelTrue->setValue($config->getLabelTrue());
-                $customLabelFalse->setValue($config->getLabelFalse());
+                $selected_value = self::LABEL_CUSTOM;
             }
         }
+
+        $customLabelTrue = $this->factory->input()->field()->text($this->language->txt('asq_label_user_true'));
+        $customLabelFalse = $this->factory->input()->field()->text($this->language->txt('asq_label_user_false'));
+
+        if ($selected_value == self::LABEL_CUSTOM) {
+            $customLabelTrue = $customLabelTrue->withValue($config->getLabelTrue());
+            $customLabelFalse = $customLabelFalse->withValue($config->getLabelFalse());
+        }
+
+        $optionLabel = $this->factory->input()->field()->switchableGroup
+        (
+            [
+                self::LABEL_RIGHT_WRONG =>
+                    $this->factory->input()->field()->group(
+                        [],
+                        $this->language->txt('asq_label_right_wrong')),
+                self::LABEL_PLUS_MINUS =>
+                    $this->factory->input()->field()->group(
+                        [],
+                        $this->language->txt('asq_label_plus_minus')),
+                self::LABEL_APPLICABLE =>
+                    $this->factory->input()->field()->group(
+                        [],
+                        $this->language->txt('asq_label_applicable')),
+                self::LABEL_ADEQUATE =>
+                    $this->factory->input()->field()->group(
+                        [],
+                        $this->language->txt('asq_label_adequate')),
+                self::LABEL_CUSTOM =>
+                    $this->factory->input()->field()->group(
+                        [
+                            self::VAR_LABEL_TRUE => $customLabelTrue,
+                            self::VAR_LABEL_FALSE => $customLabelFalse
+                        ],
+                        $this->language->txt('asq_label_userdefined'))
+            ],
+            $this->language->txt('asq_label_obtion_labels'),
+            $this->language->txt('asq_description_options')
+        )->withValue($selected_value);
 
         return $optionLabel;
     }
 
     /**
+     * @param $postdata array
      * @return KprimChoiceEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        switch ($this->readString(self::VAR_LABEL_TYPE)) {
+        switch ($postdata[self::VAR_LABEL_TYPE][0]) {
             case self::LABEL_RIGHT_WRONG:
                 $label_true = self::STR_RIGHT;
                 $label_false = self::STR_WRONG;
@@ -183,16 +162,15 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
                 $label_false = self::STR_NOT_ADEQUATE;
                 break;
             case self::LABEL_CUSTOM:
-                $label_true = $this->readString(self::VAR_LABEL_TRUE);
-                $label_false = $this->readString(self::VAR_LABEL_FALSE);
+                $label_true = $postdata[self::VAR_LABEL_TYPE][1][self::VAR_LABEL_TRUE];
+                $label_false = $postdata[self::VAR_LABEL_TYPE][1][self::VAR_LABEL_FALSE];
                 break;
         }
 
         $thumbsize = $this->readInt(self::VAR_THUMBNAIL_SIZE);
 
         return KprimChoiceEditorConfiguration::create(
-            $this->readString(self::VAR_SHUFFLE_ANSWERS) === self::STR_TRUE,
-            $this->readString(self::VAR_SINGLE_LINE) === self::STR_TRUE,
+            $postdata[self::VAR_SHUFFLE_ANSWERS],
             $thumbsize,
             $label_true,
             $label_false
