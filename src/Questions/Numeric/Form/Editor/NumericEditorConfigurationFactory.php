@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Numeric\Form\Editor;
 
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Numeric\Editor\Data\NumericEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,24 +28,26 @@ class NumericEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_chars = new ilNumberInputGUI($this->language->txt('asq_label_max_nr_of_chars'), self::VAR_MAX_NR_OF_CHARS);
-        $max_chars->setInfo($this->language->txt('asq_description_max_nr_chars'));
-        $max_chars->setSize(6);
-        $fields[self::VAR_MAX_NR_OF_CHARS] = $max_chars;
+        $max_chars = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_max_nr_of_chars'),
+            $this->language->txt('asq_description_max_nr_chars'));
 
         if ($value !== null) {
-            $max_chars->setValue($value->getMaxNumOfChars());
+            $max_chars = $max_chars->withValue(strval($value->getMaxNumOfChars()));
         }
+
+        $fields[self::VAR_MAX_NR_OF_CHARS] = $max_chars;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return NumericEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return NumericEditorConfiguration::create($this->readInt(self::VAR_MAX_NR_OF_CHARS));
+        return NumericEditorConfiguration::create($this->readInt($postdata[self::VAR_MAX_NR_OF_CHARS]));
     }
 
     /**

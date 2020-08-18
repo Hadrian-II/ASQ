@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Numeric\Form\Scoring;
 
-use ilFormSectionHeaderGUI;
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -32,45 +30,35 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
-        $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle($this->language->txt('asq_range'));
-        $fields[] = $spacer;
+        $lower_bound = $this->factory->input()->field()->text($this->language->txt('asq_label_lower_bound'));
 
-        $lower_bound = new ilNumberInputGUI($this->language->txt('asq_label_lower_bound'), self::VAR_LOWER_BOUND);
-        $lower_bound->setRequired(true);
-        $lower_bound->allowDecimals(true);
-        $lower_bound->setSize(6);
-        $fields[self::VAR_LOWER_BOUND] = $lower_bound;
-
-        $upper_bound = new ilNumberInputGUI($this->language->txt('asq_label_upper_bound'), self::VAR_UPPER_BOUND);
-        $upper_bound->setRequired(true);
-        $upper_bound->allowDecimals(true);
-        $upper_bound->setSize(6);
-        $fields[self::VAR_UPPER_BOUND] = $upper_bound;
+        $upper_bound = $this->factory->input()->field()->text($this->language->txt('asq_label_upper_bound'));
 
         if ($value !== null) {
-            $points->setValue($value->getPoints());
-            $lower_bound->setValue($value->getLowerBound());
-            $upper_bound->setValue($value->getUpperBound());
+            $points = $points->withValue(strval($value->getPoints()));
+            $lower_bound = $lower_bound->withValue(strval($value->getLowerBound()));
+            $upper_bound = $upper_bound->withValue(strval($value->getUpperBound()));
         }
+
+        $fields[self::VAR_POINTS] = $points;
+        $fields[self::VAR_LOWER_BOUND] = $lower_bound;
+        $fields[self::VAR_UPPER_BOUND] = $upper_bound;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return NumericScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return NumericScoringConfiguration::create(
-            $this->readFloat(self::VAR_POINTS),
-            $this->readFloat(self::VAR_LOWER_BOUND),
-            $this->readFloat(self::VAR_UPPER_BOUND)
+            $this->readFloat($postdata[self::VAR_POINTS]),
+            $this->readFloat($postdata[self::VAR_LOWER_BOUND]),
+            $this->readFloat($postdata[self::VAR_UPPER_BOUND])
         );
     }
 

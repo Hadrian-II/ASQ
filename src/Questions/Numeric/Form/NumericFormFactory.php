@@ -8,6 +8,7 @@ use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\Questions\Numeric\Form\Editor\NumericEditorConfigurationFactory;
 use srag\asq\Questions\Numeric\Form\Scoring\NumericScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class NumericFormFactory
@@ -20,13 +21,13 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class NumericFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new NumericEditorConfigurationFactory($language),
-            new NumericScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language)
+            new NumericEditorConfigurationFactory($language, $ui),
+            new NumericScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui)
         );
     }
 }
