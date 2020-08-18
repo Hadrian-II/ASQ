@@ -3,17 +3,14 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Matching\Form\Editor;
 
-use ilNumberInputGUI;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
-use ilSelectInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Matching\Editor\Data\MatchingEditorConfiguration;
 use srag\asq\Questions\Matching\Editor\Data\MatchingItem;
 use srag\asq\Questions\Matching\Editor\Data\MatchingMapping;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
+use srag\asq\AsqGateway;
 
 /**
  * Class MatchingEditorConfigurationFactory
@@ -43,6 +40,11 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     const VAR_MATCH_TERM = 'me_match_term';
     const VAR_MATCH_POINTS = 'me_match_points';
 
+    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
+    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
+    // Add some string to value to prevent autocast
+    const USELESS_PREFIX = 'x';
+
     /**
      * @param AbstractValueObject $value
      * @return array
@@ -52,57 +54,50 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         $fields = [];
         /** @var MatchingEditorConfiguration $config */
 
-        $shuffle_answers = new ilSelectInputGUI(
+        $shuffle_answers = $this->factory->input()->field()->select(
             $this->language->txt('asq_label_shuffle_answers'),
-            self::VAR_SHUFFLE
+            [
+                MatchingEditorConfiguration::SHUFFLE_NONE
+                    => $this->language->txt('asq_option_shuffle_none'),
+                MatchingEditorConfiguration::SHUFFLE_DEFINITIONS
+                    => $this->language->txt('asq_option_shuffle_definitions'),
+                MatchingEditorConfiguration::SHUFFLE_TERMS
+                    => $this->language->txt('asq_option_shuffle_terms'),
+                MatchingEditorConfiguration::SHUFFLE_BOTH
+                    => $this->language->txt('asq_option_shuffle_both')
+            ]
         );
 
-        $shuffle_answers->setOptions([
-            MatchingEditorConfiguration::SHUFFLE_NONE
-                => $this->language->txt('asq_option_shuffle_none'),
-            MatchingEditorConfiguration::SHUFFLE_DEFINITIONS
-                => $this->language->txt('asq_option_shuffle_definitions'),
-            MatchingEditorConfiguration::SHUFFLE_TERMS
-                => $this->language->txt('asq_option_shuffle_terms'),
-            MatchingEditorConfiguration::SHUFFLE_BOTH
-                => $this->language->txt('asq_option_shuffle_both')
-        ]);
-        $fields[] = $shuffle_answers;
+        $thumbnail = $this->factory->input()->field()->text($this->language->txt('asq_label_thumbnail'));
 
-        $thumbnail = new ilNumberInputGUI($this->language->txt('asq_label_thumbnail'), self::VAR_THUMBNAIL);
-        $thumbnail->setRequired(true);
-        $fields[] = $thumbnail;
+        $matching_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_matching_mode'))
+        ->withOption(
+            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_ONE_TO_ONE),
+            $this->language->txt('asq_option_one_to_one'))
+        ->withOption(
+            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_ONE),
+            $this->language->txt('asq_option_many_to_one'))
+        ->withOption(
+            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_MANY),
+            $this->language->txt('asq_option_many_to_many'));
 
-        $matching_mode = new ilRadioGroupInputGUI($this->language->txt('asq_label_matching_mode'), self::VAR_MATCHING_MODE);
-
-        $matching_mode->addOption(new ilRadioOption(
-            $this->language->txt('asq_option_one_to_one'),
-            MatchingEditorConfiguration::MATCHING_ONE_TO_ONE
-        ));
-
-        $matching_mode->addOption(new ilRadioOption(
-            $this->language->txt('asq_option_many_to_one'),
-            MatchingEditorConfiguration::MATCHING_MANY_TO_ONE
-        ));
-
-        $matching_mode->addOption(new ilRadioOption(
-            $this->language->txt('asq_option_many_to_many'),
-            MatchingEditorConfiguration::MATCHING_MANY_TO_MANY
-        ));
-
-        $fields[] = $matching_mode;
 
         if (!is_null($value)) {
-            $shuffle_answers->setValue($value->getShuffle());
-            $thumbnail->setValue($value->getThumbnailSize());
-            $matching_mode->setValue($value->getMatchingMode());
+            $shuffle_answers = $shuffle_answers->withValue($value->getShuffle());
+            $thumbnail = $thumbnail->withValue(strval($value->getThumbnailSize()));
+            $matching_mode = $matching_mode->withValue(
+                self::USELESS_PREFIX . strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE));
         }
 
-        $fields[] = $this->createDefinitionsTable($value);
+        $fields[self::VAR_SHUFFLE] = $shuffle_answers;
+        $fields[self::VAR_THUMBNAIL] = $thumbnail;
+        $fields[self::VAR_MATCHING_MODE] = $matching_mode;
 
-        $fields[] = $this->createTermsTable($value);
+        $fields[self::VAR_DEFINITIONS] = $this->createDefinitionsTable($value);
 
-        $fields[] = $this->createMatchTable($value);
+        $fields[self::VAR_TERMS] = $this->createTermsTable($value);
+
+        $fields[self::VAR_MATCHES] = $this->createMatchTable($value);
 
         return $fields;
     }
@@ -126,12 +121,16 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_DEFINITION_IMAGE
         );
 
-        return new AsqTableInput(
-            $this->language->txt('asq_label_definitions'),
-            self::VAR_DEFINITIONS,
-            !is_null($config) ? $this->getItemValues($config->getDefinitions(), self::VAR_DEFINITION_TEXT, self::VAR_DEFINITION_IMAGE) : [],
-            $columns
-        );
+        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_definitions'), $columns);
+
+        if (!is_null($config)) {
+            $table = $table->withValue(
+                $this->getItemValues($config->getDefinitions(),
+                    self::VAR_DEFINITION_TEXT,
+                    self::VAR_DEFINITION_IMAGE));
+        }
+
+        return $table;
     }
 
     /**
@@ -153,12 +152,16 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_TERM_IMAGE
         );
 
-        return new AsqTableInput(
-            $this->language->txt('asq_label_terms'),
-            self::VAR_TERMS,
-            !is_null($config) ? $this->getItemValues($config->getTerms(), self::VAR_TERM_TEXT, self::VAR_TERM_IMAGE) : [],
-            $columns
-        );
+        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_terms'), $columns);
+
+        if (!is_null($config)) {
+            $table = $table->withValue(
+                $this->getItemValues($config->getTerms(),
+                    self::VAR_TERM_TEXT,
+                    self::VAR_TERM_IMAGE));
+        }
+
+        return $table;
     }
 
     /**
@@ -217,12 +220,13 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_MATCH_POINTS
         );
 
-        return new AsqTableInput(
-            $this->language->txt('asq_label_matches'),
-            self::VAR_MATCHES,
-            !is_null($config) ? $this->getMatchesValues($config) : [],
-            $columns
-        );
+        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_matches'), $columns);
+
+        if (!is_null($config)) {
+            $table = $table->withValue($this->getMatchesValues($config));
+        }
+
+        return $table;
     }
 
     /**
@@ -244,9 +248,10 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
+     * @param $postdata array
      * @return MatchingEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         $id = -1;
 
@@ -260,7 +265,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
                     $value[self::VAR_DEFINITION_IMAGE]
                 );
             },
-            $this->createDefinitionsTable($this->getDefaultValue())->readValues()
+            $postdata[self::VAR_DEFINITIONS]
         );
 
         $id = -1;
@@ -275,7 +280,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
                     $value[self::VAR_TERM_IMAGE]
                 );
             },
-            $this->createTermsTable($this->getDefaultValue())->readValues()
+            $postdata[self::VAR_TERMS]
         );
 
         $match = array_map(
@@ -286,13 +291,13 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
                     floatval($value[self::VAR_MATCH_POINTS])
                 );
             },
-            $this->createMatchTable($this->getDefaultValue())->readValues()
+            $postdata[self::VAR_MATCHES]
         );
 
         return MatchingEditorConfiguration::create(
-            $this->readInt(self::VAR_SHUFFLE),
-            $this->readInt(self::VAR_THUMBNAIL),
-            $this->readInt(self::VAR_MATCHING_MODE),
+            $this->readInt($postdata[self::VAR_SHUFFLE]),
+            $this->readInt($postdata[self::VAR_THUMBNAIL]),
+            $this->readInt(substr($postdata[self::VAR_MATCHING_MODE], strlen(self::USELESS_PREFIX))),
             $def,
             $term,
             $match

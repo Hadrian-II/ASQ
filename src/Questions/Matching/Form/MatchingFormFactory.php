@@ -9,6 +9,7 @@ use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\Questions\Matching\Form\Editor\MatchingEditorConfigurationFactory;
 use srag\asq\Questions\Matching\Form\Scoring\MatchingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class MatchingFormFactory
@@ -23,13 +24,13 @@ class MatchingFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new MatchingEditorConfigurationFactory($language),
-            new MatchingScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language)
+            new MatchingEditorConfigurationFactory($language, $ui),
+            new MatchingScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui)
         );
     }
 
@@ -38,6 +39,6 @@ class MatchingFormFactory extends QuestionFormFactory
      */
     public function getScripts() : array
     {
-        return [ $this->getBasePath(__DIR__) . 'src/Questions/Matching/MatchingAuthoring.js' ];
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/Matching/Form/MatchingAuthoring.js' ];
     }
 }

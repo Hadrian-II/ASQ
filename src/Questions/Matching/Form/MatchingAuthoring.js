@@ -1,7 +1,7 @@
 (function ($) {
-    const MATCHING_ONE_TO_ONE = '0';
-    const MATCHING_MANY_TO_ONE = '1';
-    const MATCHING_MANY_TO_MANY = '2';
+    const MATCHING_ONE_TO_ONE = 'x0';
+    const MATCHING_MANY_TO_ONE = 'x1';
+    const MATCHING_MANY_TO_MANY = 'x2';
     let matchingMode;
 
     let usedTerms = [];
@@ -73,7 +73,7 @@
     }
 
     function cleanAddedRow() {
-        $('#il_prop_cont_me_matches').find('tr').last().find('select')
+        $('table[name=form_input_12]').find('tr').last().find('select')
             .each((index, item) => {
                 $(item).empty();
             });
@@ -83,18 +83,18 @@
     }
 
     function setMatchingMode() {
-        matchingMode = $('input[name=me_matching]:checked').val();
+        matchingMode = $('input[name=form_input_9]:checked').val();
         updateUsedDefinitions();
         updateUsedTerms();
     }
 
     $(document).ready(() => {
-        if ($('input[name=me_matching]').length > 0) {
+        if ($('input[name=form_input_9]').length > 0) {
             setMatchingMode();
         }
     });
 
-    $(document).on('change', 'input[name=me_matching]', setMatchingMode);
+    $(document).on('change', 'input[name=form_input_9]', setMatchingMode);
 
     $(document).on('change', 'input[id$="me_definition_text"]', updateDefinitions);
     $(document).on('change', 'input[id$="me_term_text"]', updateTerms);
@@ -102,17 +102,17 @@
     $(document).on('change', 'select[id$=me_match_term]', updateUsedTerms);
 
     // remove/add needs to trigger after remove event that actually removes the row
-    $(document).on('click', '#il_prop_cont_me_matches .js_add', () => {
+    $(document).on('click', 'table[name=form_input_12] .js_add', () => {
         setTimeout(cleanAddedRow, 1);
     });
-    $(document).on('click', '#il_prop_cont_me_matches .js_remove', () => {
+    $(document).on('click', 'table[name=form_input_12] .js_remove', () => {
         setTimeout(updateUsedDefinitions, 1);
         setTimeout(updateUsedTerms, 1);
     });
-    $(document).on('click', '#il_prop_cont_me_terms .js_remove', () => {
+    $(document).on('click', 'table[name=form_input_11] .js_remove', () => {
         setTimeout(updateTerms, 1);
     });
-    $(document).on('click', '#il_prop_cont_me_definitions .js_remove', () => {
+    $(document).on('click', 'table[name=form_input_10] .js_remove', () => {
         setTimeout(updateDefinitions, 1);
     });
 }(jQuery));

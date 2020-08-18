@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Matching\Form\Scoring;
 
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Matching\Scoring\Data\MatchingScoringConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,26 +28,24 @@ class MatchingScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $wrong_deduction = new ilNumberInputGUI(
-            $this->language->txt('asq_label_wrong_deduction'),
-            self::VAR_WRONG_DEDUCTION
-        );
-        $wrong_deduction->setSize(2);
-        $fields[self::VAR_WRONG_DEDUCTION] = $wrong_deduction;
+        $wrong_deduction = $this->factory->input()->field()->text($this->language->txt('asq_label_wrong_deduction'));
 
         if (!is_null($value)) {
-            $wrong_deduction->setValue($value->getWrongDeduction());
+            $wrong_deduction = $wrong_deduction->withValue(strval($value->getWrongDeduction()));
         }
+
+        $fields[self::VAR_WRONG_DEDUCTION] = $wrong_deduction;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return MatchingScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return MatchingScoringConfiguration::create($this->readFloat(self::VAR_WRONG_DEDUCTION));
+        return MatchingScoringConfiguration::create($this->readFloat($postdata[self::VAR_WRONG_DEDUCTION]));
     }
 
     /**

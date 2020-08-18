@@ -11,8 +11,8 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Matching\MatchingAnswer;
 use srag\asq\Questions\Matching\Editor\Data\MatchingEditorConfiguration;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class MatchingEditor
@@ -25,7 +25,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class MatchingEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     /**
@@ -51,11 +51,13 @@ class MatchingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        $value = $this->readString($this->question->getId());
 
-        if (!empty($value)) {
+
+        if (!$this->isPostVarSet($this->question->getId())) {
             return null;
         }
+
+        $value = $this->getPostValue($this->question->getId());
 
         $matches = explode(';', $value);
 
@@ -82,7 +84,7 @@ class MatchingEditor extends AbstractEditor
 
         $this->renderTerms($config, $tpl);
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Matching/MatchingEditor.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Matching/Editor/MatchingEditor.js');
 
         return $tpl->get();
     }
