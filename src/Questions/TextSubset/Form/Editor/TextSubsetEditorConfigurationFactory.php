@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\TextSubset\Form\Editor;
 
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\TextSubset\Editor\Data\TextSubsetEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,24 +28,24 @@ class TextSubsetEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $requested_answers = new ilNumberInputGUI($this->language->txt('asq_label_requested_answers'), self::VAR_REQUESTED_ANSWERS);
-        $requested_answers->setRequired(true);
-        $requested_answers->setSize(2);
-        $fields[self::VAR_REQUESTED_ANSWERS] = $requested_answers;
+        $requested_answers = $this->factory->input()->field()->text($this->language->txt('asq_label_requested_answers'));
 
         if ($value !== null) {
-            $requested_answers->setValue($value->getNumberOfRequestedAnswers());
+            $requested_answers = $requested_answers->withValue(strval($value->getNumberOfRequestedAnswers()));
         }
+
+        $fields[self::VAR_REQUESTED_ANSWERS] = $requested_answers;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return TextSubsetEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return TextSubsetEditorConfiguration::create($this->readInt(self::VAR_REQUESTED_ANSWERS));
+        return TextSubsetEditorConfiguration::create($this->readInt($postdata[self::VAR_REQUESTED_ANSWERS]));
     }
 
     /**

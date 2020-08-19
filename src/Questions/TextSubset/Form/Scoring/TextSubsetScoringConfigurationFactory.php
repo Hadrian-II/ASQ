@@ -30,23 +30,25 @@ class TextSubsetScoringConfigurationFactory extends AbstractObjectFactory
         $fields = [];
 
         $text_scoring = new TextScoring($this->language);
-        $text_matching = $text_scoring->getScoringTypeSelectionField(self::VAR_TEXT_MATCHING);
-        $fields[self::VAR_TEXT_MATCHING] = $text_matching;
+        $text_matching = $text_scoring->getScoringTypeSelectionField($this->factory);
 
         if ($value !== null) {
-            $text_matching->setValue($value->getTextMatching());
+            $text_matching = $text_matching->withValue($value->getTextMatching());
         }
+
+        $fields[self::VAR_TEXT_MATCHING] = $text_matching;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return TextSubsetScoringConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return TextSubsetScoringConfiguration::create(
-            $this->readInt(self::VAR_TEXT_MATCHING)
+            $this->readInt($postdata[self::VAR_TEXT_MATCHING])
         );
     }
 

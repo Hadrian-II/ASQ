@@ -9,6 +9,7 @@ use srag\asq\Questions\TextSubset\Form\Editor\TextSubsetEditorConfigurationFacto
 use srag\asq\Questions\TextSubset\Form\Scoring\TextSubsetScoringConfigurationFactory;
 use srag\asq\Questions\TextSubset\Form\Scoring\TextSubsetScoringDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class TextSubsetFormFactory
@@ -21,13 +22,13 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class TextSubsetFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new TextSubsetEditorConfigurationFactory($language),
-            new TextSubsetScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new TextSubsetScoringDefinitionFactory($language)
+            new TextSubsetEditorConfigurationFactory($language, $ui),
+            new TextSubsetScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new TextSubsetScoringDefinitionFactory($language, $ui)
         );
     }
 }
