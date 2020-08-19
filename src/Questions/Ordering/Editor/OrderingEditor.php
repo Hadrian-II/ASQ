@@ -9,11 +9,11 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Ordering\OrderingAnswer;
 use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class OrderingEditor
@@ -24,7 +24,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class OrderingEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     /**
@@ -103,7 +103,7 @@ class OrderingEditor extends AbstractEditor
 
         $this->ui
             ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Ordering/OrderingEditor.js');
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Ordering/Editor/OrderingEditor.js');
 
         return $tpl->get();
     }
@@ -141,15 +141,13 @@ class OrderingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        $value = $this->readString($this->question->getId());
-
-        if (empty($value)) {
+        if (!$this->isPostVarSet($this->question->getId())) {
             return null;
         }
 
         return OrderingAnswer::create(array_map(function ($display_id) {
             return array_search($display_id, $this->display_ids);
-        }, explode(',', $value)));
+        }, explode(',', $this->getPostValue($this->question->getId()))));
     }
 
     /**

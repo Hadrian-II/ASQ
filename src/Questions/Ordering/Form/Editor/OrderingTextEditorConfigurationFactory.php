@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form\Editor;
 
-use ilTextAreaInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Ordering\Editor\Data\OrderingTextEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,22 +28,24 @@ class OrderingTextEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $text = new ilTextAreaInputGUI($this->language->txt('asq_ordering_text'), self::VAR_ORDERING_TEXT);
-        $fields[self::VAR_ORDERING_TEXT] = $text;
+        $text = $this->factory->input()->field()->text($this->language->txt('asq_ordering_text'));
 
         if ($value !== null) {
-            $text->setValue($value->getText());
+            $text = $text->withValue($value->getText() ?? '');
         }
+
+        $fields[self::VAR_ORDERING_TEXT] = $text;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return OrderingTextEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return OrderingTextEditorConfiguration::createNew($this->readString(SELF::VAR_ORDERING_TEXT));
+        return OrderingTextEditorConfiguration::createNew($this->readString($postdata[SELF::VAR_ORDERING_TEXT]));
     }
 
     /**

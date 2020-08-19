@@ -3,12 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
-use srag\asq\Questions\Generic\Data\ImageAndTextDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\Questions\Generic\Form\ImageAndTextDefinitionFactory;
 use srag\asq\Questions\Ordering\Form\Editor\OrderingEditorConfigurationFactory;
 use srag\asq\Questions\Ordering\Form\Scoring\OrderingScoringConfigurationFactory;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
@@ -22,13 +23,13 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class OrderingFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new OrderingEditorConfigurationFactory($language),
-            new OrderingScoringConfigurationFactory($language),
-            new ImageAndTextDefinitionFactory($language),
-            new EmptyDefinitionFactory($language)
+            new OrderingEditorConfigurationFactory($language, $ui),
+            new OrderingScoringConfigurationFactory($language, $ui),
+            new ImageAndTextDefinitionFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui)
         );
     }
 

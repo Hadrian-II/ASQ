@@ -45,6 +45,7 @@ use srag\asq\Questions\Ordering\Scoring\OrderingScoring;
 use srag\asq\Questions\TextSubset\Editor\TextSubsetEditor;
 use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
+use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
 
 /**
  * Class SetupDatabase
@@ -171,7 +172,7 @@ class SetupDatabase
 
         AsqGateway::get()->question()->addQuestionType(
             'asq_question_ordering_text',
-            OrderingFormFactory::class,
+            OrderingTextFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class
         );

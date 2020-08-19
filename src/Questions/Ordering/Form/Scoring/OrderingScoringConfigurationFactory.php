@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form\Scoring;
 
-use ilNumberInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -29,24 +28,25 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = new ilNumberInputGUI($this->language->txt('asq_label_points'), self::VAR_POINTS);
-        $points->setRequired(true);
-        $points->setSize(2);
-        $fields[self::VAR_POINTS] = $points;
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
+
 
         if ($value !== null) {
-            $points->setValue($value->getPoints());
+            $points = $points->withValue(strval($value->getPoints()));
         }
+
+        $fields[self::VAR_POINTS] = $points;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return OrderingScoringConfigurationFactory
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return OrderingScoringConfiguration::create($this->readFloat(self::VAR_POINTS));
+        return OrderingScoringConfiguration::create($this->readFloat($postdata[self::VAR_POINTS]));
     }
 
     /**

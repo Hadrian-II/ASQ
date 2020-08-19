@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form\Editor;
 
-use ilSelectInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -32,28 +31,32 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $is_vertical = new ilSelectInputGUI($this->language->txt('asq_label_is_vertical'), self::VAR_VERTICAL);
-        $is_vertical->setOptions([
-            self::VERTICAL => $this->language->txt('asq_label_vertical'),
-            self::HORICONTAL => $this->language->txt('asq_label_horicontal')
-        ]);
-        $fields[self::VAR_VERTICAL] = $is_vertical;
+        $is_vertical = $this->factory->input()->field()->select(
+            $this->language->txt('asq_label_is_vertical'),
+            [
+                self::VERTICAL => $this->language->txt('asq_label_vertical'),
+                self::HORICONTAL => $this->language->txt('asq_label_horicontal')
+            ]
+        );
 
         if ($value !== null) {
-            $is_vertical->setValue($value->isVertical() ? self::VERTICAL : self::HORICONTAL);
+            $is_vertical = $is_vertical->withValue($value->isVertical() ? self::VERTICAL : self::HORICONTAL);
         } else {
-            $is_vertical->setValue(self::VERTICAL);
+            $is_vertical = $is_vertical->withValue(self::VERTICAL);
         }
+
+        $fields[self::VAR_VERTICAL] = $is_vertical;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return OrderingEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return OrderingEditorConfiguration::create($this->readString(self::VAR_VERTICAL) === self::VERTICAL);
+        return OrderingEditorConfiguration::create($this->readString($postdata[self::VAR_VERTICAL]) === self::VERTICAL);
     }
 
     /**

@@ -3,16 +3,17 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
+use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
-use srag\asq\Questions\Generic\Form\ImageAndTextDisplayDefinition;
+use srag\asq\Questions\Ordering\Form\Editor\OrderingTextEditorConfigurationFactory;
 use srag\asq\Questions\Ordering\Form\Scoring\OrderingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use srag\asq\Questions\Ordering\Form\Editor\OrderingTextEditorConfigurationFactory;
 
 /**
  * Class OrderingFormFactory
@@ -25,13 +26,13 @@ use srag\asq\Questions\Ordering\Form\Editor\OrderingTextEditorConfigurationFacto
  */
 class OrderingTextFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new OrderingTextEditorConfigurationFactory($language),
-            new OrderingScoringConfigurationFactory($language),
-            new EmptyDefinitionFactory($language),
-            new EmptyDefinitionFactory($language)
+            new OrderingTextEditorConfigurationFactory($language, $ui),
+            new OrderingScoringConfigurationFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui),
+            new EmptyDefinitionFactory($language, $ui)
         );
     }
 
