@@ -3,12 +3,9 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\ImageMap;
 
-use ilRadioGroupInputGUI;
-use ilRadioOption;
-use ilTextInputGUI;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\AsqGateway;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
-use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
@@ -41,44 +38,59 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $mode = new ilRadioGroupInputGUI($this->language->txt('asq_label_mode'), self::VAR_MULTIPLE_CHOICE);
-        $mode->addOption(new ilRadioOption($this->language->txt('asq_label_single_choice'), self::STR_SINGLECHOICE));
-        $multi = new ilRadioOption($this->language->txt('asq_label_multiple_choice'), self::STR_MULTICHOICE);
-        $max_answers = new ilTextInputGUI($this->language->txt('asq_label_answering_limitation'), self::VAR_MAX_ANSWERS);
-        $max_answers->setInfo($this->language->txt('asq_info_answering_limitation'));
-        $multi->addSubItem($max_answers);
-        $mode->addOption($multi);
+        $max_answers = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_answering_limitation'),
+            $this->language->txt('asq_info_answering_limitation'));
 
-        $fields[self::VAR_MULTIPLE_CHOICE] = $mode;
+        if (! is_null($value)) {
+            $max_answers = $max_answers->withValue(strval($value->getMaxAnswers()));
+        }
 
-        $image = new AsqImageUpload($this->language->txt('asq_label_image'), self::VAR_IMAGE);
-        $image->setRequired(true);
-        $fields[self::VAR_IMAGE] = $image;
+        $mode = $this->factory->input()->field()->switchableGroup(
+            [
+                self::STR_SINGLECHOICE =>
+                $this->factory->input()->field()->group(
+                    [],
+                    $this->language->txt('asq_label_single_choice')),
+                self::STR_MULTICHOICE =>
+                $this->factory->input()->field()->group(
+                    [
+                        self::VAR_MAX_ANSWERS => $max_answers
+                    ],
+                    $this->language->txt('asq_label_multiple_choice')),
+            ],
+            $this->language->txt('asq_label_mode'));
 
-        $popup = new ImageFormPopup($this->language);
-        $fields[self::POPUP_FIELD] = $popup;
+        $image = AsqGateway::get()->ui()->getImageUpload($this->language->txt('asq_label_image'));
+
+        $popup = AsqGateway::get()->ui()->getImageFormPopup();
+
 
         if ($value !== null) {
-            $mode->setValue($value->isMultipleChoice() ? self::STR_MULTICHOICE : self::STR_SINGLECHOICE);
-            $image->setImagePath($value->getImage());
-            $popup->setValue($value->getImage());
-            $max_answers->setValue($value->getMaxAnswers());
+            $mode = $mode->withValue($value->isMultipleChoice() ? self::STR_MULTICHOICE : self::STR_SINGLECHOICE);
+            $image = $image->withValue(strval($value->getImage()));
+            $popup = $popup->withValue(strval($value->getImage()));
         }
+
+        $fields[self::VAR_MULTIPLE_CHOICE] = $mode;
+        $fields[self::VAR_IMAGE] = $image;
+        $fields[self::POPUP_FIELD] = $popup;
 
         return $fields;
     }
 
     /**
+     * @param $postdata array
      * @return ImageMapEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        $multiple_choice = $this->readString(self::VAR_MULTIPLE_CHOICE);
+        $multiple_choice = $this->readString($postdata[self::VAR_MULTIPLE_CHOICE][0]);
 
         return ImageMapEditorConfiguration::create(
-            $this->readImage(self::VAR_IMAGE),
+            $postdata[self::VAR_IMAGE],
             $multiple_choice === self::STR_MULTICHOICE,
-            $multiple_choice === self::STR_MULTICHOICE ? $this->readInt(self::VAR_MAX_ANSWERS) : 1
+            $multiple_choice === self::STR_MULTICHOICE ? $this->readInt($postdata[self::VAR_MULTIPLE_CHOICE][1][self::VAR_MAX_ANSWERS]) : 1
         );
     }
 

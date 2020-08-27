@@ -1,0 +1,20 @@
+<!-- BEGIN image_upload -->
+<div style="width: 333px;">
+	<div style="margin-bottom:3px">
+	    <input type="file" id="{NAME}" name="{NAME}" {DISABLED}/>
+	    <div class="help-block">.jpg, .png</div>
+	</div>
+	<input type="hidden" name="{NAME}" value="{VALUE}" />
+	
+	<!--  BEGIN has_image -->
+	<img class="image_preview" style="margin: 5px 0px 5px 0px; max-width: 333px;" src="{VALUE}" border="0" /><br />
+	<div class="checkbox">
+    <label>
+        <input type="checkbox"
+               name="{NAME}_delete"
+               id="{NAME}_delete"
+               value="1" />{TXT_DELETE}</label>
+   </div>
+   <!-- END has_image -->
+</div>
+<!-- END image_upload -->

@@ -12,6 +12,8 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition
 use ILIAS\Data\Factory as DataFactory;
 use ILIAS\Refinery\Factory;
 use srag\asq\UserInterface\Web\Fields\DurationInput\DurationInput;
+use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup;
+use srag\asq\UserInterface\Web\Fields\AsqImageUpload\AsqImageUpload;
 
 /**
  * Class UIService
@@ -101,6 +103,40 @@ class UIService
             $refinery,
             $label,
             $byline);
+    }
+
+    /**
+     * @return AsqImageUpload
+     */
+    public function getImageUpload(string $label) : AsqImageUpload
+    {
+        global $DIC;
+
+        $data_factory = new DataFactory();
+        $refinery = new Factory($data_factory, $DIC->language());
+
+        return new AsqImageUpload(
+            $data_factory,
+            $refinery,
+            $label,
+            null);
+    }
+
+    /**
+     * @return ImageFormPopup
+     */
+    public function getImageFormPopup() : ImageFormPopup
+    {
+        global $DIC;
+
+        $data_factory = new DataFactory();
+        $refinery = new Factory($data_factory, $DIC->language());
+
+        return new ImageFormPopup(
+            $data_factory,
+            $refinery,
+            '',
+            null);
     }
 
     /**

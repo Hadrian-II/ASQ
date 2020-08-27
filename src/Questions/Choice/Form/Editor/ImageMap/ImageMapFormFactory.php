@@ -8,6 +8,7 @@ use srag\asq\PathHelper;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFactory;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use ILIAS\DI\UIServices;
 
 /**
  * Class ImageMapFormFactory
@@ -22,13 +23,13 @@ class ImageMapFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language)
+    public function __construct(ilLanguage $language, UIServices $ui)
     {
         parent::__construct(
-            new ImageMapEditorConfigurationFactory($language),
-            new MultipleChoiceScoringConfigurationFactory($language),
-            new ImageMapEditorDefinitionFactory($language),
-            new MultipleChoiceScoringDefinitionFactory($language)
+            new ImageMapEditorConfigurationFactory($language, $ui),
+            new MultipleChoiceScoringConfigurationFactory($language, $ui),
+            new ImageMapEditorDefinitionFactory($language, $ui),
+            new MultipleChoiceScoringDefinitionFactory($language, $ui)
         );
     }
 
@@ -37,6 +38,6 @@ class ImageMapFormFactory extends QuestionFormFactory
      */
     public function getScripts() : array
     {
-        return [ $this->getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapAuthoring.js' ];
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/Choice/Form/Editor/ImageMap/ImageMapAuthoring.js' ];
     }
 }

@@ -14,8 +14,8 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorDefinition;
+use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class ImageMapEditor
@@ -26,7 +26,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class ImageMapEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
     use PathHelper;
 
     /**
@@ -78,7 +78,7 @@ class ImageMapEditor extends AbstractEditor
 
         $this->ui
             ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ImageMap/ImageMapEditor.js');
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/ImageMap/ImageMapEditor.js');
 
         return $tpl->get();
     }
@@ -210,13 +210,13 @@ class ImageMapEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        $value = $this->readString($this->getPostName());
+        $post_name = $this->getPostName();
 
-        if (empty($value)) {
+        if (! $this->isPostVarSet($post_name)) {
             return null;
         }
 
-        return MultipleChoiceAnswer::create(explode(',', $value));
+        return MultipleChoiceAnswer::create(explode(',', $this->getPostValue($post_name)));
     }
 
     /**

@@ -370,6 +370,11 @@
     function updatePreview() {
         if ($previewCanvas == null) {
             initializePreview();
+            
+            // no image set yet
+            if ($previewCanvas == null) {
+                return;
+            }
         }
 
         const g = $previewCanvas[0].getContext('2d');
