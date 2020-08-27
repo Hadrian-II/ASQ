@@ -241,11 +241,9 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateImageField(string $post_var, $value) : string
     {
-        $field = new AsqImageUpload('', $post_var);
+        //TODO reimplement imagefield for kitchen sink
 
-        $field->setImagePath($value);
-
-        return $field->render();
+        return 'TODO';
     }
 
     /**

@@ -5,7 +5,7 @@ namespace srag\asq\UserInterface\Web\Component\Editor;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Definitions\IAsqQuestionEditor;
 
 /**
  * Abstract Class AbstractEditor
@@ -16,10 +16,8 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AbstractEditor
+abstract class AbstractEditor implements IAsqQuestionEditor
 {
-    const EDITOR_DEFINITION_SUFFIX = 'DisplayDefinition';
-
     /**
      * @var QuestionDto
      */
@@ -55,30 +53,10 @@ abstract class AbstractEditor
     }
 
     /**
-     * @return string
-     */
-    abstract public function generateHtml() : string;
-
-    /**
-     * @return Answer
-     */
-    abstract public function readAnswer() : ?AbstractValueObject;
-
-    /**
      * @param AbstractValueObject $answer
      */
     public function setAnswer(?AbstractValueObject $answer) : void
     {
         $this->answer = $answer;
-    }
-
-    abstract public function isComplete() : bool;
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return get_called_class() . self::EDITOR_DEFINITION_SUFFIX;
     }
 }

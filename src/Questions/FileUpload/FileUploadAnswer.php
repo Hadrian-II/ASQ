@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\FileUpload;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class FileUploadAnswer
@@ -14,20 +14,20 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FileUploadAnswer extends Answer
+class FileUploadAnswer extends AbstractValueObject
 {
     /**
      * @var ?string[]
      */
     protected $files;
-    
+
     public static function create(?array $files = [])
     {
         $object = new FileUploadAnswer();
         $object->files = $files;
         return $object;
     }
-    
+
     public function getFiles() : ?array
     {
         return $this->files;

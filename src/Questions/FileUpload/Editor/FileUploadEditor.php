@@ -13,7 +13,6 @@ use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Questions\FileUpload\FileUploadAnswer;
 use srag\asq\Questions\FileUpload\Editor\Data\FileUploadEditorConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -51,6 +50,9 @@ class FileUploadEditor extends AbstractEditor
      */
     private $configuration;
 
+    /**
+     * @param QuestionDto $question
+     */
     public function __construct(QuestionDto $question)
     {
         global $DIC;
@@ -63,6 +65,10 @@ class FileUploadEditor extends AbstractEditor
         parent::__construct($question);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
+     */
     public function readAnswer() : ?AbstractValueObject
     {
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
@@ -135,6 +141,10 @@ class FileUploadEditor extends AbstractEditor
                in_array($extension, explode(',', $this->configuration->getAllowedExtensions()));
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::generateHtml()
+     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
@@ -187,21 +197,27 @@ class FileUploadEditor extends AbstractEditor
         return $tpl->get();
     }
 
+    /**
+     * @return string
+     */
     private function getPostVar() : string
     {
         return $this->question->getId();
     }
 
-    private function getFileKey(string $filename)
+    /**
+     * @param string $filename
+     * @return string
+     */
+    private function getFileKey(string $filename) : string
     {
         return $this->getPostVar() . str_replace('.', '', $filename);
     }
 
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
-    }
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::isComplete()
+     */
     public function isComplete() : bool
     {
         return true;

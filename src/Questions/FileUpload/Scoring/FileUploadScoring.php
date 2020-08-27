@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\FileUpload\Scoring;
 
-use Exception;
+use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\FileUpload\Scoring\Data\FileUploadScoringConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 
 /**
  * Class FileUploadScoring
@@ -36,7 +35,11 @@ class FileUploadScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    public function score(Answer $answer) : float
+    /**
+     * @param AbstractValueObject $answer
+     * @return float
+     */
+    public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
 
@@ -49,27 +52,27 @@ class FileUploadScoring extends AbstractScoring
         return $reached_points;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         return $this->configuration->getPoints();
     }
 
     /**
-     * Implementation of best answer for upload not possible
+     * @throws AsqException
+     * @return AbstractValueObject
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
-        throw new Exception("Best Answer for File Upload Impossible");
+        throw new AsqException("Best Answer for File Upload Impossible");
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public static function getScoringDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
-    }
-
     public function isComplete() : bool
     {
         // file upload can roll with all values

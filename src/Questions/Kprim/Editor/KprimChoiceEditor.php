@@ -41,6 +41,9 @@ class KprimChoiceEditor extends AbstractEditor
      */
     private $configuration;
 
+    /**
+     * @param QuestionDto $question
+     */
     public function __construct(QuestionDto $question)
     {
         $this->answer_options = $question->getAnswerOptions()->getOptions();
@@ -166,14 +169,6 @@ class KprimChoiceEditor extends AbstractEditor
     private function getPostName(string $id) : string
     {
         return $this->question->getId() . $id;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return ImageAndTextDisplayDefinition::class;
     }
 
     /**

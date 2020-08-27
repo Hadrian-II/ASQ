@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model\Scoring;
 
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\asq\Domain\Definitions\IAsqQuestionScoring;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Abstract Class AbstractScoring
@@ -15,14 +16,8 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AbstractScoring
+abstract class AbstractScoring implements IAsqQuestionScoring
 {
-    const ANSWER_CORRECT = 1;
-    const ANSWER_INCORRECT = 2;
-    const ANSWER_CORRECTNESS_NOT_DETERMINABLLE = 3;
-
-    const SCORING_DEFINITION_SUFFIX = 'Definition';
-
     /**
      * @var QuestionDto
      */
@@ -48,23 +43,6 @@ abstract class AbstractScoring
     {
         $this->question = $question;
     }
-
-    /**
-     * @return string
-     */
-    public static function getScoringDefinitionClass() : string
-    {
-        return get_called_class() . self::SCORING_DEFINITION_SUFFIX;
-    }
-
-
-    abstract public function isComplete() : bool;
-
-    /**
-     * @param Answer $answer
-     * @return float
-     */
-    abstract public function score(Answer $answer) : float;
 
     /**
      * @return float
@@ -118,21 +96,17 @@ abstract class AbstractScoring
     }
 
     /**
-     * @param float $reached_points
-     * @param float $max_points
-     *
+     * @param AbstractValueObject $answer
      * @return int
      */
-    public function getAnswerFeedbackType(float $reached_points) : int
+    public function getAnswerFeedbackType(AbstractValueObject $answer) : int
     {
         if ($this->getMaxScore() < PHP_FLOAT_EPSILON) {
             return self::ANSWER_CORRECTNESS_NOT_DETERMINABLLE;
-        } elseif (abs($reached_points - $this->getMaxScore()) < PHP_FLOAT_EPSILON) {
+        } elseif (abs($this->score($answer) - $this->getMaxScore()) < PHP_FLOAT_EPSILON) {
             return self::ANSWER_CORRECT;
         } else {
             return self::ANSWER_INCORRECT;
         }
     }
-
-    abstract public function getBestAnswer() : Answer;
 }

@@ -185,12 +185,4 @@ class ClozeEditor extends AbstractEditor
 
         return true;
     }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
-    }
 }

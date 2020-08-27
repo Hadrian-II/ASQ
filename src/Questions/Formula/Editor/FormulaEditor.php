@@ -8,7 +8,6 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Questions\Formula\FormulaAnswer;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -180,14 +179,6 @@ class FormulaEditor extends AbstractEditor
     private function getUnitPostVariableName(string $name) : string
     {
         return $name . $this->question->getId() . self::VAR_UNIT;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

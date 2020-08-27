@@ -6,10 +6,10 @@ namespace srag\asq\UserInterface\Web\Component;
 use ILIAS\DI\UIServices;
 use ilLanguage;
 use ilTemplate;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
+use srag\asq\Domain\Definitions\IAsqQuestionEditor;
 use srag\asq\UserInterface\Web\Component\Feedback\FeedbackComponent;
 use srag\asq\UserInterface\Web\Component\Presenter\AbstractPresenter;
 use srag\asq\UserInterface\Web\Component\Presenter\DefaultPresenter;
@@ -36,7 +36,7 @@ class QuestionComponent
      */
     private $presenter;
     /**
-     * @var AbstractEditor
+     * @var IAsqQuestionEditor
      */
     private $editor;
     /**
@@ -69,12 +69,19 @@ class QuestionComponent
         $this->editor = $editor;
     }
 
-    public function setRenderFeedback(bool $show_feedback)
+    /**
+     * @param bool $show_feedback
+     */
+    public function setRenderFeedback(bool $show_feedback) : void
     {
         $this->show_feedback = $show_feedback;
         $this->editor->setRenderFeedback($show_feedback);
     }
 
+    /**
+     * @param bool $show_feedback
+     * @return string
+     */
     public function renderHtml(bool $show_feedback = false) : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
@@ -94,13 +101,18 @@ class QuestionComponent
     }
 
 
-    public function readAnswer()
+    /**
+     * @return ?AbstractValueObject
+     */
+    public function readAnswer() : ?AbstractValueObject
     {
         return $this->editor->readAnswer();
     }
 
-
-    public function setAnswer(Answer $answer)
+    /**
+     * @param AbstractValueObject $answer
+     */
+    public function setAnswer(AbstractValueObject $answer) : void
     {
         $this->editor->setAnswer($answer);
     }

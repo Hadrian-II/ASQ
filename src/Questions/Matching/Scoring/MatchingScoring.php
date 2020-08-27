@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Matching\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Matching\MatchingAnswer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class MultipleChoiceScoring
@@ -23,7 +22,7 @@ class MatchingScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $matches = [];
         $wrong_deduction = $this->question->getPlayConfiguration()->getScoringConfiguration()->getWrongDeduction();
@@ -50,7 +49,7 @@ class MatchingScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         $matches = [];
 
@@ -74,14 +73,6 @@ class MatchingScoring extends AbstractScoring
         };
 
         return $max_score;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getScoringDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

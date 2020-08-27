@@ -151,14 +151,6 @@ class OrderingEditor extends AbstractEditor
     }
 
     /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return ImageAndTextDisplayDefinition::class;
-    }
-
-    /**
      * @return bool
      */
     public function isComplete() : bool

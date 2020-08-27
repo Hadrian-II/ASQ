@@ -7,8 +7,6 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Numeric\NumericAnswer;
 use srag\asq\Questions\Numeric\Editor\Data\NumericEditorConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;
@@ -64,19 +62,12 @@ class NumericEditor extends AbstractEditor
     }
 
     /**
-     * @return Answer
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
      */
     public function readAnswer() : AbstractValueObject
     {
         return NumericAnswer::create(floatval($this->getPostValue($this->question->getId())));
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

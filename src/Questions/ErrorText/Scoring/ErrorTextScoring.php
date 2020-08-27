@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\ErrorText\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\ErrorText\ErrorTextAnswer;
 use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;
@@ -22,7 +22,7 @@ class ErrorTextScoring extends AbstractScoring
      * {@inheritdoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0.0;
 
@@ -88,7 +88,7 @@ class ErrorTextScoring extends AbstractScoring
      * {@inheritdoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         $selected_word_indexes = [];
 

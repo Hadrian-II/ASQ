@@ -9,7 +9,6 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
@@ -206,7 +205,8 @@ class ImageMapEditor extends AbstractEditor
     }
 
     /**
-     * @return Answer
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
      */
     public function readAnswer() : ?AbstractValueObject
     {

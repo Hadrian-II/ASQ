@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Kprim\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Kprim\KprimChoiceAnswer;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringConfiguration;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringDefinition;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class KprimChoiceScoring
@@ -25,7 +25,7 @@ class KprimChoiceScoring extends AbstractScoring
      * @param KprimChoiceAnswer $answer
      * @return float
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $count = 0;
         foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
@@ -53,12 +53,20 @@ class KprimChoiceScoring extends AbstractScoring
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
-    public function getBestAnswer() : Answer
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::getBestAnswer()
+     */
+    public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
 

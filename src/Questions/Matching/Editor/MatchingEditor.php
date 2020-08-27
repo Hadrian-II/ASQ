@@ -8,7 +8,6 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Matching\MatchingAnswer;
 use srag\asq\Questions\Matching\Editor\Data\MatchingEditorConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;
@@ -135,14 +134,6 @@ class MatchingEditor extends AbstractEditor
             $tpl->setVariable('ID_DROPAREA', $definition->getId());
             $tpl->parseCurrentBlock();
         }
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

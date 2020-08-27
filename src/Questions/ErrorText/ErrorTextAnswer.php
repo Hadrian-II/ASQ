@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\ErrorText;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class ErrorTextEditor
@@ -14,7 +14,7 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ErrorTextAnswer extends Answer
+class ErrorTextAnswer extends AbstractValueObject
 {
     /**
      * @var int[]

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class FormulaAnswer
@@ -14,7 +14,7 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class FormulaAnswer extends Answer
+class FormulaAnswer extends AbstractValueObject
 {
     /**
      * @var ?array

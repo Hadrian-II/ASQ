@@ -7,7 +7,6 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\TextSubset\TextSubsetAnswer;
 use srag\asq\Questions\TextSubset\Editor\Data\TextSubsetEditorConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;
@@ -101,14 +100,6 @@ class TextSubsetEditor extends AbstractEditor
         }
 
         return TextSubsetAnswer::create($answer);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

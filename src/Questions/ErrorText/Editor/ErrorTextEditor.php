@@ -8,10 +8,8 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Questions\ErrorText\ErrorTextAnswer;
 use srag\asq\Questions\ErrorText\Editor\Data\ErrorTextEditorConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\PostAccess;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
@@ -105,7 +103,8 @@ class ErrorTextEditor extends AbstractEditor
     }
 
     /**
-     * @return Answer
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
      */
     public function readAnswer() : AbstractValueObject
     {
@@ -122,14 +121,6 @@ class ErrorTextEditor extends AbstractEditor
         } else {
             return ErrorTextAnswer::create();
         }
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

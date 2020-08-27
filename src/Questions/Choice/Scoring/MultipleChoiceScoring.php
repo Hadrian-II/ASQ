@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Choice\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class MultipleChoiceScoring
@@ -20,7 +20,11 @@ use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
  */
 class MultipleChoiceScoring extends AbstractScoring
 {
-    public function score(Answer $answer) : float
+    /**
+     * @param AbstractValueObject $answer
+     * @return float
+     */
+    public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
 
@@ -37,12 +41,19 @@ class MultipleChoiceScoring extends AbstractScoring
         return $reached_points;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
+     */
     protected function calculateMaxScore() : float
     {
         return $this->score($this->getBestAnswer());
     }
 
-    public function getBestAnswer() : Answer
+    /**
+     * @return AbstractValueObject
+     */
+    public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
 
@@ -65,6 +76,10 @@ class MultipleChoiceScoring extends AbstractScoring
         return MultipleChoiceAnswer::create($answers);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMinScore()
+     */
     protected function calculateMinScore() : float
     {
         $min = 0.0;

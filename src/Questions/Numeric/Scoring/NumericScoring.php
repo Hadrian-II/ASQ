@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Numeric\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Numeric\NumericAnswer;
 use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class NumericScoring
@@ -24,7 +23,7 @@ class NumericScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
 
@@ -55,20 +54,12 @@ class NumericScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         /** @var NumericScoringConfiguration $conf */
         $conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
         return NumericAnswer::create(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getScoringDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

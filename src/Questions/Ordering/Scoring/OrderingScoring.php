@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering\Scoring;
 
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Ordering\OrderingAnswer;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class OrderingScoring
@@ -24,7 +23,7 @@ class OrderingScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0.0;
 
@@ -61,7 +60,7 @@ class OrderingScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
 
@@ -70,14 +69,6 @@ class OrderingScoring extends AbstractScoring
         }
 
         return OrderingAnswer::create($answers);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getScoringDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

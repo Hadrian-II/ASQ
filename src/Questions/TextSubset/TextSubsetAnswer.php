@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\TextSubset;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class TextSubsetAnswer
@@ -11,7 +11,7 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class TextSubsetAnswer extends Answer
+class TextSubsetAnswer extends AbstractValueObject
 {
 
     /**

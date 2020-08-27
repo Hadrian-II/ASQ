@@ -7,8 +7,8 @@ use ilLanguage;
 use ilTemplate;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class ScoringComponent
@@ -24,7 +24,7 @@ class ScoringComponent
     use PathHelper;
 
     /**
-     * @var Answer
+     * @var AbstractValueObject
      */
     private $answer;
 
@@ -41,10 +41,10 @@ class ScoringComponent
 
     /**
      * @param QuestionDto $question_dto
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @param ilLanguage $language
      */
-    public function __construct(QuestionDto $question_dto, Answer $answer, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer, ilLanguage $language)
     {
         $this->language = $language;
 

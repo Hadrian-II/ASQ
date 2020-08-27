@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace srag\asq\Questions\TextSubset\Scoring;
 
 use srag\asq\Application\Exception\AsqException;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\TextSubset\TextSubsetAnswer;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringConfiguration;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class TextSubsetScoring
@@ -24,7 +24,7 @@ class TextSubsetScoring extends AbstractScoring
 {
 
     /**
-     * @var Answer
+     * @var AbstractValueObject
      */
     protected $answer;
 
@@ -32,7 +32,7 @@ class TextSubsetScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         $this->answer = $answer;
 
@@ -63,7 +63,7 @@ class TextSubsetScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
 

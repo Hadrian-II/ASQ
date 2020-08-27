@@ -5,13 +5,13 @@ namespace srag\asq\Questions\Essay\Scoring;
 
 use Exception;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Essay\EssayAnswer;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringConfiguration;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringDefinition;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringProcessedAnswerOption;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class EssayScoring
@@ -58,7 +58,7 @@ class EssayScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
      */
-    public function score(Answer $answer) : float
+    public function score(AbstractValueObject $answer) : float
     {
         if ($this->configuration->getScoringMode() === self::SCORING_MANUAL) {
             // TODO handle manual scoring
@@ -194,7 +194,7 @@ class EssayScoring extends AbstractScoring
      * {@inheritDoc}
      * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
      */
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         $text = implode(' ', array_map(function ($option) {
             return $option->getScoringDefinition()->getText();

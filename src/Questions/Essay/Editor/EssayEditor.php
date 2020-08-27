@@ -8,12 +8,10 @@ use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Questions\Essay\EssayAnswer;
 use srag\asq\Questions\Essay\Editor\Data\EssayEditorConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
-use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 use srag\asq\UserInterface\Web\PostAccess;
+use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 
 /**
  * Class EssayEditor
@@ -93,19 +91,12 @@ class EssayEditor extends AbstractEditor
     }
 
     /**
-     * @return Answer
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
      */
     public function readAnswer() : AbstractValueObject
     {
         return EssayAnswer::create($this->getPostValue($this->question->getId()));
-    }
-
-    /**
-     * @return string
-     */
-    public static function getDisplayDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
     }
 
     /**

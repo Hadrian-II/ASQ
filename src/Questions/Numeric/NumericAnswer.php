@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\Numeric;
 
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class NumericAnswer
@@ -11,7 +11,7 @@ use srag\asq\Domain\Model\Answer\Answer;
  * @package srag/asq
  * @author Adrian Lüthi <al@studer-raimann.ch>
  */
-class NumericAnswer extends Answer
+class NumericAnswer extends AbstractValueObject
 {
 
     /**

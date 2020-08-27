@@ -143,12 +143,4 @@ class ClozeScoring extends AbstractScoring
     {
         return true;
     }
-
-    /**
-     * @return string
-     */
-    public static function getScoringDefinitionClass() : string
-    {
-        return EmptyDefinition::class;
-    }
 }

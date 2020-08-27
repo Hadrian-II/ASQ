@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Feedback;
 
 use ilTemplate;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 
 /**
@@ -30,7 +30,7 @@ class AnswerFeedbackComponent
      */
     private $question;
     /**
-     * @var Answer
+     * @var AbstractValueObject
      */
     private $answer;
     /**
@@ -40,9 +40,9 @@ class AnswerFeedbackComponent
 
     /**
      * @param QuestionDto $question
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      */
-    public function __construct(QuestionDto $question, Answer $answer)
+    public function __construct(QuestionDto $question, AbstractValueObject $answer)
     {
         $this->question = $question;
         $this->answer = $answer;
@@ -62,10 +62,10 @@ class AnswerFeedbackComponent
 
         $tpl->setCurrentBlock('answer_feedback');
 
-        if ($this->scoring->getAnswerFeedbackType($this->scoring->score($this->answer)) === AbstractScoring::ANSWER_CORRECT) {
+        if ($this->scoring->getAnswerFeedbackType($this->answer) === AbstractScoring::ANSWER_CORRECT) {
             $answer_feedback = $this->question->getFeedback()->getAnswerCorrectFeedback();
             $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_CORRECT;
-        } elseif ($this->scoring->getAnswerFeedbackType($this->scoring->score($this->answer)) === AbstractScoring::ANSWER_INCORRECT) {
+        } elseif ($this->scoring->getAnswerFeedbackType($this->answer) === AbstractScoring::ANSWER_INCORRECT) {
             $answer_feedback = $this->question->getFeedback()->getAnswerWrongFeedback();
             $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_WRONG;
         }
