@@ -7,7 +7,6 @@ use ilLanguage;
 use ilTemplate;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 use srag\CQRS\Aggregate\AbstractValueObject;
 
@@ -82,7 +81,7 @@ class FeedbackComponent
     }
 
 
-    public function setAnswer(Answer $answer)
+    public function setAnswer(AbstractValueObject $answer)
     {
         $this->editor->setAnswer($answer->getValue());
     }
