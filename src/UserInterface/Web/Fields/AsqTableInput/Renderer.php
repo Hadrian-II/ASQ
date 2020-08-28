@@ -12,7 +12,6 @@ use ilRadioOption;
 use ilSelectInputGUI;
 use ilTemplate;
 use srag\asq\PathHelper;
-use srag\asq\UserInterface\Web\Fields\AsqImageUpload;
 
 /**
  * Class Renderer

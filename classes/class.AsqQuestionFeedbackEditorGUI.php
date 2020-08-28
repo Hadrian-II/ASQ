@@ -75,8 +75,7 @@ class AsqQuestionFeedbackEditorGUI
     {
         $form = $this->createForm();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
-            $form->checkInput()) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $new_feedback = $form->getFeedbackFromPost();
             $this->question_dto->setFeedback($new_feedback);
             AsqGateway::get()->question()->saveQuestion($this->question_dto);
@@ -98,10 +97,8 @@ class AsqQuestionFeedbackEditorGUI
      */
     private function createForm() : QuestionFeedbackFormGUI
     {
-        $form = new QuestionFeedbackFormGUI($this->question_dto, $this->language);
-        $form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SHOW_FEEDBACK_FORM));
-        $form->addCommandButton(self::CMD_SAVE_FEEDBACK, $this->language->txt('save'));
-        $form->addCommandButton(self::CMD_SHOW_FEEDBACK_FORM, $this->language->txt('cancel'));
-        return $form;
+        return AsqGateway::get()->ui()->getQuestionFeedbackForm(
+            $this->question_dto,
+            $this->ctrl->getFormAction($this, self::CMD_SAVE_FEEDBACK));
     }
 }

@@ -14,6 +14,7 @@ use ILIAS\Refinery\Factory;
 use srag\asq\UserInterface\Web\Fields\DurationInput\DurationInput;
 use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload\AsqImageUpload;
+use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 
 /**
  * Class UIService
@@ -56,6 +57,26 @@ class UIService
         global $DIC;
 
         return new QuestionFormGUI(
+            $question,
+            $action,
+            $DIC->language(),
+            $DIC->ui(),
+            $DIC->http()->request()
+        );
+    }
+
+    /**
+     * Gets the question feedback form for a question
+     *
+     * @param QuestionDto $question
+     * @param string $action
+     * @return QuestionFeedbackFormGUI
+     */
+    public function getQuestionFeedbackForm(QuestionDto $question, string $action) : QuestionFeedbackFormGUI
+    {
+        global $DIC;
+
+        return new QuestionFeedbackFormGUI(
             $question,
             $action,
             $DIC->language(),

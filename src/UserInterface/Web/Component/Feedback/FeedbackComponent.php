@@ -9,6 +9,7 @@ use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class FeedbackComponent
@@ -42,10 +43,10 @@ class FeedbackComponent
 
     /**
      * @param QuestionDto $question_dto
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @param ilLanguage $language
      */
-    public function __construct(QuestionDto $question_dto, Answer $answer, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer, ilLanguage $language)
     {
         $this->scoring_component = new ScoringComponent($question_dto, $answer, $language);
         $this->answer_feedback_component = new AnswerFeedbackComponent($question_dto, $answer);

@@ -3,15 +3,13 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Feedback\Form;
 
-use ilFormSectionHeaderGUI;
+use ILIAS\DI\UIServices;
+use ILIAS\UI\Component\Input\Container\Form\Standard;
+use Psr\Http\Message\RequestInterface;
 use ilLanguage;
-use ilObjAdvancedEditing;
-use ilRadioGroupInputGUI;
-use ilRadioOption;
-use ilTextAreaInputGUI;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Feedback;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
@@ -23,14 +21,20 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
+class QuestionFeedbackFormGUI
 {
     use InputHandlingTrait;
 
     const VAR_ANSWER_FEEDBACK_CORRECT = 'answer_feedback_correct';
     const VAR_ANSWER_FEEDBACK_WRONG = 'answer_feedback_wrong';
+    const VAR_ANSWER_OPTION_FEEDBACK = 'answer_option_feedback';
     const VAR_ANSWER_OPTION_FEEDBACK_MODE = 'answer_option_feedback_mode';
     const VAR_FEEDBACK_FOR_ANSWER = "feedback_for_answer";
+
+    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
+    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
+    // Add some string to value to prevent autocast
+    const USELESS_PREFIX = 'x';
 
     /**
      * @var QuestionDto
@@ -48,75 +52,105 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
     private $language;
 
     /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
+     * @var Standard
+     */
+    private $form;
+
+    /**
      * @param QuestionDto $question_dto
      * @param ilLanguage $language
      */
-    public function __construct(QuestionDto $question_dto, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
     {
         $this->language = $language;
-
-        parent::__construct();
+        $this->ui = $ui;
+        $this->request = $request;
 
         $this->question_dto = $question_dto;
         $this->feedback = $question_dto->getFeedback();
 
-        $this->setTitle($this->language->txt('asq_feedback_form_title'));
-
-        $this->initForm();
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->setValuesByPost();
-        }
+        $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->generateFormFields());
     }
 
-    protected function initForm() : void
+    /**
+     * @return array
+     */
+    protected function generateFormFields() : array
     {
-        $feedback_correct = new ilTextAreaInputGUI($this->language->txt('asq_input_feedback_correct'), self::VAR_ANSWER_FEEDBACK_CORRECT);
-        $feedback_correct->setUseRte(true);
-        $feedback_correct->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
-        $this->addItem($feedback_correct);
+        $fields = [];
 
-        $feedback_wrong = new ilTextAreaInputGUI($this->language->txt('asq_input_feedback_wrong'), self::VAR_ANSWER_FEEDBACK_WRONG);
-        $feedback_wrong->setUseRte(true);
-        $feedback_wrong->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
-        $this->addItem($feedback_wrong);
+        $feedback_correct = $this->ui->factory()->input()->field()->textarea($this->language->txt('asq_input_feedback_correct'));
 
-
+        $feedback_wrong = $this->ui->factory()->input()->field()->textarea($this->language->txt('asq_input_feedback_wrong'));
 
         if (!is_null($this->feedback)) {
-            $feedback_correct->setValue($this->feedback->getAnswerCorrectFeedback());
-            $feedback_wrong->setValue($this->feedback->getAnswerWrongFeedback());
+            $feedback_correct = $feedback_correct->withValue($this->feedback->getAnswerCorrectFeedback());
+            $feedback_wrong = $feedback_wrong->withValue($this->feedback->getAnswerWrongFeedback());
         }
 
-        if ($this->question_dto->hasAnswerOptions()) {
-            $header = new ilFormSectionHeaderGUI();
-            $header->setTitle($this->language->txt('asq_header_feedback_answers'));
-            $this->addItem($header);
+        $fields[self::VAR_ANSWER_FEEDBACK_CORRECT] = $feedback_correct;
+        $fields[self::VAR_ANSWER_FEEDBACK_WRONG] = $feedback_wrong;
 
-            $feedback_setting = new ilRadioGroupInputGUI($this->language->txt('asq_label_feedback_setting'), self::VAR_ANSWER_OPTION_FEEDBACK_MODE);
-            $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_all'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL));
-            $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_checked'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED));
-            $feedback_setting->addOption(new ilRadioOption($this->language->txt('asq_option_feedback_correct'), Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT));
-            $feedback_setting->setRequired(true);
-            $this->addItem($feedback_setting);
+
+        if ($this->question_dto->hasAnswerOptions())
+        {
+            $feedback_setting =
+                $this->ui->factory()->input()->field()->radio($this->language->txt('asq_label_feedback_setting'))
+                    ->withOption(
+                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL),
+                        $this->language->txt('asq_option_feedback_all'))
+                    ->withOption(
+                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED),
+                        $this->language->txt('asq_option_feedback_checked'))
+                    ->withOption(
+                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT),
+                        $this->language->txt('asq_option_feedback_correct'));
 
             if (!is_null($this->feedback)) {
-                $feedback_setting->setValue($this->feedback->getAnswerOptionFeedbackMode());
+                $feedback_setting = $feedback_setting->withValue(self::USELESS_PREFIX . strval($this->feedback->getAnswerOptionFeedbackMode()));
             }
 
+            $fields[self::VAR_ANSWER_OPTION_FEEDBACK_MODE] = $feedback_setting;
+
+            $answer_fields = [];
             foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
                 /** @var AnswerOption $answer_option */
-                $field = new ilTextAreaInputGUI($answer_option->getOptionId(), $this->getPostKey($answer_option));
-                $field->setUseRte(true);
-                $field->setRteTags(ilObjAdvancedEditing::_getUsedHTMLTags("assessment"));
+                $field = $this->ui->factory()->input()->field()->textarea($answer_option->getOptionId());
 
                 if (!is_null($this->feedback) && $this->feedback->hasAnswerOptionFeedback(($answer_option->getOptionId()))) {
-                    $field->setValue($this->feedback->getFeedbackForAnswerOption($answer_option->getOptionId()));
+                    $field = $field->withValue($this->feedback->getFeedbackForAnswerOption($answer_option->getOptionId()));
                 }
 
-                $this->addItem($field);
+                $answer_fields[$this->getPostKey($answer_option)] = $field;
             }
+
+            $section = $this->ui->factory()->input()->field()->section($answer_fields, $this->language->txt('asq_header_feedback_answers'));
+            $fields[self::VAR_ANSWER_OPTION_FEEDBACK] = $section;
         }
+
+        return $fields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHTML() : string
+    {
+        $panel = $this->ui->factory()->panel()->standard(
+            $this->language->txt('asq_feedback_form_title'),
+            $this->form);
+
+        return $this->ui->renderer()->render($panel);
     }
 
     /**
@@ -124,17 +158,19 @@ class QuestionFeedbackFormGUI extends \ilPropertyFormGUI
      */
     public function getFeedbackFromPost() : Feedback
     {
-        $feedback_correct = $this->readString(self::VAR_ANSWER_FEEDBACK_CORRECT);
-        $feedback_wrong = $this->readString(self::VAR_ANSWER_FEEDBACK_WRONG);
-        $answer_option_feedback_mode = $this->readInt(self::VAR_ANSWER_OPTION_FEEDBACK_MODE);
+        $this->form = $this->form->withRequest($this->request);
+        $postdata = $this->form->getData();
 
+        $feedback_correct = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_CORRECT]);
+        $feedback_wrong = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_WRONG]);
+        $answer_option_feedback_mode = $this->readInt(substr($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE], strlen(self::USELESS_PREFIX)));
         $answer_option_feedbacks = [];
 
         if ($this->question_dto->hasAnswerOptions()) {
             foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
                 /** @var AnswerOption $answer_option */
                 $post_key = $this->getPostKey($answer_option);
-                $post_val = $this->readString($post_key);
+                $post_val = $this->readString($postdata[self::VAR_ANSWER_OPTION_FEEDBACK][$post_key]);
 
                 if (!empty($post_val)) {
                     $answer_option_feedbacks[$answer_option->getOptionId()] = $post_val;
