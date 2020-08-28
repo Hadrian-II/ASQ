@@ -225,7 +225,8 @@ class AsqQuestionAuthoringGUI
                 $gui = new AsqQuestionHintEditorGUI(
                     AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
                     $this->language,
-                    $this->ui
+                    $this->ui,
+                    $this->ctrl
                 );
 
                 $this->ctrl->forwardCommand($gui);

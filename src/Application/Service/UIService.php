@@ -15,6 +15,7 @@ use srag\asq\UserInterface\Web\Fields\DurationInput\DurationInput;
 use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload\AsqImageUpload;
 use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
+use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
 
 /**
  * Class UIService
@@ -77,6 +78,26 @@ class UIService
         global $DIC;
 
         return new QuestionFeedbackFormGUI(
+            $question,
+            $action,
+            $DIC->language(),
+            $DIC->ui(),
+            $DIC->http()->request()
+        );
+    }
+
+    /**
+     * Gets the question feedback form for a question
+     *
+     * @param QuestionDto $question
+     * @param string $action
+     * @return HintFormGUI
+     */
+    public function getQuestionHintForm(QuestionDto $question, string $action) : HintFormGUI
+    {
+        global $DIC;
+
+        return new HintFormGUI(
             $question,
             $action,
             $DIC->language(),

@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\UIServices;
+use srag\asq\AsqGateway;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
-use srag\asq\AsqGateway;
-use ILIAS\DI\UIServices;
 
 /**
  * Class AsqQuestionHintEditorGUI
@@ -22,7 +21,7 @@ use ILIAS\DI\UIServices;
  */
 class AsqQuestionHintEditorGUI
 {
-    const CMD_SAVE = 'save';
+    const CMD_SAVE = 'save_hint';
 
     /**
      * @var QuestionDto
@@ -40,15 +39,21 @@ class AsqQuestionHintEditorGUI
     private $ui;
 
     /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
      * @param QuestionDto $question_dto
      * @param ilLanguage $language
      * @param UIServices $ui
      */
-    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui)
+    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
     {
         $this->language = $language;
         $this->ui = $ui;
         $this->question_dto = $question_dto;
+        $this->ctrl = $ctrl;
     }
 
 
@@ -62,8 +67,9 @@ class AsqQuestionHintEditorGUI
 
     private function showHints() : void
     {
-        $form = new HintFormGUI($this->question_dto, $this->ui, $this->language);
-        $form->addCommandButton(self::CMD_SAVE, $this->language->txt('save'));
+        $form = AsqGateway::get()->ui()->getQuestionHintForm(
+            $this->question_dto,
+            $this->ctrl->getFormAction($this, self::CMD_SAVE));
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->question_dto->setQuestionHints($form->getHintsFromPost());

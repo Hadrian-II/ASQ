@@ -4,14 +4,16 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Hint\Form;
 
 use ILIAS\DI\UIServices;
+use ILIAS\UI\Component\Input\Container\Form\Standard;
+use Psr\Http\Message\RequestInterface;
 use ilLanguage;
-use ilRTE;
+use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 
 /**
  * Class HintFormGUI
@@ -22,7 +24,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class HintFormGUI extends \ilPropertyFormGUI
+class HintFormGUI
 {
     use PathHelper;
 
@@ -46,39 +48,48 @@ class HintFormGUI extends \ilPropertyFormGUI
     private $ui;
 
     /**
-     * @var AsqTableInput
+     * @var RequestInterface
      */
-    private $hint_table;
+    private $request;
+
+    /**
+     * @var Standard
+     */
+    private $form;
 
     /**
      * @param QuestionDto $question_dto
-     * @param UIServices $ui
+     * @param string $action
      * @param ilLanguage $language
+     * @param UIServices $ui
+     * @param RequestInterface $request
      */
-    public function __construct(QuestionDto $question_dto, UIServices $ui, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
     {
-        parent::__construct();
-
         $this->question_dto = $question_dto;
         $this->ui = $ui;
         $this->language = $language;
+        $this->request = $request;
 
-        $this->setTitle(sprintf($this->language->txt('asq_question_hints_form_header'), $this->question_dto->getData()->getTitle()));
-
-        $this->hint_table = new AsqTableInput(
-            $this->language->txt('asq_hints'),
-            self::HINT_POSTVAR,
-            $this->getHintData(),
-            $this->getTableDefinitions(),
-            [AsqTableInput::OPTION_ORDER]
-        );
-
-        $this->addItem($this->hint_table);
-
-        $rtestring = ilRTE::_getRTEClassname();
-        include_once "./Services/RTE/classes/class.$rtestring.php";
-        $rte = new $rtestring();
-        $rte->addRTESupport(55, 'blah');
+        $this->form = $this->ui->factory()->input()->container()->form()->standard($action, [
+            self::HINT_POSTVAR =>
+                AsqGateway::get()->ui()->getAsqTableInput(
+                    $this->language->txt('asq_hints'),
+                    [
+                        new AsqTableInputFieldDefinition(
+                            $this->language->txt('asq_question_hints_label_hint'),
+                            AsqTableInputFieldDefinition::TYPE_TEXT_AREA,
+                            self::HINT_CONTENT_POSTVAR
+                            ),
+                        new AsqTableInputFieldDefinition(
+                            $this->language->txt('asq_question_hints_label_points_deduction'),
+                            AsqTableInputFieldDefinition::TYPE_NUMBER,
+                            self::HINT_POINTS_POSTVAR
+                            )
+                    ])
+                ->withOptions([AsqTableInput::OPTION_ORDER => true])
+                ->withValue($this->getHintData())
+        ]);
 
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
@@ -100,22 +111,15 @@ class HintFormGUI extends \ilPropertyFormGUI
     }
 
     /**
-     * @return AsqTableInputFieldDefinition[]
+     * @return string
      */
-    private function getTableDefinitions() : array
+    public function getHTML() : string
     {
-        return [
-            new AsqTableInputFieldDefinition(
-                $this->language->txt('asq_question_hints_label_hint'),
-                AsqTableInputFieldDefinition::TYPE_TEXT_AREA,
-                self::HINT_CONTENT_POSTVAR
-            ),
-            new AsqTableInputFieldDefinition(
-                $this->language->txt('asq_question_hints_label_points_deduction'),
-                AsqTableInputFieldDefinition::TYPE_NUMBER,
-                self::HINT_POINTS_POSTVAR
-            )
-        ];
+        $panel = $this->ui->factory()->panel()->standard(
+            sprintf($this->language->txt('asq_question_hints_form_header'), $this->question_dto->getData()->getTitle()),
+            $this->form);
+
+        return $this->ui->renderer()->render($panel);
     }
 
     /**
@@ -123,6 +127,9 @@ class HintFormGUI extends \ilPropertyFormGUI
      */
     public function getHintsFromPost() : QuestionHints
     {
+        $this->form = $this->form->withRequest($this->request);
+        $postdata = $this->form->getData();
+
         $index = 0;
 
         return QuestionHints::create(
@@ -136,7 +143,7 @@ class HintFormGUI extends \ilPropertyFormGUI
                         floatval($raw_hint[self::HINT_POINTS_POSTVAR])
                     );
                 },
-                $this->hint_table->readValues()
+                $postdata[self::HINT_POSTVAR]
             )
         );
     }

@@ -229,7 +229,7 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateTextArea(string $post_var, $value) : string
     {
-        return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm" value="%2$s" />', $post_var, $value);
+        return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm">%2$s</textarea>', $post_var, $value);
     }
 
     /**
