@@ -5,9 +5,9 @@ namespace srag\asq\Application\Service;
 
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class AnswerService
@@ -28,10 +28,10 @@ class AnswerService extends ASQService
      * Gets the score of an answer to a question
      *
      * @param QuestionDto $question
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @return float
      */
-    public function getScore(QuestionDto $question, Answer $answer) : float
+    public function getScore(QuestionDto $question, AbstractValueObject $answer) : float
     {
         $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
@@ -71,9 +71,9 @@ class AnswerService extends ASQService
      * Gets the best possible answer to a question
      *
      * @param QuestionDto $question
-     * @return Answer
+     * @return AbstractValueObject
      */
-    public function getBestAnswer(QuestionDto $question) : Answer
+    public function getBestAnswer(QuestionDto $question) : AbstractValueObject
     {
         $scoring_class = $question->getType()->getScoringClass();
         /** @var $scoring AbstractScoring */
@@ -84,11 +84,11 @@ class AnswerService extends ASQService
     /**
      * Stores an answer to the database
      *
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @param string $uuid
      * @return string
      */
-    public function storeAnswer(Answer $answer, ?string $uuid = null) : string
+    public function storeAnswer(AbstractValueObject $answer, ?string $uuid = null) : string
     {
         $stored = SimpleStoredAnswer::createNew($answer, $uuid);
         $stored->create();
@@ -100,9 +100,9 @@ class AnswerService extends ASQService
      *
      * @param string $uuid
      * @param int $version
-     * @return Answer
+     * @return AbstractValueObject
      */
-    public function getAnswer(string $uuid, ?int $version = null) : Answer
+    public function getAnswer(string $uuid, ?int $version = null) : AbstractValueObject
     {
         if (is_null($version)) {
             $stored = SimpleStoredAnswer::where(['uuid' => $uuid])->orderBy('version', 'DESC')->first();
@@ -121,7 +121,7 @@ class AnswerService extends ASQService
      * Gets all versions of a stored answer from database
      *
      * @param string $uuid
-     * @return Answer[]
+     * @return AbstractValueObject[]
      */
     public function getAnswerHistory(string $uuid) : array
     {

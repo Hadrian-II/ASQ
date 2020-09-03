@@ -235,3 +235,4 @@ header_hours#:#Hours
 header_minutes#:#Minutes
 header_seconds#:#Seconds
 label_scoring_type#:#Scoring Type
+you_received_a_of_b_points#:#You received %s of %s possible points

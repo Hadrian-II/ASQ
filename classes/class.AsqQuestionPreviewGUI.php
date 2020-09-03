@@ -148,12 +148,16 @@ class AsqQuestionPreviewGUI
         $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
 
         if ($this->show_feedback) {
-            $question_component->setRenderFeedback(true);
+            $question_component = $question_component->withShowFeedback(true);
+        }
+
+        if ($this->http->request()->getMethod() === 'POST') {
+            $question_component = $question_component->withAnswerFromPost();
         }
 
         $question_tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_preview_container.html', true, true, 'Services/AssessmentQuestion');
         $question_tpl->setVariable('FORMACTION', $this->ctrl->getFormAction($this, self::CMD_SHOW_PREVIEW));
-        $question_tpl->setVariable('QUESTION_OUTPUT', $question_component->renderHtml());
+        $question_tpl->setVariable('QUESTION_OUTPUT', $this->ui->renderer()->render($question_component));
 
         if ($this->show_hints) {
             $hint_component = new HintComponent($question_dto->getQuestionHints());
@@ -161,8 +165,8 @@ class AsqQuestionPreviewGUI
         }
 
         if ($this->show_score) {
-            $score_component = new ScoringComponent($question_dto, $question_component->readAnswer(), $this->language);
-            $question_tpl->setVariable('SCORE', $score_component->getHtml());
+            $score_component = new ScoringComponent($question_dto, $question_component->getAnswer(), $this->language);
+            $question_tpl->setVariable('SCORE', $this->ui->renderer()->render($score_component));
         }
 
         $question_tpl->setVariable('SCORE_BUTTON_TITLE', $this->language->txt('asq_score_button_title'));

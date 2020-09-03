@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Feedback;
 
-use ilLanguage;
-use ilTemplate;
-use srag\asq\PathHelper;
-use srag\asq\Domain\QuestionDto;
-use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use ILIAS\UI\Component\Component;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class FeedbackComponent
@@ -19,70 +16,50 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class FeedbackComponent
+class FeedbackComponent implements Component
 {
-    use PathHelper;
-
-    const FEEDBACK_FOCUS_ANCHOR = 'focus';
+    /**
+     * @var QuestionDto
+     */
+    private $question;
 
     /**
-     * @var ScoringComponent
+     * @var AbstractValueObject
      */
-    private $scoring_component;
-
-    /**
-     * @var AnswerFeedbackComponent
-     */
-    private $answer_feedback_component;
-
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private $answer;
 
     /**
      * @param QuestionDto $question_dto
      * @param AbstractValueObject $answer
-     * @param ilLanguage $language
      */
-    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer)
     {
-        $this->scoring_component = new ScoringComponent($question_dto, $answer, $language);
-        $this->answer_feedback_component = new AnswerFeedbackComponent($question_dto, $answer);
-        $this->language = $language;
+        $this->question = $question_dto;
+        $this->answer = $answer;
     }
 
     /**
-     * @return string
+     * @return QuestionDto
      */
-    public function getHtml() : string
+    public function getQuestion() : QuestionDto
     {
-        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.feedback.html', true, true);
-
-        $tpl->setCurrentBlock('feedback_header');
-        $tpl->setVariable('FEEDBACK_HEADER', $this->language->txt('asq_answer_feedback_header'));
-        $tpl->parseCurrentBlock();
-
-        $tpl->setCurrentBlock('answer_feedback');
-        $tpl->setVariable('ANSWER_FEEDBACK', $this->answer_feedback_component->getHtml());
-        $tpl->parseCurrentBlock();
-
-        $tpl->setCurrentBlock('answer_scoring');
-        $tpl->setVariable('ANSWER_SCORING', $this->scoring_component->getHtml());
-        $tpl->parseCurrentBlock();
-
-        return $tpl->get();
+        return $this->question;
     }
 
-
-    public function readAnswer() : string
+    /**
+     * @return AbstractValueObject
+     */
+    public function getAnswer() : AbstractValueObject
     {
-        return $this->editor->readAnswer();
+        return $this->answer;
     }
 
-
-    public function setAnswer(AbstractValueObject $answer)
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\UI\Component\Component::getCanonicalName()
+     */
+    public function getCanonicalName()
     {
-        $this->editor->setAnswer($answer->getValue());
+        return FeedbackComponent::class;
     }
 }

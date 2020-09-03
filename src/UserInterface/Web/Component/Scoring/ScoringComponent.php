@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Scoring;
 
 use ilLanguage;
-use ilTemplate;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use ILIAS\UI\Component\Component;
 
 /**
  * Class ScoringComponent
@@ -19,7 +18,7 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class ScoringComponent
+class ScoringComponent implements Component
 {
     use PathHelper;
 
@@ -29,14 +28,9 @@ class ScoringComponent
     private $answer;
 
     /**
-     * @var AbstractScoring
+     * @var QuestionDto
      */
-    private $scoring;
-
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private $question;
 
 
     /**
@@ -44,35 +38,34 @@ class ScoringComponent
      * @param AbstractValueObject $answer
      * @param ilLanguage $language
      */
-    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer, ilLanguage $language)
+    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer)
     {
-        $this->language = $language;
-
-        $scoring_class = $question_dto->getType()->getScoringClass();
-        $this->scoring = new $scoring_class($question_dto);
-
+        $this->question = $question_dto;
         $this->answer = $answer;
     }
 
     /**
-     * @return string
+     * @return QuestionDto
      */
-    public function getHtml() : string
+    public function getQuestion() : QuestionDto
     {
-        $this->language->loadLanguageModule('assessment');
-        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_scoring.html', true, true);
+        return $this->question;
+    }
 
-        $tpl->setCurrentBlock('answer_scoring');
-        $tpl->setVariable(
-            'ANSWER_SCORE',
-            sprintf(
-                $this->language->txt("you_received_a_of_b_points"),
-                $this->scoring->score($this->answer),
-                $this->scoring->getMaxScore()
-            )
-        );
-        $tpl->parseCurrentBlock();
+    /**
+     * @return AbstractValueObject
+     */
+    public function getAnswer() : AbstractValueObject
+    {
+        return $this->answer;
+    }
 
-        return $tpl->get();
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\UI\Component\Component::getCanonicalName()
+     */
+    public function getCanonicalName()
+    {
+        return ScoringComponent::class;
     }
 }

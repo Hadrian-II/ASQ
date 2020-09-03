@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence;
 
 use ActiveRecord;
-use srag\asq\Domain\Model\Answer\Answer;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use ILIAS\Data\UUID\Factory;
 
 /**
@@ -60,7 +60,7 @@ class SimpleStoredAnswer extends ActiveRecord
     protected $answer;
 
 
-    public static function createNew(Answer $answer, ?string $uuid = null)
+    public static function createNew(AbstractValueObject $answer, ?string $uuid = null)
     {
         $object = new SimpleStoredAnswer();
 
@@ -103,11 +103,11 @@ class SimpleStoredAnswer extends ActiveRecord
     }
 
     /**
-     * @return Answer
+     * @return AbstractValueObject
      */
-    public function getAnswer() : Answer
+    public function getAnswer() : AbstractValueObject
     {
-        return Answer::deserialize($this->answer);
+        return AbstractValueObject::deserialize($this->answer);
     }
 
     /**

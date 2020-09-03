@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Feedback;
 
-use ilTemplate;
+use ILIAS\UI\Component\Component;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Scoring\AbstractScoring;
 
 /**
  * Class AnswerFeedbackComponent
@@ -18,12 +17,9 @@ use srag\asq\Domain\Model\Scoring\AbstractScoring;
  * @package srag/asq
  * @author  Martin Studer <ms@studer-raimann.ch>
  */
-class AnswerFeedbackComponent
+class AnswerFeedbackComponent implements Component
 {
     use PathHelper;
-
-    const CSS_CLASS_FEEDBACK_TYPE_CORRECT = 'ilc_qfeedr_FeedbackRight';
-    const CSS_CLASS_FEEDBACK_TYPE_WRONG = 'ilc_qfeedw_FeedbackWrong';
 
     /**
      * @var QuestionDto
@@ -33,10 +29,6 @@ class AnswerFeedbackComponent
      * @var AbstractValueObject
      */
     private $answer;
-    /**
-     * @var AbstractScoring
-     */
-    private $scoring;
 
     /**
      * @param QuestionDto $question
@@ -46,35 +38,30 @@ class AnswerFeedbackComponent
     {
         $this->question = $question;
         $this->answer = $answer;
-
-        $scoring_class = $question->getType()->getScoringClass();
-        $this->scoring = new $scoring_class($question);
     }
 
     /**
-     * @return string
+     * @return QuestionDto
      */
-    public function getHtml() : string
+    public function getQuestion() : QuestionDto
     {
-        $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.answer_feedback.html', true, true);
+        return $this->question;
+    }
 
-        include_once("./Services/Style/Content/classes/class.ilObjStyleSheet.php");
+    /**
+     * @return AbstractValueObject
+     */
+    public function getAnswer() : AbstractValueObject
+    {
+        return $this->answer;
+    }
 
-        $tpl->setCurrentBlock('answer_feedback');
-
-        if ($this->scoring->getAnswerFeedbackType($this->answer) === AbstractScoring::ANSWER_CORRECT) {
-            $answer_feedback = $this->question->getFeedback()->getAnswerCorrectFeedback();
-            $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_CORRECT;
-        } elseif ($this->scoring->getAnswerFeedbackType($this->answer) === AbstractScoring::ANSWER_INCORRECT) {
-            $answer_feedback = $this->question->getFeedback()->getAnswerWrongFeedback();
-            $answer_feedback_css_class = self::CSS_CLASS_FEEDBACK_TYPE_WRONG;
-        }
-
-        $tpl->setVariable('ANSWER_FEEDBACK', $answer_feedback);
-        $tpl->setVariable('ILC_FB_CSS_CLASS', $answer_feedback_css_class);
-
-        $tpl->parseCurrentBlock();
-
-        return $tpl->get();
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\UI\Component\Component::getCanonicalName()
+     */
+    public function getCanonicalName()
+    {
+        return AnswerFeedbackComponent::class;
     }
 }
