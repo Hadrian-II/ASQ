@@ -240,9 +240,22 @@ class Renderer extends AbstractComponentRenderer
      */
     private function generateImageField(string $post_var, $value) : string
     {
-        //TODO reimplement imagefield for kitchen sink
+        $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.image_upload.html", true, true);
 
-        return 'TODO';
+        if (!empty($value)) {
+            $tpl->setCurrentBlock('has_image');
+            $tpl->setVariable('NAME', $post_var);
+            $tpl->setVariable('VALUE', $value);
+            $tpl->setVariable('TXT_DELETE', $this->txt("delete_existing_file"));
+            $tpl->parseCurrentBlock();
+        }
+
+        $tpl->setCurrentBlock('image_upload');
+        $tpl->setVariable('NAME', $post_var);
+        $tpl->setVariable('VALUE', $value);
+        $tpl->parseCurrentBlock();
+
+        return $tpl->get();
     }
 
     /**

@@ -50,7 +50,7 @@ class ImageUploader
     /**
      * @return string
      */
-    public function processImage(string $image_key) : string
+    public function processImage(string $image_key) : ?string
     {
         $target_file = "";
 
@@ -78,9 +78,8 @@ class ImageUploader
         }
 
         // delete selected
-        //TODO search ilias source for hopefully existing _delete constant
         if ($this->isPostVarSet($image_key . '_delete')) {
-            return '';
+            return null;
         }
 
         // new file uploaded
@@ -94,7 +93,7 @@ class ImageUploader
         }
 
         // no file
-        return '';
+        return null;
     }
 
     /**

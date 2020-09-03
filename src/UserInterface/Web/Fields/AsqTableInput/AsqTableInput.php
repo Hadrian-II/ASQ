@@ -9,6 +9,7 @@ use ILIAS\UI\Implementation\Component\Input\InputData;
 use ILIAS\UI\Implementation\Component\Input\Field\Input;
 use Closure;
 use InvalidArgumentException;
+use srag\asq\UserInterface\Web\ImageUploader;
 
 /**
  * Class AsqTableInput
@@ -38,6 +39,11 @@ class AsqTableInput extends Input
      * @var array
      */
     private $options;
+
+    /**
+     * @var ImageUploader
+     */
+    private $uploader;
 
     /**
      * @param string $label
@@ -169,10 +175,21 @@ class AsqTableInput extends Input
             $new_value = [];
             $found = false;
 
-            foreach ($this->getDefinitions() as $definition) {
+            foreach ($this->getDefinitions() as $definition)
+            {
                 $item_post_var = $this->getTableItemPostVar($i, $this->getName(), $definition->getPostVar());
 
-                $value = $input->getOr($item_post_var, null);
+                if ($definition->getType() === AsqTableInputFieldDefinition::TYPE_IMAGE)
+                {
+                    $uploader = $this->getUploader();
+
+                    $value = $uploader->processImage($item_post_var);
+                }
+                else
+                {
+                    $value = $input->getOr($item_post_var, null);
+                }
+
                 if (! is_null($value))  {
                     $new_value[$definition->getPostVar()] = $value;
                     $found = true;
@@ -185,5 +202,16 @@ class AsqTableInput extends Input
         }
 
         return $values;
+    }
+
+    /**
+     * @return ImageUploader
+     */
+    private function getUploader() : ImageUploader
+    {
+        if (is_null($this->uploader)) {
+            $this->uploader = new ImageUploader();
+        }
+        return $this->uploader;
     }
 }
