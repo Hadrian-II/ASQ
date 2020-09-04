@@ -55,7 +55,8 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         $thumb_size = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_thumb_size'),
-            $this->language->txt('asq_description_thumb_size'));
+            $this->language->txt('asq_description_thumb_size')
+        );
 
         $optionLabel = $this->GenerateOptionLabelField($value);
 
@@ -104,32 +105,36 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
             $customLabelFalse = $customLabelFalse->withValue($config->getLabelFalse());
         }
 
-        $optionLabel = $this->factory->input()->field()->switchableGroup
-        (
+        $optionLabel = $this->factory->input()->field()->switchableGroup(
             [
                 self::LABEL_RIGHT_WRONG =>
                     $this->factory->input()->field()->group(
                         [],
-                        $this->language->txt('asq_label_right_wrong')),
+                        $this->language->txt('asq_label_right_wrong')
+                    ),
                 self::LABEL_PLUS_MINUS =>
                     $this->factory->input()->field()->group(
                         [],
-                        $this->language->txt('asq_label_plus_minus')),
+                        $this->language->txt('asq_label_plus_minus')
+                    ),
                 self::LABEL_APPLICABLE =>
                     $this->factory->input()->field()->group(
                         [],
-                        $this->language->txt('asq_label_applicable')),
+                        $this->language->txt('asq_label_applicable')
+                    ),
                 self::LABEL_ADEQUATE =>
                     $this->factory->input()->field()->group(
                         [],
-                        $this->language->txt('asq_label_adequate')),
+                        $this->language->txt('asq_label_adequate')
+                    ),
                 self::LABEL_CUSTOM =>
                     $this->factory->input()->field()->group(
                         [
                             self::VAR_LABEL_TRUE => $customLabelTrue,
                             self::VAR_LABEL_FALSE => $customLabelFalse
                         ],
-                        $this->language->txt('asq_label_userdefined'))
+                        $this->language->txt('asq_label_userdefined')
+                    )
             ],
             $this->language->txt('asq_label_obtion_labels'),
             $this->language->txt('asq_description_options')

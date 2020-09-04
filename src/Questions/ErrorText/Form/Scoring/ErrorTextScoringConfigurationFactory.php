@@ -30,7 +30,8 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
 
         $points_wrong = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_points_wrong'),
-            $this->language->txt('asq_info_points_wrong'));
+            $this->language->txt('asq_info_points_wrong')
+        );
 
         if ($value !== null) {
             $points_wrong = $points_wrong->withValue(strval($value->getPointsWrong()));

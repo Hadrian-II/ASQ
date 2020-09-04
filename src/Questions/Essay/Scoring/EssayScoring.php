@@ -179,11 +179,11 @@ class EssayScoring extends AbstractScoring
         if ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY) {
             return array_sum(
                 array_map(
-                            function ($option) {
-                                return $option->getScoringDefinition()->getPoints();
-                            },
-                            $this->question->getAnswerOptions()->getOptions()
-                        )
+                    function ($option) {
+                        return $option->getScoringDefinition()->getPoints();
+                    },
+                    $this->question->getAnswerOptions()->getOptions()
+                )
             );
         } else {
             return $this->configuration->getPoints() ?? 0;

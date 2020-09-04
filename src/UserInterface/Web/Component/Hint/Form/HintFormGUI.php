@@ -80,13 +80,14 @@ class HintFormGUI
                             $this->language->txt('asq_question_hints_label_hint'),
                             AsqTableInputFieldDefinition::TYPE_TEXT_AREA,
                             self::HINT_CONTENT_POSTVAR
-                            ),
+                        ),
                         new AsqTableInputFieldDefinition(
                             $this->language->txt('asq_question_hints_label_points_deduction'),
                             AsqTableInputFieldDefinition::TYPE_NUMBER,
                             self::HINT_POINTS_POSTVAR
-                            )
-                    ])
+                        )
+                    ]
+                )
                 ->withOptions([AsqTableInput::OPTION_ORDER => true])
                 ->withValue($this->getHintData())
         ]);
@@ -117,7 +118,8 @@ class HintFormGUI
     {
         $panel = $this->ui->factory()->panel()->standard(
             sprintf($this->language->txt('asq_question_hints_form_header'), $this->question_dto->getData()->getTitle()),
-            $this->form);
+            $this->form
+        );
 
         return $this->ui->renderer()->render($panel);
     }

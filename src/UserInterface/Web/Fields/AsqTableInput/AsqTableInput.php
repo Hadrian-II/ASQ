@@ -55,14 +55,14 @@ class AsqTableInput extends Input
         array $definitions,
         DataFactory $data_factory,
         Factory $factory,
-        string $byline = null)
-    {
-        if (count($definitions) === 0)  {
+        string $byline = null
+    ) {
+        if (count($definitions) === 0) {
             throw new InvalidArgumentException("Asq table input needs to have at least one column");
         }
 
-        foreach($definitions as $definition) {
-            if (! get_class($definition) === AsqTableInputFieldDefinition::class) {
+        foreach ($definitions as $definition) {
+            if (!get_class($definition) === AsqTableInputFieldDefinition::class) {
                 throw new InvalidArgumentException("Asq table input column definition need to be of type AsqTableInputFieldDefinition");
             }
         }
@@ -104,7 +104,7 @@ class AsqTableInput extends Input
      * {@inheritDoc}
      * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
      */
-    protected function isClientSideValueOk($value): bool
+    protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
@@ -122,7 +122,7 @@ class AsqTableInput extends Input
      * {@inheritDoc}
      * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
      */
-    public function getUpdateOnLoadCode(): Closure
+    public function getUpdateOnLoadCode() : Closure
     {
         return null;
     }
@@ -167,7 +167,6 @@ class AsqTableInput extends Input
      */
     public function readValues(InputData $input) : array
     {
-
         $values = [];
         $i = 0;
         $found = true;
@@ -176,22 +175,18 @@ class AsqTableInput extends Input
             $new_value = [];
             $found = false;
 
-            foreach ($this->getDefinitions() as $definition)
-            {
+            foreach ($this->getDefinitions() as $definition) {
                 $item_post_var = $this->getTableItemPostVar($i, $this->getName(), $definition->getPostVar());
 
-                if ($definition->getType() === AsqTableInputFieldDefinition::TYPE_IMAGE)
-                {
+                if ($definition->getType() === AsqTableInputFieldDefinition::TYPE_IMAGE) {
                     $uploader = $this->getUploader();
 
                     $value = $uploader->processImage($item_post_var);
-                }
-                else
-                {
+                } else {
                     $value = $input->getOr($item_post_var, null);
                 }
 
-                if (! is_null($value))  {
+                if (!is_null($value)) {
                     $new_value[$definition->getPostVar()] = $value;
                     $found = true;
                 }

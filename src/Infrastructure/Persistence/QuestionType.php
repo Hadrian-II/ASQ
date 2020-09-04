@@ -76,8 +76,8 @@ class QuestionType extends ActiveRecord
         string $title_key,
         string $factory_class,
         string $editor_class,
-        string $scoring_class) : QuestionType
-    {
+        string $scoring_class
+    ) : QuestionType {
         $object = new QuestionType();
         $object->title_key = $title_key;
         $object->factory_class = $factory_class;
@@ -154,6 +154,7 @@ class QuestionType extends ActiveRecord
             $data[self::KEY],
             $data[self::FORM_FACOTRY],
             $data[self::EDITOR],
-            $data[self::SCORING]);
+            $data[self::SCORING]
+        );
     }
 }

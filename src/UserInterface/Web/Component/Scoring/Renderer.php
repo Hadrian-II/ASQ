@@ -39,8 +39,9 @@ class Renderer extends AbstractComponentRenderer
             sprintf(
                 $this->txt('asq_you_received_a_of_b_points'),
                 $scoring->score($component->getAnswer()),
-                $scoring->getMaxScore())
-            );
+                $scoring->getMaxScore()
+            )
+        );
         $tpl->parseCurrentBlock();
 
         return $tpl->get();

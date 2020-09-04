@@ -36,14 +36,18 @@ class NumericQuestionTest extends QuestionTestCase
                 QuestionData::create('Question 1', '', '', '', 1),
                 QuestionPlayConfiguration::create(
                     NumericEditorConfiguration::create(),
-                    NumericScoringConfiguration::create(2, 2, 2)),
-                null),
+                    NumericScoringConfiguration::create(2, 2, 2)
+                ),
+                null
+            ),
             'question 2' => $this->createQuestion(
                 QuestionData::create('Question 2', '', '', '', 1),
                 QuestionPlayConfiguration::create(
                     NumericEditorConfiguration::create(),
-                    NumericScoringConfiguration::create(2, 3, 4)),
-                null)
+                    NumericScoringConfiguration::create(2, 3, 4)
+                ),
+                null
+            )
         ];
     }
 
@@ -78,13 +82,15 @@ class NumericQuestionTest extends QuestionTestCase
     }
 
 
-    public function getTypeDefinition(): QuestionType
+    public function getTypeDefinition() : QuestionType
     {
         return QuestionType::create(
             QuestionType::createNew(
                 'numeric',
                 NumericFormFactory::class,
                 NumericEditor::class,
-                NumericScoring::class));
+                NumericScoring::class
+            )
+        );
     }
 }

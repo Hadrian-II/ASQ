@@ -99,6 +99,7 @@ class AsqQuestionFeedbackEditorGUI
     {
         return AsqGateway::get()->ui()->getQuestionFeedbackForm(
             $this->question_dto,
-            $this->ctrl->getFormAction($this, self::CMD_SAVE_FEEDBACK));
+            $this->ctrl->getFormAction($this, self::CMD_SAVE_FEEDBACK)
+        );
     }
 }

@@ -44,19 +44,23 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
             ->withOption(
                 self::USELESS_PREFIX . strval(EssayScoring::SCORING_MANUAL),
                 $this->language->txt('asq_label_manual_scoring'),
-                $this->language->txt('asq_info_manual_scoring'))
+                $this->language->txt('asq_info_manual_scoring')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ANY),
                 $this->language->txt('asq_label_automatic_any'),
-                $this->language->txt('asq_info_automatic_any'))
+                $this->language->txt('asq_info_automatic_any')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ALL),
                 $this->language->txt('asq_label_automatic_all'),
-                $this->language->txt('asq_info_automatic_all'))
+                $this->language->txt('asq_info_automatic_all')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ONE),
                 $this->language->txt('asq_info_automatic_one'),
-                $this->language->txt('asq_info_automatic_one'));
+                $this->language->txt('asq_info_automatic_one')
+            );
 
         $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
@@ -83,8 +87,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
         $points = null;
 
         if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ALL ||
-            $scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE)
-        {
+            $scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE) {
             $points = $this->readFloat($postdata[self::VAR_POINTS]);
         }
 

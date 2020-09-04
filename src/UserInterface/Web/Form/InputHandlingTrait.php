@@ -62,7 +62,7 @@ trait InputHandlingTrait
     protected function readFloat(string $value) : ?float
     {
         if (empty($value) ||
-            ! is_numeric($value)) {
+            !is_numeric($value)) {
             return null;
         }
 
@@ -78,7 +78,7 @@ trait InputHandlingTrait
     protected function readInt(string $value) : ?int
     {
         if (empty($value) ||
-            ! is_numeric($value)) {
+            !is_numeric($value)) {
             return null;
         }
 

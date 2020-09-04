@@ -73,20 +73,24 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         $matching_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_matching_mode'))
         ->withOption(
             self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_ONE_TO_ONE),
-            $this->language->txt('asq_option_one_to_one'))
+            $this->language->txt('asq_option_one_to_one')
+        )
         ->withOption(
             self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_ONE),
-            $this->language->txt('asq_option_many_to_one'))
+            $this->language->txt('asq_option_many_to_one')
+        )
         ->withOption(
             self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_MANY),
-            $this->language->txt('asq_option_many_to_many'));
+            $this->language->txt('asq_option_many_to_many')
+        );
 
 
         if (!is_null($value)) {
             $shuffle_answers = $shuffle_answers->withValue($value->getShuffle());
             $thumbnail = $thumbnail->withValue(strval($value->getThumbnailSize()));
             $matching_mode = $matching_mode->withValue(
-                self::USELESS_PREFIX . strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE));
+                self::USELESS_PREFIX . strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE)
+            );
         }
 
         $fields[self::VAR_SHUFFLE] = $shuffle_answers;
@@ -125,9 +129,12 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         if (!is_null($config)) {
             $table = $table->withValue(
-                $this->getItemValues($config->getDefinitions(),
+                $this->getItemValues(
+                    $config->getDefinitions(),
                     self::VAR_DEFINITION_TEXT,
-                    self::VAR_DEFINITION_IMAGE));
+                    self::VAR_DEFINITION_IMAGE
+                )
+            );
         }
 
         return $table;
@@ -156,9 +163,12 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         if (!is_null($config)) {
             $table = $table->withValue(
-                $this->getItemValues($config->getTerms(),
+                $this->getItemValues(
+                    $config->getTerms(),
                     self::VAR_TERM_TEXT,
-                    self::VAR_TERM_IMAGE));
+                    self::VAR_TERM_IMAGE
+                )
+            );
         }
 
         return $table;

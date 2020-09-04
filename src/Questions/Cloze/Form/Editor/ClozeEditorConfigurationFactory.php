@@ -79,7 +79,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             '<br /><input type="button"
                value="' . $this->language->txt('asq_parse_question') . '"
                class="js_parse_cloze_question btn btn-default" />' .
-               self::createTemplates());
+               self::createTemplates()
+        );
 
         if ($value !== null) {
             $cloze_text = $cloze_text->withValue($value->getClozeText());
@@ -129,9 +130,9 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $this->language->txt('asq_label_btn_delete_gap'))
         )->withValue($type);
 
-        $fields[self::VAR_GAP_TYPE] =$gap_type;
+        $fields[self::VAR_GAP_TYPE] = $gap_type;
 
-        switch($type) {
+        switch ($type) {
             case ClozeGapConfiguration::TYPE_DROPDOWN:
                 $fields += $this->createTextGapFields($gap);
                 break;
@@ -145,7 +146,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
         $section = $this->factory->input()->field()->section(
             $fields,
-            $this->language->txt('asq_header_feedback_answers'));
+            $this->language->txt('asq_header_feedback_answers')
+        );
 
         return $section;
     }
@@ -160,7 +162,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
         $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
 
         // needs value to render in template
         $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
@@ -168,7 +171,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $text_scoring = new TextScoring($this->language);
         $text_method = $text_scoring->getScoringTypeSelectionField($this->factory)->withValue('');
 
-        if (! is_null($gap)) {
+        if (!is_null($gap)) {
             $gap_items = $gap_items->withValue($gap->getItemsArray());
             $field_size = $field_size->withValue($gap->getFieldLength());
             $text_method = $text_method->withValue($gap->getMatchingMethod());
@@ -191,9 +194,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
         $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
-            $this->getClozeGapItemFieldDefinitions());
+            $this->getClozeGapItemFieldDefinitions()
+        );
 
-        if (! is_null($gap)) {
+        if (!is_null($gap)) {
             $gap_items = $gap_items->withValue($gap->getItemsArray());
         }
 
@@ -217,7 +221,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $points = $this->factory->input()->field()->text($this->language->txt('asq_header_points'))->withValue('');
         $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
 
-        if (! is_null($gap)) {
+        if (!is_null($gap)) {
             $value = $value->withValue($gap->getValue());
             $upper = $upper->withValue($gap->getUpper());
             $lower = $lower->withValue($gap->getLower());

@@ -17,13 +17,13 @@ use srag\asq\UserInterface\Web\ImageUploader;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AsqImageUpload  extends Input
+class AsqImageUpload extends Input
 {
     /**
      * {@inheritDoc}
      * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
      */
-    protected function isClientSideValueOk($value): bool
+    protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
@@ -41,7 +41,7 @@ class AsqImageUpload  extends Input
      * {@inheritDoc}
      * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
      */
-    public function getUpdateOnLoadCode(): Closure
+    public function getUpdateOnLoadCode() : Closure
     {
         return null;
     }

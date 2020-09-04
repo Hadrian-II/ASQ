@@ -31,11 +31,13 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
 
         $max_upload = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_max_upload'),
-            $this->language->txt('asq_description_max_upload'));
+            $this->language->txt('asq_description_max_upload')
+        );
 
         $allowed_extensions = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_allowed_extensions'),
-            $this->language->txt('asq_description_allowed_extensions'));
+            $this->language->txt('asq_description_allowed_extensions')
+        );
 
 
         if ($value !== null) {

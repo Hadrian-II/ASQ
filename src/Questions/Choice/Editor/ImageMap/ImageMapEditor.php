@@ -212,7 +212,7 @@ class ImageMapEditor extends AbstractEditor
     {
         $post_name = $this->getPostName();
 
-        if (! $this->isPostVarSet($post_name)) {
+        if (!$this->isPostVarSet($post_name)) {
             return null;
         }
 

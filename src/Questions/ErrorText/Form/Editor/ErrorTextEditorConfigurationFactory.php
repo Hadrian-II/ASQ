@@ -33,7 +33,8 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
 
         $error_text = $this->factory->input()->field()->textarea(
             $this->language->txt('asq_label_error_text'),
-            $this->createErrorTextInfo());
+            $this->createErrorTextInfo()
+        );
 
         $text_size = $this->factory->input()->field()->text($this->language->txt('asq_label_text_size'));
 
@@ -55,9 +56,11 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function createErrorTextInfo() : string
     {
-        return sprintf('<input type="button" id="process_error_text" value="%s" class="btn btn-default btn-sm" /><br />%s',
-                    $this->language->txt('asq_label_process_error_text'),
-                    $this->language->txt('asq_description_error_text'));
+        return sprintf(
+            '<input type="button" id="process_error_text" value="%s" class="btn btn-default btn-sm" /><br />%s',
+            $this->language->txt('asq_label_process_error_text'),
+            $this->language->txt('asq_description_error_text')
+        );
     }
 
     /**

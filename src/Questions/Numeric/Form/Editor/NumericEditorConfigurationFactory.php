@@ -30,7 +30,8 @@ class NumericEditorConfigurationFactory extends AbstractObjectFactory
 
         $max_chars = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_max_nr_of_chars'),
-            $this->language->txt('asq_description_max_nr_chars'));
+            $this->language->txt('asq_description_max_nr_chars')
+        );
 
         if ($value !== null) {
             $max_chars = $max_chars->withValue(strval($value->getMaxNumOfChars()));

@@ -102,19 +102,21 @@ class QuestionFeedbackFormGUI
         $fields[self::VAR_ANSWER_FEEDBACK_WRONG] = $feedback_wrong;
 
 
-        if ($this->question_dto->hasAnswerOptions())
-        {
+        if ($this->question_dto->hasAnswerOptions()) {
             $feedback_setting =
                 $this->ui->factory()->input()->field()->radio($this->language->txt('asq_label_feedback_setting'))
                     ->withOption(
                         self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL),
-                        $this->language->txt('asq_option_feedback_all'))
+                        $this->language->txt('asq_option_feedback_all')
+                    )
                     ->withOption(
                         self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED),
-                        $this->language->txt('asq_option_feedback_checked'))
+                        $this->language->txt('asq_option_feedback_checked')
+                    )
                     ->withOption(
                         self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT),
-                        $this->language->txt('asq_option_feedback_correct'));
+                        $this->language->txt('asq_option_feedback_correct')
+                    );
 
             if (!is_null($this->feedback)) {
                 $feedback_setting = $feedback_setting->withValue(self::USELESS_PREFIX . strval($this->feedback->getAnswerOptionFeedbackMode()));
@@ -148,7 +150,8 @@ class QuestionFeedbackFormGUI
     {
         $panel = $this->ui->factory()->panel()->standard(
             $this->language->txt('asq_feedback_form_title'),
-            $this->form);
+            $this->form
+        );
 
         return $this->ui->renderer()->render($panel);
     }

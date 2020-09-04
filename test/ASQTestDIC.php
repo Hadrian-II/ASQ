@@ -120,31 +120,32 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
         $force_init = $container['ilClientIniFile'];
 
-        $container['ilDB'] = function($c) {
+        $container['ilDB'] = function ($c) {
             $ilDB = ilDBWrapperFactory::getWrapper(IL_DB_TYPE);
             $ilDB->initFromIniFile();
             $ilDB->connect();
             return $ilDB;
         };
 
-        $container['ilCtrl'] = function($c) {
+        $container['ilCtrl'] = function ($c) {
             return new ilCtrl();
         };
 
-        $container['ilUser'] = function($c) {
+        $container['ilUser'] = function ($c) {
             return new class() {
                 public $prefs = [
                     'language' => 'en',
                     'style' => 'asdf'
                 ];
 
-                public function getId() {
+                public function getId()
+                {
                     return 6;
                 }
             };
         };
 
-        $container['lng'] = function($c) {
+        $container['lng'] = function ($c) {
             return new ilLanguage('en');
         };
 
@@ -153,14 +154,16 @@ class AsqTestDIC extends \ILIAS\DI\Container
                 public $account;
                 public $ini;
 
-                public function __construct() {
+                public function __construct()
+                {
                     $this->account = new class() {
                         public $id = 6;
                         public $fullname = 'Testa Testy';
                     };
 
                     $this->ini = new class() {
-                        public function readVariable() {
+                        public function readVariable()
+                        {
                             return '';
                         }
                     };
@@ -180,43 +183,44 @@ class AsqTestDIC extends \ILIAS\DI\Container
             return null;
         };
 
-        $container['ilAppEventHandler'] = function($c) {
+        $container['ilAppEventHandler'] = function ($c) {
             return null;
         };
 
-        $container['objDefinition'] = function($c) {
+        $container['objDefinition'] = function ($c) {
             return null;
         };
 
-        $container['ilSetting'] = function($c) {
+        $container['ilSetting'] = function ($c) {
             return new ilSetting();
         };
 
-        $container['ilPluginAdmin'] = function($c) {
+        $container['ilPluginAdmin'] = function ($c) {
             return new class() {
-                public function getActivePluginsForSlot() {
+                public function getActivePluginsForSlot()
+                {
                     return [];
                 }
             };
         };
 
-        $container['tpl'] = function($c) {
+        $container['tpl'] = function ($c) {
             return new ilGlobalPageTemplate(
                 new class() extends Services {
-                    public function __construct() {
-
+                    public function __construct()
+                    {
                     }
                 },
                 new UIServices($c),
                 new class() extends HTTPServices {
-                    public function __construct() {
-
+                    public function __construct()
+                    {
                     }
                 }
             );
         };
 
-        $container['styleDefinition'] = function($c) {
+        $container['styleDefinition'] = function ($c) {
             return new ilStyleDefinition();
         };
     }

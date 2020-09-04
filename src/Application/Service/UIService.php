@@ -124,7 +124,8 @@ class UIService
             $columns,
             $data_factory,
             $refinery,
-            $byline);
+            $byline
+        );
     }
 
     /**
@@ -144,7 +145,8 @@ class UIService
             $data_factory,
             $refinery,
             $label,
-            $byline);
+            $byline
+        );
     }
 
     /**
@@ -161,7 +163,8 @@ class UIService
             $data_factory,
             $refinery,
             $label,
-            null);
+            null
+        );
     }
 
     /**
@@ -178,7 +181,8 @@ class UIService
             $data_factory,
             $refinery,
             '',
-            null);
+            null
+        );
     }
 
     /**

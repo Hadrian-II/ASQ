@@ -70,10 +70,9 @@ class DurationInput extends Input
         $minute_name = self::VAR_MINUTE . $this->getName();
         $hour_name = self::VAR_HOUR . $this->getName();
 
-        if (! is_numeric($input->get($second_name)) ||
-            ! is_numeric($input->get($minute_name)) ||
-            ! is_numeric($input->get($hour_name)))
-        {
+        if (!is_numeric($input->get($second_name)) ||
+            !is_numeric($input->get($minute_name)) ||
+            !is_numeric($input->get($hour_name))) {
             return null;
         }
 
@@ -88,7 +87,7 @@ class DurationInput extends Input
      * {@inheritDoc}
      * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
      */
-    protected function isClientSideValueOk($value): bool
+    protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
@@ -106,7 +105,7 @@ class DurationInput extends Input
      * {@inheritDoc}
      * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
      */
-    public function getUpdateOnLoadCode(): Closure
+    public function getUpdateOnLoadCode() : Closure
     {
         return null;
     }

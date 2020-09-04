@@ -49,37 +49,45 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
 
         $formula = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_formula'),
-            '<br /><input type="button" value="' . $this->language->txt('asq_parse_question') . '" class="js_parse_question btn btn-default" />');
+            '<br /><input type="button" value="' . $this->language->txt('asq_parse_question') . '" class="js_parse_question btn btn-default" />'
+        );
 
         $units = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_units'),
-            $this->language->txt('asq_description_units'));
+            $this->language->txt('asq_description_units')
+        );
 
         $precision = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_precision'),
-            $this->language->txt('asq_description_precision'));
+            $this->language->txt('asq_description_precision')
+        );
 
         $tolerance = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_tolerance'),
-            $this->language->txt('asq_description_tolerance'));
+            $this->language->txt('asq_description_tolerance')
+        );
 
         $result_type = $this->factory->input()->field()->radio($this->language->txt('asq_label_result_type'))
             ->withOption(
                 self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_ALL),
                 $this->language->txt('asq_label_result_all'),
-                $this->language->txt('asq_description_result_all'))
+                $this->language->txt('asq_description_result_all')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_DECIMAL),
                 $this->language->txt('asq_label_result_decimal'),
-                $this->language->txt('asq_description_result_decimal'))
+                $this->language->txt('asq_description_result_decimal')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_FRACTION),
                 $this->language->txt('asq_label_result_fraction'),
-                $this->language->txt('asq_description_result_fraction'))
+                $this->language->txt('asq_description_result_fraction')
+            )
             ->withOption(
                 self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_COPRIME_FRACTION),
                 $this->language->txt('asq_label_result_coprime_fraction'),
-                $this->language->txt('asq_description_result_coprime_fraction'));
+                $this->language->txt('asq_description_result_coprime_fraction')
+            );
 
         $variables_table = AsqGateway::get()->ui()->getAsqTableInput(
             $this->language->txt('asq_label_variables'),
@@ -87,24 +95,29 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_min'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MIN),
+                    FormulaScoringVariable::VAR_MIN
+                ),
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_max'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MAX),
+                    FormulaScoringVariable::VAR_MAX
+                ),
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_unit'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_UNIT),
+                    FormulaScoringVariable::VAR_UNIT
+                ),
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_multiple_of'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_MULTIPLE_OF)
+                    FormulaScoringVariable::VAR_MULTIPLE_OF
+                )
             ]
         )->withOptions(
-                [
+            [
                     AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
-                ]);
+                ]
+        );
 
 
 

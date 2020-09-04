@@ -151,7 +151,8 @@ class AsqQuestionConfigEditorGUI
     {
         $form = AsqGateway::get()->ui()->getQuestionEditForm(
             $this->question,
-            $this->ctrl->getFormAction($this, self::CMD_SAVE_FORM));
+            $this->ctrl->getFormAction($this, self::CMD_SAVE_FORM)
+        );
 
 //         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
 //         $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));

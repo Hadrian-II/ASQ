@@ -35,8 +35,7 @@ class Renderer extends AbstractComponentRenderer
      */
     public function render(Component $component, RendererInterface $default_renderer) : string
     {
-        switch (get_class($component))
-        {
+        switch (get_class($component)) {
             case FeedbackComponent::class:
                 return $this->renderFeedback($component, $default_renderer);
             case AnswerFeedbackComponent::class:

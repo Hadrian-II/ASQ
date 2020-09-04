@@ -69,7 +69,8 @@ class AsqQuestionHintEditorGUI
     {
         $form = AsqGateway::get()->ui()->getQuestionHintForm(
             $this->question_dto,
-            $this->ctrl->getFormAction($this, self::CMD_SAVE));
+            $this->ctrl->getFormAction($this, self::CMD_SAVE)
+        );
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->question_dto->setQuestionHints($form->getHintsFromPost());

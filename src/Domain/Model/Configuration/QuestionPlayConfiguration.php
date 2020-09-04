@@ -33,8 +33,8 @@ class QuestionPlayConfiguration extends AbstractValueObject
      */
     public static function create(
         AbstractValueObject $editor_configuration = null,
-        AbstractValueObject $scoring_configuration = null) : QuestionPlayConfiguration
-    {
+        AbstractValueObject $scoring_configuration = null
+    ) : QuestionPlayConfiguration {
         $object = new QuestionPlayConfiguration();
         $object->editor_configuration = $editor_configuration;
         $object->scoring_configuration = $scoring_configuration;

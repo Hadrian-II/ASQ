@@ -54,7 +54,8 @@ class QuestionDataFormFactory extends AbstractObjectFactory
                  QuestionData::LIFECYCLE_FINAL => $this->language->txt('asq_lifecycle_final'),
                  QuestionData::LIFECYCLE_SHARABLE => $this->language->txt('asq_lifecycle_sharable'),
                  QuestionData::LIFECYCLE_OUTDATED => $this->language->txt('asq_lifecycle_outdated')
-            ]);
+            ]
+        );
 
         $question_text = $this->factory->input()->field()
                             ->textarea($this->language->txt('asq_label_question'));

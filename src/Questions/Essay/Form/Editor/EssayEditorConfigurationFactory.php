@@ -30,7 +30,8 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
 
         $max_length = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_max_length'),
-            $this->language->txt('asq_info_max_length'));
+            $this->language->txt('asq_info_max_length')
+        );
 
         if (!is_null($value)) {
             $max_length = $max_length->withValue(strval($value->getMaxLength()));

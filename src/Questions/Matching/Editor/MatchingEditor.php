@@ -50,8 +50,6 @@ class MatchingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-
-
         if (!$this->isPostVarSet($this->question->getId())) {
             return null;
         }

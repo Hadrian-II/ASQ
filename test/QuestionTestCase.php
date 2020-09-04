@@ -58,7 +58,6 @@ abstract class QuestionTestCase extends TestCase
 
     public function setUp() : void
     {
-
     }
 
     public function questionAnswerProvider() : array
@@ -112,13 +111,13 @@ abstract class QuestionTestCase extends TestCase
      */
     public function testComponentRendering(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
     {
-            global $DIC;
+        global $DIC;
 
-            $q = new QuestionComponent($question, $DIC->ui(), $DIC->language());
-            $q->setAnswer($answer);
-            $output = $q->renderHtml();
+        $q = new QuestionComponent($question, $DIC->ui(), $DIC->language());
+        $q->setAnswer($answer);
+        $output = $q->renderHtml();
 
-            $this->assertTrue(strlen($output) > 0);
+        $this->assertTrue(strlen($output) > 0);
     }
 
     /**

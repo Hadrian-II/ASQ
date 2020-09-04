@@ -133,10 +133,10 @@ class FormulaEditor extends AbstractEditor
             $this->getUnitPostVariableName($name),
             implode(array_map(function ($unit) use ($name) {
                 return sprintf(
-                               '<option value="%1$s" %2$s>%1$s</option>',
-                               $unit,
-                               !is_null($this->answer) && $this->answer->getValues()[$name . self::VAR_UNIT] === $unit ? 'selected="selected"' : ''
-                           );
+                    '<option value="%1$s" %2$s>%1$s</option>',
+                    $unit,
+                    !is_null($this->answer) && $this->answer->getValues()[$name . self::VAR_UNIT] === $unit ? 'selected="selected"' : ''
+                );
             }, $units))
         );
     }

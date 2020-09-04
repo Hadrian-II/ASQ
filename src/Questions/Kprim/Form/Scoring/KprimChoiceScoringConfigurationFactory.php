@@ -35,7 +35,8 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
 
         $half_points_at = $this->factory->input()->field()->checkbox(
             $this->language->txt('asq_label_half_points'),
-            $this->language->txt('asq_description_half_points'));
+            $this->language->txt('asq_description_half_points')
+        );
 
         if ($value !== null) {
             $points = $points->withValue(strval($value->getPoints()));

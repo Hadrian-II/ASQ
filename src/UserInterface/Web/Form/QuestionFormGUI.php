@@ -125,7 +125,8 @@ class QuestionFormGUI
     {
         $panel = $this->ui->factory()->panel()->standard(
             $this->language->txt($this->initial_question->getType()->getTitleKey()),
-            $this->form);
+            $this->form
+        );
 
         return $this->ui->renderer()->render($panel);
     }
@@ -143,13 +144,14 @@ class QuestionFormGUI
 
         $this->inputs = array_merge(
             $this->inputs,
-            $this->form_factory->getFormfields($question->getPlayConfiguration()));
+            $this->form_factory->getFormfields($question->getPlayConfiguration())
+        );
 
-        if ($this->form_factory->hasAnswerOptions())
-        {
+        if ($this->form_factory->hasAnswerOptions()) {
             $option_form = AsqGateway::get()->ui()->getAsqTableInput(
                 $this->language->txt('asq_label_answer'),
-                $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration()));
+                $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration())
+            );
 
             $option_form = $option_form
                 ->withOptions($this->form_factory->getAnswerOptionConfiguration())

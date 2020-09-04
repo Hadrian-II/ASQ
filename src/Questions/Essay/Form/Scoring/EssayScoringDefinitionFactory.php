@@ -47,13 +47,13 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
             $this->language->txt('asq_label_points'),
             AsqTableInputFieldDefinition::TYPE_NUMBER,
             self::VAR_POINTS
-            );
+        );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_TEXT
-            );
+        );
 
         return $fields;
     }
@@ -65,7 +65,8 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
     {
         return EssayScoringDefinition::create(
             $values[self::VAR_TEXT],
-            floatval($values[self::VAR_POINTS]));
+            floatval($values[self::VAR_POINTS])
+        );
     }
 
     /**

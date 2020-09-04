@@ -38,12 +38,12 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
 
         if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
             return new Error(new AsqException(
-               sprintf(
+                sprintf(
                    'A revision with the Name: "%s" already exists for Question: "%s"',
                    $command->getRevisionName(),
                    $command->getQuestionId()
                )
-           ));
+            ));
         }
 
 

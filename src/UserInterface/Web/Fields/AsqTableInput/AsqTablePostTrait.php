@@ -12,7 +12,8 @@ namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-trait AsqTablePostTrait {
+trait AsqTablePostTrait
+{
     /**
      * @param int $id
      * @param string $postvar

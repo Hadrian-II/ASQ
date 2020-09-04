@@ -40,9 +40,10 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
 
         $max_answers = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_answering_limitation'),
-            $this->language->txt('asq_info_answering_limitation'));
+            $this->language->txt('asq_info_answering_limitation')
+        );
 
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             $max_answers = $max_answers->withValue(strval($value->getMaxAnswers()));
         }
 
@@ -51,15 +52,18 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
                 self::STR_SINGLECHOICE =>
                 $this->factory->input()->field()->group(
                     [],
-                    $this->language->txt('asq_label_single_choice')),
+                    $this->language->txt('asq_label_single_choice')
+                ),
                 self::STR_MULTICHOICE =>
                 $this->factory->input()->field()->group(
                     [
                         self::VAR_MAX_ANSWERS => $max_answers
                     ],
-                    $this->language->txt('asq_label_multiple_choice')),
+                    $this->language->txt('asq_label_multiple_choice')
+                ),
             ],
-            $this->language->txt('asq_label_mode'));
+            $this->language->txt('asq_label_mode')
+        );
 
         $image = AsqGateway::get()->ui()->getImageUpload($this->language->txt('asq_label_image'));
 
