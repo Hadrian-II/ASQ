@@ -3,12 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Cloze\Form\Editor;
 
-use ilFormSectionHeaderGUI;
-use ilNumberInputGUI;
-use ilPropertyFormGUI;
-use ilSelectInputGUI;
-use ilTextAreaInputGUI;
+use ILIAS\DI\UIServices;
+use ILIAS\UI\Renderer;
+use ILIAS\UI\Component\Input\Field\Input;
+use ILIAS\UI\Component\Input\Field\Section;
+use ilLanguage;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\AsqGateway;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeGapConfiguration;
@@ -17,8 +18,9 @@ use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
 /**
@@ -33,16 +35,35 @@ use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 {
     use PostAccess;
+    use InputHandlingTrait;
 
     const VAR_CLOZE_TEXT = 'cze_text';
     const VAR_GAP_SIZE = 'cze_gap_size';
     const VAR_TEXT_METHOD = 'cze_text_method';
+    const VAR_GAP = 'cze_gap';
     const VAR_GAP_TYPE = 'cze_gap_type';
+    const VAR_GAP_DEFINITION = 'cze_gap_definition';
     const VAR_GAP_ITEMS = 'cze_gap_items';
     const VAR_GAP_VALUE = 'cze_gap_value';
     const VAR_GAP_UPPER = 'cze_gap_upper';
     const VAR_GAP_LOWER = 'cze_gap_lower';
     const VAR_GAP_POINTS = 'cze_gap_points';
+
+    /**
+     * @var Renderer
+     */
+    private $renderer;
+
+    /**
+     * @param ilLanguage $language
+     * @param UIServices $ui
+     */
+    public function __construct(ilLanguage $language, UIServices $ui)
+    {
+        $this->renderer = $ui->renderer();
+
+        parent::__construct($language, $ui);
+    }
 
     /**
      * @param AbstractValueObject $value
@@ -52,164 +73,163 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $cloze_text = new ilTextAreaInputGUI($this->language->txt('asq_label_cloze_text'), self::VAR_CLOZE_TEXT);
-        $cloze_text->setRequired(true);
-        //TODO? template addidtion is rather hacky
-        $cloze_text->setInfo($this->language->txt('asq_description_cloze_text') .
+        $cloze_text = $this->factory->input()->field()->text(
+            $this->language->txt('asq_label_cloze_text'),
+            $this->language->txt('asq_description_cloze_text') .
             '<br /><input type="button"
-                                           value="' . $this->language->txt('asq_parse_question') . '"
-                                           class="js_parse_cloze_question btn btn-default" />' .
-            self::createTemplates());
-        $fields[self::VAR_CLOZE_TEXT] = $cloze_text;
-
-        $gaps = $_SERVER['REQUEST_METHOD'] !== 'POST' ? $value->getGaps() : $this->readGapConfigs();
-
-        for ($i = 1; $i <= count($gaps); $i += 1) {
-            $fields = array_merge($fields, $this->createGapFields($i, $gaps[$i - 1]));
-        }
+               value="' . $this->language->txt('asq_parse_question') . '"
+               class="js_parse_cloze_question btn btn-default" />' .
+               self::createTemplates());
 
         if ($value !== null) {
-            $cloze_text->setValue($value->getClozeText());
+            $cloze_text = $cloze_text->withValue($value->getClozeText());
+        }
+
+        $fields[self::VAR_CLOZE_TEXT] = $cloze_text;
+
+        $gaps = $_SERVER['REQUEST_METHOD'] !== 'POST' ? $value->getGaps() : $this->readGapConfigs($_POST);
+
+        for ($i = 1; $i <= count($gaps); $i += 1) {
+            $fields[$i . self::VAR_GAP] = $this->createGapFields($this->getGapType($gaps[$i - 1]), $gaps[$i - 1]);
         }
 
         return $fields;
     }
 
     /**
-     * @param int $index
+     * @param ClozeGapConfiguration $config
+     * @return string
+     */
+    private function getGapType(ClozeGapConfiguration $config) : string
+    {
+        switch (get_class($config)) {
+            case TextGapConfiguration::class:
+                return ClozeGapConfiguration::TYPE_TEXT;
+            case SelectGapConfiguration::class:
+                return ClozeGapConfiguration::TYPE_DROPDOWN;
+            case NumericGapConfiguration::class:
+                return ClozeGapConfiguration::TYPE_NUMBER;
+        }
+    }
+
+    /**
+     * @param string $type
      * @param ClozeGapConfiguration $gap
-     * @return array
+     * @return Section
      */
-    private function createGapFields(int $index, ClozeGapConfiguration $gap = null) : array
+    private function createGapFields(string $type, ?ClozeGapConfiguration $gap = null) : Section
     {
-        $fields = [];
+        $gap_type = $this->factory->input()->field()->select(
+            $this->language->txt('asq_label_gap_type'),
+            [
+                ClozeGapConfiguration::TYPE_DROPDOWN => $this->language->txt('asq_label_gap_type_dropdown'),
+                ClozeGapConfiguration::TYPE_TEXT => $this->language->txt('asq_label_gap_type_text'),
+                ClozeGapConfiguration::TYPE_NUMBER => $this->language->txt('asq_label_gap_type_number')
+            ],
+            sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $this->language->txt('asq_label_btn_delete_gap'))
+        )->withValue($type);
 
-        $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle('');
-        $fields[] = $spacer;
+        $fields[self::VAR_GAP_TYPE] =$gap_type;
 
-        $gap_type = new ilSelectInputGUI($this->language->txt('asq_label_gap_type'), $index . self::VAR_GAP_TYPE);
-        $gap_type->setOptions([
-            ClozeGapConfiguration::TYPE_DROPDOWN => $this->language->txt('asq_label_gap_type_dropdown'),
-            ClozeGapConfiguration::TYPE_TEXT => $this->language->txt('asq_label_gap_type_text'),
-            ClozeGapConfiguration::TYPE_NUMBER => $this->language->txt('asq_label_gap_type_number')
-        ]);
-        $gap_type->setInfo(sprintf('<a class="btn btn-default btn-sm js_delete_button">%s</a>', $this->language->txt('asq_label_btn_delete_gap')));
-        $fields[$index . self::VAR_GAP_TYPE] = $gap_type;
-
-        if (!is_null($gap)) {
-            if (get_class($gap) === TextGapConfiguration::class) {
-                $fields = array_merge($fields, self::createTextGapFields($gap, $index));
-                $gap_type->setValue(ClozeGapConfiguration::TYPE_TEXT);
-            } elseif (get_class($gap) === SelectGapConfiguration::class) {
-                $fields = array_merge($fields, self::createSelectGapFields($gap, $index));
-                $gap_type->setValue(ClozeGapConfiguration::TYPE_DROPDOWN);
-            } elseif (get_class($gap) === NumericGapConfiguration::class) {
-                $fields = array_merge($fields, self::createNumberGapFields($gap, $index));
-                $gap_type->setValue(ClozeGapConfiguration::TYPE_NUMBER);
-            }
+        switch($type) {
+            case ClozeGapConfiguration::TYPE_DROPDOWN:
+                $fields += $this->createTextGapFields($gap);
+                break;
+            case ClozeGapConfiguration::TYPE_TEXT:
+                $fields += $this->createSelectGapFields($gap);
+                break;
+            case ClozeGapConfiguration::TYPE_NUMBER:
+                $fields += $this->createNumberGapFields($gap);
+                break;
         }
 
-        return $fields;
+        $section = $this->factory->input()->field()->section(
+            $fields,
+            $this->language->txt('asq_header_feedback_answers'));
+
+        return $section;
     }
 
     /**
-     * @param TextGapConfiguration $gap
-     * @param int $index
-     * @return array
+     * @param ?TextGapConfiguration $gap
+     * @return Input[]
      */
-    private function createTextGapFields(TextGapConfiguration $gap, int $index) : array
+    private function createTextGapFields(?TextGapConfiguration $gap = null) : array
     {
         $fields = [];
 
-        $items = is_null($gap) ? [] : $gap->getItemsArray();
-
-        $gap_items = new AsqTableInput(
+        $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
-            $index . self::VAR_GAP_ITEMS,
-            $items,
-            $this->getClozeGapItemFieldDefinitions()
-        );
-        $gap_items->setRequired(true);
+            $this->getClozeGapItemFieldDefinitions());
 
-        $fields[$index . self::VAR_GAP_ITEMS] = $gap_items;
-
-        $field_size = new ilNumberInputGUI(
-            $this->language->txt('asq_textfield_size'),
-            $index . self::VAR_GAP_SIZE
-        );
-        $field_size->setValue($gap->getFieldLength());
-        $fields[$index . self::VAR_GAP_SIZE] = $field_size;
+        // needs value to render in template
+        $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
 
         $text_scoring = new TextScoring($this->language);
-        $text_method = $text_scoring->getScoringTypeSelectionField($index . self::VAR_TEXT_METHOD);
-        $text_method->setValue($gap->getMatchingMethod());
-        $fields[$index . self::VAR_TEXT_METHOD] = $text_method;
+        $text_method = $text_scoring->getScoringTypeSelectionField($this->factory)->withValue('');
+
+        if (! is_null($gap)) {
+            $gap_items = $gap_items->withValue($gap->getItemsArray());
+            $field_size = $field_size->withValue($gap->getFieldLength());
+            $text_method = $text_method->withValue($gap->getMatchingMethod());
+        }
+
+        $fields[self::VAR_GAP_ITEMS] = $gap_items;
+        $fields[self::VAR_GAP_SIZE] = $field_size;
+        $fields[self::VAR_TEXT_METHOD] = $text_method;
 
         return $fields;
     }
 
     /**
-     * @param SelectGapConfiguration $gap
-     * @param int $index
-     * @return \srag\asq\UserInterface\Web\Fields\AsqTableInput[]
+     * @param ?SelectGapConfiguration $gap
+     * @return Input[]
      */
-    private function createSelectGapFields(SelectGapConfiguration $gap, int $index) : array
+    private function createSelectGapFields(?SelectGapConfiguration $gap = null) : array
     {
         $fields = [];
 
-        $items = is_null($gap) ? [] : $gap->getItemsArray();
-
-        $gap_items = new AsqTableInput(
+        $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
-            $index . self::VAR_GAP_ITEMS,
-            $items,
-            $this->getClozeGapItemFieldDefinitions()
-        );
-        $gap_items->setRequired(true);
-        $fields[$index . self::VAR_GAP_ITEMS] = $gap_items;
+            $this->getClozeGapItemFieldDefinitions());
+
+        if (! is_null($gap)) {
+            $gap_items = $gap_items->withValue($gap->getItemsArray());
+        }
+
+        $fields[self::VAR_GAP_ITEMS] = $gap_items;
 
         return $fields;
     }
 
     /**
      * @param NumericGapConfiguration $gap
-     * @param int $index
-     * @return array
+     * @return Input[]
      */
-    private function createNumberGapFields(NumericGapConfiguration $gap, int $index) : array
+    private function createNumberGapFields(?NumericGapConfiguration $gap = null) : array
     {
         $fields = [];
 
-        $value = new ilNumberInputGUI($this->language->txt('asq_correct_value'), $index . self::VAR_GAP_VALUE);
-        $value->setRequired(true);
-        $value->allowDecimals(true);
-        $value->setValue($gap->getValue());
-        $fields[$index . self::VAR_GAP_VALUE] = $value;
+        // needs value to render in template
+        $value = $this->factory->input()->field()->text($this->language->txt('asq_correct_value'))->withValue('');
+        $upper = $this->factory->input()->field()->text($this->language->txt('asq_label_upper_bound'))->withValue('');
+        $lower = $this->factory->input()->field()->text($this->language->txt('asq_label_lower_bound'))->withValue('');
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_header_points'))->withValue('');
+        $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
 
-        $upper = new ilNumberInputGUI($this->language->txt('asq_label_upper_bound'), $index . self::VAR_GAP_UPPER);
-        $upper->setRequired(true);
-        $upper->allowDecimals(true);
-        $upper->setValue($gap->getUpper());
-        $fields[$index . self::VAR_GAP_UPPER] = $upper;
+        if (! is_null($gap)) {
+            $value = $value->withValue($gap->getValue());
+            $upper = $upper->withValue($gap->getUpper());
+            $lower = $lower->withValue($gap->getLower());
+            $points = $points->withValue($gap->getPoints());
+            $field_size = $field_size->withValue($gap->getFieldLength());
+        }
 
-        $lower = new ilNumberInputGUI($this->language->txt('asq_label_lower_bound'), $index . self::VAR_GAP_LOWER);
-        $lower->setRequired(true);
-        $lower->allowDecimals(true);
-        $lower->setValue($gap->getLower());
-        $fields[$index . self::VAR_GAP_LOWER] = $lower;
-
-        $points = new ilNumberInputGUI($this->language->txt('asq_header_points'), $index . self::VAR_GAP_POINTS);
-        $points->setRequired(true);
-        $points->setValue($gap->getPoints());
-        $fields[$index . self::VAR_GAP_POINTS] = $points;
-
-        $field_size = new ilNumberInputGUI(
-            $this->language->txt('asq_textfield_size'),
-            $index . self::VAR_GAP_SIZE
-        );
-        $field_size->setValue($gap->getFieldLength());
-        $fields[$index . self::VAR_GAP_SIZE] = $field_size;
+        $fields[self::VAR_GAP_VALUE] = $value;
+        $fields[self::VAR_GAP_UPPER] = $upper;
+        $fields[self::VAR_GAP_LOWER] = $lower;
+        $fields[self::VAR_GAP_POINTS] = $points;
+        $fields[self::VAR_GAP_SIZE] = $field_size;
 
         return $fields;
     }
@@ -225,27 +245,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                             <div class="number">%s</div>
                             <div class="select">%s</div>
                         </div>',
-            $this->createTemplate(TextGapConfiguration::Create()),
-            $this->createTemplate(NumericGapConfiguration::Create()),
-            $this->createTemplate(SelectGapConfiguration::Create())
+            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_TEXT)),
+            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_NUMBER)),
+            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_DROPDOWN))
         );
-    }
-
-    /**
-     * @param ClozeGapConfiguration $config
-     * @return string
-     */
-    private function createTemplate(ClozeGapConfiguration $config) : string
-    {
-        $fields = self::createGapFields(0, $config);
-
-        $template_form = new ilPropertyFormGUI();
-
-        foreach ($fields as $field) {
-            $template_form->addItem($field);
-        }
-
-        return '<div class="ilFormHeader"></div>' . $template_form->getHTML();
     }
 
     /**
@@ -268,20 +271,22 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
+     * @param array $postdata
      * @return ClozeEditorConfiguration
      */
-    public function readObjectFromPost() : AbstractValueObject
+    public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return ClozeEditorConfiguration::create(
-            $this->readString(self::VAR_CLOZE_TEXT),
-            $this->readGapConfigs()
+            $this->readString($postdata[self::VAR_CLOZE_TEXT]),
+            []//$this->readGapConfigs($postdata)
         );
     }
 
     /**
+     * @param array $postdata
      * @return ClozeGapConfiguration[]
      */
-    public function readGapConfigs() : array
+    public function readGapConfigs(array $postdata) : array
     {
         $i = 1;
         $gap_configs = [];
@@ -305,9 +310,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
     /**
      * @param string $i
+     * @param array $postdata
      * @return NumericGapConfiguration
      */
-    private function readNumericGapConfiguration(string $i) : NumericGapConfiguration
+    private function readNumericGapConfiguration(string $i, array $postdata) : NumericGapConfiguration
     {
         return NumericGapConfiguration::Create(
             $this->readFloat($i . self::VAR_GAP_VALUE),
@@ -320,9 +326,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
     /**
      * @param string $i
+     * @param array $postdata
      * @return SelectGapConfiguration
      */
-    private function readSelectGapConfiguration(string $i) : SelectGapConfiguration
+    private function readSelectGapConfiguration(string $i, array $postdata) : SelectGapConfiguration
     {
         $gap_items = new AsqTableInput(
             $this->language->txt('asq_label_gap_items'),
@@ -346,9 +353,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
     /**
      * @param string $i
+     * @param array $postdata
      * @return TextGapConfiguration
      */
-    private function readTextGapConfiguration(string $i) : TextGapConfiguration
+    private function readTextGapConfiguration(string $i, array $postdata) : TextGapConfiguration
     {
         $gap_items = new AsqTableInput(
             $this->language->txt('asq_label_gap_items'),

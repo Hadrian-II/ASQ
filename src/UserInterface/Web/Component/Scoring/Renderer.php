@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Scoring;
 
-use ilTemplate;
 use ILIAS\UI\Renderer as RendererInterface;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
+use ilTemplate;
 use srag\asq\PathHelper;
-use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 
 /**
  * Class Renderer

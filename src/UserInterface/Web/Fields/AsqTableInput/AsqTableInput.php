@@ -167,6 +167,7 @@ class AsqTableInput extends Input
      */
     public function readValues(InputData $input) : array
     {
+
         $values = [];
         $i = 0;
         $found = true;

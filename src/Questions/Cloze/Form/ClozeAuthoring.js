@@ -1,4 +1,8 @@
 (function ($) {
+    const TYPE_NUMBER = 'clz_number';
+    const TYPE_DROPDOWN = 'clz_dropdown';
+    const TYPE_TEXT = 'clz_text';
+    
     const clozeRegex = /{[^}]*}/g;
 
     function updateGapNames($gap_item, index, oldIndex = 0) {
@@ -9,6 +13,8 @@
             }
             asqAuthoring.processItem($(item), index);
         });
+        
+        $gap_item.find('select').eq(0).addClass('js_select_type');
 
         $($gap_item.find('.aot_table input')).each((ix, item) => {
             const input = $(item);
@@ -26,8 +32,8 @@
     }
 
     function addGapItem() {
-        const clozeText = $('#cze_text');
-        const matches = $('#cze_text').val().match(clozeRegex);
+        const clozeText = $('input[name=form_input_7]');
+        const matches = clozeText.val().match(clozeRegex);
         const gapIndex = matches ? matches.length + 1 : 1;
 
         const cursor = clozeText[0].selectionStart;
@@ -36,8 +42,8 @@
         const afterCursor = text.substring(cursor);
         clozeText.val(`${beforeCursor}{${gapIndex}}${afterCursor}`);
 
-        const lastNonGap = $('#il_prop_cont_cze_text');
-        lastNonGap.siblings('.ilFormFooter').before(createNewGap(gapIndex));
+        const lastNonGap = clozeText.parents('.form-group');
+        lastNonGap.siblings('.il-standard-form-footer').before(createNewGap(gapIndex));
     }
 
     const nrRegex = /\d*/;
@@ -47,24 +53,23 @@
         const id = selected.prop('id').match(nrRegex);
         let template = null;
 
-        if (selected.val() === 'clz_number') {
+        if (selected.val() === TYPE_NUMBER) {
             template = createNewGap(id, 'number');
-        } else if (selected.val() === 'clz_text') {
+        } else if (selected.val() === TYPE_TEXT) {
             template = createNewGap(id, 'text');
-        } else if (selected.val() === 'clz_dropdown') {
+        } else if (selected.val() === TYPE_DROPDOWN) {
             template = createNewGap(id, 'select');
         }
 
         const parentItem = selected.parents('.form-group');
-        parentItem.nextUntil('.ilFormFooter, .ilFormHeader').remove();
+        parentItem.nextUntil('.il-standard-form-footer, .il-section-input-header').remove();
         parentItem.after(template);
         parentItem.next().remove();
         parentItem.next().remove();
     }
 
     function prepareForm() {
-        $('.cloze_template .ilFormFooter').remove();
-        const templateForms = $('.cloze_template .form-horizontal');
+        const templateForms = $('.cloze_template .il-section-input');
 
         templateForms.each((index, item) => {
             const form = $(item);
@@ -75,12 +80,12 @@
     
     function deleteGapUIItems($pressedFormItem) {
         $pressedFormItem.prev().remove();
-        $pressedFormItem.nextUntil('.ilFormHeader, .ilFormFooter').remove();
+        $pressedFormItem.nextUntil('.il-standard-form-footer, .il-section-input-header').remove();
         $pressedFormItem.remove();        
     }
     
     function updateClozeText(currentId, replacementId = -1) {
-        const clozeText = $('#cze_text');
+        const clozeText = $('input[name=form_input_7]');
         const clozeTextVal = clozeText.val();
         const gapStr = `{${currentId}}`;
         let gapIndex = clozeTextVal.indexOf(gapStr);
@@ -99,16 +104,16 @@
         
         const $formBeginning = $(`div[id$="${oldIndex}cze_gap_type"]`).prev();
         
-        updateGapNames($formBeginning.nextUntil('.ilFormHeader, .ilFormFooter'), newIndex, oldIndex);
+        updateGapNames($formBeginning.nextUntil('.il-standard-form-footer, .il-section-input-header'), newIndex, oldIndex);
     }
     
     function deleteGapItem() {
-        const $pressedFormItem = $(this).parents('.form-group');
+        const pressedFormItem = $(this).parents('.form-group');
         
-        const gapCount = $('#cze_text').val().match(clozeRegex).length;
-        const doomedGapId = $pressedFormItem.prevAll('.ilFormHeader').length - 1;
+        const gapCount = $('input[name=form_input_7]').val().match(clozeRegex).length;
+        const doomedGapId = pressedFormItem.prevAll('.il-section-input-header').length - 1;
         
-        deleteGapUIItems($pressedFormItem);
+        deleteGapUIItems(pressedFormItem);
         
         updateClozeText(doomedGapId);
         
@@ -121,7 +126,7 @@
 
     $(document).ready(prepareForm);
 
-    $(document).on('change', 'select[id$=cze_gap_type]', changeGapForm);
+    $(document).on('change', '.js_select_type', changeGapForm);
     $(document).on('click', '.js_parse_cloze_question', addGapItem);
     $(document).on('click', '.js_delete_button', deleteGapItem);
 }(jQuery));

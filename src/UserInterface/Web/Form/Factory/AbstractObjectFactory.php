@@ -35,6 +35,7 @@ abstract class AbstractObjectFactory implements IObjectFactory
 
     /**
      * @param ilLanguage $language
+     * @param UIServices $ui
      */
     public function __construct(ilLanguage $language, UIServices $ui)
     {

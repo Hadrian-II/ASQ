@@ -5,10 +5,10 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use ILIAS\Data\UUID\Factory;
 use PHPUnit\Framework\TestCase;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
@@ -107,10 +107,10 @@ abstract class QuestionTestCase extends TestCase
      * @dataProvider questionAnswerProvider
      *
      * @param QuestionDto $question
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @param float $expected_score
      */
-    public function testComponentRendering(QuestionDto $question, Answer $answer, float $expected_score)
+    public function testComponentRendering(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
     {
             global $DIC;
 
@@ -126,10 +126,10 @@ abstract class QuestionTestCase extends TestCase
      * @dataProvider questionAnswerProvider
      *
      * @param QuestionDto $question
-     * @param Answer $answer
+     * @param AbstractValueObject $answer
      * @param float $expected_score
      */
-    public function testAnswers(QuestionDto $question, Answer $answer, float $expected_score)
+    public function testAnswers(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
     {
         $this->assertEquals($expected_score, AsqGateway::get()->answer()->getScore($question, $answer));
     }

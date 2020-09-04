@@ -39,18 +39,18 @@ trait InputHandlingTrait
     /**
      * @var AsqHtmlPurifier
      */
-    protected $purifier;
+    protected $input_purifier;
 
     /**
      * @return AsqHtmlPurifier
      */
-    private function getPurifier() : AsqHtmlPurifier
+    private function getInputPurifier() : AsqHtmlPurifier
     {
-        if (is_null($this->purifier)) {
-            $this->purifier = new AsqHtmlPurifier();
+        if (is_null($this->input_purifier)) {
+            $this->input_purifier = new AsqHtmlPurifier();
         }
 
-        return $this->purifier;
+        return $this->input_purifier;
     }
 
     /**
@@ -91,7 +91,7 @@ trait InputHandlingTrait
      */
     protected function readString(string $value) : ?string
     {
-        return $this->getPurifier()->purify($value);
+        return $this->getInputPurifier()->purify($value);
     }
 
     /**

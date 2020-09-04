@@ -12,9 +12,8 @@ use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
 use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
-use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use srag\asq\UserInterface\Web\PostAccess;
 
 /**
  * Class ClozeEditor
@@ -27,7 +26,7 @@ use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
  */
 class ClozeEditor extends AbstractEditor
 {
-    use InputHandlingTrait;
+    use PostAccess;
 
     /**
      * @var ClozeEditorConfiguration
@@ -53,7 +52,7 @@ class ClozeEditor extends AbstractEditor
         $answers = [];
 
         for ($i = 1; $i <= count($this->configuration->getGaps()); $i += 1) {
-            $answers[$i] = $this->readString($this->getPostVariable($i));
+            $answers[$i] = $this->getPostValue($this->getPostVariable($i));
         }
 
         $this->answer = ClozeAnswer::create($answers);
@@ -172,8 +171,8 @@ class ClozeEditor extends AbstractEditor
             return false;
         }
 
-        if (is_null($this->configuration->getGaps() ||
-            count($this->configuration->getGaps() < 1))) {
+        if (is_null($this->configuration->getGaps()) ||
+            count($this->configuration->getGaps()) < 1) {
             return false;
         }
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Cloze\Scoring;
 
 use ILIAS\UI\NotImplementedException;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
-use srag\asq\Domain\Model\Answer\Answer;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
@@ -13,7 +13,6 @@ use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
 use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
-use srag\asq\Questions\Generic\Data\EmptyDefinition;
 
 /**
  * Class ClozeScoring
@@ -54,7 +53,11 @@ class ClozeScoring extends AbstractScoring
      */
     private $reached_points;
 
-    public function score(Answer $answer) : float
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::score()
+     */
+    public function score(AbstractValueObject $answer) : float
     {
         $given_answer = $answer->getAnswers();
 
@@ -130,7 +133,7 @@ class ClozeScoring extends AbstractScoring
         return $max_score;
     }
 
-    public function getBestAnswer() : Answer
+    public function getBestAnswer() : AbstractValueObject
     {
         //TODO implement me
         throw new NotImplementedException("Needs to implement ClozeScoring->getBestAnswer()");
