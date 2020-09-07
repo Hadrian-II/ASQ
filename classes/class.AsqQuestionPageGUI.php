@@ -47,11 +47,6 @@ class AsqQuestionPageGUI extends ilPageObjectGUI
     private $component;
 
     /**
-     * @var UIServices
-     */
-    private $ui;
-
-    /**
      * @param int $parent_int_id
      * @param int $page_int_id
      * @param UIServices $ui
