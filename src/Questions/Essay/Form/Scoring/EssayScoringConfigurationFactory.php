@@ -58,7 +58,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
             )
             ->withOption(
                 self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ONE),
-                $this->language->txt('asq_info_automatic_one'),
+                $this->language->txt('asq_label_automatic_one'),
                 $this->language->txt('asq_info_automatic_one')
             );
 
