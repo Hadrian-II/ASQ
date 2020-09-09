@@ -12,6 +12,7 @@ use AsqQuestionHintEditorGUI;
 use AsqQuestionPageGUI;
 use AsqQuestionPreviewGUI;
 use AsqQuestionVersionGUI;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class QuestionAuthoring
@@ -43,7 +44,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditLink(string $question_id) : UiStandardLink
+    public function getEditLink(Uuid $question_id) : UiStandardLink
     {
         global $DIC;
 
@@ -59,7 +60,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getPreviewLink(string $question_id, ?string $revision_name = null) : UiStandardLink
+    public function getPreviewLink(Uuid $question_id, ?string $revision_name = null) : UiStandardLink
     {
         global $DIC;
 
@@ -82,7 +83,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditPageLink(string $question_id) : UiStandardLink
+    public function getEditPageLink(Uuid $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -101,7 +102,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditFeedbacksLink(string $question_id) : UiStandardLink
+    public function getEditFeedbacksLink(Uuid $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -119,7 +120,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditHintsLink(string $question_id) : UiStandardLink
+    public function getEditHintsLink(Uuid $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -136,7 +137,7 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getRevisionsLink(string $question_id) : UiStandardLink
+    public function getRevisionsLink(Uuid $question_id) : UiStandardLink
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
@@ -153,16 +154,16 @@ class LinkService
     /**
      * sets the question uid parameter for the ctrl hub gui ilAsqQuestionAuthoringGUI
      *
-     * @param $question_id string
+     * @param $question_id Uuid
      */
-    protected function setQuestionUidParameter(string $question_id) : void
+    protected function setQuestionUidParameter(Uuid $question_id) : void
     {
         global $DIC; /* @var \ILIAS\DI\Container $DIC */
 
         $DIC->ctrl()->setParameterByClass(
             AsqQuestionAuthoringGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
-            $question_id
+            $question_id->toString()
         );
     }
 }

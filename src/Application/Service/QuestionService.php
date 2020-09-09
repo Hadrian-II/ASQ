@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Application\Service;
 
 use ILIAS\Data\UUID\Factory;
+use ILIAS\Data\UUID\Uuid;
 use srag\CQRS\Command\CommandBus;
 use srag\CQRS\Command\CommandConfiguration;
 use srag\CQRS\Command\Access\OpenAccess;
@@ -71,11 +72,11 @@ class QuestionService extends ASQService
     /**
      * Gets question dto by question id
      *
-     * @param string $id
+     * @param Uuid $id
      * @throws AsqException
      * @return QuestionDto
      */
-    public function getQuestionByQuestionId(string $id) : QuestionDto
+    public function getQuestionByQuestionId(Uuid $id) : QuestionDto
     {
         /** @var $question Question */
         $question = QuestionRepository::getInstance()->getAggregateRootById($id);
@@ -92,11 +93,11 @@ class QuestionService extends ASQService
     /**
      * Gets question revision by question id and revision name
      *
-     * @param string $id
+     * @param Uuid $id
      * @param string $name
      * @return QuestionDto
      */
-    public function getQuestionRevision(string $id, string $name) : QuestionDto
+    public function getQuestionRevision(Uuid $id, string $name) : QuestionDto
     {
         $repo = new PublishedQuestionRepository();
         return $repo->getQuestionRevision($id, $name);
@@ -105,10 +106,10 @@ class QuestionService extends ASQService
     /**
      * Gets list of all created revisions of a question
      *
-     * @param string $id
+     * @param Uuid $id
      * @return array
      */
-    public function getAllRevisionsOfQuestion(string $id) : array
+    public function getAllRevisionsOfQuestion(Uuid $id) : array
     {
         $repo = new PublishedQuestionRepository();
         return $repo->getAllQuestionRevisions($id);
@@ -118,9 +119,9 @@ class QuestionService extends ASQService
      * Create anew revision named $name for question with id $question_id
      *
      * @param string $name
-     * @param string $question_id
+     * @param Uuid $question_id
      */
-    public function createQuestionRevision(string $name, string $question_id)
+    public function createQuestionRevision(string $name, Uuid $question_id)
     {
         $this->getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }

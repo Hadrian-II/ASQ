@@ -87,7 +87,7 @@ class ImageMapEditor extends AbstractEditor
      */
     private function getPostName() : string
     {
-        return $this->question->getId();
+        return $this->question->getId()->toString();
     }
 
     /**

@@ -5,6 +5,8 @@ use ILIAS\DI\UIServices;
 use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use ILIAS\DI\HTTPServices;
+use ILIAS\Data\UUID\Uuid;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -48,7 +50,7 @@ class AsqQuestionAuthoringGUI
      */
     protected $authoring_context_container;
     /**
-     * @var string
+     * @var Uuid
      */
     protected $question_id;
     /**
@@ -117,7 +119,9 @@ class AsqQuestionAuthoringGUI
 
         $query = $this->http->request()->getQueryParams();
         if (isset($query[self::VAR_QUESTION_ID])) {
-            $this->question_id = $query[self::VAR_QUESTION_ID];
+            $factory = new Factory();
+
+            $this->question_id = $factory->fromString($query[self::VAR_QUESTION_ID]);
         }
     }
 
@@ -126,7 +130,7 @@ class AsqQuestionAuthoringGUI
      */
     public function executeCommand() : void
     {
-        $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id);
+        $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id->toString());
 
         switch ($this->ctrl->getNextClass()) {
             case strtolower(AsqQuestionCreationGUI::class):

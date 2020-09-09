@@ -159,7 +159,7 @@ class ClozeEditor extends AbstractEditor
      */
     private function getPostVariable(int $index) : string
     {
-        return $index . $this->question->getId();
+        return $index . $this->question->getId()->toString();
     }
 
     /**

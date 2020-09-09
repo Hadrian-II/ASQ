@@ -5,6 +5,7 @@ namespace srag\asq\Domain\Event;
 
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 
 /**
@@ -25,17 +26,13 @@ class QuestionHintsSetEvent extends AbstractDomainEvent
 
 
     /**
-     * QuestionHintsSetEvent constructor.
-     *
-     * @param string             $id
-     * @param int                $container_obj_id
-     * @param int                $initiating_user_id
-     * @param QuestionHints|null $hints
-     *
-     * @throws \ilDateTimeException
+     * @param Uuid $aggregate_id
+     * @param ilDateTime $occured_on
+     * @param int $initiating_user_id
+     * @param QuestionHints $hints
      */
     public function __construct(
-        string $aggregate_id,
+        Uuid $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id,
         ?QuestionHints $hints = null

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Event;
 
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Event\AbstractDomainEvent;
@@ -26,13 +27,13 @@ class QuestionPlayConfigurationSetEvent extends AbstractDomainEvent
 
     /**
      *
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime $occured_on
      * @param int $initiating_user_id
      * @param QuestionPlayConfiguration $play_configuration
      */
     public function __construct(
-        string $aggregate_id,
+        Uuid $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id,
         QuestionPlayConfiguration $play_configuration = null

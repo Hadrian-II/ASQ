@@ -172,8 +172,8 @@ class MultipleChoiceEditor extends AbstractEditor
     private function getPostName(string $answer_id = null) : string
     {
         return $this->isMultipleChoice() ?
-            self::VAR_MC_POSTNAME . $this->question->getId() . '_' . $answer_id :
-            self::VAR_MC_POSTNAME . $this->question->getId();
+            self::VAR_MC_POSTNAME . $this->question->getId()->toString() . '_' . $answer_id :
+            self::VAR_MC_POSTNAME . $this->question->getId()->toString();
     }
 
     public function readAnswer() : AbstractValueObject

@@ -65,7 +65,7 @@ class OrderingEditor extends AbstractEditor
         $this->display_ids = [];
 
         foreach ($question->getAnswerOptions()->getOptions() as $option) {
-            $this->display_ids[$option->getOptionId()] = md5($question->getId() . $option->getDisplayDefinition()->getText());
+            $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText());
         }
     }
 
@@ -97,7 +97,7 @@ class OrderingEditor extends AbstractEditor
             $tpl->setVariable('ADD_CLASS', 'horizontal');
         }
 
-        $tpl->setVariable('POST_NAME', $this->question->getId());
+        $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
         $tpl->parseCurrentBlock();
 
@@ -141,13 +141,13 @@ class OrderingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        if (!$this->isPostVarSet($this->question->getId())) {
+        if (!$this->isPostVarSet($this->question->getId()->toString())) {
             return null;
         }
 
         return OrderingAnswer::create(array_map(function ($display_id) {
             return array_search($display_id, $this->display_ids);
-        }, explode(',', $this->getPostValue($this->question->getId()))));
+        }, explode(',', $this->getPostValue($this->question->getId()->toString()))));
     }
 
     /**

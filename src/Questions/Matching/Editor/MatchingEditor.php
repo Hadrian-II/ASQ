@@ -50,11 +50,11 @@ class MatchingEditor extends AbstractEditor
      */
     public function readAnswer() : ?AbstractValueObject
     {
-        if (!$this->isPostVarSet($this->question->getId())) {
+        if (!$this->isPostVarSet($this->question->getId()->toString())) {
             return null;
         }
 
-        $value = $this->getPostValue($this->question->getId());
+        $value = $this->getPostValue($this->question->getId()->toString());
 
         $matches = explode(';', $value);
 
@@ -73,7 +73,7 @@ class MatchingEditor extends AbstractEditor
         $config = $this->question->getPlayConfiguration()->getEditorConfiguration();
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.MatchingEditor.html', true, true);
-        $tpl->setVariable('QUESTION_ID', $this->question->getId());
+        $tpl->setVariable('QUESTION_ID', $this->question->getId()->toString());
         $tpl->setVariable('ANSWER', is_null($this->answer) ? '' :$this->answer->getAnswerString());
         $tpl->setVariable('MATCHING_TYPE', $config->getMatchingMode());
 

@@ -169,7 +169,7 @@ class FormulaEditor extends AbstractEditor
      */
     private function getPostVariableName(string $name) : string
     {
-        return $name . $this->question->getId();
+        return $name . $this->question->getId()->toString();
     }
 
     /**
@@ -178,7 +178,7 @@ class FormulaEditor extends AbstractEditor
      */
     private function getUnitPostVariableName(string $name) : string
     {
-        return $name . $this->question->getId() . self::VAR_UNIT;
+        return $name . $this->question->getId()->toString() . self::VAR_UNIT;
     }
 
     /**

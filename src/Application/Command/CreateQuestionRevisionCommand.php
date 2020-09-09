@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Command;
 
+use ILIAS\Data\UUID\Uuid;
 use srag\CQRS\Command\AbstractCommand;
 
 /**
@@ -20,7 +21,7 @@ class CreateQuestionRevisionCommand extends AbstractCommand
 {
 
     /**
-     * @var string
+     * @var Uuid
      */
     private $question_id;
 
@@ -30,11 +31,11 @@ class CreateQuestionRevisionCommand extends AbstractCommand
     private $revision_name;
 
     /**
-     * @param string $question_id
+     * @param Uuid $question_id
      * @param string $revision_name
      * @param int $issuer_id
      */
-    public function __construct(string $question_id, string $revision_name, int $issuer_id)
+    public function __construct(Uuid $question_id, string $revision_name, int $issuer_id)
     {
         parent::__construct($issuer_id);
         $this->question_id = $question_id;
@@ -43,9 +44,9 @@ class CreateQuestionRevisionCommand extends AbstractCommand
 
 
     /**
-     * @return string
+     * @return Uuid
      */
-    public function getQuestionId() : string
+    public function getQuestionId() : Uuid
     {
         return $this->question_id;
     }

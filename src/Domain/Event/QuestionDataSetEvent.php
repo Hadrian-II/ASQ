@@ -6,6 +6,7 @@ namespace srag\asq\Domain\Event;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\QuestionData;
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 
 /**
@@ -26,14 +27,14 @@ class QuestionDataSetEvent extends AbstractDomainEvent
 
 
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime $occured_on
      * @param int $initiating_user_id
      * @param int $question_int_id
      * @param QuestionData $data
      */
     public function __construct(
-        string $aggregate_id,
+        Uuid $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id,
         QuestionData $data = null

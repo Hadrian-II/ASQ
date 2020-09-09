@@ -41,7 +41,7 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
                 sprintf(
                    'A revision with the Name: "%s" already exists for Question: "%s"',
                    $command->getRevisionName(),
-                   $command->getQuestionId()
+                   $command->getQuestionId()->toString()
                )
             ));
         }

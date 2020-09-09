@@ -168,7 +168,7 @@ class KprimChoiceEditor extends AbstractEditor
      */
     private function getPostName(string $id) : string
     {
-        return $this->question->getId() . $id;
+        return $this->question->getId()->toString() . $id;
     }
 
     /**

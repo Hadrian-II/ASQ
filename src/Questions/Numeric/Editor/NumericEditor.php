@@ -49,7 +49,7 @@ class NumericEditor extends AbstractEditor
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.NumericEditor.html', true, true);
 
         $tpl->setCurrentBlock('editor');
-        $tpl->setVariable('POST_NAME', $this->question->getId());
+        $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
         $tpl->setVariable('NUMERIC_SIZE', $this->configuration->getMaxNumOfChars());
 
         if ($this->answer !== null) {
@@ -67,7 +67,7 @@ class NumericEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return NumericAnswer::create(floatval($this->getPostValue($this->question->getId())));
+        return NumericAnswer::create(floatval($this->getPostValue($this->question->getId()->toString())));
     }
 
     /**

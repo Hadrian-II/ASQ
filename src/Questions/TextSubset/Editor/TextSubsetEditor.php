@@ -68,7 +68,7 @@ class TextSubsetEditor extends AbstractEditor
      */
     private function getPostName(int $i) : string
     {
-        return $i . $this->question->getId();
+        return $i . $this->question->getId()->toString();
     }
 
     /**

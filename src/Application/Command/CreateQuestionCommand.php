@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Application\Command;
 
+use ILIAS\Data\UUID\Uuid;
 use srag\CQRS\Command\AbstractCommand;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 
@@ -20,7 +21,7 @@ class CreateQuestionCommand extends AbstractCommand
 {
 
     /**
-     * @var string
+     * @var Uuid
      */
     protected $question_uuid;
 
@@ -30,13 +31,13 @@ class CreateQuestionCommand extends AbstractCommand
     protected $question_type;
 
     /**
-     * @param string $question_uuid
+     * @param Uuid $question_uuid
      * @param QuestionType $question_type
      * @param int $initiating_user_id
      * @param int $container_id
      */
     public function __construct(
-        string $question_uuid,
+        Uuid $question_uuid,
         QuestionType $question_type,
         int $initiating_user_id
     ) {
@@ -46,9 +47,9 @@ class CreateQuestionCommand extends AbstractCommand
     }
 
     /**
-     * @return string
+     * @return Uuid
      */
-    public function getQuestionUuid() : string
+    public function getQuestionUuid() : Uuid
     {
         return $this->question_uuid;
     }

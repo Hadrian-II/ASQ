@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Event;
 
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Feedback\Feedback;
@@ -25,14 +26,14 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent
 
 
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param int $container_obj_id
      * @param int $initiating_user_id
      * @param int $question_int_id
      * @param Feedback $feedback
      */
     public function __construct(
-        string $aggregate_id,
+        Uuid $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id,
         ?Feedback $feedback = null

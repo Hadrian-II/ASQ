@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model;
 
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractAggregateRoot;
 use srag\CQRS\Aggregate\IsRevisable;
@@ -68,13 +69,13 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     private $feedback;
 
     /**
-     * @param string $question_uuid
+     * @param Uuid $question_uuid
      * @param int $initiating_user_id
      * @param QuestionType $question_type
      * @return Question
      */
     public static function createNewQuestion(
-        string $question_uuid,
+        Uuid $question_uuid,
         int $initiating_user_id,
         QuestionType $question_type
     ) : Question {

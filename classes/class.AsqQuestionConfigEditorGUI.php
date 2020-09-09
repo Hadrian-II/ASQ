@@ -7,6 +7,8 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -54,14 +56,14 @@ class AsqQuestionConfigEditorGUI
 
     /**
      * @param AuthoringContextContainer $contextContainer
-     * @param string $questionId
+     * @param Uuid $questionId
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
      */
     public function __construct(
         AuthoringContextContainer $contextContainer,
-        string $questionId,
+        Uuid $questionId,
         ilLanguage $language,
         UIServices $ui,
         ilCtrl $ctrl

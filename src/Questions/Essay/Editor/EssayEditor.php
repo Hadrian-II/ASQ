@@ -64,7 +64,7 @@ class EssayEditor extends AbstractEditor
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.EssayEditor.html', true, true);
 
         $tpl->setVariable('ESSAY', is_null($this->answer) ? '' : $this->answer->getText());
-        $tpl->setVariable('POST_VAR', $this->question->getId());
+        $tpl->setVariable('POST_VAR', $this->question->getId()->toString());
 
         if (!empty($this->configuration->getMaxLength())) {
             $tpl->setCurrentBlock('maximum_char_hint');
@@ -96,7 +96,7 @@ class EssayEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return EssayAnswer::create($this->getPostValue($this->question->getId()));
+        return EssayAnswer::create($this->getPostValue($this->question->getId()->toString()));
     }
 
     /**

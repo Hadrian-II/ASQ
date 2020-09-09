@@ -12,6 +12,7 @@ use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class QuestionDto
@@ -28,7 +29,7 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @var string
+     * @var Uuid
      */
     private $id;
 
@@ -100,17 +101,17 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @return string
+     * @return Uuid
      */
-    public function getId() : string
+    public function getId() : Uuid
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param Uuid $id
      */
-    public function setId(string $id) : void
+    public function setId(Uuid $id) : void
     {
         $this->id = $id;
     }

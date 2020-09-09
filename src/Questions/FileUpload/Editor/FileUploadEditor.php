@@ -93,7 +93,7 @@ class FileUploadEditor extends AbstractEditor
         $this->upload->process();
 
         foreach ($this->upload->getResults() as $result) {
-            $folder = self::UPLOADPATH . $this->question->getId() . '/';
+            $folder = self::UPLOADPATH . $this->question->getId()->toString() . '/';
             $pathinfo = pathinfo($result->getName());
 
             $uuid_factory = new Factory();
@@ -202,7 +202,7 @@ class FileUploadEditor extends AbstractEditor
      */
     private function getPostVar() : string
     {
-        return $this->question->getId();
+        return $this->question->getId()->toString();
     }
 
     /**

@@ -8,6 +8,7 @@ use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AsqQuestionPreviewGUI
@@ -33,7 +34,7 @@ class AsqQuestionPreviewGUI
     const PARAM_REVISON_NAME = 'revisionName';
 
     /**
-     * @var string
+     * @var Uuid
      */
     protected $question_id;
 
@@ -78,12 +79,12 @@ class AsqQuestionPreviewGUI
     private $http;
 
     /**
-     * @param string $question_id
+     * @param Uuid $question_id
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
      */
-    public function __construct(string $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl, HTTPServices $http)
+    public function __construct(Uuid $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl, HTTPServices $http)
     {
         $this->question_id = $question_id;
         $this->language = $language;
