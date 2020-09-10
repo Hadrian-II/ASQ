@@ -130,7 +130,9 @@ class AsqQuestionAuthoringGUI
      */
     public function executeCommand() : void
     {
-        $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id->toString());
+        if (! is_null($this->question_id)) {
+            $this->ctrl->setParameter($this, self::VAR_QUESTION_ID, $this->question_id->toString());
+        }
 
         switch ($this->ctrl->getNextClass()) {
             case strtolower(AsqQuestionCreationGUI::class):

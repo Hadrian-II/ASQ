@@ -138,7 +138,7 @@ class QuestionService extends ASQService
     {
         $uuid_factory = new Factory();
 
-        $id = $uuid_factory->uuid4AsString();
+        $id = $uuid_factory->uuid4();
 
         $this->getCommandBus()->handle(
             new CreateQuestionCommand(

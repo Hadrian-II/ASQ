@@ -7,7 +7,6 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use ILIAS\Data\UUID\Uuid;
 
 /**

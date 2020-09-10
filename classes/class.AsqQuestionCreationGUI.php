@@ -119,8 +119,7 @@ class AsqQuestionCreationGUI
         }
 
         $new_question = AsqGateway::get()->question()->createQuestion(
-            $form->getQuestionType(),
-            $this->contextContainer->getObjId()
+            $form->getQuestionType()
         );
 
         if (!is_null($this->contextContainer->getCaller())) {
@@ -130,7 +129,7 @@ class AsqQuestionCreationGUI
         $this->ctrl->setParameterByClass(
             AsqQuestionConfigEditorGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
-            $new_question->getId()
+            $new_question->getId()->toString()
         );
 
         $this->ctrl->redirectByClass(
