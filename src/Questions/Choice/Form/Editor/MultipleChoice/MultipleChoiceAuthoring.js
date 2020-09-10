@@ -6,7 +6,7 @@
         asqAuthoring.clearTiny();
 
         tinySettings.mode = '';
-        tinySettings.selector = '#question, input[id$=mcdd_text]';
+        tinySettings.selector = 'input[id$=mcdd_text]';
         tinymce.init(tinySettings);
 
         $('input[id$=mcdd_image]').each((index, item) => {
@@ -24,7 +24,7 @@
     function hideMultilineEditor() {
         asqAuthoring.clearTiny('input[id$=mcdd_text]');
 
-        $('input[id$=mcdd_image').each((index, item) => {
+        $('input[id$=mcdd_image]').each((index, item) => {
             const td = $(item).parents('td');
             td.children().show();
 
@@ -47,18 +47,18 @@
             return;
         }
 
-        if ($('#singleline').val() === 'true') {
-            hideMultilineEditor();
-        } else {
+        if ($('select[name=form_input_8]').val() === 'false') {
             showMultilineEditor();
+        } else {
+            hideMultilineEditor();
         }
     }
 
     $(window).load(() => {
-        if ($('#singleline').length > 0) {
+        if ($('select[name=form_input_8]').length > 0) {
             updateEditor();
         }
     });
 
-    $(document).on('change', '#singleline', updateEditor);
+    $(document).on('change', 'select[name=form_input_8]', updateEditor);
 }(jQuery));

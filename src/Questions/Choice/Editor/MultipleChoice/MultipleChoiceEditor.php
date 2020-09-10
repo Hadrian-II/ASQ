@@ -55,6 +55,7 @@ class MultipleChoiceEditor extends AbstractEditor
         $this->answer_options = $question->getAnswerOptions()->getOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->ui = $DIC->ui();
+        $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
         if ($this->configuration->isShuffleAnswers()) {
             shuffle($this->answer_options);
@@ -130,7 +131,7 @@ class MultipleChoiceEditor extends AbstractEditor
 
         $this->ui
             ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceEditor.js');
+            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/MultipleChoice/MultipleChoiceEditor.js');
 
         return $tpl->get();
     }

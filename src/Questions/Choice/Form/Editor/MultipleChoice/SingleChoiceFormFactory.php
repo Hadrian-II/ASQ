@@ -40,6 +40,6 @@ class SingleChoiceFormFactory extends QuestionFormFactory
      */
     public function getScripts() : array
     {
-        return [ $this->getBasePath(__DIR__) . 'src/Questions/MultipleChoice/MultipleChoiceAuthoring.js' ];
+        return [ $this->getBasePath(__DIR__) . 'src/Questions/Choice/Form/Editor/MultipleChoice/MultipleChoiceAuthoring.js' ];
     }
 }
