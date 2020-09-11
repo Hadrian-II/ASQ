@@ -9,11 +9,11 @@ use Psr\Http\Message\RequestInterface;
 use ilFormSectionHeaderGUI;
 use ilLanguage;
 use ilTextInputGUI;
-use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionDataFormFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class QuestionFormGUI
@@ -84,22 +84,33 @@ class QuestionFormGUI
     protected $form;
 
     /**
+     * @var UIService     */
+    protected $asq_ui;
+
+    /**
      * QuestionFormGUI constructor.
      *
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
+    public function __construct(
+        QuestionDto $question,
+        string $action,
+        ilLanguage $language,
+        UIServices $ui,
+        RequestInterface $request,
+        UIService $asq_ui)
     {
         $this->language = $language;
         $this->ui = $ui;
         $this->request = $request;
+        $this->asq_ui = $asq_ui;
 
         $this->initial_question = $question;
 
-        $this->question_data_factory = new QuestionDataFormFactory($this->language, $this->ui);
+        $this->question_data_factory = new QuestionDataFormFactory($this->language, $this->ui, $this->asq_ui);
 
         $factory_class = $question->getType()->getFactoryClass();
-        $this->form_factory = new $factory_class($this->language, $this->ui);
+        $this->form_factory = new $factory_class($this->language, $this->ui, $this->asq_ui);
 
         $this->initInputs($question);
 
@@ -148,7 +159,7 @@ class QuestionFormGUI
         );
 
         if ($this->form_factory->hasAnswerOptions()) {
-            $option_form = AsqGateway::get()->ui()->getAsqTableInput(
+            $option_form = $this->asq_ui->getAsqTableInput(
                 $this->language->txt('asq_label_answer'),
                 $this->form_factory->getAnswerOptionDefinitions($question->getPlayConfiguration())
             );
@@ -168,11 +179,13 @@ class QuestionFormGUI
      */
     private function showQuestionState(QuestionDto $question) : void
     {
+        global $ASQDIC;
+
         if ($question->isComplete()) {
             $value = sprintf(
                 'Complete. Max Points: %s Min Points: %s',
-                AsqGateway::get()->answer()->getMaxScore($question),
-                AsqGateway::get()->answer()->getMinScore($question)
+                $ASQDIC->asq()->answer()->getMaxScore($question),
+                $ASQDIC->asq()->answer()->getMinScore($question)
             );
         } else {
             $value = 'Not Complete';

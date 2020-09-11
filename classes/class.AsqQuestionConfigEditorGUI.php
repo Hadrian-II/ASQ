@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 use ILIAS\Data\UUID\Uuid;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionConfigEditorGUI
@@ -54,21 +54,29 @@ class AsqQuestionConfigEditorGUI
     private $ctrl;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param AuthoringContextContainer $contextContainer
      * @param Uuid $questionId
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
+     * @param ASQServices $asq
      */
     public function __construct(
         AuthoringContextContainer $contextContainer,
         Uuid $questionId,
         ilLanguage $language,
         UIServices $ui,
-        ilCtrl $ctrl
+        ilCtrl $ctrl,
+        ASQServices $asq
     ) {
+        $this->asq = $asq;
         $this->contextContainer = $contextContainer;
-        $this->question = AsqGateway::get()->question()->getQuestionByQuestionId($questionId);
+        $this->question = $asq->question()->getQuestionByQuestionId($questionId);
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
@@ -141,7 +149,7 @@ class AsqQuestionConfigEditorGUI
         $this->question->setData($changes->getData());
         $this->question->setPlayConfiguration($changes->getPlayConfiguration());
         $this->question->setAnswerOptions($changes->getAnswerOptions());
-        AsqGateway::get()->question()->saveQuestion($this->question);
+        $this->asq->question()->saveQuestion($this->question);
     }
 
     /**
@@ -150,7 +158,7 @@ class AsqQuestionConfigEditorGUI
      */
     private function buildForm() : QuestionFormGUI
     {
-        $form = AsqGateway::get()->ui()->getQuestionEditForm(
+        $form = $this->asq->ui()->getQuestionEditForm(
             $this->question,
             $this->ctrl->getFormAction($this, self::CMD_SAVE_FORM)
         );
@@ -171,7 +179,7 @@ class AsqQuestionConfigEditorGUI
             ilutil::sendInfo($this->language->txt('asq_missing_revision_name'));
         } else {
             try {
-                AsqGateway::get()->question()->createQuestionRevision($rev_name, $this->question->getId());
+                $this->asq->question()->createQuestionRevision($rev_name, $this->question->getId());
                 ilUtil::sendSuccess($this->language->txt('asq_revision_created'));
             } catch (AsqException $e) {
                 ilutil::sendFailure($e->getMessage());

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace srag\asq\Questions\Formula\Form\Scoring;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\AsqGateway;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
@@ -89,7 +88,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
                 $this->language->txt('asq_description_result_coprime_fraction')
             );
 
-        $variables_table = AsqGateway::get()->ui()->getAsqTableInput(
+        $variables_table = $this->asq_ui->getAsqTableInput(
             $this->language->txt('asq_label_variables'),
             [
                 new AsqTableInputFieldDefinition(

@@ -9,7 +9,6 @@ use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\UI\Component\Input\Field\Section;
 use ilLanguage;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\AsqGateway;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeGapConfiguration;
@@ -160,7 +159,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
+        $gap_items = $this->asq_ui->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
             $this->getClozeGapItemFieldDefinitions()
         );
@@ -192,7 +191,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $gap_items = AsqGateway::get()->ui()->getAsqTableInput(
+        $gap_items = $this->asq_ui->getAsqTableInput(
             $this->language->txt('asq_label_gap_items'),
             $this->getClozeGapItemFieldDefinitions()
         );

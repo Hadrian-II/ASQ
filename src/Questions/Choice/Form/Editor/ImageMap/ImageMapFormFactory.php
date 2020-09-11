@@ -9,6 +9,7 @@ use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFac
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class ImageMapFormFactory
@@ -23,11 +24,11 @@ class ImageMapFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new ImageMapEditorConfigurationFactory($language, $ui),
-            new MultipleChoiceScoringConfigurationFactory($language, $ui),
+            new ImageMapEditorConfigurationFactory($language, $ui, $asq_ui),
+            new MultipleChoiceScoringConfigurationFactory($language, $ui, $asq_ui),
             new ImageMapEditorDefinitionFactory($language, $ui),
             new MultipleChoiceScoringDefinitionFactory($language, $ui)
         );

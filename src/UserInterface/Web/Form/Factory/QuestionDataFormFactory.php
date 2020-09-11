@@ -5,7 +5,6 @@ namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\AsqGateway;
 
 /**
  * Class AbstractQuestionFormFactory
@@ -60,7 +59,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         $question_text = $this->factory->input()->field()
                             ->textarea($this->language->txt('asq_label_question'));
 
-        $working_time = AsqGateway::get()->ui()->getDurationInput($this->language->txt('asq_label_working_time'));
+        $working_time = $this->asq_ui->getDurationInput($this->language->txt('asq_label_working_time'));
 
         if ($value !== null) {
             $title = $title->withValue($value->getTitle());

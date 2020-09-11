@@ -10,6 +10,7 @@ use srag\asq\Questions\Cloze\Form\Scoring\ClozeScoringConfigurationFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class ClozeFormFactory
@@ -24,11 +25,11 @@ class ClozeFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new ClozeEditorConfigurationFactory($language, $ui),
-            new ClozeScoringConfigurationFactory($language, $ui),
+            new ClozeEditorConfigurationFactory($language, $ui, $asq_ui),
+            new ClozeScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new EmptyDefinitionFactory($language, $ui)
         );

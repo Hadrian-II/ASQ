@@ -10,6 +10,7 @@ use srag\asq\Questions\Matching\Form\Editor\MatchingEditorConfigurationFactory;
 use srag\asq\Questions\Matching\Form\Scoring\MatchingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class MatchingFormFactory
@@ -24,11 +25,11 @@ class MatchingFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new MatchingEditorConfigurationFactory($language, $ui),
-            new MatchingScoringConfigurationFactory($language, $ui),
+            new MatchingEditorConfigurationFactory($language, $ui, $asq_ui),
+            new MatchingScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new EmptyDefinitionFactory($language, $ui)
         );

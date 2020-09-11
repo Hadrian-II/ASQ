@@ -7,13 +7,13 @@ use ILIAS\DI\UIServices;
 use ILIAS\UI\Component\Input\Container\Form\Standard;
 use Psr\Http\Message\RequestInterface;
 use ilLanguage;
-use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class HintFormGUI
@@ -58,22 +58,34 @@ class HintFormGUI
     private $form;
 
     /**
+     * @var UIService
+     */
+    private $asq_ui;
+
+    /**
      * @param QuestionDto $question_dto
      * @param string $action
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param RequestInterface $request
      */
-    public function __construct(QuestionDto $question_dto, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
+    public function __construct(
+        QuestionDto $question_dto,
+        string $action,
+        ilLanguage $language,
+        UIServices $ui,
+        RequestInterface $request,
+        UIService $asq_ui)
     {
         $this->question_dto = $question_dto;
         $this->ui = $ui;
         $this->language = $language;
         $this->request = $request;
+        $this->asq_ui = $asq_ui;
 
         $this->form = $this->ui->factory()->input()->container()->form()->standard($action, [
             self::HINT_POSTVAR =>
-                AsqGateway::get()->ui()->getAsqTableInput(
+                $this->asq_ui->getAsqTableInput(
                     $this->language->txt('asq_hints'),
                     [
                         new AsqTableInputFieldDefinition(

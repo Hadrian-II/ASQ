@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\Model\QuestionInfo;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionVersionGUI
@@ -45,11 +45,21 @@ class AsqQuestionVersionGUI
     private $ui;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param string $question_id
      * @param ilLanguage $language
      * @param UIServices $ui
+     * @param ASQServices $asq
      */
-    public function __construct(string $question_id, ilLanguage $language, UIServices $ui)
+    public function __construct(
+        string $question_id,
+        ilLanguage $language,
+        UIServices $ui,
+        ASQServices $asq)
     {
         $this->question_id = $question_id;
         $this->language = $language;
@@ -78,7 +88,7 @@ class AsqQuestionVersionGUI
     {
         /** @var $question QuestionInfo */
         return array_map(function ($question) {
-            $preview = AsqGateway::get()->link()->getPreviewLink($this->question_id, $question->getRevisionName());
+            $preview = $this->asq->link()->getPreviewLink($this->question_id, $question->getRevisionName());
 
             return [
                 self::COL_NAME => $question->getRevisionName(),
@@ -87,6 +97,6 @@ class AsqQuestionVersionGUI
                 self::PREVIEW_LINK => $preview->getAction(),
                 self::PREVIEW_LABEL => $preview->getLabel()
             ];
-        }, AsqGateway::get()->question()->getAllRevisionsOfQuestion($this->question_id));
+        }, $this->asq->question()->getAllRevisionsOfQuestion($this->question_id));
     }
 }

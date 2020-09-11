@@ -9,6 +9,7 @@ use srag\asq\Questions\FileUpload\Form\Scoring\FileUploadScoringConfigurationFac
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class FileUploadFormFactory
@@ -21,11 +22,11 @@ use ILIAS\DI\UIServices;
  */
 class FileUploadFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new FileUploadEditorConfigurationFactory($language, $ui),
-            new FileUploadScoringConfigurationFactory($language, $ui),
+            new FileUploadEditorConfigurationFactory($language, $ui, $asq_ui),
+            new FileUploadScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new EmptyDefinitionFactory($language, $ui)
         );

@@ -10,6 +10,7 @@ use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFac
 use srag\asq\Questions\Choice\Form\Scoring\SingleChoiceScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\ImageAndTextDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class SingleChoiceFormFactory
@@ -25,11 +26,11 @@ class SingleChoiceFormFactory extends QuestionFormFactory
     use ChoiceQuestionPostProcessing;
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new SingleChoiceEditorConfigurationFactory($language, $ui),
-            new MultipleChoiceScoringConfigurationFactory($language, $ui),
+            new SingleChoiceEditorConfigurationFactory($language, $ui, $asq_ui),
+            new MultipleChoiceScoringConfigurationFactory($language, $ui, $asq_ui),
             new ImageAndTextDefinitionFactory($language, $ui),
             new SingleChoiceScoringDefinitionFactory($language, $ui)
         );

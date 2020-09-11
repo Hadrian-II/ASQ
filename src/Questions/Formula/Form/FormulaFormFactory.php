@@ -12,6 +12,7 @@ use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class FormulaFormFactory
@@ -26,11 +27,11 @@ class FormulaFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new FormulaEditorConfigurationFactory($language, $ui),
-            new FormulaScoringConfigurationFactory($language, $ui),
+            new FormulaEditorConfigurationFactory($language, $ui, $asq_ui),
+            new FormulaScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new FormulaScoringDefinitionFactory($language, $ui)
         );

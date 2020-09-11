@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
-use AsqQuestionPageGUI;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
@@ -16,6 +15,9 @@ use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload\AsqImageUpload;
 use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
+use ilLanguage;
+use ILIAS\DI\UIServices;
+use ILIAS\DI\HTTPServices;
 
 /**
  * Class UIService
@@ -32,6 +34,45 @@ use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
 class UIService
 {
     /**
+     * @var ilLanguage
+     */
+    private $lng;
+
+    /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var HTTPServices
+     */
+    private $http;
+
+    /**
+     * @var DataFactory
+     */
+    private $data_factory;
+
+    /**
+     * @var Factory
+     */
+    private $refinery;
+
+    public function __construct(
+        ilLanguage $lng,
+        UIServices $ui,
+        HTTPServices $http,
+        DataFactory $data_factory,
+        Factory $refinery)
+    {
+        $this->lng = $lng;
+        $this->ui = $ui;
+        $this->http = $http;
+        $this->data_factory = $data_factory;
+        $this->refinery = $refinery;
+    }
+
+    /**
      * Gets a component able to display a question
      *
      * @param QuestionDto $question
@@ -39,11 +80,9 @@ class UIService
      */
     public function getQuestionComponent(QuestionDto $question) : QuestionComponent
     {
-        global $DIC;
+        $this->lng->loadLanguageModule('asq');
 
-        $DIC->language()->loadLanguageModule('asq');
-
-        return new QuestionComponent($question, $DIC->ui(), $DIC->language());
+        return new QuestionComponent($question, $this->ui, $this->lng);
     }
 
     /**
@@ -55,14 +94,13 @@ class UIService
      */
     public function getQuestionEditForm(QuestionDto $question, string $action) : QuestionFormGUI
     {
-        global $DIC;
-
         return new QuestionFormGUI(
             $question,
             $action,
-            $DIC->language(),
-            $DIC->ui(),
-            $DIC->http()->request()
+            $this->lng,
+            $this->ui,
+            $this->http->request(),
+            $this
         );
     }
 
@@ -75,14 +113,12 @@ class UIService
      */
     public function getQuestionFeedbackForm(QuestionDto $question, string $action) : QuestionFeedbackFormGUI
     {
-        global $DIC;
-
         return new QuestionFeedbackFormGUI(
             $question,
             $action,
-            $DIC->language(),
-            $DIC->ui(),
-            $DIC->http()->request()
+            $this->lng,
+            $this->ui,
+            $this->http->request()
         );
     }
 
@@ -95,14 +131,13 @@ class UIService
      */
     public function getQuestionHintForm(QuestionDto $question, string $action) : HintFormGUI
     {
-        global $DIC;
-
         return new HintFormGUI(
             $question,
             $action,
-            $DIC->language(),
-            $DIC->ui(),
-            $DIC->http()->request()
+            $this->lng,
+            $this->ui,
+            $this->http->request(),
+            $this
         );
     }
 
@@ -114,16 +149,11 @@ class UIService
      */
     public function getAsqTableInput(string $label, array $columns, string $byline = null) : AsqTableInput
     {
-        global $DIC;
-
-        $data_factory = new DataFactory();
-        $refinery = new Factory($data_factory, $DIC->language());
-
         return new AsqTableInput(
             $label,
             $columns,
-            $data_factory,
-            $refinery,
+            $this->data_factory,
+            $this->refinery,
             $byline
         );
     }
@@ -136,14 +166,9 @@ class UIService
      */
     public function getDurationInput(string $label, string $byline = null) : DurationInput
     {
-        global $DIC;
-
-        $data_factory = new DataFactory();
-        $refinery = new Factory($data_factory, $DIC->language());
-
         return new DurationInput(
-            $data_factory,
-            $refinery,
+            $this->data_factory,
+            $this->refinery,
             $label,
             $byline
         );
@@ -154,14 +179,9 @@ class UIService
      */
     public function getImageUpload(string $label) : AsqImageUpload
     {
-        global $DIC;
-
-        $data_factory = new DataFactory();
-        $refinery = new Factory($data_factory, $DIC->language());
-
         return new AsqImageUpload(
-            $data_factory,
-            $refinery,
+            $this->data_factory,
+            $this->refinery,
             $label,
             null
         );
@@ -172,42 +192,11 @@ class UIService
      */
     public function getImageFormPopup() : ImageFormPopup
     {
-        global $DIC;
-
-        $data_factory = new DataFactory();
-        $refinery = new Factory($data_factory, $DIC->language());
-
         return new ImageFormPopup(
-            $data_factory,
-            $refinery,
+            $this->data_factory,
+            $this->refinery,
             '',
             null
         );
-    }
-
-    /**
-     * Gets the page object of a question
-     *
-     * @param QuestionDto $question_dto
-     * @return AsqQuestionPageGUI
-     */
-    public function getQuestionPage(QuestionDto $question_dto) : AsqQuestionPageGUI
-    {
-        global $DIC;
-
-        $page_gui = new AsqQuestionPageGUI(
-            $question_dto->getContainerObjId(),
-            $question_dto->getQuestionIntId(),
-            $DIC->ui()
-        );
-        $page_gui->setRenderPageContainer(false);
-        $page_gui->setEditPreview(true);
-        $page_gui->setEnabledTabs(false);
-        $page_gui->setPresentationTitle($question_dto->getData()->getTitle());
-
-        $question_component = $this->getQuestionComponent($question_dto);
-        $page_gui->setQuestionComponent($question_component);
-
-        return $page_gui;
     }
 }

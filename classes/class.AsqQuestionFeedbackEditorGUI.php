@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionFeedbackEditorGUI
@@ -48,17 +48,29 @@ class AsqQuestionFeedbackEditorGUI
     private $ctrl;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param QuestionDto $question_dto
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
+     * @param ASQServices $asq
      */
-    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
+    public function __construct(
+        QuestionDto $question_dto,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl,
+        ASQServices $asq)
     {
         $this->question_dto = $question_dto;
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
+        $this->asq = $asq;
     }
 
 
@@ -78,7 +90,7 @@ class AsqQuestionFeedbackEditorGUI
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $new_feedback = $form->getFeedbackFromPost();
             $this->question_dto->setFeedback($new_feedback);
-            AsqGateway::get()->question()->saveQuestion($this->question_dto);
+            $this->asq->question()->saveQuestion($this->question_dto);
             ilutil::sendSuccess("Question Saved", true);
         }
 
@@ -97,7 +109,7 @@ class AsqQuestionFeedbackEditorGUI
      */
     private function createForm() : QuestionFeedbackFormGUI
     {
-        return AsqGateway::get()->ui()->getQuestionFeedbackForm(
+        return $this->asq->ui()->getQuestionFeedbackForm(
             $this->question_dto,
             $this->ctrl->getFormAction($this, self::CMD_SAVE_FEEDBACK)
         );

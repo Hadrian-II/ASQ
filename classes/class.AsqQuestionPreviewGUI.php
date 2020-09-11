@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 use ILIAS\Data\UUID\Uuid;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionPreviewGUI
@@ -79,18 +79,32 @@ class AsqQuestionPreviewGUI
     private $http;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param Uuid $question_id
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
+     * @param HTTPServices $http
+     * @param ASQServices $asq
      */
-    public function __construct(Uuid $question_id, ilLanguage $language, UIServices $ui, ilCtrl $ctrl, HTTPServices $http)
+    public function __construct(
+        Uuid $question_id,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl,
+        HTTPServices $http,
+        ASQServices $asq)
     {
         $this->question_id = $question_id;
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
         $this->http = $http;
+        $this->asq = $asq;
 
         $query = $this->http->request()->getQueryParams();
         if (isset($query[self::PARAM_REVISON_NAME])) {
@@ -128,9 +142,9 @@ class AsqQuestionPreviewGUI
     public function showQuestion() : void
     {
         if (is_null($this->revision_name)) {
-            $question_dto = AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id);
+            $question_dto = $this->asq->question()->getQuestionByQuestionId($this->question_id);
         } else {
-            $question_dto = AsqGateway::get()->question()->getQuestionRevision($this->question_id, $this->revision_name);
+            $question_dto = $this->asq->question()->getQuestionRevision($this->question_id, $this->revision_name);
         }
 
         if (!$question_dto->isComplete()) {
@@ -146,7 +160,7 @@ class AsqQuestionPreviewGUI
      */
     private function renderQuestion(QuestionDto $question_dto)
     {
-        $question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
+        $question_component = $this->asq->ui()->getQuestionComponent($question_dto);
 
         if ($this->show_feedback) {
             $question_component = $question_component->withShowFeedback(true);

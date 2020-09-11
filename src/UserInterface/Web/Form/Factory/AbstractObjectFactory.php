@@ -7,6 +7,7 @@ use ILIAS\DI\UIServices;
 use ILIAS\UI\Factory;
 use ilLanguage;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Abstract Class AbstractQuestionFormFactory
@@ -34,12 +35,18 @@ abstract class AbstractObjectFactory implements IObjectFactory
     protected $factory;
 
     /**
+     * @var UIService
+     */
+    protected $asq_ui;
+
+    /**
      * @param ilLanguage $language
      * @param UIServices $ui
      */
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         $this->language = $language;
         $this->factory = $ui->factory();
+        $this->asq_ui = $asq_ui;
     }
 }

@@ -6,7 +6,6 @@ namespace srag\asq\UserInterface\Web\Form;
 use ilLanguage;
 use ilPropertyFormGUI;
 use ilSelectInputGUI;
-use srag\asq\AsqGateway;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\UserInterface\Web\PostAccess;
 
@@ -54,7 +53,9 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
      */
     private function initForm() : void
     {
-        $this->question_types = AsqGateway::get()->question()->getAvailableQuestionTypes();
+        global $ASQDIC;
+
+        $this->question_types = $ASQDIC->asq()->question()->getAvailableQuestionTypes();
 
         $this->setTitle($this->language->txt('asq_create_question_form'));
 

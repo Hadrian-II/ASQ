@@ -6,13 +6,13 @@ namespace ILIAS\AssessmentQuestion\Test;
 use ILIAS\Data\UUID\Factory;
 use PHPUnit\Framework\TestCase;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\AsqGateway;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class QuestionTestCase
@@ -30,7 +30,19 @@ abstract class QuestionTestCase extends TestCase
 
     private static $ids = [];
 
+    /**
+     * @var ASQServices
+     */
+    protected $asq;
+
     abstract public function getQuestions() : array;
+
+    public function __create()
+    {
+        global $ASQDIC;
+
+        $this->asq = $ASQDIC->asq();
+    }
 
     /**
      * @param QuestionData $data
@@ -84,14 +96,14 @@ abstract class QuestionTestCase extends TestCase
     public function testQuestionCreation()
     {
         foreach ($this->getQuestions() as $question) {
-            $created = AsqGateway::get()->question()->createQuestion($this->getTypeDefinition());
+            $created = $this->asq->question()->createQuestion($this->getTypeDefinition());
             self::$ids[] = sprintf('"%s"', $created->getId());
             $created->setData($question->getData());
             $created->setAnswerOptions($question->getAnswerOptions());
             $created->setPlayConfiguration($question->getPlayConfiguration());
-            AsqGateway::get()->question()->saveQuestion($created);
+            $this->asq->question()->saveQuestion($created);
 
-            $loaded_created = AsqGateway::get()->question()->getQuestionByQuestionId($created->getId());
+            $loaded_created = $this->asq->question()->getQuestionByQuestionId($created->getId());
 
             $this->assertTrue($question->getData()->equals($loaded_created->getData()));
             if (!is_null($question->getAnswerOptions())) {
@@ -130,7 +142,7 @@ abstract class QuestionTestCase extends TestCase
      */
     public function testAnswers(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
     {
-        $this->assertEquals($expected_score, AsqGateway::get()->answer()->getScore($question, $answer));
+        $this->assertEquals($expected_score, $this->asq->answer()->getScore($question, $answer));
     }
 
     public static function TearDownAfterClass() : void

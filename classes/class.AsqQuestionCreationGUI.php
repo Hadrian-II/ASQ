@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\UserInterface\Web\Form\QuestionTypeSelectForm;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionCreationGUI
@@ -47,21 +47,29 @@ class AsqQuestionCreationGUI
     private $ctrl;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param AuthoringContextContainer $contextContainer
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ilCtrl $ctrl
+     * @param ASQServices $asq
      */
     public function __construct(
         AuthoringContextContainer $contextContainer,
         ilLanguage $language,
         UIServices $ui,
-        ilCtrl $ctrl
+        ilCtrl $ctrl,
+        ASQServices $asq
     ) {
         $this->contextContainer = $contextContainer;
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
+        $this->asq = $asq;
     }
 
 
@@ -118,7 +126,7 @@ class AsqQuestionCreationGUI
             return;
         }
 
-        $new_question = AsqGateway::get()->question()->createQuestion(
+        $new_question = $this->asq->question()->createQuestion(
             $form->getQuestionType()
         );
 

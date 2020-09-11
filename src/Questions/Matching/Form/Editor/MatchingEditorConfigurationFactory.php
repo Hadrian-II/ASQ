@@ -10,7 +10,6 @@ use srag\asq\Questions\Matching\Editor\Data\MatchingMapping;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
-use srag\asq\AsqGateway;
 
 /**
  * Class MatchingEditorConfigurationFactory
@@ -125,7 +124,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_DEFINITION_IMAGE
         );
 
-        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_definitions'), $columns);
+        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_definitions'), $columns);
 
         if (!is_null($config)) {
             $table = $table->withValue(
@@ -159,7 +158,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_TERM_IMAGE
         );
 
-        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_terms'), $columns);
+        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_terms'), $columns);
 
         if (!is_null($config)) {
             $table = $table->withValue(
@@ -230,7 +229,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_MATCH_POINTS
         );
 
-        $table = AsqGateway::get()->ui()->getAsqTableInput($this->language->txt('asq_label_matches'), $columns);
+        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_matches'), $columns);
 
         if (!is_null($config)) {
             $table = $table->withValue($this->getMatchesValues($config));

@@ -11,6 +11,7 @@ use srag\asq\Questions\Essay\Form\Scoring\EssayScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class EssayFormFactory
@@ -25,11 +26,11 @@ class EssayFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new EssayEditorConfigurationFactory($language, $ui),
-            new EssayScoringConfigurationFactory($language, $ui),
+            new EssayEditorConfigurationFactory($language, $ui, $asq_ui),
+            new EssayScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new EssayScoringDefinitionFactory($language, $ui)
         );

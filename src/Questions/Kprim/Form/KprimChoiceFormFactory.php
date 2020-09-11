@@ -11,6 +11,7 @@ use srag\asq\Questions\Kprim\Form\Scoring\KprimChoiceScoringDefinitionFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class KprimFormFactory
@@ -23,11 +24,11 @@ use ILIAS\DI\UIServices;
  */
 class KprimChoiceFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new KprimChoiceEditorConfigurationFactory($language, $ui),
-            new KprimChoiceScoringConfigurationFactory($language, $ui),
+            new KprimChoiceEditorConfigurationFactory($language, $ui, $asq_ui),
+            new KprimChoiceScoringConfigurationFactory($language, $ui, $asq_ui),
             new ImageAndTextDefinitionFactory($language, $ui),
             new KprimChoiceScoringDefinitionFactory($language, $ui)
         );

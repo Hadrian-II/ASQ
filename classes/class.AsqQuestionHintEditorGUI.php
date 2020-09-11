@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionHintEditorGUI
@@ -44,16 +44,29 @@ class AsqQuestionHintEditorGUI
     private $ctrl;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param QuestionDto $question_dto
      * @param ilLanguage $language
      * @param UIServices $ui
+     * @param ilCtrl $ctrl
+     * @param ASQServices $asq
      */
-    public function __construct(QuestionDto $question_dto, ilLanguage $language, UIServices $ui, ilCtrl $ctrl)
+    public function __construct(
+        QuestionDto $question_dto,
+        ilLanguage $language,
+        UIServices $ui,
+        ilCtrl $ctrl,
+        ASQServices $asq)
     {
         $this->language = $language;
         $this->ui = $ui;
         $this->question_dto = $question_dto;
         $this->ctrl = $ctrl;
+        $this->asq = $asq;
     }
 
 
@@ -67,14 +80,14 @@ class AsqQuestionHintEditorGUI
 
     private function showHints() : void
     {
-        $form = AsqGateway::get()->ui()->getQuestionHintForm(
+        $form = $this->asq->ui()->getQuestionHintForm(
             $this->question_dto,
             $this->ctrl->getFormAction($this, self::CMD_SAVE)
         );
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->question_dto->setQuestionHints($form->getHintsFromPost());
-            AsqGateway::get()->question()->saveQuestion($this->question_dto);
+            $this->asq->question()->saveQuestion($this->question_dto);
         }
 
         $this->ui->mainTemplate()->setContent($form->getHTML());

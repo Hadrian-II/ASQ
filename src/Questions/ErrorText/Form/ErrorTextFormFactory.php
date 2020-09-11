@@ -11,6 +11,7 @@ use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 use ILIAS\DI\UIServices;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class ErrorTextFormFactory
@@ -25,11 +26,11 @@ class ErrorTextFormFactory extends QuestionFormFactory
 {
     use PathHelper;
 
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new ErrorTextEditorConfigurationFactory($language, $ui),
-            new ErrorTextScoringConfigurationFactory($language, $ui),
+            new ErrorTextEditorConfigurationFactory($language, $ui, $asq_ui),
+            new ErrorTextScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new ErrorTextScoringDefinitionFactory($language, $ui)
         );

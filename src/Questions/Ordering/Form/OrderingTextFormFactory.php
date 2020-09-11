@@ -14,6 +14,7 @@ use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\Questions\Ordering\Form\Editor\OrderingTextEditorConfigurationFactory;
 use srag\asq\Questions\Ordering\Form\Scoring\OrderingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\Application\Service\UIService;
 
 /**
  * Class OrderingFormFactory
@@ -26,11 +27,11 @@ use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
  */
 class OrderingTextFormFactory extends QuestionFormFactory
 {
-    public function __construct(ilLanguage $language, UIServices $ui)
+    public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         parent::__construct(
-            new OrderingTextEditorConfigurationFactory($language, $ui),
-            new OrderingScoringConfigurationFactory($language, $ui),
+            new OrderingTextEditorConfigurationFactory($language, $ui, $asq_ui),
+            new OrderingScoringConfigurationFactory($language, $ui, $asq_ui),
             new EmptyDefinitionFactory($language, $ui),
             new EmptyDefinitionFactory($language, $ui)
         );

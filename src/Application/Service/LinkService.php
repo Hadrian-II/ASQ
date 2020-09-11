@@ -13,6 +13,9 @@ use AsqQuestionPageGUI;
 use AsqQuestionPreviewGUI;
 use AsqQuestionVersionGUI;
 use ILIAS\Data\UUID\Uuid;
+use ILIAS\DI\UIServices;
+use ilLanguage;
+use ilCtrl;
 
 /**
  * Class QuestionAuthoring
@@ -28,16 +31,41 @@ use ILIAS\Data\UUID\Uuid;
 class LinkService
 {
     /**
+     * @var UIServices
+     */
+    private $ui;
+
+    /**
+     * @var ilLanguage
+     */
+    private $lng;
+
+    /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
+     * @param UIServices $ui
+     * @param ilLanguage $lng
+     * @param ilCtrl $ctrl
+     */
+    public function __construct(UIServices $ui, ilLanguage $lng, ilCtrl $ctrl)
+    {
+        $this->ui = $ui;
+        $this->lng = $lng;
+        $this->ctrl = $ctrl;
+    }
+
+    /**
      * @return UiStandardLink
      */
     public function getCreationLink() : UiStandardLink
     {
-        global $DIC;
-
-        $DIC->language()->loadLanguageModule('asq');
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_create_question_link'),
-            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionCreationGUI::class])
+        $this->lng->loadLanguageModule('asq');
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_create_question_link'),
+            $this->ctrl->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionCreationGUI::class])
         );
     }
 
@@ -46,13 +74,11 @@ class LinkService
      */
     public function getEditLink(Uuid $question_id) : UiStandardLink
     {
-        global $DIC;
-
         self::setQuestionUidParameter($question_id);
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_config'),
-            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionConfigEditorGUI::class])
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_config'),
+            $this->ctrl->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionConfigEditorGUI::class])
         );
     }
 
@@ -62,21 +88,19 @@ class LinkService
      */
     public function getPreviewLink(Uuid $question_id, ?string $revision_name = null) : UiStandardLink
     {
-        global $DIC;
-
         self::setQuestionUidParameter($question_id);
 
         if (!is_null($revision_name)) {
-            $DIC->ctrl()->setParameterByClass(
+            $this->ctrl->setParameterByClass(
                 AsqQuestionPreviewGUI::class,
                 AsqQuestionPreviewGUI::PARAM_REVISON_NAME,
                 $revision_name
             );
         }
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_preview'),
-            $DIC->ctrl()->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class])
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_preview'),
+            $this->ctrl->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class])
         );
     }
 
@@ -85,13 +109,11 @@ class LinkService
      */
     public function getEditPageLink(Uuid $question_id) : UiStandardLink
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         self::setQuestionUidParameter($question_id);
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_pageview'),
-            $DIC->ctrl()->getLinkTargetByClass(
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_pageview'),
+            $this->ctrl->getLinkTargetByClass(
                 [AsqQuestionAuthoringGUI::class, AsqQuestionPageGUI::class],
                 'edit'
             )
@@ -104,13 +126,11 @@ class LinkService
      */
     public function getEditFeedbacksLink(Uuid $question_id) : UiStandardLink
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         self::setQuestionUidParameter($question_id);
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_feedback'),
-            $DIC->ctrl()->getLinkTargetByClass([
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_feedback'),
+            $this->ctrl->getLinkTargetByClass([
                 AsqQuestionAuthoringGUI::class, AsqQuestionFeedbackEditorGUI::class
             ])
         );
@@ -122,13 +142,11 @@ class LinkService
      */
     public function getEditHintsLink(Uuid $question_id) : UiStandardLink
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         self::setQuestionUidParameter($question_id);
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_hints'),
-            $DIC->ctrl()->getLinkTargetByClass([
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_hints'),
+            $this->ctrl->getLinkTargetByClass([
                 AsqQuestionAuthoringGUI::class, AsqQuestionHintEditorGUI::class
             ])
         );
@@ -139,13 +157,11 @@ class LinkService
      */
     public function getRevisionsLink(Uuid $question_id) : UiStandardLink
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
         self::setQuestionUidParameter($question_id);
 
-        return $DIC->ui()->factory()->link()->standard(
-            $DIC->language()->txt('asq_authoring_tab_versions'),
-            $DIC->ctrl()->getLinkTargetByClass([
+        return $this->ui->factory()->link()->standard(
+            $this->lng->txt('asq_authoring_tab_versions'),
+            $this->ctrl->getLinkTargetByClass([
                 AsqQuestionAuthoringGUI::class, AsqQuestionVersionGUI::class
             ])
         );
@@ -158,9 +174,7 @@ class LinkService
      */
     protected function setQuestionUidParameter(Uuid $question_id) : void
     {
-        global $DIC; /* @var \ILIAS\DI\Container $DIC */
-
-        $DIC->ctrl()->setParameterByClass(
+        $this->ctrl->setParameterByClass(
             AsqQuestionAuthoringGUI::class,
             AsqQuestionAuthoringGUI::VAR_QUESTION_ID,
             $question_id->toString()

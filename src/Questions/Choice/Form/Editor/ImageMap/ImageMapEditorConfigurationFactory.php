@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace srag\asq\Questions\Choice\Form\Editor\ImageMap;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\AsqGateway;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
@@ -65,9 +64,9 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_label_mode')
         );
 
-        $image = AsqGateway::get()->ui()->getImageUpload($this->language->txt('asq_label_image'));
+        $image = $this->asq_ui->getImageUpload($this->language->txt('asq_label_image'));
 
-        $popup = AsqGateway::get()->ui()->getImageFormPopup();
+        $popup = $this->asq_ui->getImageFormPopup();
 
 
         if ($value !== null) {

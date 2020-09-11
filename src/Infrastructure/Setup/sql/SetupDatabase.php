@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Setup\sql;
 
-use srag\asq\AsqGateway;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStoreAr;
@@ -46,6 +45,7 @@ use srag\asq\Questions\TextSubset\Editor\TextSubsetEditor;
 use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
 use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class SetupDatabase
@@ -54,8 +54,16 @@ use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
  */
 class SetupDatabase
 {
+    /**
+     * @var ASQServices
+     */
+    private $asq;
+
     private function __construct()
     {
+        global $ASQDIC;
+
+        $this->asq = $ASQDIC->asq();
     }
 
 
@@ -79,98 +87,98 @@ class SetupDatabase
 
     private function addQuestionTypes() : void
     {
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_single_answer',
             SingleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_multiple_answer',
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_kprim_answer',
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,
             KprimChoiceScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_error_text',
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,
             ErrorTextScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_image_map',
             ImageMapFormFactory::class,
             ImageMapEditor::class,
             MultipleChoiceScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_cloze',
             ClozeFormFactory::class,
             ClozeEditor::class,
             ClozeScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_numeric',
             NumericFormFactory::class,
             NumericEditor::class,
             NumericScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_formula',
             FormulaFormFactory::class,
             FormulaEditor::class,
             FormulaScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_text_subset',
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,
             TextSubsetScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_ordering',
             OrderingFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_matching',
             MatchingFormFactory::class,
             MatchingEditor::class,
             MatchingScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_essay',
             EssayFormFactory::class,
             EssayEditor::class,
             EssayScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_file_upload',
             FileUploadFormFactory::class,
             FileUploadEditor::class,
             FileUploadScoring::class
         );
 
-        AsqGateway::get()->question()->addQuestionType(
+        $this->asq->question()->addQuestionType(
             'asq_question_ordering_text',
             OrderingTextFormFactory::class,
             OrderingEditor::class,

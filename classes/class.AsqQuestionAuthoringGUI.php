@@ -2,11 +2,11 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\AsqGateway;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use ILIAS\DI\HTTPServices;
 use ILIAS\Data\UUID\Uuid;
 use ILIAS\Data\UUID\Factory;
+use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionAuthoringGUI
@@ -89,6 +89,11 @@ class AsqQuestionAuthoringGUI
     private $http;
 
     /**
+     * @var ASQServices
+     */
+    private $asq;
+
+    /**
      * @param AuthoringContextContainer $authoring_context_container
      * @param ilLanguage $language
      * @param UIServices $ui
@@ -96,6 +101,7 @@ class AsqQuestionAuthoringGUI
      * @param ilTabsGUI $tabs
      * @param ilAccessHandler $access
      * @param HTTPServices $http
+     * @param ASQServices $asq
      */
     public function __construct(
         AuthoringContextContainer $authoring_context_container,
@@ -104,12 +110,14 @@ class AsqQuestionAuthoringGUI
         ilCtrl $ctrl,
         ilTabsGUI $tabs,
         ilAccessHandler $access,
-        HTTPServices $http
+        HTTPServices $http,
+        ASQServices $asq
     ) {
         $this->authoring_context_container = $authoring_context_container;
         $this->language = $language;
         $this->language->loadLanguageModule('asq');
         $this->lng_key = $this->language->getDefaultLanguage();
+        $this->asq = $asq;
 
         $this->ui = $ui;
         $this->ctrl = $ctrl;
@@ -141,7 +149,8 @@ class AsqQuestionAuthoringGUI
                     $this->authoring_context_container,
                     $this->language,
                     $this->ui,
-                    $this->ctrl
+                    $this->ctrl,
+                    $this->asq
                 );
 
                 $this->ctrl->forwardCommand($gui);
@@ -159,32 +168,11 @@ class AsqQuestionAuthoringGUI
                     $this->language,
                     $this->ui,
                     $this->ctrl,
-                    $this->http
+                    $this->http,
+                    $this->asq
                 );
 
                 $this->ctrl->forwardCommand($gui);
-
-                break;
-
-            case strtolower(AsqQuestionPageGUI::class):
-
-                $this->initHeaderAction();
-                $this->initAuthoringTabs();
-                $this->tabs->activateTab(self::TAB_ID_PAGEVIEW);
-
-                $gui = AsqGateway::get()->ui()->getQuestionPage(
-                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id)
-                );
-
-                if (strlen($this->ctrl->getCmd()) == 0 && !$this->isPostVarSet("editImagemapForward_x")) {
-                    // workaround for page edit imagemaps, keep in mind
-
-                    $this->ctrl->setCmdClass(strtolower(get_class($gui)));
-                    $this->ctrl->setCmd('preview');
-                }
-
-                $html = $this->ctrl->forwardCommand($gui);
-                $this->ui->mainTemplate()->setContent($html);
 
                 break;
 
@@ -199,7 +187,8 @@ class AsqQuestionAuthoringGUI
                     $this->question_id,
                     $this->language,
                     $this->ui,
-                    $this->ctrl
+                    $this->ctrl,
+                    $this->asq
                 );
 
                 $this->ctrl->forwardCommand($gui);
@@ -213,10 +202,11 @@ class AsqQuestionAuthoringGUI
                 $this->tabs->activateTab(self::TAB_ID_FEEDBACK);
 
                 $gui = new AsqQuestionFeedbackEditorGUI(
-                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
+                    $this->asq->question()->getQuestionByQuestionId($this->question_id),
                     $this->language,
                     $this->ui,
-                    $this->ctrl
+                    $this->ctrl,
+                    $this->asq
                 );
                 $this->ctrl->forwardCommand($gui);
 
@@ -229,10 +219,11 @@ class AsqQuestionAuthoringGUI
                 $this->tabs->activateTab(self::TAB_ID_HINTS);
 
                 $gui = new AsqQuestionHintEditorGUI(
-                    AsqGateway::get()->question()->getQuestionByQuestionId($this->question_id),
+                    $this->asq->question()->getQuestionByQuestionId($this->question_id),
                     $this->language,
                     $this->ui,
-                    $this->ctrl
+                    $this->ctrl,
+                    $this->asq
                 );
 
                 $this->ctrl->forwardCommand($gui);
@@ -248,7 +239,8 @@ class AsqQuestionAuthoringGUI
                 $gui = new AsqQuestionVersionGUI(
                     $this->question_id,
                     $this->language,
-                    $this->ui
+                    $this->ui,
+                    $this->asq
                 );
 
                 $this->ctrl->forwardCommand($gui);
@@ -332,24 +324,19 @@ class AsqQuestionAuthoringGUI
             $this->authoring_context_container->getBackLink()->getAction()
         );
 
-        /* TODO fix page
-        $page_link = AsqGateway::get()->link()->getEditPageLink($this->question_id);
-        $this->tabs->addTab(self::TAB_ID_PAGEVIEW, $page_link->getLabel(), $page_link->getAction());
-        */
-
-        $preview_link = AsqGateway::get()->link()->getPreviewLink($this->question_id);
+        $preview_link = $this->asq->link()->getPreviewLink($this->question_id);
         $this->tabs->addTab(self::TAB_ID_PREVIEW, $preview_link->getLabel(), $preview_link->getAction());
 
-        $edit_link = AsqGateway::get()->link()->getEditLink($this->question_id);
+        $edit_link = $this->asq->link()->getEditLink($this->question_id);
         $this->tabs->addTab(self::TAB_ID_CONFIG, $edit_link->getLabel(), $edit_link->getAction());
 
-        $feedback_link = AsqGateway::get()->link()->getEditFeedbacksLink($this->question_id);
+        $feedback_link = $this->asq->link()->getEditFeedbacksLink($this->question_id);
         $this->tabs->addTab(self::TAB_ID_FEEDBACK, $feedback_link->getLabel(), $feedback_link->getAction());
 
-        $hint_link = AsqGateway::get()->link()->getEditHintsLink($this->question_id);
+        $hint_link = $this->asq->link()->getEditHintsLink($this->question_id);
         $this->tabs->addTab(self::TAB_ID_HINTS, $hint_link->getLabel(), $hint_link->getAction());
 
-        $revisions_link = AsqGateway::get()->link()->getRevisionsLink($this->question_id);
+        $revisions_link = $this->asq->link()->getRevisionsLink($this->question_id);
         $this->tabs->addTab(self::TAB_ID_VERSIONS, $revisions_link->getLabel(), $revisions_link->getAction());
     }
 }
