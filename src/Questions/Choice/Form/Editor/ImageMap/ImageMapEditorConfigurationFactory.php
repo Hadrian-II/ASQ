@@ -88,9 +88,6 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        $this->form = $this->form->withRequest($this->request);
-        $postdata = $this->form->getData();
-
         $multiple_choice = $this->readString($postdata[self::VAR_MULTIPLE_CHOICE][0]);
 
         return ImageMapEditorConfiguration::create(
