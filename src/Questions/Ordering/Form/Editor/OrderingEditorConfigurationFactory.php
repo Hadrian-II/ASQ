@@ -41,8 +41,6 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
 
         if ($value !== null) {
             $is_vertical = $is_vertical->withValue($value->isVertical() ? self::VERTICAL : self::HORICONTAL);
-        } else {
-            $is_vertical = $is_vertical->withValue(self::VERTICAL);
         }
 
         $fields[self::VAR_VERTICAL] = $is_vertical;
