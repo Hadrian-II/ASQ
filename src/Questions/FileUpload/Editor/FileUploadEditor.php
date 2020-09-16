@@ -61,6 +61,7 @@ class FileUploadEditor extends AbstractEditor
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->upload = $DIC->upload();
         $this->language = $DIC->language();
+        $DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
         parent::__construct($question);
     }

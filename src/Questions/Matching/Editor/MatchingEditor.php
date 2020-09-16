@@ -40,6 +40,7 @@ class MatchingEditor extends AbstractEditor
         global $DIC;
 
         $this->ui = $DIC->ui();
+        $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
         parent::__construct($question);
     }
