@@ -187,6 +187,6 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return KprimChoiceEditorConfiguration::create(null, null, null, self::STR_RIGHT, self::STR_WRONG);
+        return KprimChoiceEditorConfiguration::create(null, null, self::STR_RIGHT, self::STR_WRONG);
     }
 }

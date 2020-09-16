@@ -3,19 +3,18 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
+use ILIAS\DI\UIServices;
+use ILIAS\Data\UUID\Uuid;
 use ILIAS\UI\Component\Link\Standard as UiStandardLink;
 use AsqQuestionAuthoringGUI;
 use AsqQuestionConfigEditorGUI;
 use AsqQuestionCreationGUI;
 use AsqQuestionFeedbackEditorGUI;
 use AsqQuestionHintEditorGUI;
-use AsqQuestionPageGUI;
 use AsqQuestionPreviewGUI;
 use AsqQuestionVersionGUI;
-use ILIAS\Data\UUID\Uuid;
-use ILIAS\DI\UIServices;
-use ilLanguage;
 use ilCtrl;
+use ilLanguage;
 
 /**
  * Class QuestionAuthoring
@@ -103,23 +102,6 @@ class LinkService
             $this->ctrl->getLinkTargetByClass([AsqQuestionAuthoringGUI::class, AsqQuestionPreviewGUI::class])
         );
     }
-
-    /**
-     * @return UiStandardLink
-     */
-    public function getEditPageLink(Uuid $question_id) : UiStandardLink
-    {
-        self::setQuestionUidParameter($question_id);
-
-        return $this->ui->factory()->link()->standard(
-            $this->lng->txt('asq_authoring_tab_pageview'),
-            $this->ctrl->getLinkTargetByClass(
-                [AsqQuestionAuthoringGUI::class, AsqQuestionPageGUI::class],
-                'edit'
-            )
-        );
-    }
-
 
     /**
      * @return UiStandardLink
