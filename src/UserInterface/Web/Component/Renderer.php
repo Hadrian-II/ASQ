@@ -36,6 +36,10 @@ class Renderer extends AbstractComponentRenderer
         $editor_class = $question->getType()->getEditorClass();
         $editor = new $editor_class($question);
 
+        if (! is_null($input->getAnswer())) {
+            $editor->setAnswer($input->getAnswer());
+        }
+
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');

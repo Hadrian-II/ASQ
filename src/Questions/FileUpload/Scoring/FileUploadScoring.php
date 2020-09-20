@@ -75,7 +75,6 @@ class FileUploadScoring extends AbstractScoring
      */
     public function isComplete() : bool
     {
-        // file upload can roll with all values
-        return true;
+        return ! is_null($this->configuration->getPoints());
     }
 }

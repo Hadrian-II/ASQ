@@ -177,7 +177,7 @@ class FileUploadEditor extends AbstractEditor
 
         $tpl->setCurrentBlock('files');
 
-        if (!is_null($this->answer) && count($this->answer->getFiles()) > 0) {
+        if (!is_null($this->answer) && !is_null($this->answer->getFiles()) && count($this->answer->getFiles()) > 0) {
             foreach ($this->answer->getFiles() as $key => $value) {
                 $tpl->setCurrentBlock('file');
                 $tpl->setVariable('FILE_ID', $this->getFileKey($key));
