@@ -44,6 +44,7 @@ class Renderer extends AbstractComponentRenderer
 
         $tpl->setCurrentBlock('question');
         $tpl->setVariable('TITLE', $question->getData()->getTitle());
+        $tpl->setVariable('QUESTION', $question->getData()->getQuestionText());
         $tpl->setVariable('EDITOR', $editor->generateHtml());
         $tpl->parseCurrentBlock();
 
