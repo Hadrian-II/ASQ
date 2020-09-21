@@ -5,6 +5,7 @@ use ILIAS\DI\UIServices;
 use srag\asq\PathHelper;
 use srag\asq\Domain\Model\QuestionInfo;
 use srag\asq\Application\Service\ASQServices;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AsqQuestionVersionGUI
@@ -30,7 +31,7 @@ class AsqQuestionVersionGUI
     const PREVIEW_LABEL = 'PREVIEW_LABEL';
 
     /**
-     * @var string
+     * @var Uuid
      */
     protected $question_id;
 
@@ -50,13 +51,13 @@ class AsqQuestionVersionGUI
     private $asq;
 
     /**
-     * @param string $question_id
+     * @param Uuid $question_id
      * @param ilLanguage $language
      * @param UIServices $ui
      * @param ASQServices $asq
      */
     public function __construct(
-        string $question_id,
+        Uuid $question_id,
         ilLanguage $language,
         UIServices $ui,
         ASQServices $asq)
@@ -64,6 +65,7 @@ class AsqQuestionVersionGUI
         $this->question_id = $question_id;
         $this->language = $language;
         $this->ui = $ui;
+        $this->asq = $asq;
     }
 
     public function executeCommand() : void
