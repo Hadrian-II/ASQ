@@ -62,18 +62,19 @@ class MultipleChoiceScoring extends AbstractScoring
             /** @var MultipleChoiceScoringDefinition $score */
             $score = $answer_option->getScoringDefinition();
             if ($score->getPointsSelected() > $score->getPointsUnselected()) {
-                $answers[] = $answer_option->getOptionId();
+                $answers[$answer_option->getOptionId()] = $score->getPointsSelected();
             }
         }
 
-        rsort($answers);
+        asort($answers);
+        $answers = array_reverse($answers, true);
 
         $length = $this->question->getPlayConfiguration()
             ->getEditorConfiguration()
             ->getMaxAnswers();
-        $answers = array_slice($answers, 0, $length);
+        $answers = array_slice($answers, 0, $length, true);
 
-        return MultipleChoiceAnswer::create($answers);
+        return MultipleChoiceAnswer::create(array_keys($answers));
     }
 
     /**
