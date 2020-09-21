@@ -112,20 +112,26 @@ class QuestionFormGUI
         $factory_class = $question->getType()->getFactoryClass();
         $this->form_factory = new $factory_class($this->language, $this->ui, $this->asq_ui);
 
-        $this->initInputs($question);
+
+
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
 
         foreach ($this->form_factory->getScripts() as $script) {
             $this->ui->mainTemplate()->addJavaScript($script);
         }
 
-        $this->showQuestionState($this->post_question ?? $question);
+        $this->initInputs($question);
 
-        $this->addRevisionForm();
+        $this->showQuestionState($question);
 
         $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->inputs);
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->getMethod() === 'POST')
+        {
             $this->post_question = $this->readQuestionFromPost($question);
+            $this->initInputs($this->post_question);
+            $this->showQuestionState($this->post_question);
+            $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->inputs);
         }
     }
 
@@ -170,8 +176,6 @@ class QuestionFormGUI
 
             $this->inputs[self::VAR_ANSWER_OPTIONS] = $option_form;
         }
-
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
     /**
@@ -197,24 +201,6 @@ class QuestionFormGUI
                     ->withValue($value);
 
         $this->inputs[] = $state;
-    }
-
-    private function addRevisionForm() : void
-    {
-        return;
-
-        $spacer = new ilFormSectionHeaderGUI();
-        $spacer->setTitle($this->language->txt('asq_version_title'));
-        $this->addItem($spacer);
-
-        $revision = new ilTextInputGUI($this->language->txt('asq_label_new_revision'), self::VAR_REVISION_NAME);
-        $revision->setInfo(sprintf(
-            '%s<br /><input class="btn btn-default btn-sm" type="submit" name="cmd[%s]" value="%s" />',
-            $this->language->txt('asq_info_create_revision'),
-            self::CMD_CREATE_REVISON,
-            $this->language->txt('asq_button_create_revision')
-        ));
-        $this->addItem($revision);
     }
 
     /**
