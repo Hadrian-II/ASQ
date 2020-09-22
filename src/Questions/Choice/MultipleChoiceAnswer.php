@@ -17,7 +17,7 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 class MultipleChoiceAnswer extends AbstractValueObject
 {
     /**
-     * @var int[]
+     * @var string[]
      */
     protected $selected_ids;
 

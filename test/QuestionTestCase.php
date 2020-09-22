@@ -14,6 +14,7 @@ use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Application\Service\ASQServices;
 use srag\asq\UserInterface\Web\Component\Renderer;
+use Exception;
 
 /**
  * Class QuestionTestCase
@@ -130,9 +131,9 @@ abstract class QuestionTestCase extends TestCase
      *
      * @param QuestionDto $question
      * @param AbstractValueObject $answer
-     * @param float $expected_score
+     * @param mixed $expected_score
      */
-    public function testComponentRendering(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
+    public function testComponentRendering(QuestionDto $question, AbstractValueObject $answer, $expected_score)
     {
         global $DIC;
 
@@ -160,11 +161,17 @@ abstract class QuestionTestCase extends TestCase
      *
      * @param QuestionDto $question
      * @param AbstractValueObject $answer
-     * @param float $expected_score
+     * @param mixed $expected_score
      */
-    public function testAnswers(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
+    public function testAnswers(QuestionDto $question, AbstractValueObject $answer, $expected_score)
     {
-        $this->assertEquals($expected_score, self::$asq->answer()->getScore($question, $answer));
+        if ($expected_score instanceof Exception) {
+            $this->expectException(get_class($expected_score));
+            $this->expectExceptionMessage($expected_score->getMessage());
+            self::$asq->answer()->getScore($question, $answer);
+        } else {
+            $this->assertEquals($expected_score, self::$asq->answer()->getScore($question, $answer));
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class MultipleChoiceScoring
@@ -29,6 +30,15 @@ class MultipleChoiceScoring extends AbstractScoring
         $reached_points = 0;
 
         $selected_options = $answer->getSelectedIds();
+        $max_allowed = $this->question->getPlayConfiguration()->getEditorConfiguration()->getMaxAnswers();
+
+        if (count($selected_options) > $max_allowed) {
+            throw new AsqException(
+                sprintf(
+                    'Too many answers "%s" given for maximum allowed of: "%s"',
+                    count($selected_options),
+                    $max_allowed));
+        }
 
         /** @var AnswerOption $answer_option */
         foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
