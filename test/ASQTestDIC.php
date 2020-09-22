@@ -5,10 +5,8 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use ILIAS\DI\UIServices;
 use ilCtrl;
-use ilDBWrapperFactory;
 use ilIniFile;
 use ilLanguage;
-use ilLoggerFactory;
 use ilObjUser;
 use ilBenchmark;
 use ilSetting;
@@ -16,8 +14,11 @@ use ilGlobalPageTemplate;
 use ILIAS\GlobalScreen\Services;
 use ILIAS\DI\HTTPServices;
 use ilStyleDefinition;
-
-require_once 'NullLogger.php';
+use ilLogger;
+use ILIAS\UI\Implementation\Factory as UIFactory;
+use ILIAS\UI\Implementation\Render\ilTemplateWrapperFactory;
+use ILIAS\UI\Implementation\Render\ilJavaScriptBinding;
+use ILIAS\Refinery\Factory as Refinery;
 
 /**
  * Class AsqTestDIC
@@ -42,9 +43,9 @@ class AsqTestDIC extends \ILIAS\DI\Container
         $container = new AsqTestDIC();
         $GLOBALS['DIC'] = $container;
 
-        $container['ilLoggerFactory'] = function ($c) {
-            return ilLoggerFactory::getInstance();
-        };
+//         $container['ilLoggerFactory'] = function ($c) {
+//             return ilLoggerFactory::getInstance();
+//         };
 
         $container['ilClientIniFile'] = function ($c) {
             //TODO bad
@@ -120,13 +121,6 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
         $force_init = $container['ilClientIniFile'];
 
-        $container['ilDB'] = function ($c) {
-            $ilDB = ilDBWrapperFactory::getWrapper(IL_DB_TYPE);
-            $ilDB->initFromIniFile();
-            $ilDB->connect();
-            return $ilDB;
-        };
-
         $container['ilCtrl'] = function ($c) {
             return new ilCtrl();
         };
@@ -146,7 +140,16 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
 
         $container['lng'] = function ($c) {
-            return new ilLanguage('en');
+            return new class() extends ilLanguage {
+                public function __construct() {}
+
+                public function txt($a_topic, $a_default_lang_fallback_mod = "")
+                {
+                    return '$TRANSLATED_TEXT$';
+                }
+
+                public function loadLanguageModule($a_module) {}
+            };
         };
 
         $container['ilias'] = function ($c) {
@@ -172,7 +175,16 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
 
         $container['ilLog'] = function ($c) {
-            return new NullLogger();
+            return new class() extends ilLogger
+            {
+                public function __construct() {
+
+                }
+
+                public function lang() {
+                    return null;
+                }
+            };
         };
 
         $container['ilBench'] = function ($c) {
@@ -192,7 +204,10 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
 
         $container['ilSetting'] = function ($c) {
-            return new ilSetting();
+            return new class() extends ilSetting
+            {
+                public function __construct() {}
+            };
         };
 
         $container['ilPluginAdmin'] = function ($c) {
@@ -204,6 +219,12 @@ class AsqTestDIC extends \ILIAS\DI\Container
             };
         };
 
+        $container['http'] = function ($c) {
+            return new class() extends HTTPServices {
+                public function __construct() {}
+            };
+        };
+
         $container['tpl'] = function ($c) {
             return new ilGlobalPageTemplate(
                 new class() extends Services {
@@ -212,32 +233,36 @@ class AsqTestDIC extends \ILIAS\DI\Container
                     }
                 },
                 new UIServices($c),
-                new class() extends HTTPServices {
-                    public function __construct()
-                    {
-                    }
-                }
+                $c['http']
             );
+        };
+
+        $container['ui.template_factory'] = function ($c) {
+            return new ilTemplateWrapperFactory($c['tpl']);
+        };
+
+        $container['ui.javascript_binding'] = function ($c) {
+            return new ilJavaScriptBinding($c['tpl']);
+        };
+
+        $container['refinery'] = function ($c) {
+            return new Refinery(new \ILIAS\Data\Factory(), $c['lng']);
         };
 
         $container['styleDefinition'] = function ($c) {
             return new ilStyleDefinition();
+        };
+
+        $container['ui.factory'] = function ($c) {
+            return new class() extends UIFactory {
+                public function __construct() {}
+            };
         };
     }
 
     public function repositoryTree()
     {
         return null;
-    }
-
-    /**
-     * Get interface to the Database.
-     *
-     * @return	\ilDBInterface
-     */
-    public function database()
-    {
-        return $this["ilDB"];
     }
 
     /**

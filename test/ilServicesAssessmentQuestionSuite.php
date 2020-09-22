@@ -2,12 +2,13 @@
 /* Copyright (c) 1998-2019 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 
-require_once("./libs/composer/vendor/autoload.php");
-require_once(__DIR__ . "../../../vendor/autoload.php");
+require_once(__DIR__ . "../../../../../../../../../../libs/composer/vendor/autoload.php");
+require_once(__DIR__ . "../../vendor/autoload.php");
 require_once('ASQTestDIC.php');
 
 use PHPUnit\Framework\TestSuite;
 use ILIAS\AssessmentQuestion\Test\AsqTestDIC;
+use srag\asq\Application\Service\ASQDIC;
 
 /**
  * Class ilServicesAssessmentQuestionSuite
@@ -30,6 +31,7 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
     public static function suite()
     {
         AsqTestDIC::init();
+        ASQDIC::initiateASQ($GLOBALS['DIC']);
 
         $suite = new ilServicesAssessmentQuestionSuite();
 

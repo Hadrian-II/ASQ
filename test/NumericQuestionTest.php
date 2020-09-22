@@ -26,9 +26,10 @@ require_once 'QuestionTestCase.php';
  */
 class NumericQuestionTest extends QuestionTestCase
 {
-    const TEST_CONTAINER = -1;
-    const DONT_TEST = -1;
-
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\AssessmentQuestion\Test\QuestionTestCase::getQuestions()
+     */
     public function getQuestions() : array
     {
         return [
@@ -44,13 +45,17 @@ class NumericQuestionTest extends QuestionTestCase
                 QuestionData::create('Question 2', '', '', '', 1),
                 QuestionPlayConfiguration::create(
                     NumericEditorConfiguration::create(),
-                    NumericScoringConfiguration::create(2, 3, 4)
+                    NumericScoringConfiguration::create(3, 3, 4)
                 ),
                 null
             )
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\AssessmentQuestion\Test\QuestionTestCase::getAnswers()
+     */
     public function getAnswers() : array
     {
         return [
@@ -61,9 +66,13 @@ class NumericQuestionTest extends QuestionTestCase
         ];
     }
 
-    public function getExpectedScore($question_id, $answer_id) : float
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\AssessmentQuestion\Test\QuestionTestCase::getExpectedScores()
+     */
+    public function getExpectedScores() : array
     {
-        $data = [
+        return [
             'question 1' => [
                 'answer 1' => 2,
                 'answer 2' => 0,
@@ -72,25 +81,36 @@ class NumericQuestionTest extends QuestionTestCase
             ],
             'question 2' => [
                 'answer 1' => 0,
-                'answer 2' => 2,
-                'answer 3' => 2,
+                'answer 2' => 3,
+                'answer 3' => 3,
                 'answer 4' => 0
             ]
         ];
-
-        return $data[$question_id][$answer_id];
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\AssessmentQuestion\Test\QuestionTestCase::getMaxScores()
+     */
+    public function getMaxScores() : array
+    {
+        return [
+            'question 1' => 2,
+            'question 2' => 3
+        ];
+    }
 
+    /**
+     * {@inheritDoc}
+     * @see \ILIAS\AssessmentQuestion\Test\QuestionTestCase::getTypeDefinition()
+     */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::create(
-            QuestionType::createNew(
-                'numeric',
-                NumericFormFactory::class,
-                NumericEditor::class,
-                NumericScoring::class
-            )
+        return QuestionType::createNew(
+            'numeric',
+            NumericFormFactory::class,
+            NumericEditor::class,
+            NumericScoring::class
         );
     }
 }

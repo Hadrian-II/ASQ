@@ -4,6 +4,7 @@
 namespace ILIAS\AssessmentQuestion\Test;
 
 use ILIAS\Data\UUID\Factory;
+use ILIAS\UI\Implementation\DefaultRenderer;
 use PHPUnit\Framework\TestCase;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -11,8 +12,8 @@ use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
-use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use srag\asq\Application\Service\ASQServices;
+use srag\asq\UserInterface\Web\Component\Renderer;
 
 /**
  * Class QuestionTestCase
@@ -25,23 +26,41 @@ use srag\asq\Application\Service\ASQServices;
  */
 abstract class QuestionTestCase extends TestCase
 {
-    const TEST_CONTAINER = -1;
-    const DONT_TEST = -1;
-
-    private static $ids = [];
-
     /**
      * @var ASQServices
      */
-    protected $asq;
+    protected static $asq;
 
+    /**
+     * @return array
+     */
     abstract public function getQuestions() : array;
 
-    public function __create()
+    /**
+     * @return array
+     */
+    abstract public function getAnswers() : array;
+
+    /**
+     * @return array
+     */
+    abstract public function getMaxScores() : array;
+
+    /**
+     * @return array
+     */
+    abstract public function getExpectedScores() : array;
+
+    /**
+     * @return QuestionType
+     */
+    abstract public function getTypeDefinition() : QuestionType;
+
+    public static function setUpBeforeClass() : void
     {
         global $ASQDIC;
 
-        $this->asq = $ASQDIC->asq();
+        self::$asq = $ASQDIC->asq();
     }
 
     /**
@@ -55,25 +74,41 @@ abstract class QuestionTestCase extends TestCase
         $factory = new Factory();
 
         $question = new QuestionDto();
-        $question->setId($factory->uuid4AsString());
+        $question->setId($factory->uuid4());
         $question->setData($data);
         $question->setPlayConfiguration($play);
         $question->setAnswerOptions($options);
+        $question->setType($this->getTypeDefinition());
         return $question;
     }
 
-    abstract public function getAnswers() : array;
-
-    abstract public function getExpectedScore(string $question_id, string $answer_id) : float;
-
-    abstract public function getTypeDefinition() : QuestionType;
-
-    public function setUp() : void
+    /**
+     * @return array
+     */
+    public function questionMaxScoreProvider() : array
     {
+        $max_scores = $this->getMaxScores();
+
+        $mapping = [];
+
+        foreach ($this->getQuestions() as $question_id => $question) {
+            $mapping[sprintf('Question "%s"', $question_id)] =
+            [
+                $question,
+                $max_scores[$question_id]
+            ];
+        }
+
+        return $mapping;
     }
 
+    /**
+     * @return array
+     */
     public function questionAnswerProvider() : array
     {
+        $expected_scores = $this->getExpectedScores();
+
         $mapping = [];
 
         foreach ($this->getQuestions() as $question_id => $question) {
@@ -82,7 +117,7 @@ abstract class QuestionTestCase extends TestCase
                     [
                         $question,
                         $answer,
-                        $this->getExpectedScore($question_id, $answer_id)
+                        $expected_scores[$question_id][$answer_id]
                     ];
             }
         }
@@ -91,30 +126,6 @@ abstract class QuestionTestCase extends TestCase
     }
 
     /**
-     * @param QuestionDto $question
-     */
-    public function testQuestionCreation()
-    {
-        foreach ($this->getQuestions() as $question) {
-            $created = $this->asq->question()->createQuestion($this->getTypeDefinition());
-            self::$ids[] = sprintf('"%s"', $created->getId());
-            $created->setData($question->getData());
-            $created->setAnswerOptions($question->getAnswerOptions());
-            $created->setPlayConfiguration($question->getPlayConfiguration());
-            $this->asq->question()->saveQuestion($created);
-
-            $loaded_created = $this->asq->question()->getQuestionByQuestionId($created->getId());
-
-            $this->assertTrue($question->getData()->equals($loaded_created->getData()));
-            if (!is_null($question->getAnswerOptions())) {
-                $this->assertTrue($question->getAnswerOptions()->equals($loaded_created->getAnswerOptions()));
-            }
-            $this->assertTrue($question->getPlayConfiguration()->equals($loaded_created->getPlayConfiguration()));
-        }
-    }
-
-    /**
-     * @depends testQuestionCreation
      * @dataProvider questionAnswerProvider
      *
      * @param QuestionDto $question
@@ -125,15 +136,26 @@ abstract class QuestionTestCase extends TestCase
     {
         global $DIC;
 
-        $q = new QuestionComponent($question, $DIC->ui(), $DIC->language());
-        $q->setAnswer($answer);
-        $output = $q->renderHtml();
+        $q = self::$asq->ui()->getQuestionComponent($question);
+        $q = $q->withAnswer($answer);
+
+        $renderer = new Renderer(
+            $DIC['ui.factory'],
+            $DIC['ui.template_factory'],
+            $DIC['lng'],
+            $DIC['ui.javascript_binding'],
+            $DIC['refinery']);
+
+        $default_renderer = new class() extends DefaultRenderer {
+            public function __construct() {}
+        };
+
+        $output = $renderer->render($q, $default_renderer);
 
         $this->assertTrue(strlen($output) > 0);
     }
 
     /**
-     * @depends testQuestionCreation
      * @dataProvider questionAnswerProvider
      *
      * @param QuestionDto $question
@@ -142,15 +164,17 @@ abstract class QuestionTestCase extends TestCase
      */
     public function testAnswers(QuestionDto $question, AbstractValueObject $answer, float $expected_score)
     {
-        $this->assertEquals($expected_score, $this->asq->answer()->getScore($question, $answer));
+        $this->assertEquals($expected_score, self::$asq->answer()->getScore($question, $answer));
     }
 
-    public static function TearDownAfterClass() : void
+    /**
+     * @dataProvider questionMaxScoreProvider
+     *
+     * @param QuestionDto $question
+     * @param float $expected_score
+     */
+    public function testMaxScore(QuestionDto $question, float $expected_score)
     {
-        global $DIC;
-
-        if (count(self::$ids) > 0) {
-            $DIC->database()->manipulate(sprintf('DELETE FROM asq_qst_event_store WHERE aggregate_id in (%s);', implode(', ', self::$ids)));
-        }
+        $this->assertEquals($expected_score, self::$asq->answer()->getMaxScore($question));
     }
 }
