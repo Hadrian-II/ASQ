@@ -10,18 +10,18 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
-use srag\asq\Questions\Choice\Editor\MultipleChoice\MultipleChoiceEditor;
-use srag\asq\Questions\Choice\Editor\MultipleChoice\Data\MultipleChoiceEditorConfiguration;
-use srag\asq\Questions\Choice\Form\Editor\MultipleChoice\MultipleChoiceFormFactory;
+use srag\asq\Questions\Choice\Editor\ImageMap\ImageMapEditor;
+use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
+use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorDefinition;
+use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageMapFormFactory;
 use srag\asq\Questions\Choice\Scoring\MultipleChoiceScoring;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringConfiguration;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
-use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 
 require_once 'QuestionTestCase.php';
 
 /**
- * Class MultipleChoiceTest
+ * Class ImageMapTest
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -29,7 +29,7 @@ require_once 'QuestionTestCase.php';
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class MultipleChoiceTest extends QuestionTestCase
+class ImageMapTest extends QuestionTestCase
 {
     /**
      * {@inheritDoc}
@@ -41,63 +41,63 @@ class MultipleChoiceTest extends QuestionTestCase
             'question 1' => $this->createQuestion(
                 QuestionData::create('Question 1', '', '', '', 1),
                 QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(false, 1),
-                    MultipleChoiceScoringConfiguration::create()
-                    ),
-                    AnswerOptions::create([
-                        AnswerOption::create('1',
-                            ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
-                            MultipleChoiceScoringDefinition::create(1, 0)),
-                        AnswerOption::create('2',
-                            ImageAndTextDisplayDefinition::create('2'),
-                            MultipleChoiceScoringDefinition::create(2, 0)),
-                        AnswerOption::create('3',
-                            ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
-                            MultipleChoiceScoringDefinition::create(3, 0)),
-                        AnswerOption::create('4',
-                            ImageAndTextDisplayDefinition::create('4'),
-                            MultipleChoiceScoringDefinition::create(4, 0))
-                    ])
-                ),
-            'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(true, 2, 100),
+                    ImageMapEditorConfiguration::create('blah.png', false, 1),
                     MultipleChoiceScoringConfiguration::create()
                     ),
                 AnswerOptions::create([
                     AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
+                        ImageMapEditorDefinition::create('lorem', ImageMapEditorDefinition::TYPE_CIRCLE, 'cx:31;cy:53;rx:7;ry:11'),
                         MultipleChoiceScoringDefinition::create(1, 0)),
                     AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('2'),
+                        ImageMapEditorDefinition::create('ipsum', ImageMapEditorDefinition::TYPE_RECTANGLE, 'x:59;y:6;width:9;height:17'),
+                        MultipleChoiceScoringDefinition::create(2, 0)),
+                    AnswerOption::create('3',
+                        ImageMapEditorDefinition::create('dolor', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
+                        MultipleChoiceScoringDefinition::create(3, 0)),
+                    AnswerOption::create('4',
+                        ImageMapEditorDefinition::create('sit', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
+                        MultipleChoiceScoringDefinition::create(4, 0))
+                ])
+                ),
+            'question 2' => $this->createQuestion(
+                QuestionData::create('Question 2', '', '', '', 1),
+                QuestionPlayConfiguration::create(
+                    ImageMapEditorConfiguration::create('blah.png', true, 2),
+                    MultipleChoiceScoringConfiguration::create()
+                    ),
+                AnswerOptions::create([
+                    AnswerOption::create('1',
+                        ImageMapEditorDefinition::create('lorem', ImageMapEditorDefinition::TYPE_CIRCLE, 'cx:31;cy:53;rx:7;ry:11'),
+                        MultipleChoiceScoringDefinition::create(1, 0)),
+                    AnswerOption::create('2',
+                        ImageMapEditorDefinition::create('ipsum', ImageMapEditorDefinition::TYPE_RECTANGLE, 'x:59;y:6;width:9;height:17'),
                         MultipleChoiceScoringDefinition::create(0, 0)),
                     AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
+                        ImageMapEditorDefinition::create('dolor', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
                         MultipleChoiceScoringDefinition::create(1, 0)),
                     AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('4'),
+                        ImageMapEditorDefinition::create('sit', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
                         MultipleChoiceScoringDefinition::create(0, 1))
                 ])
                 ),
             'question 3' => $this->createQuestion(
                 QuestionData::create('Question 3', '', '', '', 1),
                 QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(false, 3, 100),
+                    ImageMapEditorConfiguration::create('blah.png', true, 3),
                     MultipleChoiceScoringConfiguration::create()
                     ),
                 AnswerOptions::create([
                     AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
+                        ImageMapEditorDefinition::create('lorem', ImageMapEditorDefinition::TYPE_CIRCLE, 'cx:31;cy:53;rx:7;ry:11'),
                         MultipleChoiceScoringDefinition::create(2, -2)),
                     AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('2'),
+                        ImageMapEditorDefinition::create('ipsum', ImageMapEditorDefinition::TYPE_RECTANGLE, 'x:59;y:6;width:9;height:17'),
                         MultipleChoiceScoringDefinition::create(1, 0)),
                     AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
+                        ImageMapEditorDefinition::create('dolor', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
                         MultipleChoiceScoringDefinition::create(1, 0)),
                     AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('4'),
+                        ImageMapEditorDefinition::create('sit', ImageMapEditorDefinition::TYPE_POLYGON, 'points:74,32 78,49 91,51 82,63 83,75 76,63 68,71 71,59 66,48 72,49'),
                         MultipleChoiceScoringDefinition::create(-1, 1))
                 ])
                 )
@@ -175,8 +175,8 @@ class MultipleChoiceTest extends QuestionTestCase
     {
         return QuestionType::createNew(
             'multiple_choice',
-            MultipleChoiceFormFactory::class,
-            MultipleChoiceEditor::class,
+            ImageMapFormFactory::class,
+            ImageMapEditor::class,
             MultipleChoiceScoring::class
             );
     }
