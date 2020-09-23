@@ -9,7 +9,7 @@ There are two ways to create questions:
 
 
 ## Table of contents
-- [Get the Question Creation Link](#get-the-quesetion-creation-link)
+- [Get the Question Creation Link](#get-the-question-creation-link)
 - [Create the Question without using the authoring environment](#create-the-question-without-using-the-authoring-environment)  
     
 <br>
@@ -30,8 +30,6 @@ If you use this option for creating a question all requests to the authoring env
 ```php
 <?php
 
-use srag\asq\AsqGateway;
-
 /**
  * Class AsqDemoGUI
  *
@@ -45,12 +43,13 @@ class AsqDemoGUI {
 - [ ] **2. Add the _Creation Link_**
 
 E.g add the link as a toolbar button.
+
 ```php
 public function renderToolbar()
 {
-        global $DIC;
+        global $DIC, $ASQDIC;
 
-        $link = AsqGateway::get()->link()->getCreationLink();
+        $link = $ASQDIC->asq()->link()->getCreationLink();
         $button = ilLinkButton::getInstance();
         $button->setUrl($link->getAction());
         $button->setCaption($link->getLabel(), false);
@@ -96,21 +95,33 @@ public function executeCommand()
 
 private function forwardCommandToAuthoringGui()
 {
-        global $DIC;
+        global $DIC, $ASQDIC;
 
         $backLink = $DIC->ui()->factory()->link()->standard(
             $DIC->language()->txt('back'),
-            $DIC->ctrl()->getLinkTarget($this, self::CMD_EDIT_QUESTIONS));
+            $DIC->ctrl()->getLinkTarget($this, self::CMD_SHOW_QUESTIONS)
+        );
+
 
         $authoring_context_container = new AuthoringContextContainer(
             $backLink,
             $this->object->getRefId(),
             $this->object->getId(),
             $this->object->getType(),
-            $DIC->user()->getId()
+            $DIC->user()->getId(),
+            $this
         );
 
-        $asq = new AsqQuestionAuthoringGUI($authoring_context_container);
+        $asq = new AsqQuestionAuthoringGUI(
+            $authoring_context_container,
+            $DIC->language(),
+            $DIC->ui(),
+            $DIC->ctrl(),
+            $DIC->tabs(),
+            $DIC->access(),
+            $DIC->http(),
+            $ASQDIC->asq()
+        );
 
         $DIC->ctrl()->forwardCommand($asq);
 }
@@ -145,5 +156,5 @@ An alternative way is to directly create questions without using the authoring e
 ### Usage
 
 ```php
-AsqGateway::get()->question()->createQuestion(int $type, int $container_id, string $content_editing_mode = ContentEditingMode::RTE_TEXTAREA)
+$ASQDIC->asq->question()->createQuestion(QuestionType $type)
 ```

@@ -10,29 +10,12 @@ There are two ways to fetch questions:
 
 ## Table of contents
 
-- [Get all questions of a container by ILIAS Object ID](#get-all-questions-of-a-container-by-ilias-object-id)
 - [Get a single question by UUID](#get-a-single-question-by-uuid)  
 - [Get question component for test runs](#get-question-component-for-test-runs)  
     
 <br>
 <br>
 
-
-## Get all questions of a container by its ILIAS Object ID
-
-### Note
-
-A container is the object where questions are created within and thus is basically the owner of these questions.
-This method is a basic way to get questions:
-
-### Usage
-
-```php
-$question_dtos = AsqGateway::get()->question()->getQuestionsOfContainer($this->object->getId());
-```
-    
-<br>
-<br>
 
 
 ## Get a single question by UUID
@@ -44,7 +27,7 @@ The ASQ identifies questions with a Version 4 UUID. You may get any questions of
 ### Usage
 
 ```php
-$question_dto = AsqGateway::get()->question()->getQuestionByQuestionId('7464973d-6cf3-4142-949a-3d7fd4d48169');
+$question_dto = $ASQDIC->asq()->question()->getQuestionByQuestionId($uuid_object);
 ```
     
 <br>
@@ -64,7 +47,7 @@ The answer of the user can be extracted from the component using the method read
 ### Usage
 
 ```php
-$question_component = AsqGateway::get()->ui()->getQuestionComponent($question_dto);
+$question_component = $ASQDIC->asq()->ui()->getQuestionComponent($question_dto);
         
 $save_button = ilSubmitButton::getInstance();
 $save_button->setCaption($DIC->language()->txt('submit_answer'), false);
@@ -75,7 +58,7 @@ $DIC->ui()->mainTemplate()->setContent(
                 $DIC->ctrl()->getFormAction(
                     $this, self::CMD_RUN_TEST
                 ) . '">' .
-                $question_component->renderHtml(). '<br />' .
+                $DIC->ui()->renderer()->render($question_component). '<br />' .
                 $save_button->render() .
     '</form>'
 );

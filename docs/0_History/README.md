@@ -23,3 +23,5 @@ Readme: https://github.com/ILIAS-eLearning/ILIAS/blob/5784e0a1b78a56cb5751d93dc8
 Final Concept: https://github.com/ILIAS-eLearning/ILIAS/blob/7b261f43c6fe59938d72b84b270196089afbaa91/Services/AssessmentQuestion/docs/development/cqrs-and-event-sourcing-paradigm.md
 
 **2020-03-19** Publication of the first ASQ Version in form of a library for the official review process.
+
+**2020-09-23** Publication of the second ASQ Version in form of a library for the official review process.

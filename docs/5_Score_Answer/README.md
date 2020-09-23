@@ -24,7 +24,7 @@ Get the answer associated to the provided UUID.
 ### Usage
 
 ```php
-$answer = AsqGateway::get()->answer()->getAnswer($uuid)
+$answer = $ASQDIC->asq()->answer()->getAnswer($uuid)
 ```
     
 <br>
@@ -40,7 +40,7 @@ Get the achieved score for the provided answer and question.
 ### Usage
 
 ```php
-$score = AsqGateway::get()->answer()->getScore($question, $answer)
+$score = $ASQDIC->asq()->answer()->getScore($question, $answer)
 ```
     
 <br>
@@ -56,7 +56,7 @@ Get the maximum possible score of a question.
 ### Usage
 
 ```php
-$max_score =  AsqGateway::get()->answer()->getMaxScore($question)
+$max_score =  $ASQDIC->asq()->answer()->getMaxScore($question)
 ```
     
 <br>
@@ -73,7 +73,7 @@ A caveat is that some question types do not have a best possible answer (FileUpl
 ### Usage
 
 ```php
-$best_answer =  AsqGateway::get()->answer()->getBestAnswer($question)
+$best_answer =  $ASQDIC->asq()->answer()->getBestAnswer($question)
 ```
 <br>
 <br>

@@ -1,7 +1,7 @@
 # Setting up
 
 If you want to use the Assessment Question Service within a Repository Objects Plugin, proceed as follows.
-
+While it is in this form ASQ creates its own dependency injection container $ASQDIC, with acceptance into core, that code would move into the standard ILIAS dependency injection container.
 <br>
 <br>
 
