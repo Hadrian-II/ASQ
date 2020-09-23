@@ -3,13 +3,13 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\ImageMap;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFactory;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use ILIAS\DI\UIServices;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class ImageMapFormFactory

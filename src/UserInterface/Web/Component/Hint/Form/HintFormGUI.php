@@ -7,13 +7,13 @@ use ILIAS\DI\UIServices;
 use ILIAS\UI\Component\Input\Container\Form\Standard;
 use Psr\Http\Message\RequestInterface;
 use ilLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class HintFormGUI

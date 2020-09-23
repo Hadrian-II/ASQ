@@ -3,14 +3,14 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Matching\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\Questions\Matching\Form\Editor\MatchingEditorConfigurationFactory;
 use srag\asq\Questions\Matching\Form\Scoring\MatchingScoringConfigurationFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use ILIAS\DI\UIServices;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class MatchingFormFactory

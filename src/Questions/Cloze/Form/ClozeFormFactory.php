@@ -3,14 +3,14 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Cloze\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Cloze\Form\Editor\ClozeEditorConfigurationFactory;
 use srag\asq\Questions\Cloze\Form\Scoring\ClozeScoringConfigurationFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use ILIAS\DI\UIServices;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class ClozeFormFactory

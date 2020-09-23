@@ -5,8 +5,8 @@ namespace srag\asq\Questions\Numeric\Editor;
 
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Numeric\NumericAnswer;
 use srag\asq\Questions\Numeric\Editor\Data\NumericEditorConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;

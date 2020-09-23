@@ -5,10 +5,10 @@ namespace srag\asq\Questions\Kprim\Editor;
 
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Kprim\KprimChoiceAnswer;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;

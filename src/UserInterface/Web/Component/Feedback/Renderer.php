@@ -6,10 +6,10 @@ namespace srag\asq\UserInterface\Web\Component\Feedback;
 use ILIAS\UI\Renderer as RendererInterface;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
-use srag\asq\PathHelper;
-use srag\asq\Domain\Model\Scoring\AbstractScoring;
-use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 use ilTemplate;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Infrastructure\Helpers\PathHelper;
+use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
 
 /**
  * Class Renderer

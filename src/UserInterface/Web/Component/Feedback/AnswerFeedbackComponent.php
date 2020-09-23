@@ -5,8 +5,8 @@ namespace srag\asq\UserInterface\Web\Component\Feedback;
 
 use ILIAS\UI\Component\Component;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class AnswerFeedbackComponent

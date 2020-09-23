@@ -5,13 +5,13 @@ namespace srag\asq\Questions\Essay\Form;
 
 use ILIAS\DI\UIServices;
 use ilLanguage;
+use srag\asq\Application\Service\UIService;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Essay\Form\Editor\EssayEditorConfigurationFactory;
 use srag\asq\Questions\Essay\Form\Scoring\EssayScoringConfigurationFactory;
 use srag\asq\Questions\Essay\Form\Scoring\EssayScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use srag\asq\PathHelper;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class EssayFormFactory

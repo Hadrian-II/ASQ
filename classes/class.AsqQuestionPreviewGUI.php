@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
-use srag\asq\PathHelper;
+use ILIAS\Data\UUID\Uuid;
+use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\UserInterface\Web\Component\Hint\HintComponent;
 use srag\asq\UserInterface\Web\Component\Scoring\ScoringComponent;
-use ILIAS\Data\UUID\Uuid;
-use srag\asq\Application\Service\ASQServices;
 
 /**
  * Class AsqQuestionPreviewGUI

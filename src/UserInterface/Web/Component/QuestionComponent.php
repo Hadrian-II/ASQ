@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
-use srag\asq\Domain\QuestionDto;
 use ILIAS\UI\Component\Component;
+use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\QuestionDto;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class QuestionComponent

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq;
+namespace srag\asq\Infrastructure\Helpers;
 
 /**
  * Trait PathHelper

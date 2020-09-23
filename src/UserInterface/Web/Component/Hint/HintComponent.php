@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Hint;
 
 use ilTemplate;
-use srag\asq\PathHelper;
 use srag\asq\Domain\Model\Hint\QuestionHint;
 use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class FeedbackComponent

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Component\Scoring;
 
+use ILIAS\UI\Component\Component;
 use ilLanguage;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
-use ILIAS\UI\Component\Component;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class ScoringComponent

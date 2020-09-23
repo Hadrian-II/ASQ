@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\PathHelper;
-use srag\asq\Domain\Model\QuestionInfo;
-use srag\asq\Application\Service\ASQServices;
 use ILIAS\Data\UUID\Uuid;
+use srag\asq\Application\Service\AsqServices;
+use srag\asq\Domain\Model\QuestionInfo;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class AsqQuestionVersionGUI

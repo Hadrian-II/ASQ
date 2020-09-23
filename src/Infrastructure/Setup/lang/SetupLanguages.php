@@ -6,7 +6,7 @@ namespace srag\asq\Infrastructure\Setup\lang;
 use ReflectionClass;
 use ilGlobalCache;
 use ilObjLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class SetupDatabase

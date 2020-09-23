@@ -5,8 +5,8 @@ namespace srag\asq\Questions\TextSubset\Editor;
 
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\PathHelper;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\TextSubset\TextSubsetAnswer;
 use srag\asq\Questions\TextSubset\Editor\Data\TextSubsetEditorConfiguration;
 use srag\asq\UserInterface\Web\PostAccess;

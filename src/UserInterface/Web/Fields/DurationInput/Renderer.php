@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Fields\DurationInput;
 
 use ILIAS\UI\Renderer as RendererInterface;
-
-;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
 use ilTemplate;
-use srag\asq\PathHelper;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class Renderer

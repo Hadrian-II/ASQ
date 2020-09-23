@@ -11,7 +11,7 @@ use ilRadioGroupInputGUI;
 use ilRadioOption;
 use ilSelectInputGUI;
 use ilTemplate;
-use srag\asq\PathHelper;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class Renderer

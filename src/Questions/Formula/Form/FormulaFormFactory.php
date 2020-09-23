@@ -3,16 +3,16 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Formula\Form;
 
+use ILIAS\DI\UIServices;
 use ilLanguage;
-use srag\asq\PathHelper;
+use srag\asq\Application\Service\UIService;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Formula\Form\Editor\FormulaEditorConfigurationFactory;
 use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringConfigurationFactory;
 use srag\asq\Questions\Formula\Form\Scoring\FormulaScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
-use ILIAS\DI\UIServices;
-use srag\asq\Application\Service\UIService;
 
 /**
  * Class FormulaFormFactory
