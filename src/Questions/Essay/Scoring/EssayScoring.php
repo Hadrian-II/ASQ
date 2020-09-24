@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Scoring;
 
-use Exception;
+use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
@@ -11,7 +12,6 @@ use srag\asq\Questions\Essay\EssayAnswer;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringConfiguration;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringDefinition;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringProcessedAnswerOption;
-use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class EssayScoring
@@ -61,10 +61,9 @@ class EssayScoring extends AbstractScoring
     public function score(AbstractValueObject $answer) : float
     {
         if ($this->configuration->getScoringMode() === self::SCORING_MANUAL) {
-            // TODO handle manual scoring
-            throw new Exception("Dont run score on manual scoring");
+            throw new AsqException('Cant automatically score questions that have manual scoring');
         } else {
-            $reached_points = $this->generateScore($answer->getText());
+            $reached_points = $this->generateScore($answer->getText() ?? '');
 
             return $reached_points;
         }
