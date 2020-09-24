@@ -13,7 +13,7 @@ The ASQ provides no higher level business logic. Those must be handled by the co
 
 
 # Status
-BETA
+BETA - Feature Complete
 
 <br>
 <br>
@@ -28,9 +28,13 @@ BETA
 
 # Features
 
-## Authoring of question types
+## Available question types
 
-* Cloze
+At the Moment ASQ implements the following Question Types. The available types are identical with the question types offered by the default ILIAS Test. The two old Cloze style Questions have been rolled in one Type. 
+
+It is easyly able to extend and change the existing question types for different usages. See as example the implementation of the old Singlechoice and Multiplechoice questions which are not internally handled as the same Question Type, but offer different configuration GUIs for backward compatibility. (Same with Ordering and TextOrdering Question)
+
+* Cloze	(ConfigForm move to Kitchen Sink UI is broken ATM)
 * Error
 * Essay
 * FileUpload
@@ -42,28 +46,34 @@ BETA
 * Ordering
 * TextSubset
 
-## Scoring of answers
-* Get Answer
-* Score User Answer
-* Get Max Score
-* Get Best Answer
+For every Question type exists an Authoring form, Integration into QuestionControl for display purposes and an automatic Scoring Module.
   
-<br>
-<br>
+# Architecture
 
+The fundamental architecture is a CQRS type inplementation using Event Sourcing for Data Storage.
+
+## Event Sourcing
+
+Event Sourcing is used to preserve History of Data as is requested by some Stakeholders. ([See Feature Wiki](https://docu.ilias.de/goto_docu_wiki_wpage_5312_1357.html)) In discussions about that Feature with the Stakeholders it was clear that some actually want a history and not a Versioning Scheme. But Eventsourced is also the best way to allow for different Versions, as every state of an object that has ever existed can without problems be restored.
+
+Also as test results sometimes are challenged legally the ability to prove what state was at which moment is very important to users. It would even to be possibly to implement forward hashing on an eventsourced storage to be able to guarantee the integrity of the data with absolute certanity.
+
+## CQRS
+
+CQRS and the work with projections follows automatically from Eventsourcing, as performance can be increased enormously by using that approach. Also a Domain driven approach makes the code easyer to understand as the usage and not theoretical abstractions are paramount.
+  
+## The ASQ Interface
+
+Interaction with ASQ is through the four service it offers to the user.
+
+### Question Service
+
+The Service used to interact with questions allows creation, reading and updating operations
 
 # Requirements
-* PHP 7.2
-* ILIAS 5.4 - ILIAS 7
+* PHP 7.3
+* ILIAS 7 -
 * https://github.com/studer-raimann/cqrs
-  
-<br>
-<br>
-
-
-# Architecture
-* Event Sourcing
-* CQRS
   
 <br>
 <br>
