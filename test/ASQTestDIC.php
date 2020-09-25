@@ -179,6 +179,10 @@ class AsqTestDIC extends \ILIAS\DI\Container
                 public function __construct() {}
             };
         };
+
+        $container['upload'] = function($c) {
+            return null;
+        };
     }
 
     public function repositoryTree()

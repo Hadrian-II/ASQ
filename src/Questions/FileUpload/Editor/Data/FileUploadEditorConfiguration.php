@@ -56,12 +56,4 @@ class FileUploadEditorConfiguration extends AbstractValueObject
     {
         return $this->allowed_extensions;
     }
-
-    public function equals(AbstractValueObject $other) : bool
-    {
-        /** @var FileUploadEditorConfiguration $other */
-        return get_class($this) === get_class($other) &&
-               $this->maximum_size === $other->maximum_size &&
-               $this->allowed_extensions === $other->allowed_extensions;
-    }
 }

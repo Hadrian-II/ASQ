@@ -44,9 +44,11 @@ class FileUploadScoring extends AbstractScoring
         $reached_points = 0;
 
         if ($this->configuration->isCompletedBySubmition()) {
-            $reached_points = $this->getMaxScore();
+            if (count($answer->getFiles()) > 0) {
+                $reached_points = $this->getMaxScore();
+            }
         } else {
-            // TODO go look for manual scoring or throw exception
+            throw new AsqException('Cant automatically score Fileupload');
         }
 
         return $reached_points;
