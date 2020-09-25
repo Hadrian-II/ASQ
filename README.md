@@ -70,7 +70,7 @@ Interaction with ASQ is through the four service it offers to the user. It is im
 
 The Service used to interact with questions allows creation, reading and updating operations on question objects. At the moment there is no deletion command as we are keeping the data anyway, but there is functionality in our CQRS library that makes every Aggregate deletable (The object is flagged as deleted and no now events are allowed).
 
-Also the service allows the function to create Question Revisions. A revision is a fixed snapshot of a question so that if the question is done after the question has been changed in authoring the test still has the question with the state that is used by the test. Also revisions are projected as full object to increase performance
+Also the service allows the function to create Question Revisions. A revision is a fixed snapshot of a question. If a revision is used in a test, the used version remains in it's status. When a question is changed it has no influence on existing tests. Also revisions are projected as full object to increase performance.
 
 ### Answer Service
 
