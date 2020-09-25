@@ -70,11 +70,11 @@ Interaction with ASQ is through the four service it offers to the user. It is im
 
 The Service used to interact with questions allows creation, reading and updating operations on question objects. At the moment there is no deletion command as we are keeping the data anyway, but there is functionality in our CQRS library that makes every Aggregate deletable (The object is flagged as deleted and no now events are allowed).
 
-Also the service allows the function to create Question Revisions. A revision is a fixed snapshot of a question. If a revision is used in a test, the used version remains in it's status. When a question is changed it has no influence on existing tests. Also revisions are projected as full object to increase performance.
+Also the service allows the function to create Question Revisions. A revision is a fixed snapshot of a question. If a revision is used in a test, the used version remains in its status. When a question is changed it has no influence on existing tests. Also revisions are projected as full object to increase performance.
 
 ### Answer Service
 
-This service is mostly used to score Answers and to get the best possible Answer to a question. Scoring is done by Providing a Question and an Answer to that Question. At the moment it is the users task to make sure that the answer is actually the an answer to the question he provides. This functionality coud easily be extended with additional checks if needed, but the prefered path is that in a future move to the QTI standard that answers will correspond to the types defined by the public standard.
+This service is mostly used to score Answers and to get the best possible Answer to a question. Scoring is done by Providing a Question and an Answer to that Question. At the moment it is the asq service consumer's task to make sure that the answer is actually the answer to the question he provides. This functionality could easily be extended with additional checks if needed, but the preferred path is that in a future move to the QTI standard that answers will correspond to the types defined by the public standard.
 
 Also the answer service allows to get maximum, minimum score of a question. Also most question types allow the automatic generation of a best possible answer that could then be used by test players to show the correct solution.
 
@@ -86,29 +86,29 @@ The Link Service can be used to generate links to the given question in our auth
 
 ### UI Service
 
-This Service serves as a Factory used to create the ASQ UI elements. Most importantly the Question Component itself which is a Kitchen Sink UI element which can be used to display the question for users to Answer.
+This Service serves as a Factory used to create the ASQ UI elements. Most importantly the Question Component itself is a Kitchen Sink UI element which can be used to display the question for users to Answer.
 
 ## Structure of a Question
 
 A question is structured in the following way. It is an event sourced Aggregate object as defined in our CQRS Library. The basic parts of a question are its Uuid which identifies it and its question type.
 
-The Question Type is an object that contains the classes that are used by that type, on the question object itself is only the key to the type stored, so that if parts of that question are replaced the question is still functioning. New types can be added over the ASQ question type, so it is very easy to create new Questiontypes as plugins.
+The Question Type is an object that contains the classes that are used by that type, on the question object itself only the key to the type is stored, so that if parts of that question are replaced the question is still functioning. New types can be added over the ASQ question type, so it is very easy to create new Questiontypes as plugins.
 
 The Question Data is the basic data that is used by every question type and contains things like the text and author of the question.
 
-The Question Play configuration is the type specific information of a question which is split in an editor and a scoring configuration object. The idea is that editor configuration consists info used for the editor meaning the display of the question to the user, and scoring configuration consists of the info needed to score a question.
+The Question Play configuration is the type specific information of a question which is split in an editor and a scoring configuration object. The idea is that editor configuration consists info used for the editor, meaning the display of the question to the user, and scoring configuration consists of the info needed to score a question.
 
 Answer options is a list of AnswerOptions used by the Question which is internally also split in data for Editor and Scoring.
 
-The split between Editor ans Scoring allows to reuse parts of a question in different types, as an example the Multiplechoice scoring object is used by both the imagemap and the multiple choice question.
+The split between Editor and Scoring allows to reuse parts of a question in different types, as an example the Multiplechoice scoring object is used by both the imagemap and the multiple choice question.
 
 ## Question Component
 
-The Quesiton Component is the element of ASQ which is used to display the question. Every question type contains an Editor object as it is defined by the IAsqQuestionEditor interface. Which is then created by the QuestionComponent to display the question. The QuestionComponent can be given an answer through the function ->withAnswer, also ->withAnswerFromPost triggers loading the answer that was answered by the user in the UI.
+The Question Component is the element of ASQ which is used to display the question. Every question type contains an Editor object as it is defined by the IAsqQuestionEditor interface. Which is then created by the QuestionComponent to display the question. The QuestionComponent can be given an answer through the function ->withAnswer, also ->withAnswerFromPost triggers loading the answer that was answered by the user in the UI.
 
 ## Question Authoring
 
-Every questiontype contains a reference to its form factory object which contains object factories that can be used by the ASQ Authoring environment to edit the question.
+Every question type contains a reference to its form factory object which contains object factories that can be used by the ASQ Authoring environment to edit the question.
 
 # Requirements
 * PHP 7.3
