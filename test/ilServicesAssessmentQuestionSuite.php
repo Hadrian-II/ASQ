@@ -29,6 +29,7 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
         'EssayTest.php' => 'ILIAS\AssessmentQuestion\Test\EssayTest',
         'FileUploadTest.php' => 'ILIAS\AssessmentQuestion\Test\FileUploadTest',
         'ImageMapTest.php' => 'ILIAS\AssessmentQuestion\Test\ImageMapTest',
+        'KprimTest.php' => 'ILIAS\AssessmentQuestion\Test\KprimTest',
         'MultipleChoiceTest.php' => 'ILIAS\AssessmentQuestion\Test\MultiplechoiceTest',
         'NumericQuestionTest.php' => 'ILIAS\AssessmentQuestion\Test\NumericQuestionTest'
     );
