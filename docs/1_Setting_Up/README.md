@@ -33,8 +33,8 @@ For this just integrate the following lines into the composer.json of your plugi
   ],
   "require": {
    [...]
-    "srag/asq": "dev-review",
-    "srag/cqrs": "dev-review"
+    "srag/asq": "review",
+    "srag/cqrs": "dev-cqrs-asq"
   },
   "autoload": {
     [...]
@@ -52,18 +52,18 @@ Example: [composer.json_example](composer.json_example)
 
 
 ## Install data tables and update languages
-Use the following setup statement in your sql/dbupdate.php:
-```php
-<#1>
-[...]
-<#2>
-<?php
-\srag\asq\Infrastructure\Setup\Setup::new()->run();
-?>
-```
 
-<br>
-<br>
+Run the following statement:
+
+```php
+use srag\asq\Infrastructure\Setup\lang\SetupAsqLanguages;
+use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
+
+public function installASQ() : void {
+    SetupDatabase::new()->run();
+    SetupAsqLanguages::new()->run();
+}
+```
 
 
 ## Enable TinyMCE
