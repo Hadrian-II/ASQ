@@ -31,8 +31,8 @@
   ],
   "require": {
     "php": ">=7.0",
-    "srag/asq": "review",
-    "srag/cqrs": "dev-cqrs-asq"
+    "srag/asq": "dev-review",
+    "srag/cqrs": "dev-dev-cqrs-asq"
   },
   "autoload": {
     "psr-4": {
