@@ -31,12 +31,13 @@
   ],
   "require": {
     "php": ">=7.0",
-    "srag/asq": "dev-review",
-    "srag/cqrs": "dev-review"
+    "srag/asq": "review",
+    "srag/cqrs": "dev-cqrs-asq"
   },
   "autoload": {
     "psr-4": {
-      "srag\\Plugins\\SrDemoTest\\": "src/"
+		"srag\\asq\\" : "src/",
+		"srag\\CQRS\\" : "src/"
     },
     "classmap": [
       "classes/",
