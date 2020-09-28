@@ -111,7 +111,11 @@ class MatchingEditorConfiguration extends AbstractValueObject
      */
     public function getDefinitions() : ?array
     {
-        return $this->isShuffleDefinitions() ? shuffle($this->definitions) : $this->definitions;
+        if ($this->isShuffleDefinitions()) {
+            shuffle($this->definitions);
+        }
+
+        return $this->definitions;
     }
 
     /**
@@ -128,7 +132,11 @@ class MatchingEditorConfiguration extends AbstractValueObject
      */
     public function getTerms() : ?array
     {
-        return $this->isShuffleTerms() ? shuffle($this->terms) : $this->terms;
+        if ($this->isShuffleTerms()) {
+            shuffle($this->terms);
+        }
+
+        return $this->terms;
     }
 
     /**

@@ -6,6 +6,7 @@ namespace srag\asq\Questions\Matching\Scoring;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Matching\MatchingAnswer;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class MultipleChoiceScoring
@@ -34,7 +35,15 @@ class MatchingScoring extends AbstractScoring
 
         $score = 0;
 
+        $given_matches = [];
         foreach ($answer->getMatches() as $given_match) {
+            if (in_array($given_match, $given_matches)) {
+                throw new AsqException('One Matching was found multiple Times');
+            }
+            else {
+                $given_matches[] = $given_match;
+            }
+
             if (array_key_exists($given_match, $matches)) {
                 $score += $matches[$given_match];
             } else {

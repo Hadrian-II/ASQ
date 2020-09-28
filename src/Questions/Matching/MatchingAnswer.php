@@ -23,7 +23,7 @@ class MatchingAnswer extends AbstractValueObject
      * @param array $matches
      * @return MatchingAnswer
      */
-    public static function create(?array $matches) : MatchingAnswer
+    public static function create(?array $matches = []) : MatchingAnswer
     {
         $object = new MatchingAnswer();
         $object->matches = $matches;

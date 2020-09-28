@@ -137,7 +137,7 @@ class KprimTest extends QuestionTestCase
     public function getTypeDefinition() : QuestionType
     {
         return QuestionType::createNew(
-            'essay',
+            'kprim',
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,
             KprimChoiceScoring::class
