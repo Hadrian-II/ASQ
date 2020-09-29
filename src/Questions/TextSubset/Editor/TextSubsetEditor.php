@@ -52,7 +52,7 @@ class TextSubsetEditor extends AbstractEditor
             $tpl->setVariable('TEXTFIELD_ID', $this->getPostName($i));
             $tpl->setVariable('TEXTFIELD_SIZE', $this->calculateSize());
 
-            if (!is_null($this->answer) && !is_null($this->answer->getAnswers()[$i])) {
+            if (!is_null($this->answer) && array_key_exists($i, $this->answer->getAnswers()) && !is_null($this->answer->getAnswers()[$i])) {
                 $tpl->setVariable('TEXTFIELD_VALUE', 'value="' . $this->answer->getAnswers()[$i] . '"');
             }
 

@@ -36,6 +36,17 @@ class TextSubsetScoring extends AbstractScoring
     {
         $this->answer = $answer;
 
+        $max_allowed = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();
+        $given_answers = count($this->answer->getAnswers());
+
+        if ($given_answers > $max_allowed) {
+            throw new AsqException(
+                sprintf(
+                    'Too many answers "%s" given for maximum allowed of: "%s"',
+                    $given_answers,
+                    $max_allowed));
+        }
+
         /** @var TextSubsetScoringConfiguration $scoring_conf */
         $scoring_conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
