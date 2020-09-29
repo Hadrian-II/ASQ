@@ -34,6 +34,12 @@ class OrderingScoring extends AbstractScoring
 
         $reached_points = $scoring_conf->getPoints();
 
+        // prevent empty answers being counted as correct
+        if (count($answers) !== count($this->question->getAnswerOptions()->getOptions()))
+        {
+            return 0;
+        }
+
         /* To be valid answers need to be in the same order as in the question definition
          * what means that the correct answer will just be an increasing amount of numbers
          * so if the number should get smaller it is an error.

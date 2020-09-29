@@ -13,7 +13,7 @@ use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
 use srag\asq\Questions\Numeric\Editor\NumericEditor;
 use srag\asq\Questions\Numeric\Scoring\NumericScoring;
 
-require_once 'QuestionTestCase.php';
+require_once 'NumericTest.php';
 
 /**
  * Class NumericQuestionTest
@@ -24,7 +24,7 @@ require_once 'QuestionTestCase.php';
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class NumericQuestionTest extends QuestionTestCase
+class NumericTest extends QuestionTestCase
 {
     /**
      * {@inheritDoc}

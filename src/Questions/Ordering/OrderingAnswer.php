@@ -25,7 +25,7 @@ class OrderingAnswer extends AbstractValueObject
      * @param array $selected_order
      * @return OrderingAnswer
      */
-    public static function create(?array $selected_order = null) : OrderingAnswer
+    public static function create(?array $selected_order = []) : OrderingAnswer
     {
         $object = new OrderingAnswer();
         $object->selected_order = $selected_order;
