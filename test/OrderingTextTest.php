@@ -12,15 +12,15 @@ use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Ordering\OrderingAnswer;
 use srag\asq\Questions\Ordering\Editor\OrderingEditor;
-use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
-use srag\asq\Questions\Ordering\Form\OrderingFormFactory;
+use srag\asq\Questions\Ordering\Editor\Data\OrderingTextEditorConfiguration;
+use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
 use srag\asq\Questions\Ordering\Scoring\OrderingScoring;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
 
 require_once 'QuestionTestCase.php';
 
 /**
- * Class OrderingTest
+ * Class OrderingTextTest
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -28,7 +28,7 @@ require_once 'QuestionTestCase.php';
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class OrderingTest extends QuestionTestCase
+class OrderingTextTest extends QuestionTestCase
 {
     /**
      * {@inheritDoc}
@@ -40,28 +40,28 @@ class OrderingTest extends QuestionTestCase
             'question 1' => $this->createQuestion(
                 QuestionData::create('Question 1', '', '', '', 1),
                 QuestionPlayConfiguration::create(
-                    OrderingEditorConfiguration::create(true),
+                    OrderingTextEditorConfiguration::create('lorem ipsum dolor sit'),
                     OrderingScoringConfiguration::create(1)
                     ),
                 AnswerOptions::create([
                     AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('lorem', 'image.png'),
+                        ImageAndTextDisplayDefinition::create('lorem'),
                         EmptyDefinition::create()),
                     AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('ipsum', 'image.png'),
+                        ImageAndTextDisplayDefinition::create('ipsum'),
                         EmptyDefinition::create()),
                     AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('dolor', 'image.png'),
+                        ImageAndTextDisplayDefinition::create('dolor'),
                         EmptyDefinition::create()),
                     AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('sit', 'image.png'),
+                        ImageAndTextDisplayDefinition::create('sit'),
                         EmptyDefinition::create())
                 ])
             ),
             'question 2' => $this->createQuestion(
                 QuestionData::create('Question 2', '', '', '', 1),
                 QuestionPlayConfiguration::create(
-                    OrderingEditorConfiguration::create(false),
+                    OrderingTextEditorConfiguration::create('one two three four'),
                     OrderingScoringConfiguration::create(2)
                     ),
                 AnswerOptions::create([
@@ -134,8 +134,8 @@ class OrderingTest extends QuestionTestCase
     public function getTypeDefinition() : QuestionType
     {
         return QuestionType::createNew(
-            'ordering',
-            OrderingFormFactory::class,
+            'orderingtext',
+            OrderingTextFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class
             );

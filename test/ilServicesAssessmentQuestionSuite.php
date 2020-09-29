@@ -33,7 +33,8 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
         'MatchingTest.php' => 'ILIAS\AssessmentQuestion\Test\MatchingTest',
         'MultipleChoiceTest.php' => 'ILIAS\AssessmentQuestion\Test\MultiplechoiceTest',
         'NumericTest.php' => 'ILIAS\AssessmentQuestion\Test\NumericTest',
-        'OrderingTest.php' => 'ILIAS\AssessmentQuestion\Test\OrderingTest'
+        'OrderingTest.php' => 'ILIAS\AssessmentQuestion\Test\OrderingTest',
+        'OrderingTextTest.php' => 'ILIAS\AssessmentQuestion\Test\OrderingTextTest'
     );
 
     public static function suite()
