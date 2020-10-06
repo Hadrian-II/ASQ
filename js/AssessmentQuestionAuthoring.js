@@ -81,8 +81,6 @@ const asqAuthoring = (function () {
     }
 
     function setInputIds(table) {
-        table.parent().siblings('.js_count').val(table.children().length);
-
         let currentRow = 1;
 
         table.children().each((index, item) => {

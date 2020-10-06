@@ -3,28 +3,21 @@
 
 namespace ILIAS\AssessmentQuestion\Test;
 
+use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
-use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
-use srag\asq\Questions\Ordering\OrderingAnswer;
-use srag\asq\Questions\Ordering\Editor\OrderingEditor;
-use srag\asq\Questions\Ordering\Editor\Data\OrderingTextEditorConfiguration;
-use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
-use srag\asq\Questions\Ordering\Scoring\OrderingScoring;
-use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
-use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
-use srag\asq\Questions\TextSubset\Editor\TextSubsetEditor;
-use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
-use srag\asq\Questions\TextSubset\Editor\Data\TextSubsetEditorConfiguration;
-use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringConfiguration;
-use srag\asq\Domain\Model\Scoring\TextScoring;
-use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
 use srag\asq\Questions\TextSubset\TextSubsetAnswer;
-use srag\asq\Application\Exception\AsqException;
+use srag\asq\Questions\TextSubset\Editor\TextSubsetEditor;
+use srag\asq\Questions\TextSubset\Editor\Data\TextSubsetEditorConfiguration;
+use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
+use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
+use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringConfiguration;
+use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
 
 require_once 'QuestionTestCase.php';
 
