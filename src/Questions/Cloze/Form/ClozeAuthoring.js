@@ -23,8 +23,8 @@
     }
     
     function updateNames() {
-        let next_input = 9;
-        $('input[name=form_input_7]').parents('.form-group').nextAll().each((ix, item) => {
+        let next_input = 8;
+        $(document).find('.form-group:visible').slice(7).each((ix, item) => {
             const $item = $(item);
             if ($item.find('.aot_table').length > 0) {
                 $item.find('.aot_table').find('input, select').each((jx, jtem) => {
@@ -35,7 +35,7 @@
                         $jtem.prop('name', oldname.substring(0, 2) + FORM_INPUT + '_' + next_input + oldname.substring(2));
                     }
                     else {
-                        $jtem.prop('name', oldname.substring(0, 2) + FORM_INPUT + '_' + next_input + oldname.substring(FORM_INPUT.length + 4));
+                        $jtem.prop('name', oldname.substring(0, 2) + FORM_INPUT + '_' + next_input + oldname.substring(FORM_INPUT.length + 5));
                     }
                 });
                 
@@ -43,7 +43,15 @@
             }
             else {
                 $item.find('input, select').each((jx, jtem) => {
-                    $(jtem).attr('name', FORM_INPUT + '_' + next_input);
+                    $jtem = $(jtem);
+                    
+                    if ($jtem.siblings().length === 1) {
+                        //type select has a sibling (the delete button) and is the first of a section
+                        //so increase input by +1 for the section input item of the form
+                        next_input += 1;
+                    }
+                    
+                    $jtem.attr('name', FORM_INPUT + '_' + next_input);
                     next_input += 1;
                 });
             }

@@ -92,7 +92,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
 
         $fields[self::VAR_CLOZE_TEXT] = $cloze_text;
 
-        $gaps = $_SERVER['REQUEST_METHOD'] !== 'POST' ? $value->getGaps() : $this->createGapConfigs();
+        $gaps = $_SERVER['REQUEST_METHOD'] !== 'POST' ? $value->getGaps() : $this->createGapConfigs($value->getGaps());
 
         for ($i = 1; $i <= count($gaps); $i += 1) {
             $fields[$i . self::VAR_GAP] = $this->createGapFields($this->getGapType($gaps[$i - 1]), $gaps[$i - 1]);
@@ -102,9 +102,16 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
+     * reads gap config from $post, if types are the same, keep values from question object
+     * so the form is created with the correct types if reading new object from post
+     * but the original data is kept if the read data is refed back to the factory, so
+     * that if read once, the values that are read are kept
+     *
+     * if the old values are changed, reading the generated form from post will insert the correct values
+     *
      * @return array
      */
-    private function createGapConfigs() : array
+    private function createGapConfigs(array $existing_config) : array
     {
         $i = self::FIRST_GAP;
         $gap_configs = [];
@@ -125,7 +132,17 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             }
         }
 
-        return $gap_configs;
+        if (count($existing_config) != count($gap_configs)) {
+            return $gap_configs;
+        }
+
+        foreach ($gap_configs as $key => $value) {
+            if (get_class($value) !== get_class($existing_config[$key])) {
+                return $gap_configs;
+            }
+        }
+
+        return $existing_config;
     }
 
     /**
@@ -151,10 +168,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function createGapFields(string $type, ?ClozeGapConfiguration $gap = null) : Section
     {
-        global $DIC;
-        $field = $DIC->ui()->factory()->input()->field()->text('test')->withValue('lorem {x} ipsum');
-        $output = $DIC->ui()->renderer()->render($field);
-
         $gap_type = $this->factory->input()->field()->select(
             $this->language->txt('asq_label_gap_type'),
             [
