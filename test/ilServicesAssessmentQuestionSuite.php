@@ -25,6 +25,7 @@ class ilServicesAssessmentQuestionSuite extends TestSuite
      * @var array
      */
     protected static $testSuites = array(
+        'ClozeTest.php' => 'ILIAS\AssessmentQuestion\Test\ClozeTest',
         'ErrorTextTest.php' => 'ILIAS\AssessmentQuestion\Test\ErrorTextTest',
         'EssayTest.php' => 'ILIAS\AssessmentQuestion\Test\EssayTest',
         'FileUploadTest.php' => 'ILIAS\AssessmentQuestion\Test\FileUploadTest',

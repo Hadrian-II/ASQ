@@ -117,6 +117,8 @@
             form.parent().append(form.children());
             form.remove();
         });
+        
+        $('.il-section-input').find('select:first').addClass('js_select_type');
     }
     
     function deleteGapUIItems($pressedFormItem) {

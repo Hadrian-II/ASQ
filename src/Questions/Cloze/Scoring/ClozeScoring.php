@@ -66,6 +66,10 @@ class ClozeScoring extends AbstractScoring
         for ($i = 1; $i <= count($this->configuration->getGaps()); $i += 1) {
             $gap_configuration = $this->configuration->getGaps()[$i - 1];
 
+            if (! array_key_exists($i, $given_answer)) {
+                continue;
+            }
+
             if (get_class($gap_configuration) === SelectGapConfiguration::class) {
                 $this->scoreSelectGap($given_answer[$i], $gap_configuration);
             } elseif (get_class($gap_configuration) === TextGapConfiguration::class) {

@@ -146,7 +146,7 @@ class ClozeEditor extends AbstractEditor
      */
     private function getAnswer(int $key)
     {
-        if (is_null($this->answer)) {
+        if (is_null($this->answer) || ! array_key_exists($key, $this->answer->getAnswers())) {
             return null;
         }
 
