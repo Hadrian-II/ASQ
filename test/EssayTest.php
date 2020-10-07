@@ -19,8 +19,6 @@ use srag\asq\Questions\Essay\Scoring\Data\EssayScoringConfiguration;
 use srag\asq\Questions\Essay\Scoring\Data\EssayScoringDefinition;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class EssayTest
  *

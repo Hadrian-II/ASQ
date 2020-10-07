@@ -19,7 +19,6 @@ use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringConfiguration;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
 
-require_once 'QuestionTestCase.php';
 
 /**
  * Class TextSubsetTest

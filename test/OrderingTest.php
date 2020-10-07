@@ -17,8 +17,6 @@ use srag\asq\Questions\Ordering\Form\OrderingFormFactory;
 use srag\asq\Questions\Ordering\Scoring\OrderingScoring;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class OrderingTest
  *

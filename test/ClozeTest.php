@@ -18,8 +18,6 @@ use srag\asq\Questions\Cloze\Form\ClozeFormFactory;
 use srag\asq\Questions\Cloze\Scoring\ClozeScoring;
 use srag\asq\Questions\Cloze\Scoring\Data\ClozeScoringConfiguration;
 
-require_once 'NumericTest.php';
-
 /**
  * Class ClozeTest
  *

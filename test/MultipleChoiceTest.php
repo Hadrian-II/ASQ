@@ -18,8 +18,6 @@ use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringConfiguration;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class MultipleChoiceTest
  *

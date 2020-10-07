@@ -53,6 +53,11 @@ class FormulaScoring extends AbstractScoring
             $result = $option->getScoringDefinition();
 
             $answers = $answer->getValues();
+
+            if (is_null($answers)) {
+                return 0.0;
+            }
+
             $formula = $result->getFormula();
 
             foreach ($answers as $key => $value) {
@@ -86,7 +91,7 @@ class FormulaScoring extends AbstractScoring
 
                 // invalidate result if not coprime and option is set
                 if ($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_COPRIME_FRACTION &&
-                    $this->greatest_common_divisor($numerator, $denominator) !== 1) {
+                    $this->greatest_common_divisor($numerator, $denominator) !== 1.0) {
                     $result_given = null;
                 }
             }
@@ -108,11 +113,11 @@ class FormulaScoring extends AbstractScoring
     /**
      * Euclids gcd algorithm
      *
-     * @param int $a
-     * @param int $b
-     * @return int
+     * @param float $a
+     * @param float $b
+     * @return float
      */
-    private function greatest_common_divisor(int $a, int $b) : int
+    private function greatest_common_divisor(float $a, float $b) : float
     {
         return ($a % $b) ? $this->greatest_common_divisor($b, $a % $b) : $b;
     }

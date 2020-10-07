@@ -116,9 +116,25 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$r' . $index;
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), !is_null($this->answer) ? $this->answer->getValues()[$name] : '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
+        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), $this->getAnswerValue($name) ?? '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
 
         return str_replace($name, $html, $output);
+    }
+
+    /**
+     * @param string $name
+     * @return string|NULL
+     */
+    private function getAnswerValue(string $name) : ?string
+    {
+        if (is_null($this->answer) ||
+            is_null($this->answer->getValues()) ||
+            !array_key_exists($name, $this->answer->getValues()))
+        {
+            return null;
+        }
+
+        return $this->answer->getValues()[$name];
     }
 
     /**
@@ -135,7 +151,7 @@ class FormulaEditor extends AbstractEditor
                 return sprintf(
                     '<option value="%1$s" %2$s>%1$s</option>',
                     $unit,
-                    !is_null($this->answer) && $this->answer->getValues()[$name . self::VAR_UNIT] === $unit ? 'selected="selected"' : ''
+                    $this->getAnswerValue($name . self::VAR_UNIT) === $unit ? 'selected="selected"' : ''
                 );
             }, $units))
         );
@@ -154,9 +170,7 @@ class FormulaEditor extends AbstractEditor
         $html = sprintf(
             '<input type="hidden" name="%1$s" value="%2$s" />%2$s %3$s',
             $this->getPostVariableName($name),
-            !is_null($this->answer) ?
-                $this->answer->getValues()[$name] :
-                $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
+            $this->getAnswerValue($name) ?? $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
             $def->getUnit()
         );
 

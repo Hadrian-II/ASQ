@@ -17,8 +17,6 @@ use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;
 use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringDefinition;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class ErrorTextTest
  *

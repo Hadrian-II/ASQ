@@ -14,8 +14,6 @@ use srag\asq\Questions\FileUpload\Form\FileUploadFormFactory;
 use srag\asq\Questions\FileUpload\Scoring\FileUploadScoring;
 use srag\asq\Questions\FileUpload\Scoring\Data\FileUploadScoringConfiguration;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class FileUploadTest
  *

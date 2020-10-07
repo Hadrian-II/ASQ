@@ -13,8 +13,6 @@ use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
 use srag\asq\Questions\Numeric\Editor\NumericEditor;
 use srag\asq\Questions\Numeric\Scoring\NumericScoring;
 
-require_once 'NumericTest.php';
-
 /**
  * Class NumericQuestionTest
  *

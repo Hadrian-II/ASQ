@@ -17,8 +17,6 @@ use srag\asq\Questions\Kprim\Scoring\KprimChoiceScoring;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringConfiguration;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringDefinition;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class KprimTest
  *

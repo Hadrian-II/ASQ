@@ -16,8 +16,6 @@ use srag\asq\Questions\Matching\Scoring\MatchingScoring;
 use srag\asq\Questions\Matching\Scoring\Data\MatchingScoringConfiguration;
 use srag\asq\Application\Exception\AsqException;
 
-require_once 'QuestionTestCase.php';
-
 /**
  * Class MatchingTest
  *
