@@ -10,6 +10,7 @@ use srag\asq\Questions\TextSubset\TextSubsetAnswer;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringConfiguration;
 use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 
 /**
  * Class TextSubsetScoring
@@ -78,8 +79,27 @@ class TextSubsetScoring extends AbstractScoring
     {
         $answers = [];
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        $options = $this->question->getAnswerOptions()->getOptions();
+
+        usort($options, function(AnswerOption $a, AnswerOption $b) {
+            $apoints = $a->getScoringDefinition()->getPoints();
+            $bpoints = $b->getScoringDefinition()->getPoints();
+
+            if ($apoints === $bpoints) {
+                return 0;
+            }
+
+            return  ($apoints > $bpoints) ? -1 : 1;
+        });
+
+        $ix = 0;
+        foreach ($options as $option) {
             $answers[] = $option->getScoringDefinition()->getText();
+            $ix += 1;
+
+            if ($ix >= $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers()) {
+                break;
+            }
         }
 
         return TextSubsetAnswer::create($answers);

@@ -15,6 +15,8 @@ use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Application\Service\ASQServices;
 use srag\asq\UserInterface\Web\Component\Renderer;
 use Exception;
+use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class QuestionTestCase
@@ -183,5 +185,23 @@ abstract class QuestionTestCase extends TestCase
     public function testMaxScore(QuestionDto $question, float $expected_score)
     {
         $this->assertEquals($expected_score, self::$asq->answer()->getMaxScore($question));
+    }
+
+    /**
+     * @dataProvider questionMaxScoreProvider
+     *
+     * @param QuestionDto $question
+     * @param float $expected_score
+     */
+    public function testBestAnswer(QuestionDto $question, float $expected_score)
+    {
+        try {
+            $best_answer = self::$asq->answer()->getBestAnswer($question);
+            $score = self::$asq->answer()->getScore($question, $best_answer);
+            $this->assertEquals($expected_score, $score);
+        }
+        catch (AsqException $e) {
+            $this->assertEquals(AbstractScoring::BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR, $e->getMessage());
+        }
     }
 }

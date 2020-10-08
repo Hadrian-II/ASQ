@@ -195,6 +195,10 @@ class EssayScoring extends AbstractScoring
      */
     public function getBestAnswer() : AbstractValueObject
     {
+        if ($this->configuration->getScoringMode() == self::SCORING_MANUAL) {
+            throw new AsqException(self::BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR);
+        }
+
         $text = implode(' ', array_map(function ($option) {
             return $option->getScoringDefinition()->getText();
         }, $this->question->getAnswerOptions()->getOptions()));

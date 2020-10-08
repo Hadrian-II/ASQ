@@ -18,6 +18,8 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 abstract class AbstractScoring implements IAsqQuestionScoring
 {
+    const BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR = 'Best Answer generation impossible for this Question';
+
     /**
      * @var QuestionDto
      */

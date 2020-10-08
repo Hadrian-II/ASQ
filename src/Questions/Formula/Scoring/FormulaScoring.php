@@ -13,6 +13,7 @@ use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringDefinition;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\asq\Questions\Formula\FormulaAnswer;
 
 /**
  * Class FormulaScoring
@@ -128,8 +129,57 @@ class FormulaScoring extends AbstractScoring
      */
     public function getBestAnswer() : AbstractValueObject
     {
-        //TODO result debending on random number
-        throw new NotImplementedException("implement FormulaScoring->getBestAnswer()");
+        $values = [];
+
+        $ix = 1;
+        foreach ($this->configuration->getVariables() as $var) {
+            $values['$v' . strval($ix)] = $this->configuration->generateVariableValue($var);
+            $ix += 1;
+        }
+
+        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+            $this->generateResult($values, $option->getScoringDefinition(), $option->getOptionId());
+        }
+
+        return FormulaAnswer::create($values);
+    }
+
+    /**
+     * @param array $values
+     * @param FormulaScoringDefinition $def
+     * @param string $ix
+     */
+    private function generateResult(array &$values, FormulaScoringDefinition $def, string $ix) : void
+    {
+        $values['$r' . $ix . FormulaEditor::VAR_UNIT] = $def->getUnit();
+
+        $formula = $def->getFormula();
+
+        foreach ($values as $key => $value) {
+            $formula = str_replace($key, $value, $formula);
+        }
+
+        $math = new EvalMath();
+
+        $result = $math->evaluate($formula);
+
+        if ($this->configuration->getResultType() == FormulaScoringConfiguration::TYPE_ALL ||
+            $this->configuration->getResultType() == FormulaScoringConfiguration::TYPE_DECIMAL)
+        {
+            $values['$r' . $ix] = strval($result);
+        }
+        else {
+            $mod = $result % 1;
+
+            if ($mod === 0) {
+                $divisor = 1;
+            }
+            else {
+                $divisor = 1 / ($result % 1);
+            }
+
+            $values['$r' . $ix] = sprintf('%d / %d', $result * $divisor, $divisor);
+        }
     }
 
     /**

@@ -69,7 +69,7 @@ class FileUploadScoring extends AbstractScoring
      */
     public function getBestAnswer() : AbstractValueObject
     {
-        throw new AsqException("Best Answer for File Upload Impossible");
+        throw new AsqException(self::BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR);
     }
 
     /**

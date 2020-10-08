@@ -13,6 +13,7 @@ use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
 use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
+use srag\asq\Questions\Cloze\ClozeAnswer;
 
 /**
  * Class ClozeScoring
@@ -137,10 +138,46 @@ class ClozeScoring extends AbstractScoring
         return $max_score;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::getBestAnswer()
+     */
     public function getBestAnswer() : AbstractValueObject
     {
-        //TODO implement me
-        throw new NotImplementedException("Needs to implement ClozeScoring->getBestAnswer()");
+        $answers = [];
+        $i = 1;
+
+        foreach ($this->configuration->getGaps() as $gap) {
+            if (get_class($gap) === SelectGapConfiguration::class) {
+                $answers[strval($i)] = $this->getBestClozeItemAnswer($gap->getItems());
+            } elseif (get_class($gap) === TextGapConfiguration::class) {
+                $answers[strval($i)] = $this->getBestClozeItemAnswer($gap->getItems());
+            } elseif (get_class($gap) === NumericGapConfiguration::class) {
+                $answers[strval($i)] = strval($gap->getValue());
+            }
+            $i += 1;
+        }
+
+        return ClozeAnswer::create($answers);
+    }
+
+    /**
+     * @param ClozeGapItem[] $items
+     * @return string
+     */
+    private function getBestClozeItemAnswer(array $items) : string
+    {
+        $best_points = 0;
+        $best_text = '';
+
+        foreach ($items as $item) {
+            if ($item->getPoints() > $best_points) {
+                $best_points = $item->getPoints();
+                $best_text = $item->getText();
+            }
+        }
+
+        return $best_text;
     }
 
     /**
