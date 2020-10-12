@@ -47,6 +47,21 @@ It is easyly able to extend and change the existing question types for different
 * TextSubset
 
 For every Question type exists an Authoring form, Integration into QuestionControl for display purposes and an automatic Scoring Module.
+
+### Adding Custom Question Types
+
+The Asq Service contains methods to allow the easy addition of custom question types. Just call the addQuestionType method in the QuestionService.
+
+```php
+        asq->question()->addQuestionType(
+            'asq_question_single_answer',
+            SingleChoiceFormFactory::class,
+            MultipleChoiceEditor::class,
+            MultipleChoiceScoring::class
+        );
+```
+
+Here you see the example of asq Installing its own single choice question, just choose an unique key for your question and give the classes of the FormFactory, Editor and Scoring used by your question type.
   
 # Architecture
 
