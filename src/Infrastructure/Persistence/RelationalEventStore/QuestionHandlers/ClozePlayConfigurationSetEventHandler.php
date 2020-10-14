@@ -20,7 +20,7 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
     /**
      * @param DomainEvent $event
      */
-    public function handleEvent(DomainEvent $event) : void
+    public function handleEvent(DomainEvent $event, int $event_id) : void
     {
 
     }

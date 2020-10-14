@@ -29,6 +29,7 @@ class RelationalQuestionEventStore implements IEventStore
 {
     const TABLE_NAME = 'rqes_events';
     const TABLE_NAME_QUESTION_INDEX = 'rqes_question_index';
+    const TABLE_NAME_QUESTION_DATA = 'rqes_question_data';
 
     /**
      * @var ilDBInterface
@@ -91,7 +92,7 @@ class RelationalQuestionEventStore implements IEventStore
 
                 $event_id = $this->uuid_factory->uuid4();
 
-                $this->db->insert(self::TABLE_NAME, [
+                $id = $this->db->insert(self::TABLE_NAME, [
                     'event_id' => $event_id->toString(),
                     'event_version' => $event->getEventVersion(),
                     'question_id' => $event->getAggregateId()->toString(),
@@ -103,12 +104,12 @@ class RelationalQuestionEventStore implements IEventStore
                 if ($this->isGenericEvent($event))
                 {
                     $generic_handler = $this->getGenericHandler(get_class($event));
-                    $generic_handler->storeEvent($event);
+                    $generic_handler->storeEvent($event, $id);
                 }
                 else
                 {
                     $type_specific_handler = $this->getTypeSpecificHandler($type);
-                    $type_specific_handler->storeEvent($event);
+                    $type_specific_handler->storeEvent($event, $id);
                 }
             }
             $this->db->commit();
@@ -127,7 +128,7 @@ class RelationalQuestionEventStore implements IEventStore
     {
         $res = $this->db->query(
             sprintf(
-                'select question_type from rqes_question_index where question id = %s',
+                'select question_type from rqes_question_index where question_id = %s',
                 $this->db->quote($id->toString(), 'string')
             )
         );
