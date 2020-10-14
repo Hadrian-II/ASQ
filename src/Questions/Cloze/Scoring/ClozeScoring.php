@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Cloze\Scoring;
 
-use ILIAS\UI\NotImplementedException;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Domain\Model\Scoring\TextScoring;
+use srag\asq\Questions\Cloze\ClozeAnswer;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
 use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
 use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
-use srag\asq\Questions\Cloze\ClozeAnswer;
 
 /**
  * Class ClozeScoring

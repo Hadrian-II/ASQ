@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula\Scoring;
 
-use ILIAS\UI\NotImplementedException;
 use EvalMath;
 use Exception;
+use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
+use srag\asq\Questions\Formula\FormulaAnswer;
 use srag\asq\Questions\Formula\Editor\FormulaEditor;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringDefinition;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
-use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Questions\Formula\FormulaAnswer;
 
 /**
  * Class FormulaScoring

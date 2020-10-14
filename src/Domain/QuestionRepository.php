@@ -9,6 +9,7 @@ use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
+use srag\CQRS\Event\IEventStore;
 
 /**
  * Class QuestionRepository
@@ -21,9 +22,8 @@ use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
  */
 class QuestionRepository extends AbstractAggregateRepository
 {
-
     /**
-     * @var QuestionEventStore
+     * @var IEventStore
      */
     private $event_store;
 
@@ -39,7 +39,7 @@ class QuestionRepository extends AbstractAggregateRepository
     /**
      * @return EventStore
      */
-    protected function getEventStore() : EventStore
+    protected function getEventStore() : IEventStore
     {
         return $this->event_store;
     }
@@ -52,20 +52,5 @@ class QuestionRepository extends AbstractAggregateRepository
     protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot
     {
         return Question::reconstitute($event_history);
-    }
-
-    /**
-     * @return int
-     */
-    public function getNextId() : int
-    {
-        return $this->event_store->getNextId();
-    }
-
-    public function getAggregateByIliasId(int $id) : Question
-    {
-        $aggregate_id = $this->event_store->getAggregateIdOfIliasId($id);
-
-        return $this->getAggregateRootById($aggregate_id);
     }
 }

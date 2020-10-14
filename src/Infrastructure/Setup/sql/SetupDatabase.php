@@ -54,6 +54,21 @@ use srag\asq\Application\Service\ASQServices;
  */
 class SetupDatabase
 {
+    const SINGLE_CHOICE = 'asq_question_single_answer';
+    const MULTIPLE_CHOICE = 'asq_question_multiple_answer';
+    const KPRIM = 'asq_question_kprim_answer';
+    const ERROR_TEXT = 'asq_question_error_text';
+    const IMAGE_MAP = 'asq_question_image_map';
+    const CLOZE = 'asq_question_cloze';
+    const NUMERIC = 'asq_question_numeric';
+    const FORMULA = 'asq_question_formula';
+    const TEXT_SUBSET = 'asq_question_text_subset';
+    const ORDERING = 'asq_question_ordering';
+    const MATCHING = 'asq_question_matching';
+    const ESSAY = 'asq_question_essay';
+    const FILE_UPLOAD = 'asq_question_file_upload';
+    const ORDERING_TEXT = 'asq_question_ordering_text';
+
     /**
      * @var ASQServices
      */
@@ -88,98 +103,98 @@ class SetupDatabase
     private function addQuestionTypes() : void
     {
         $this->asq->question()->addQuestionType(
-            'asq_question_single_answer',
+            self::SINGLE_CHOICE,
             SingleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_multiple_answer',
+            self::MULTIPLE_CHOICE,
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_kprim_answer',
+            self::KPRIM,
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,
             KprimChoiceScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_error_text',
+            self::ERROR_TEXT,
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,
             ErrorTextScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_image_map',
+            self::IMAGE_MAP,
             ImageMapFormFactory::class,
             ImageMapEditor::class,
             MultipleChoiceScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_cloze',
+            self::CLOZE,
             ClozeFormFactory::class,
             ClozeEditor::class,
             ClozeScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_numeric',
+            self::NUMERIC,
             NumericFormFactory::class,
             NumericEditor::class,
             NumericScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_formula',
+            self::FORMULA,
             FormulaFormFactory::class,
             FormulaEditor::class,
             FormulaScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_text_subset',
+            self::TEXT_SUBSET,
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,
             TextSubsetScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_ordering',
+            self::ORDERING,
             OrderingFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_matching',
+            self::MATCHING,
             MatchingFormFactory::class,
             MatchingEditor::class,
             MatchingScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_essay',
+            self::ESSAY,
             EssayFormFactory::class,
             EssayEditor::class,
             EssayScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_file_upload',
+            self::FILE_UPLOAD,
             FileUploadFormFactory::class,
             FileUploadEditor::class,
             FileUploadScoring::class
         );
 
         $this->asq->question()->addQuestionType(
-            'asq_question_ordering_text',
+            self::ORDERING_TEXT,
             OrderingTextFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class
