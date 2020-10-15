@@ -36,6 +36,7 @@ class SetupRQES
         $this->setupBase();
         $this->setupQuestionData();
         $this->setupHint();
+        $this->setupFeedback();
 
         foreach (self::QUESTION_TYPES as $type) {
             $type_setup = new $type($this->db);
@@ -109,5 +110,33 @@ class SetupRQES
         $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT);
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, ['id'], 'i1');
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, ['event_id'], 'i2');
+    }
+
+    private function setupFeedback(): void
+    {
+        $this->db->createTable(
+            RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK,
+            [
+                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'feedback_correct' => ['type' => 'text'],
+                'feedback_wrong' => ['type' => 'text'],
+                'answer_feedback_type' => ['type' => 'integer', 'length' => 4]
+            ]
+        );
+        $this->db->addPrimaryKey(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK,['id']);
+        $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK);
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, ['id'], 'i1');
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, ['event_id'], 'i2');
+
+        $this->db->createTable(
+            RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK,
+            [
+                'feedback_id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'answer_id' => ['type' => 'string', length => 32],
+                'content' => ['type' => 'text']
+            ]
+        );
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, ['feedback_id'], 'i1');
     }
 }

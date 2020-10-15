@@ -83,6 +83,14 @@ class Feedback extends AbstractValueObject
     }
 
     /**
+     * @return array
+     */
+    public function getAnswerOptionFeedbacks() : array
+    {
+        return $this->answer_option_feedbacks;
+    }
+
+    /**
      * @param int $option_id
      * @return bool
      */
