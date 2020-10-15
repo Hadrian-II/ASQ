@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
 use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 
 /**
  * Class QuestionFeedbackSetEventHandler
@@ -15,7 +15,7 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandle
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionFeedbackSetEventHandler implements IEventStorageHandler
+class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
 {
     /**
      * @param DomainEvent $event

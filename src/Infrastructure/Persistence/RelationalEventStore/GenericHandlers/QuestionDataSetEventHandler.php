@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
-use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
-use srag\asq\Domain\Event\QuestionDataSetEvent;
-use ILIAS\Data\UUID\Factory;
 use ilDateTime;
+use srag\CQRS\Event\DomainEvent;
+use srag\asq\Domain\Event\QuestionDataSetEvent;
+use srag\asq\Domain\Model\QuestionData;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
  * Class QuestionDataSetEventHandler
@@ -20,7 +19,7 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionDataSetEventHandler implements IEventStorageHandler
+class QuestionDataSetEventHandler extends AbstractEventStorageHandler
 {
     /**
      * @param DomainEvent $event
@@ -51,15 +50,13 @@ class QuestionDataSetEventHandler implements IEventStorageHandler
             sprintf(
                 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id = %s',
                 $this->db->quote($data['event_id'], 'int')
-                )
-            );
+            )
+        );
 
         $row = $this->db->fetchAssoc($res);
 
-        $factory = new Factory();
-
         return new QuestionDataSetEvent(
-            $factory->fromString($data['question_id']),
+            $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             $data['initiating_user_id'],
             QuestionData::create(

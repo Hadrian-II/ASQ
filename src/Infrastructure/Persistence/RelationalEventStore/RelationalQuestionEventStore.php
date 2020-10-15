@@ -30,6 +30,7 @@ class RelationalQuestionEventStore implements IEventStore
     const TABLE_NAME = 'rqes_events';
     const TABLE_NAME_QUESTION_INDEX = 'rqes_question_index';
     const TABLE_NAME_QUESTION_DATA = 'rqes_question_data';
+    const TABLE_NAME_QUESTION_HINT = 'rqes_question_hint';
 
     /**
      * @var ilDBInterface

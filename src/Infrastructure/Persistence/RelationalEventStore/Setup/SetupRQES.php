@@ -35,6 +35,7 @@ class SetupRQES
     {
         $this->setupBase();
         $this->setupQuestionData();
+        $this->setupHint();
 
         foreach (self::QUESTION_TYPES as $type) {
             $type_setup = new $type($this->db);
@@ -90,5 +91,23 @@ class SetupRQES
         $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA);
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA, ['id'], 'i1');
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA, ['event_id'], 'i2');
+    }
+
+    private function setupHint(): void
+    {
+        $this->db->createTable(
+            RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT,
+            [
+                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'hint_id' => ['type' => 'text','length' => 64],
+                'content' => ['type' => 'text'],
+                'deduction' => ['type' => 'float']
+            ]
+            );
+        $this->db->addPrimaryKey(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT,['id']);
+        $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT);
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, ['id'], 'i1');
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, ['event_id'], 'i2');
     }
 }

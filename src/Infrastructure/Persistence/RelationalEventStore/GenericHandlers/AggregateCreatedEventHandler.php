@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
-use srag\CQRS\Event\Standard\AggregateCreatedEvent;
-use ILIAS\Data\UUID\Factory;
 use ilDateTime;
+use srag\CQRS\Event\DomainEvent;
+use srag\CQRS\Event\Standard\AggregateCreatedEvent;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 
 /**
  * Class AggregateCreatedEventHandler
@@ -18,7 +17,7 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AggregateCreatedEventHandler implements IEventStorageHandler
+class AggregateCreatedEventHandler extends AbstractEventStorageHandler
 {
     /**
      * @param DomainEvent $event
@@ -34,10 +33,8 @@ class AggregateCreatedEventHandler implements IEventStorageHandler
      */
     public function loadEvent(array $data) : DomainEvent
     {
-        $factory = new Factory();
-
         return new AggregateCreatedEvent(
-            $factory->fromString($data['question_id']),
+            $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             $data['initiating_user_id']);
     }
