@@ -34,9 +34,7 @@ class QuestionRepository extends AbstractAggregateRepository
     protected function __construct()
     {
         parent::__construct();
-        //$this->event_store = new QuestionEventStore();
-        global $DIC;
-        $this->event_store = new RelationalQuestionEventStore($DIC->database());
+        $this->event_store = new QuestionEventStore();
     }
 
     /**
