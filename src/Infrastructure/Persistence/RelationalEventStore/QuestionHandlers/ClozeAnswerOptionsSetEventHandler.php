@@ -5,6 +5,8 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandl
 
 use srag\CQRS\Event\DomainEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
+use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
+use ilDateTime;
 
 /**
  * Class ClozeAnswerOptionsSetEventHandler
@@ -22,7 +24,7 @@ class ClozeAnswerOptionsSetEventHandler implements IEventStorageHandler
      */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
-
+        //nothing to do here
     }
 
     /**
@@ -31,6 +33,9 @@ class ClozeAnswerOptionsSetEventHandler implements IEventStorageHandler
      */
     public function loadEvent(array $data) : DomainEvent
     {
-
+        return new QuestionAnswerOptionsSetEvent(
+            $this->factory->fromString($data['question_id']),
+            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
+            $data['initiating_user_id']);
     }
 }

@@ -54,8 +54,8 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
         $res = $this->db->query(
             sprintf(
                 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' as f
-                 inner join' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' as af on f.feedback_id = af.feedback_id,
-                 where event_id = %s',
+                 inner join' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' as af on f.feedback_id = af.feedback_id
+                 where f.event_id = %s',
                 $this->db->quote($data['event_id'], 'int')
                 )
             );

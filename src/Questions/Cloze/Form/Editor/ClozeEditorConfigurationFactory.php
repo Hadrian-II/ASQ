@@ -116,7 +116,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $i = self::FIRST_GAP;
         $gap_configs = [];
 
-
         while ($this->isPostVarSet('form_input_' . $i)) {
             $type = $this->getPostValue('form_input_' . $i);
 

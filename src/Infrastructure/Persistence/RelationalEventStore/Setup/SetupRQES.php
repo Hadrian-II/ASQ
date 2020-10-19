@@ -18,7 +18,7 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
 class SetupRQES
 {
     const QUESTION_TYPES = [
-
+        SetupCloze::class
     ];
 
     /**
@@ -138,5 +138,15 @@ class SetupRQES
             ]
         );
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, ['feedback_id'], 'i1');
+    }
+
+    public function drop() : void
+    {
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_INDEX, false);
     }
 }
