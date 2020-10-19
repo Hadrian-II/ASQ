@@ -3,18 +3,23 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers;
 
-use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
-use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\SetupCloze;
-use srag\asq\Questions\Cloze\Editor\Data\ClozeGapConfiguration;
-use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
-use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
-use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
-use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
-use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use ilDateTime;
+use srag\CQRS\Event\DomainEvent;
+use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
+use function srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler\storeGap;
+use function srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler\storeGapItems;
+use function srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler\storeNumericGap;
+use function srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler\storeSelectGap;
+use function srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler\storeTextGap;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\SetupCloze;
+use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\ClozeGapConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\ClozeGapItem;
+use srag\asq\Questions\Cloze\Editor\Data\NumericGapConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\SelectGapConfiguration;
+use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
 use srag\asq\Questions\Cloze\Scoring\Data\ClozeScoringConfiguration;
 
 /**
@@ -26,7 +31,7 @@ use srag\asq\Questions\Cloze\Scoring\Data\ClozeScoringConfiguration;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
+class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
     const DEFAULT_GAP = -1;
 
@@ -38,13 +43,15 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
         /** @var $cloze_config ClozeEditorConfiguration */
         $cloze_config = $event->getPlayConfiguration()->getEditorConfiguration();
 
-        $cloze_id = $this->db->insert(SetupCloze::TABLENAME_CLOZE_CONFIGURATION, [
-            'event_id' => $event_id,
-            'text' => $cloze_config->getClozeText()
+        $cloze_id = $this->db->nextId(SetupCloze::TABLENAME_CLOZE_CONFIGURATION);
+        $this->db->insert(SetupCloze::TABLENAME_CLOZE_CONFIGURATION, [
+            'id' => ['integer', $cloze_id],
+            'event_id' => ['integer', $event_id],
+            'text' => ['clob', $cloze_config->getClozeText()]
         ]);
 
         foreach ($cloze_config->getGaps() as $gap) {
-            storeGap($gap, $cloze_id);
+            $this->storeGap($gap, $cloze_id);
         }
     }
 
@@ -73,11 +80,13 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
      */
     private function storeTextGap(TextGapConfiguration $gap, int $cloze_id) : void
     {
-        $gap_id = $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'cloze_id' => $cloze_id,
-            'gap_type' => ClozeGapConfiguration::TYPE_TEXT,
-            'field_length' => $gap->getFieldLength(),
-            'text_match_method' => $gap->getMatchingMethod()
+        $gap_id = $this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP);
+        $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
+            'id' => ['integer', $gap_id],
+            'cloze_id' => ['integer', $cloze_id],
+            'gap_type' => ['integer', ClozeGapConfiguration::TYPE_TEXT],
+            'field_length' => ['integer', $gap->getFieldLength()],
+            'text_match_method' => ['integer', $gap->getMatchingMethod()]
         ]);
 
         storeGapItems($gap->getItems(), $gap_id);
@@ -89,9 +98,11 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
      */
     private function storeSelectGap(SelectGapConfiguration $gap, int $cloze_id) : void
     {
-        $gap_id = $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'cloze_id' => $cloze_id,
-            'gap_type' => ClozeGapConfiguration::TYPE_DROPDOWN
+        $gap_id = $this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP);
+        $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
+            'id' => ['integer', $gap_id],
+            'cloze_id' => ['integer', $cloze_id],
+            'gap_type' => ['integer', ClozeGapConfiguration::TYPE_DROPDOWN]
         ]);
 
         storeGapItems($gap->getItems(), $gap_id);
@@ -105,9 +116,9 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
     {
         foreach ($items as $item) {
             $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP_ITEM, [
-                'gap_id' => $gap_id,
-                'text' => $item->getText(),
-                'points' => $item->getPoints()
+                'gap_id' => ['integer', $gap_id],
+                'text' => ['text', $item->getText()],
+                'points' => ['float', $item->getPoints()]
             ]);
         }
     }
@@ -118,14 +129,16 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
      */
     private function storeNumericGap(NumericGapConfiguration $gap, int $cloze_id) : void
     {
+        $gap_id = $this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP);
         $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'cloze_id' => $cloze_id,
-            'gap_type' => ClozeGapConfiguration::TYPE_NUMBER,
-            'field_length' => $gap->getFieldLength(),
-            'value' => $gap->getValue(),
-            'upper' => $gap->getUpper(),
-            'lower' => $gap->getLower(),
-            'points' => $gap->getPoints()
+            'id' => ['integer', $gap_id],
+            'cloze_id' => ['text', $cloze_id],
+            'gap_type' => ['integer', ClozeGapConfiguration::TYPE_NUMBER],
+            'field_length' => ['integer', $gap->getFieldLength()],
+            'value' => ['float', $gap->getValue()],
+            'upper' => ['float', $gap->getUpper()],
+            'lower' => ['float', $gap->getLower()],
+            'points' => ['float', $gap->getPoints()]
         ]);
     }
 
@@ -138,10 +151,10 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
         $res = $this->db->query(
             sprintf(
                 'select * from ' . SetupCloze::TABLENAME_CLOZE_CONFIGURATION .' as c
-                 left outer join' . SetupCloze::TABLENAME_CLOZE_GAP .' as g on c.id = g.cloze_id
-                 left outer join' . SetupCloze::TABLENAME_CLOZE_GAP_ITEM . ' as i on g.id = i.gap_id
+                 left outer join ' . SetupCloze::TABLENAME_CLOZE_GAP .' as g on c.id = g.cloze_id
+                 left outer join ' . SetupCloze::TABLENAME_CLOZE_GAP_ITEM . ' as i on g.id = i.gap_id
                  where c.event_id = %s',
-                $this->db->quote($data['event_id'], 'int')
+                $this->db->quote($data['id'], 'int')
             )
         );
 
@@ -182,7 +195,7 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id'],
+            intval($data['initiating_user_id']),
             QuestionPlayConfiguration::create(
                 ClozeEditorConfiguration::create($cloze_text, $gaps),
                 ClozeScoringConfiguration::create()
@@ -209,8 +222,8 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
 
         return TextGapConfiguration::Create(
             $this->createGapItems($gap),
-            $data['g.field_length'],
-            $data['g.text_match_method']);
+            intval($data['g.field_length']),
+            intval($data['g.text_match_method']));
     }
 
     /**
@@ -220,7 +233,7 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
     private function createGapItems(array $gap_items) : array
     {
         return array_map(function($item) {
-            return ClozeGapItem::create($item['i.text'], $item['i.points']);
+            return ClozeGapItem::create($item['i.text'], floatval($item['i.points']));
         }, $gap_items);
     }
 
@@ -233,10 +246,10 @@ class ClozePlayConfigurationSetEventHandler implements IEventStorageHandler
         $data = reset($gap);
 
         return NumericGapConfiguration::Create(
-            $data['g.value'],
-            $data['g.upper'],
-            $data['g.lower'],
-            $data['g.points'],
-            $data['g.field_length']);
+            floatval($data['g.value']),
+            floatval($data['g.upper']),
+            floatval($data['g.lower']),
+            floatval($data['g.points']),
+            intval($data['g.field_length']));
     }
 }

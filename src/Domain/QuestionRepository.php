@@ -10,6 +10,7 @@ use srag\CQRS\Event\EventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
 use srag\CQRS\Event\IEventStore;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
  * Class QuestionRepository
@@ -33,7 +34,9 @@ class QuestionRepository extends AbstractAggregateRepository
     protected function __construct()
     {
         parent::__construct();
-        $this->event_store = new QuestionEventStore();
+        //$this->event_store = new QuestionEventStore();
+        global $DIC;
+        $this->event_store = new RelationalQuestionEventStore($DIC->database());
     }
 
     /**

@@ -29,18 +29,20 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
         /** @var $feedback Feedback */
         $feedback = $event->getFeedback();
 
-        $feedback_id = $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, [
-            'event_id' => $event_id,
-            'feedback_correct' => $feedback->getAnswerCorrectFeedback(),
-            'feedback_wrong' => $feedback->getAnswerWrongFeedback(),
-            'answer_feedback_type' => $feedback->getAnswerOptionFeedbackMode()
+        $feedback_id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK);
+        $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, [
+            'id' => ['integer' => $feedback_id],
+            'event_id' => ['integer', $event_id],
+            'feedback_correct' => ['clob', $feedback->getAnswerCorrectFeedback()],
+            'feedback_wrong' => ['clob', $feedback->getAnswerWrongFeedback()],
+            'answer_feedback_type' => ['integer', $feedback->getAnswerOptionFeedbackMode()]
         ]);
 
         foreach ($feedback->getAnswerOptionFeedbacks() as $answer_id => $content) {
             $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, [
-                'feedback_id' => $feedback_id,
-                'answer_id' => $answer_id,
-                'content' => $content
+                'feedback_id' => ['integer', $feedback_id],
+                'answer_id' => ['text', $answer_id],
+                'content' => ['clob', $content]
             ]);
         }
     }
@@ -56,7 +58,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
                 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' as f
                  inner join' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' as af on f.feedback_id = af.feedback_id
                  where f.event_id = %s',
-                $this->db->quote($data['event_id'], 'int')
+                $this->db->quote($data['id'], 'int')
                 )
             );
 
@@ -69,11 +71,11 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
         return new QuestionFeedbackSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id'],
+            intval($data['initiating_user_id']),
             Feedback::create(
                 $row['f.feedback_correct'],
                 $row['f.feedback_wrong'],
-                $row['f.answer_feedback_type'],
+                intval($row['f.answer_feedback_type']),
                 $answer_feedback
             )
         );

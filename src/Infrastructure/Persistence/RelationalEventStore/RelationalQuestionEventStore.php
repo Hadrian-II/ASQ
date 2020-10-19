@@ -3,18 +3,26 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
+use ILIAS\Data\UUID\Factory;
 use ILIAS\Data\UUID\Uuid;
+use ilDBInterface;
 use srag\CQRS\Event\DomainEvent;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\IEventStore;
-use ilDBInterface;
-use Exception;
-use ILIAS\Data\UUID\Factory;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
-use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
 use srag\asq\Domain\Event\QuestionHintsSetEvent;
+use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
+use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
+use srag\asq\Domain\Model\Question;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\AggregateCreatedEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionDataSetEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionFeedbackSetEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionHintsSetEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozeAnswerOptionsSetEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler;
+use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
 
 /**
  * Class RelationalQuestionEventStore
@@ -32,7 +40,7 @@ class RelationalQuestionEventStore implements IEventStore
     const TABLE_NAME_QUESTION_DATA = 'rqes_question_data';
     const TABLE_NAME_QUESTION_HINT = 'rqes_question_hint';
     const TABLE_NAME_QUESTION_FEEDBACK = 'rqes_question_feedback';
-    const TABLE_NAME_QUESTION_ANSWER_FEEDBACK = 'rqes_question_afeedback';
+    const TABLE_NAME_QUESTION_ANSWER_FEEDBACK = 'rqes_afeedback';
 
     /**
      * @var ilDBInterface
@@ -48,14 +56,20 @@ class RelationalQuestionEventStore implements IEventStore
      * @var array
      */
     const GENERIC_HANDLERS = [
-
+        AggregateCreatedEvent::class => AggregateCreatedEventHandler::class,
+        QuestionDataSetEvent::class => QuestionDataSetEventHandler::class,
+        QuestionFeedbackSetEvent::class => QuestionFeedbackSetEventHandler::class,
+        QuestionHintsSetEvent::class => QuestionHintsSetEventHandler::class
     ];
 
     /**
      * @var array
      */
     const TYPE_HANDLERS = [
-
+        SetupDatabase::CLOZE => [
+            QuestionAnswerOptionsSetEvent::class => ClozeAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => ClozePlayConfigurationSetEventHandler::class
+        ]
     ];
 
     /**
@@ -78,48 +92,40 @@ class RelationalQuestionEventStore implements IEventStore
      */
     public function commit(DomainEvents $events): void
     {
-        $this->db->beginTransaction();
-
-        try
+        /** @var $event \srag\CQRS\Event\AbstractDomainEvent */
+        foreach ($events->getEvents() as $event)
         {
-            /** @var $event \srag\CQRS\Event\AbstractDomainEvent */
-            foreach ($events as $event)
-            {
-                if ($event instanceof AggregateCreatedEvent) {
-                    $type = $event->getAdditionalData()[Question::VAR_TYPE];
-                    $this->storeQuestionType($event->getAggregateId(), $event->getAdditionalData()[Question::VAR_TYPE]);
-                }
-                else {
-                    $type = $this->getQuestionType($event->getAggregateId());
-                }
-
-                $event_id = $this->uuid_factory->uuid4();
-
-                $id = $this->db->insert(self::TABLE_NAME, [
-                    'event_id' => $event_id->toString(),
-                    'event_version' => $event->getEventVersion(),
-                    'question_id' => $event->getAggregateId()->toString(),
-                    'event_name' => $event->getEventName(),
-                    'occurred_on' => time(),
-                    'initiating_user_id' => $event->getInitiatingUserId()
-                ]);
-
-                if ($this->isGenericEvent($event))
-                {
-                    $generic_handler = $this->getGenericHandler(get_class($event));
-                    $generic_handler->storeEvent($event, $id);
-                }
-                else
-                {
-                    $type_specific_handler = $this->getTypeSpecificHandler($type);
-                    $type_specific_handler->storeEvent($event, $id);
-                }
+            if ($event instanceof AggregateCreatedEvent) {
+                $type = $event->getAdditionalData()[Question::VAR_TYPE];
+                $this->storeQuestionType($event->getAggregateId(), $event->getAdditionalData()[Question::VAR_TYPE]);
             }
-            $this->db->commit();
-        }
-        catch (Exception $e)
-        {
-            $this->db->rollback();
+            else {
+                $type = $this->getQuestionType($event->getAggregateId());
+            }
+
+            $event_id = $this->uuid_factory->uuid4();
+
+            $id = $this->db->nextId(self::TABLE_NAME);
+            $this->db->insert(self::TABLE_NAME, [
+                'id' => ['integer', $id],
+                'event_id' => ['text', $event_id->toString()],
+                'event_version' => ['integer', $event->getEventVersion()],
+                'question_id' => ['text', $event->getAggregateId()->toString()],
+                'event_name' => ['text', $event->getEventName()],
+                'occurred_on' => ['integer', time()],
+                'initiating_user_id' => ['integer', $event->getInitiatingUserId()]
+            ]);
+
+            if ($this->isGenericEvent($event->getEventName()))
+            {
+                $generic_handler = $this->getGenericHandler($event->getEventName());
+                $generic_handler->handleEvent($event, intval($id));
+            }
+            else
+            {
+                $type_specific_handler = $this->getTypeSpecificHandler($type, $event->getEventName());
+                $type_specific_handler->handleEvent($event, intval($id));
+            }
         }
     }
 
@@ -136,7 +142,7 @@ class RelationalQuestionEventStore implements IEventStore
             )
         );
 
-        return $res->fetch()['question_type'];
+        return $this->db->fetchAssoc($res)['question_type'];
     }
 
     /**
@@ -146,17 +152,17 @@ class RelationalQuestionEventStore implements IEventStore
     private function storeQuestionType(Uuid $id, string $type) : void
     {
         $this->db->insert(self::TABLE_NAME_QUESTION_INDEX, [
-            'question_id' => $id->toString(),
-            'question_type' => $type
+            'question_id' => ['text', $id->toString()],
+            'question_type' => ['text', $type]
         ]);
     }
 
-    private function isGenericEvent(DomainEvent $event) : bool
+    private function isGenericEvent(string $event) : bool
     {
-        return ($event instanceof AggregateCreatedEvent ||
-                $event instanceof QuestionDataSetEvent ||
-                $event instanceof QuestionFeedbackSetEvent ||
-                $event instanceof QuestionHintsSetEvent);
+        return ($event === AggregateCreatedEvent::class ||
+                $event === QuestionDataSetEvent::class ||
+                $event === QuestionFeedbackSetEvent::class ||
+                $event === QuestionHintsSetEvent::class);
     }
 
     /**
@@ -171,7 +177,7 @@ class RelationalQuestionEventStore implements IEventStore
         }
 
         if (! array_key_exists($event_type, $this->handlers[$type])) {
-            $classname = self::TYPE_HANDLERS[$type];
+            $classname = self::TYPE_HANDLERS[$type][$event_type];
             $this->handlers[$type][$event_type] = new $classname($this->db);
         }
 
@@ -198,7 +204,38 @@ class RelationalQuestionEventStore implements IEventStore
      */
     public function getAggregateHistoryFor(Uuid $id): DomainEvents
     {
+        $type = $this->getQuestionType($id);
 
+        $res = $this->db->query(
+            sprintf(
+                'select * from ' . self::TABLE_NAME . '
+                 where question_id = %s',
+                $this->db->quote($id->toString(), 'string')
+                )
+            );
+
+        $events = new DomainEvents();
+        while ($row = $this->db->fetchAssoc($res))
+        {
+            $event_type = $row['event_name'];
+
+            if ($event_type === AggregateCreatedEvent::class) {
+                $row[Question::VAR_TYPE] = $type;
+            }
+
+            if ($this->isGenericEvent($event_type))
+            {
+                $generic_handler = $this->getGenericHandler($event_type);
+                $events->addEvent($generic_handler->loadEvent($row));
+            }
+            else
+            {
+                $type_specific_handler = $this->getTypeSpecificHandler($type, $event_type);
+                $events->addEvent($type_specific_handler->loadEvent($row));
+            }
+        }
+
+        return $events;
     }
 
     /**

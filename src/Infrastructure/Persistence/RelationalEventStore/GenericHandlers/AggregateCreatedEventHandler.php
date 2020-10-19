@@ -7,6 +7,7 @@ use ilDateTime;
 use srag\CQRS\Event\DomainEvent;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
+use srag\asq\Domain\Model\Question;
 
 /**
  * Class AggregateCreatedEventHandler
@@ -36,6 +37,7 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
         return new AggregateCreatedEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id']);
+            intval($data['initiating_user_id']),
+            [Question::VAR_TYPE => $data[Question::VAR_TYPE]]);
     }
 }

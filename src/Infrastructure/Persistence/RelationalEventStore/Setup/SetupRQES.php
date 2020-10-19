@@ -53,7 +53,7 @@ class SetupRQES
                 'event_id' => ['type' => 'text','length' => 36,'notnull' => true],
                 'event_version' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'question_id' => ['type' => 'text','length' => 36,'notnull' => true],
-                'event_name' => ['type' => 'text','length' => 36,'notnull' => true],
+                'event_name' => ['type' => 'text','length' => 128,'notnull' => true],
                 'occurred_on' => ['type' => 'integer', 'length' => 4, 'notnull' => true],
                 'initiating_user_id' => ['type' => 'integer', 'length' => 4,'notnull' => true]
             ]
@@ -133,7 +133,7 @@ class SetupRQES
             RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK,
             [
                 'feedback_id' => ['type' => 'integer','length' => 4,'notnull' => true],
-                'answer_id' => ['type' => 'string', length => 32],
+                'answer_id' => ['type' => 'text', 'length' => 32],
                 'content' => ['type' => 'text']
             ]
         );
@@ -148,5 +148,10 @@ class SetupRQES
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_INDEX, false);
+
+        foreach (self::QUESTION_TYPES as $type) {
+            $type_setup = new $type($this->db);
+            $type_setup->drop();
+        }
     }
 }

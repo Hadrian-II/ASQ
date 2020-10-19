@@ -29,14 +29,16 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
         /** @var QuestionData $question_data */
         $question_data = $event->getData();
 
+        $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA);
         $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA, [
-            'event_id' => $event_id,
-            'title' => $question_data->getTitle(),
-            'text' => $question_data->getQuestionText(),
-            'author' => $question_data->getAuthor(),
-            'description' => $question_data->getDescription(),
-            'working_type' => $question_data->getWorkingTime(),
-            'lifecycle' => $question_data->getLifecycle()
+            'id' => ['integer', $id],
+            'event_id' => ['integer', $event_id],
+            'title' => ['text', $question_data->getTitle()],
+            'text' => ['clob', $question_data->getQuestionText()],
+            'author' => ['text', $question_data->getAuthor()],
+            'description' => ['clob', $question_data->getDescription()],
+            'working_time' => ['integer', $question_data->getWorkingTime()],
+            'lifecycle' => ['integer', $question_data->getLifecycle()]
         ]);
     }
 
@@ -49,7 +51,7 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
         $res = $this->db->query(
             sprintf(
                 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id = %s',
-                $this->db->quote($data['event_id'], 'int')
+                $this->db->quote($data['id'], 'int')
             )
         );
 
@@ -58,14 +60,14 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
         return new QuestionDataSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id'],
+            intval($data['initiating_user_id']),
             QuestionData::create(
-                $row['title'],
-                $row['text'],
-                $row['author'],
-                $row['description'],
-                $row['working_type'],
-                $row['lifecycle']
+                $row['title'] ?? '',
+                $row['text'] ?? '',
+                $row['author'] ?? '',
+                $row['description'] ?? '',
+                intval($row['working_time']),
+                intval($row['lifecycle'])
             )
         );
     }

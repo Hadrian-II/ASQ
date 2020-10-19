@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers;
 
-use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
-use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use ilDateTime;
+use srag\CQRS\Event\DomainEvent;
+use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 
 /**
  * Class ClozeAnswerOptionsSetEventHandler
@@ -17,7 +17,7 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozeAnswerOptionsSetEventHandler implements IEventStorageHandler
+class ClozeAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
 {
     /**
      * @param DomainEvent $event
@@ -36,6 +36,6 @@ class ClozeAnswerOptionsSetEventHandler implements IEventStorageHandler
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id']);
+            intval($data['initiating_user_id']));
     }
 }

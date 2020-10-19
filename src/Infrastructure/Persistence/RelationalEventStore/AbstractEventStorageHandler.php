@@ -27,7 +27,7 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
      */
     protected $factory;
 
-    public function construct(ilDBInterface $db)
+    public function __construct(ilDBInterface $db)
     {
         $this->db = $db;
 

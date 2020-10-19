@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use srag\CQRS\Event\DomainEvent;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\IEventStorageHandler;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
-use srag\asq\Domain\Model\Hint\QuestionHint;
-use srag\asq\Domain\Event\QuestionHintsSetEvent;
-use srag\asq\Domain\Model\Hint\QuestionHints;
 use ilDateTime;
+use srag\CQRS\Event\DomainEvent;
+use srag\asq\Domain\Event\QuestionHintsSetEvent;
+use srag\asq\Domain\Model\Hint\QuestionHint;
+use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
  * Class QuestionHintsSetEventHandler
@@ -20,7 +20,7 @@ use ilDateTime;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionHintsSetEventHandler implements IEventStorageHandler
+class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
 {
     /**
      * @param DomainEvent $event
@@ -30,11 +30,13 @@ class QuestionHintsSetEventHandler implements IEventStorageHandler
         $hints = $event->getHints()->getHints();
 
         foreach ($hints as $hint) {
+            $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT);
             $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, [
-                'event_id' => $event_id,
-                'hint_id' => $hint->getId(),
-                'content' => $hint->getContent(),
-                'deduction' => $hint->getPointDeduction()
+                'id' => ['integer', $id],
+                'event_id' => ['integer', $event_id],
+                'hint_id' => ['text', $hint->getId()],
+                'content' => ['clob', $hint->getContent()],
+                'deduction' => ['float', $hint->getPointDeduction()]
             ]);
         }
     }
@@ -48,20 +50,20 @@ class QuestionHintsSetEventHandler implements IEventStorageHandler
         $res = $this->db->query(
             sprintf(
                 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT .' where event_id = %s',
-                $this->db->quote($data['event_id'], 'int')
+                $this->db->quote($data['id'], 'int')
             )
         );
 
         $hints = [];
         while ($row = $this->db->fetchAssoc($res))
         {
-            $hints[] = QuestionHint::create($row['hint_id'], $row['content'], $row['deduction']);
+            $hints[] = QuestionHint::create($row['hint_id'], $row['content'], floatval($row['deduction']));
         }
 
         return new QuestionHintsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $data['initiating_user_id'],
+            intval($data['initiating_user_id']),
             QuestionHints::create($hints)
        );
     }
