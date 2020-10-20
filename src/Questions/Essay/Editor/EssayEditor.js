@@ -38,6 +38,7 @@
 
         tinymce.init({
             selector: 'textarea',
+            menubar: false,
             init_instance_callback(editor) {
                 editor.onKeyUp.add(updateCounts);
                 updateCounts();

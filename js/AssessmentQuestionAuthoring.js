@@ -1,10 +1,11 @@
 const asqAuthoring = (function () {
     let hasTiny;
-    let tinySettings;
+    const tinySettings = {
+        selector: 'textarea',
+        menubar: false
+    };
 
     function clearTiny(selector = null) {
-        tinySettings = tinymce.EditorManager.editors[0].settings;
-
         let i;
         const editors = tinymce.editors.map((x) => x);
         for (i = 0; i < editors.length; i += 1) {
@@ -160,6 +161,10 @@ const asqAuthoring = (function () {
         // hack to prevent image verification error
         $('[name=ilfilehash]').remove();
         hasTiny = typeof (tinymce) !== 'undefined';
+        
+        if (hasTiny) {
+            tinymce.init(tinySettings);
+        }
     });
 
     $(document).on('click', '.js_add', addRow);

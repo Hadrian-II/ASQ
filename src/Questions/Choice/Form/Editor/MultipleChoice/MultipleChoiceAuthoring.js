@@ -3,7 +3,7 @@
 
     function showMultilineEditor() {
         const tinySettings = tinymce.EditorManager.editors[0].settings;
-        asqAuthoring.clearTiny();
+        asqAuthoring.clearTiny('input[id$=mcdd_text]');
 
         tinySettings.mode = '';
         tinySettings.selector = 'input[id$=mcdd_text]';
@@ -47,7 +47,7 @@
             return;
         }
 
-        if ($('select[name=form_input_8]').val() === 'false') {
+        if ($('select[name=form_input_9]').val() === 'false') {
             showMultilineEditor();
         } else {
             hideMultilineEditor();
@@ -55,10 +55,10 @@
     }
 
     $(window).load(() => {
-        if ($('select[name=form_input_8]').length > 0) {
+        if ($('select[name=form_input_9]').length > 0) {
             updateEditor();
         }
     });
 
-    $(document).on('change', 'select[name=form_input_8]', updateEditor);
+    $(document).on('change', 'select[name=form_input_9]', updateEditor);
 }(jQuery));

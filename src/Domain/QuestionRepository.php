@@ -7,10 +7,9 @@ use srag\CQRS\Aggregate\AbstractAggregateRepository;
 use srag\CQRS\Aggregate\AbstractAggregateRoot;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
+use srag\CQRS\Event\IEventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
-use srag\CQRS\Event\IEventStore;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
  * Class QuestionRepository
