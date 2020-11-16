@@ -49,31 +49,27 @@ class QuestionData extends AbstractValueObject
     protected $working_time = 0;
 
     /**
-     * @param ?string      $title
-     * @param ?string      $text
-     * @param ?string      $author
-     * @param ?string      $description
-     * @param ?int         $working_time
-     * @param ?int         $lifecycle
-     *
-     * @return QuestionData
+     * @param string $title
+     * @param string $text
+     * @param string $author
+     * @param string $description
+     * @param int $working_time
+     * @param int $lifecycle
      */
-    public static function create(
-        ?string $title,
-        ?string $text,
-        ?string $author,
-        ?string $description,
-        ?int $working_time,
+    public function __construct(
+        ?string $title = null,
+        ?string $text = null,
+        ?string $author = null,
+        ?string $description = null,
+        ?int $working_time = null,
         ?int $lifecycle = self::LIFECYCLE_DRAFT
     ) {
-        $object = new QuestionData();
-        $object->title = $title;
-        $object->description = $description;
-        $object->question_text = $text;
-        $object->author = $author;
-        $object->working_time = $working_time;
-        $object->lifecycle = $lifecycle;
-        return $object;
+        $this->title = $title;
+        $this->description = $description;
+        $this->question_text = $text;
+        $this->author = $author;
+        $this->working_time = $working_time;
+        $this->lifecycle = $lifecycle;
     }
 
     /**

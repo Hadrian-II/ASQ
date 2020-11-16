@@ -30,21 +30,19 @@ class NumericScoringConfiguration extends AbstractValueObject
     protected $upper_bound;
 
     /**
-     * @param int $points
+     * @param float $points
      * @param float $lower_bound
      * @param float $upper_bound
-     * @return NumericScoringConfiguration
+     * @return \srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration
      */
-    public static function create(
+    public function __construct(
         ?float $points = null,
         ?float $lower_bound = null,
         ?float $upper_bound = null
-    ) : NumericScoringConfiguration {
-        $object = new NumericScoringConfiguration();
-        $object->points = $points;
-        $object->lower_bound = $lower_bound;
-        $object->upper_bound = $upper_bound;
-        return $object;
+    ) {
+        $this->points = $points;
+        $this->lower_bound = $lower_bound;
+        $this->upper_bound = $upper_bound;
     }
 
     /**

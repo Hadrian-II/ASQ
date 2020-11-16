@@ -31,14 +31,12 @@ class QuestionPlayConfiguration extends AbstractValueObject
      * @param AbstractValueObject $scoring_configuration
      * @return QuestionPlayConfiguration
      */
-    public static function create(
+    public function __construct(
         AbstractValueObject $editor_configuration = null,
         AbstractValueObject $scoring_configuration = null
-    ) : QuestionPlayConfiguration {
-        $object = new QuestionPlayConfiguration();
-        $object->editor_configuration = $editor_configuration;
-        $object->scoring_configuration = $scoring_configuration;
-        return $object;
+    ) {
+        $this->editor_configuration = $editor_configuration;
+        $this->scoring_configuration = $scoring_configuration;
     }
 
     /**

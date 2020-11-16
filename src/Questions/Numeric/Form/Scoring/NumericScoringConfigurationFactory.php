@@ -55,7 +55,7 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return NumericScoringConfiguration::create(
+        return new NumericScoringConfiguration(
             $this->readFloat($postdata[self::VAR_POINTS]),
             $this->readFloat($postdata[self::VAR_LOWER_BOUND]),
             $this->readFloat($postdata[self::VAR_UPPER_BOUND])
@@ -67,6 +67,6 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return NumericScoringConfiguration::create();
+        return new NumericScoringConfiguration();
     }
 }

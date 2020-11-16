@@ -91,7 +91,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return QuestionData::create(
+        return new QuestionData(
             $this->readString($postdata[self::VAR_TITLE]),
             $this->readString($postdata[self::VAR_QUESTION]),
             $this->readString($postdata[self::VAR_AUTHOR]),

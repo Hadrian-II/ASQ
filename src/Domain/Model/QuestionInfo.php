@@ -49,7 +49,10 @@ class QuestionInfo
      * @var ilDateTime
      */
     protected $created;
-    
+
+    /**
+     * @param QuestionListItemAr $question
+     */
     public function __construct(QuestionListItemAr $question)
     {
         $this->author = $question->getAuthor();
@@ -61,7 +64,7 @@ class QuestionInfo
         $this->title = $question->getTitle();
         $this->working_time = $question->getWorkingTime();
     }
-    
+
     /**
      * @return string
      */
@@ -69,7 +72,7 @@ class QuestionInfo
     {
         return $this->title;
     }
-    
+
     /**
      * @return string
      */
@@ -77,7 +80,7 @@ class QuestionInfo
     {
         return $this->description;
     }
-    
+
     /**
      * @return string
      */
@@ -85,7 +88,7 @@ class QuestionInfo
     {
         return $this->question;
     }
-    
+
     /**
      * @return string
      */
@@ -93,7 +96,7 @@ class QuestionInfo
     {
         return $this->author;
     }
-    
+
     /**
      * @return int
      */
@@ -101,7 +104,7 @@ class QuestionInfo
     {
         return $this->working_time;
     }
-    
+
     /**
      * @return string
      */
@@ -109,7 +112,7 @@ class QuestionInfo
     {
         return $this->question_id;
     }
-    
+
     /**
      * @return string
      */
@@ -117,7 +120,7 @@ class QuestionInfo
     {
         return $this->revision_name;
     }
-    
+
     /**
      * @return ilDateTime
      */

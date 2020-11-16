@@ -16,11 +16,11 @@ use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
 use srag\asq\Domain\Event\QuestionHintsSetEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 
 /**
  * Class Question
@@ -56,7 +56,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     private $play_configuration;
     /**
-     * @var AnswerOptions
+     * @var AnswerOption[]
      */
     private $answer_options;
     /**
@@ -218,30 +218,38 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     }
 
     /**
-     * @return AnswerOptions
+     * @return ?AnswerOption[]
      */
-    public function getAnswerOptions() : ?AnswerOptions
+    public function getAnswerOptions() : ?array
     {
         return $this->answer_options;
     }
 
     /**
      *
-     * @param AnswerOptions $options
+     * @param AnswerOption[] $options
      * @param int $creator_id
      */
-    public function setAnswerOptions(?AnswerOptions $options, int $creator_id)
+    public function setAnswerOptions(?array $options, int $creator_id)
     {
-        if (!AnswerOptions::isNullableEqual($options, $this->getAnswerOptions())) {
-            $this->ExecuteEvent(
-                new QuestionAnswerOptionsSetEvent(
-                    $this->getAggregateId(),
-                    new ilDateTime(time(), IL_CAL_UNIX),
-                    $creator_id,
-                    $options
-                )
-            );
+        if (is_null($options) ||
+            count($options) !== count($this->answer_options)) {
+            return;
         }
+
+        for ($i = 0; $i < count($options); $i += 1) {
+            if (!$options[$i]->equals($this->answer_options[$i]))
+            {
+                return;
+            }
+        }
+
+        new QuestionAnswerOptionsSetEvent(
+            $this->getAggregateId(),
+            new ilDateTime(time(), IL_CAL_UNIX),
+            $creator_id,
+            $options
+        );
     }
 
 

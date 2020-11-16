@@ -29,16 +29,19 @@ class AnswerOption extends AbstractValueObject
      */
     protected $scoring_definition;
 
-    public static function create(
+    /**
+     * @param string $id
+     * @param AbstractValueObject $display_definition
+     * @param AbstractValueObject $scoring_definition
+     */
+    public function __construct(
         string $id,
         ?AbstractValueObject $display_definition = null,
         ?AbstractValueObject $scoring_definition = null
-    ) : AnswerOption {
-        $object = new AnswerOption();
-        $object->option_id = $id;
-        $object->display_definition = $display_definition;
-        $object->scoring_definition = $scoring_definition;
-        return $object;
+    ) {
+        $this->option_id = $id;
+        $this->display_definition = $display_definition;
+        $this->scoring_definition = $scoring_definition;
     }
 
     /**
@@ -52,7 +55,7 @@ class AnswerOption extends AbstractValueObject
     /**
      * @return AbstractValueObject
      */
-    public function getDisplayDefinition()
+    public function getDisplayDefinition() : AbstractValueObject
     {
         return $this->display_definition;
     }
@@ -60,7 +63,7 @@ class AnswerOption extends AbstractValueObject
     /**
      * @return AbstractValueObject
      */
-    public function getScoringDefinition()
+    public function getScoringDefinition() : AbstractValueObject
     {
         return $this->scoring_definition;
     }
