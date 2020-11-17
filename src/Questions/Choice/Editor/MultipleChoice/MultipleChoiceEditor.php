@@ -52,7 +52,7 @@ class MultipleChoiceEditor extends AbstractEditor
     {
         global $DIC;
 
-        $this->answer_options = $question->getAnswerOptions()->getOptions();
+        $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->ui = $DIC->ui();
         $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
@@ -209,7 +209,11 @@ class MultipleChoiceEditor extends AbstractEditor
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        if (is_null($this->question->getAnswerOptions())) {
+            return false;
+        }
+
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ImageAndTextDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 

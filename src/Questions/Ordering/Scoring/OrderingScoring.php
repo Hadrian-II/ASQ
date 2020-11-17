@@ -35,7 +35,7 @@ class OrderingScoring extends AbstractScoring
         $reached_points = $scoring_conf->getPoints();
 
         // prevent empty answers being counted as correct
-        if (count($answers) !== count($this->question->getAnswerOptions()->getOptions()))
+        if (count($answers) !== count($this->question->getAnswerOptions()))
         {
             return 0;
         }
@@ -70,7 +70,7 @@ class OrderingScoring extends AbstractScoring
     {
         $answers = [];
 
-        for ($i = 1; $i <= count($this->question->getAnswerOptions()->getOptions()); $i++) {
+        for ($i = 1; $i <= count($this->question->getAnswerOptions()); $i++) {
             $answers[] = $i;
         }
 

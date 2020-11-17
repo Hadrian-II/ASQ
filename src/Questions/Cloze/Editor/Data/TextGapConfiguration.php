@@ -35,18 +35,15 @@ class TextGapConfiguration extends ClozeGapConfiguration
      * @param array $items
      * @param int $field_length
      * @param int $matching_method
-     * @return TextGapConfiguration
      */
-    public static function Create(
+    public function __construct(
         ?array $items = [],
         ?int $field_length = self::DEFAULT_FIELD_LENGTH,
         ?int $matching_method = TextScoring::TM_CASE_SENSITIVE
-    ) : TextGapConfiguration {
-        $object = new TextGapConfiguration();
-        $object->items = $items;
-        $object->field_length = $field_length;
-        $object->matching_method = $matching_method;
-        return $object;
+    ) {
+        $this->items = $items;
+        $this->field_length = $field_length;
+        $this->matching_method = $matching_method;
     }
 
     /**

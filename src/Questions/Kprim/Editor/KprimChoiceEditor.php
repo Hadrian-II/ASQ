@@ -46,7 +46,7 @@ class KprimChoiceEditor extends AbstractEditor
      */
     public function __construct(QuestionDto $question)
     {
-        $this->answer_options = $question->getAnswerOptions()->getOptions();
+        $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
         if ($this->configuration->isShuffleAnswers()) {
@@ -181,7 +181,7 @@ class KprimChoiceEditor extends AbstractEditor
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ImageAndTextDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 

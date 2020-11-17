@@ -67,7 +67,7 @@ class ImageMapEditor extends AbstractEditor
         $tpl->parseCurrentBlock();
 
         /** @var AnswerOption $answer_option */
-        foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
+        foreach ($this->question->getAnswerOptions() as $answer_option) {
             /** @var ImageMapEditorDefinition $display_definition */
             $display_definition = $answer_option->getDisplayDefinition();
 
@@ -229,11 +229,11 @@ class ImageMapEditor extends AbstractEditor
             return false;
         }
 
-        if (is_null($this->question->getAnswerOptions()) || count($this->question->getAnswerOptions()->getOptions()) < 2) {
+        if (is_null($this->question->getAnswerOptions()) || count($this->question->getAnswerOptions()) < 2) {
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ImageMapEditorDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 

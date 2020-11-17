@@ -33,16 +33,14 @@ class ImageMapEditorConfiguration extends AbstractValueObject
      * @param string $image
      * @return ImageMapEditorConfiguration
      */
-    public static function create(
+    public function __construct(
         ?string $image = null,
         ?bool $multiple_choice = true,
         ?int $max_answers = null
-    ) : ImageMapEditorConfiguration {
-        $object = new ImageMapEditorConfiguration();
-        $object->image = $image;
-        $object->multiple_choice = $multiple_choice;
-        $object->max_answers = $max_answers;
-        return $object;
+    ) {
+        $this->image = $image;
+        $this->multiple_choice = $multiple_choice;
+        $this->max_answers = $max_answers;
     }
 
     /**

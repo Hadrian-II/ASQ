@@ -27,14 +27,13 @@ class MultipleChoiceScoringDefinition extends AbstractValueObject
     /**
      * @param float $points_selected
      * @param float $points_unselected
-     * @return MultipleChoiceScoringDefinition
      */
-    public static function create(?float $points_selected, ?float $points_unselected) : MultipleChoiceScoringDefinition
+    public function __construct(
+        ?float $points_selected = null,
+        ?float $points_unselected = null)
     {
-        $object = new MultipleChoiceScoringDefinition();
-        $object->points_selected = $points_selected;
-        $object->points_unselected = $points_unselected;
-        return $object;
+        $this->points_selected = $points_selected;
+        $this->points_unselected = $points_unselected;
     }
 
     /**

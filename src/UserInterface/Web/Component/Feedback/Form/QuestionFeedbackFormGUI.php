@@ -125,7 +125,7 @@ class QuestionFeedbackFormGUI
             $fields[self::VAR_ANSWER_OPTION_FEEDBACK_MODE] = $feedback_setting;
 
             $answer_fields = [];
-            foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
+            foreach ($this->question_dto->getAnswerOptions() as $answer_option) {
                 /** @var AnswerOption $answer_option */
                 $field = $this->ui->factory()->input()->field()->textarea($answer_option->getOptionId());
 
@@ -170,7 +170,7 @@ class QuestionFeedbackFormGUI
         $answer_option_feedbacks = [];
 
         if ($this->question_dto->hasAnswerOptions()) {
-            foreach ($this->question_dto->getAnswerOptions()->getOptions() as $answer_option) {
+            foreach ($this->question_dto->getAnswerOptions() as $answer_option) {
                 /** @var AnswerOption $answer_option */
                 $post_key = $this->getPostKey($answer_option);
                 $post_val = $this->readString($postdata[self::VAR_ANSWER_OPTION_FEEDBACK][$post_key]);

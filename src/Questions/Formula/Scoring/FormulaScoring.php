@@ -48,7 +48,7 @@ class FormulaScoring extends AbstractScoring
     {
         $reached_points = 0.0;
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var $result FormulaScoringDefinition */
             $result = $option->getScoringDefinition();
 
@@ -136,7 +136,7 @@ class FormulaScoring extends AbstractScoring
             $ix += 1;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             $this->generateResult($values, $option->getScoringDefinition(), $option->getOptionId());
         }
 
@@ -189,7 +189,7 @@ class FormulaScoring extends AbstractScoring
     {
         $max_score = 0.0;
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             $max_score += $option->getScoringDefinition()->getPoints();
         }
 
@@ -216,7 +216,7 @@ class FormulaScoring extends AbstractScoring
             }
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var FormulaScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

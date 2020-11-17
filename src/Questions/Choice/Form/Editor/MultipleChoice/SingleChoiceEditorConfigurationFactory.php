@@ -69,7 +69,7 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postvalue) : AbstractValueObject
     {
-        return MultipleChoiceEditorConfiguration::create(
+        return new MultipleChoiceEditorConfiguration(
             $postvalue[self::VAR_MCE_SHUFFLE],
             self::SINGLE_CHOICE,
             $this->readInt($postvalue[self::VAR_MCE_THUMB_SIZE]),
@@ -82,6 +82,6 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return MultipleChoiceEditorConfiguration::create();
+        return new MultipleChoiceEditorConfiguration();
     }
 }

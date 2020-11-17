@@ -93,7 +93,7 @@ class FormulaEditor extends AbstractEditor
     {
         $output = $this->configuration->getFormula();
 
-        foreach (range(1, count($this->question->getAnswerOptions()->getOptions())) as $resindex) {
+        foreach (range(1, count($this->question->getAnswerOptions())) as $resindex) {
             $output = $this->createResult($resindex, $output, $this->question->getPlayConfiguration()->getScoringConfiguration()->getUnits());
         }
 

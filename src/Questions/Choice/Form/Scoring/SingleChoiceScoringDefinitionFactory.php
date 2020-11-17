@@ -57,7 +57,7 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return MultipleChoiceScoringDefinition::create(
+        return new MultipleChoiceScoringDefinition(
             floatval($values[self::VAR_MCSD_SELECTED]),
             self::ZERO_BY_DEFAULT
         );
@@ -68,6 +68,6 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return MultipleChoiceScoringDefinition::create(null, self::ZERO_BY_DEFAULT);
+        return new MultipleChoiceScoringDefinition(null, self::ZERO_BY_DEFAULT);
     }
 }

@@ -33,7 +33,7 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return MultipleChoiceScoringConfiguration::create();
+        return new MultipleChoiceScoringConfiguration();
     }
 
     /**
@@ -41,6 +41,6 @@ class MultipleChoiceScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return MultipleChoiceScoringConfiguration::create();
+        return new MultipleChoiceScoringConfiguration();
     }
 }

@@ -33,7 +33,7 @@ class ClozeScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return ClozeScoringConfiguration::create();
+        return new ClozeScoringConfiguration();
     }
 
     /**
@@ -41,6 +41,6 @@ class ClozeScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ClozeScoringConfiguration::create();
+        return new ClozeScoringConfiguration();
     }
 }

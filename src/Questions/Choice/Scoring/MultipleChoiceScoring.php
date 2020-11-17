@@ -41,7 +41,7 @@ class MultipleChoiceScoring extends AbstractScoring
         }
 
         /** @var AnswerOption $answer_option */
-        foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
+        foreach ($this->question->getAnswerOptions() as $answer_option) {
             if (in_array($answer_option->getOptionId(), $selected_options)) {
                 $reached_points += $answer_option->getScoringDefinition()->getPointsSelected();
             } else {
@@ -68,7 +68,7 @@ class MultipleChoiceScoring extends AbstractScoring
         $answers = [];
 
         /** @var AnswerOption $answer_option */
-        foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
+        foreach ($this->question->getAnswerOptions() as $answer_option) {
             /** @var MultipleChoiceScoringDefinition $score */
             $score = $answer_option->getScoringDefinition();
             if ($score->getPointsSelected() > $score->getPointsUnselected()) {
@@ -96,7 +96,7 @@ class MultipleChoiceScoring extends AbstractScoring
         $min = 0.0;
 
         /** @var AnswerOption $answer_option */
-        foreach ($this->question->getAnswerOptions()->getOptions() as $answer_option) {
+        foreach ($this->question->getAnswerOptions() as $answer_option) {
             /** @var MultipleChoiceScoringDefinition $score */
             $score = $answer_option->getScoringDefinition();
             $min += min($score->getPointsSelected(), $score->getPointsUnselected());
@@ -110,11 +110,11 @@ class MultipleChoiceScoring extends AbstractScoring
      */
     public function isComplete() : bool
     {
-        if (count($this->question->getAnswerOptions()->getOptions()) < 2) {
+        if (count($this->question->getAnswerOptions()) < 2) {
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var MultipleChoiceScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

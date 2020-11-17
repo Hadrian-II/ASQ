@@ -28,7 +28,7 @@ class KprimChoiceScoring extends AbstractScoring
     public function score(AbstractValueObject $answer) : float
     {
         $count = 0;
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var KprimChoiceScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
             $current_answer = $answer->getAnswerForId($option->getOptionId());
@@ -43,7 +43,7 @@ class KprimChoiceScoring extends AbstractScoring
         /** @var KprimChoiceScoringConfiguration $scoring_conf */
         $scoring_conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
-        if ($count === count($this->question->getAnswerOptions()->getOptions())) {
+        if ($count === count($this->question->getAnswerOptions())) {
             return $scoring_conf->getPoints();
         } elseif (!is_null($scoring_conf->getHalfPointsAt()) &&
                  $count >= $scoring_conf->getHalfPointsAt()) {
@@ -70,7 +70,7 @@ class KprimChoiceScoring extends AbstractScoring
     {
         $answers = [];
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var KprimChoiceScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
 
@@ -93,11 +93,11 @@ class KprimChoiceScoring extends AbstractScoring
             return false;
         }
 
-        if (count($this->question->getAnswerOptions()->getOptions()) < 1) {
+        if (count($this->question->getAnswerOptions()) < 1) {
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var KprimChoiceScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

@@ -5,7 +5,6 @@ namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 
 /**
@@ -28,17 +27,15 @@ trait ChoiceQuestionPostProcessing
         // strip image when multiline is selected
         if (!$question->getPlayConfiguration()->getEditorConfiguration()->isSingleLine()) {
             // remove from question
-            $stripped_options = AnswerOptions::create(
-                array_map(
-                    function ($option) {
-                        return AnswerOption::create(
-                            $option->getOptionId(),
-                            ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
-                            $option->getScoringDefinition()
-                        );
-                    },
-                    $question->getAnswerOptions()->getOptions()
-                )
+            $stripped_options = array_map(
+                function ($option) {
+                    return new AnswerOption(
+                        $option->getOptionId(),
+                        ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
+                        $option->getScoringDefinition()
+                    );
+                },
+                $question->getAnswerOptions()
             );
 
             $question->setAnswerOptions($stripped_options);

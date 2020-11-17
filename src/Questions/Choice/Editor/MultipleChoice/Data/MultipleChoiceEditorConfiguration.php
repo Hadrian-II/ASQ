@@ -39,23 +39,18 @@ class MultipleChoiceEditorConfiguration extends AbstractValueObject
      * @param bool $shuffle_answers
      * @param int $max_answers
      * @param int $thumbnail_size
-     *
      * @param bool $single_line
-     *
-     * @return MultipleChoiceEditorConfiguration
      */
-    public static function create(
+    public function __construct(
         ?bool $shuffle_answers = false,
         ?int $max_answers = 1,
         ?int $thumbnail_size = null,
         ?bool $single_line = true
-    ) : MultipleChoiceEditorConfiguration {
-        $object = new MultipleChoiceEditorConfiguration();
-        $object->shuffle_answers = $shuffle_answers;
-        $object->max_answers = $max_answers;
-        $object->thumbnail_size = $thumbnail_size;
-        $object->single_line = $single_line;
-        return $object;
+    ) {
+        $this->shuffle_answers = $shuffle_answers;
+        $this->max_answers = $max_answers;
+        $this->thumbnail_size = $thumbnail_size;
+        $this->single_line = $single_line;
     }
 
     /**

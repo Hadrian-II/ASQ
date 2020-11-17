@@ -79,7 +79,7 @@ class TextSubsetScoring extends AbstractScoring
     {
         $answers = [];
 
-        $options = $this->question->getAnswerOptions()->getOptions();
+        $options = $this->question->getAnswerOptions();
 
         usort($options, function(AnswerOption $a, AnswerOption $b) {
             $apoints = $a->getScoringDefinition()->getPoints();
@@ -119,7 +119,7 @@ class TextSubsetScoring extends AbstractScoring
 
         $points = array_map(function ($option) {
             return $option->getScoringDefinition()->getPoints();
-        }, $this->question->getAnswerOptions()->getOptions());
+        }, $this->question->getAnswerOptions());
 
         rsort($points);
 
@@ -135,7 +135,7 @@ class TextSubsetScoring extends AbstractScoring
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
-            foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
+            foreach ($this->question->getAnswerOptions() as $correct) {
                 if (strtoupper($correct->getScoringDefinition()->getText()) === strtoupper($result)) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
                     break;
@@ -155,7 +155,7 @@ class TextSubsetScoring extends AbstractScoring
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
-            foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
+            foreach ($this->question->getAnswerOptions() as $correct) {
                 if ($correct->getScoringDefinition()->getText() === $result) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
                     break;
@@ -176,7 +176,7 @@ class TextSubsetScoring extends AbstractScoring
         $reached_points = 0;
 
         foreach ($this->getAnswers() as $result) {
-            foreach ($this->question->getAnswerOptions()->getOptions() as $correct) {
+            foreach ($this->question->getAnswerOptions() as $correct) {
                 if (levenshtein($correct->getScoringDefinition()->getText(), $result) <= $distance) {
                     $reached_points += $correct->getScoringDefinition()->getPoints();
                     break;
@@ -207,7 +207,7 @@ class TextSubsetScoring extends AbstractScoring
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var TextSubsetScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

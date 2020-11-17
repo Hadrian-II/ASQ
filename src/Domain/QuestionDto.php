@@ -13,6 +13,7 @@ use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use ILIAS\Data\UUID\Uuid;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class QuestionDto
@@ -59,7 +60,7 @@ class QuestionDto implements JsonSerializable
 
     /**
      *
-     * @var ?AnswerOptions
+     * @var ?AnswerOption[]
      */
     private $answer_options;
 
@@ -212,23 +213,23 @@ class QuestionDto implements JsonSerializable
 
     public function hasAnswerOptions() : bool
     {
-        return !is_null($this->answer_options) && count($this->answer_options->getOptions()) > 0;
+        return !is_null($this->answer_options) && count($this->answer_options) > 0;
     }
 
     /**
      *
-     * @return AnswerOptions
+     * @return AnswerOption[]
      */
-    public function getAnswerOptions() : ?AnswerOptions
+    public function getAnswerOptions() : ?array
     {
         return $this->answer_options;
     }
 
     /**
      *
-     * @param AnswerOptions $answer_options
+     * @param ?AnswerOption[] $answer_options
      */
-    public function setAnswerOptions(?AnswerOptions $answer_options) : void
+    public function setAnswerOptions(?array $answer_options) : void
     {
         $this->answer_options = $answer_options;
     }
@@ -307,7 +308,7 @@ class QuestionDto implements JsonSerializable
         $object = new QuestionDto();
         $object->id = $data['id'];
         $object->type = QuestionType::deserialize($data['type']);
-        $object->answer_options = AnswerOptions::createFromArray($data['answer_options']);
+        $object->answer_options = AbstractValueObject::createFromArray($data['answer_options']);
         $object->data = QuestionData::createFromArray($data['data']);
         $object->feedback = Feedback::createFromArray($data['feedback']);
         $object->play_configuration = QuestionPlayConfiguration::createFromArray($data['play_configuration']);

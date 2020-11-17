@@ -23,11 +23,9 @@ class SelectGapConfiguration extends ClozeGapConfiguration
      * @param array $items
      * @return SelectGapConfiguration
      */
-    public static function Create(?array $items = []) : SelectGapConfiguration
+    public function __construct(?array $items = [])
     {
-        $object = new SelectGapConfiguration();
-        $object->items = $items;
-        return $object;
+        $this->items = $items;
     }
 
     /**

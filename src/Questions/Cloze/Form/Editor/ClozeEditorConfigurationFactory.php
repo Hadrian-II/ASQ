@@ -83,7 +83,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             '<br /><input type="button"
                value="' . $this->language->txt('asq_parse_question') . '"
                class="js_parse_cloze_question btn btn-default" />' .
-               self::createTemplates()
+               $this->createTemplates()
         );
 
         if ($value !== null) {
@@ -120,13 +120,13 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $type = $this->getPostValue('form_input_' . $i);
 
             if ($type === ClozeGapConfiguration::TYPE_TEXT) {
-                $gap_configs[] = TextGapConfiguration::Create();
+                $gap_configs[] = new TextGapConfiguration();
                 $i += self::TEXT_GAP_FIELD_COUNT;
             } elseif ($type === ClozeGapConfiguration::TYPE_DROPDOWN) {
-                $gap_configs[] = SelectGapConfiguration::Create();
+                $gap_configs[] = new SelectGapConfiguration();
                 $i += self::SELECT_GAP_FIELD_COUNT;
             } elseif ($type === ClozeGapConfiguration::TYPE_NUMBER) {
-                $gap_configs[] = NumericGapConfiguration::Create();
+                $gap_configs[] = new NumericGapConfiguration();
                 $i += self::NUMBER_GAP_FIELD_COUNT;
             }
         }
@@ -327,7 +327,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return ClozeEditorConfiguration::create(
+        return new ClozeEditorConfiguration(
             $this->readString($postdata[self::VAR_CLOZE_TEXT]),
             $this->readGapConfigs($postdata)
         );
@@ -374,7 +374,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function readNumericGapConfiguration(array $postdata) : NumericGapConfiguration
     {
-        return NumericGapConfiguration::Create(
+        return new NumericGapConfiguration(
             $this->readFloat($postdata[self::VAR_GAP_VALUE]),
             $this->readFloat($postdata[self::VAR_GAP_UPPER]),
             $this->readFloat($postdata[self::VAR_GAP_LOWER]),
@@ -389,10 +389,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function readSelectGapConfiguration(array $postdata) : SelectGapConfiguration
     {
-        return SelectGapConfiguration::Create(
+        return new SelectGapConfiguration(
             array_map(
                 function ($raw_item) {
-                    return ClozeGapItem::create(
+                    return new ClozeGapItem(
                         $raw_item[ClozeGapItem::VAR_TEXT],
                         floatval($raw_item[ClozeGapItem::VAR_POINTS])
                     );
@@ -408,10 +408,10 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     private function readTextGapConfiguration(array $postdata) : TextGapConfiguration
     {
-        return TextGapConfiguration::Create(
+        return new TextGapConfiguration(
             array_map(
                 function ($raw_item) {
-                    return ClozeGapItem::create(
+                    return new ClozeGapItem(
                         $raw_item[ClozeGapItem::VAR_TEXT],
                         floatval($raw_item[ClozeGapItem::VAR_POINTS])
                     );
@@ -428,6 +428,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ClozeEditorConfiguration::create('', []);
+        return new ClozeEditorConfiguration('', []);
     }
 }

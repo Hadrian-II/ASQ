@@ -16,8 +16,5 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MultipleChoiceScoringConfiguration extends AbstractValueObject
 {
-    public static function create() : MultipleChoiceScoringConfiguration
-    {
-        return new MultipleChoiceScoringConfiguration();
-    }
+    public function __construct() {}
 }

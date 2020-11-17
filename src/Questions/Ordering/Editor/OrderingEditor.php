@@ -65,7 +65,7 @@ class OrderingEditor extends AbstractEditor
     {
         $this->display_ids = [];
 
-        foreach ($question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($question->getAnswerOptions() as $option) {
             $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText());
         }
     }
@@ -78,7 +78,7 @@ class OrderingEditor extends AbstractEditor
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
 
         if (empty($this->answer)) {
-            $items = $this->question->getAnswerOptions()->getOptions();
+            $items = $this->question->getAnswerOptions();
             shuffle($items);
         } else {
             $items = $this->orderItemsByAnswer();
@@ -125,7 +125,7 @@ class OrderingEditor extends AbstractEditor
      */
     private function orderItemsByAnswer() : array
     {
-        $answers = $this->question->getAnswerOptions()->getOptions();
+        $answers = $this->question->getAnswerOptions();
 
         $items = [];
 
@@ -156,7 +156,7 @@ class OrderingEditor extends AbstractEditor
      */
     public function isComplete() : bool
     {
-        $options = $this->question->getAnswerOptions()->getOptions();
+        $options = $this->question->getAnswerOptions();
 
         if (count($options) < 2) {
             return false;

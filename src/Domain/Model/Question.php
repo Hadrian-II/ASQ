@@ -233,23 +233,25 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     public function setAnswerOptions(?array $options, int $creator_id)
     {
         if (is_null($options) ||
-            count($options) !== count($this->answer_options)) {
+            (!is_null($this->answer_options) && count($options) !== count($this->answer_options))) {
             return;
         }
 
-        for ($i = 0; $i < count($options); $i += 1) {
-            if (!$options[$i]->equals($this->answer_options[$i]))
-            {
-                return;
+        if (!is_null($this->answer_options)) {
+            for ($i = 0; $i < count($options); $i += 1) {
+                if (!$options[$i]->equals($this->answer_options[$i]))
+                {
+                    return;
+                }
             }
         }
 
-        new QuestionAnswerOptionsSetEvent(
+        $this->ExecuteEvent(new QuestionAnswerOptionsSetEvent(
             $this->getAggregateId(),
             new ilDateTime(time(), IL_CAL_UNIX),
             $creator_id,
             $options
-        );
+        ));
     }
 
 

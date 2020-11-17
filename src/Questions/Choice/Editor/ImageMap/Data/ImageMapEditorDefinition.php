@@ -36,17 +36,16 @@ class ImageMapEditorDefinition extends AbstractValueObject
     protected $coordinates;
 
     /**
+     *
      * @param string $tooltip
      * @param int $type
      * @param string $coordinates
      */
-    public static function create(?string $tooltip, ?int $type, ?string $coordinates) : ImageMapEditorDefinition
+    public function __construct(?string $tooltip = null, ?int $type = null, ?string $coordinates = null)
     {
-        $object = new ImageMapEditorDefinition();
-        $object->tooltip = $tooltip;
-        $object->type = $type;
-        $object->coordinates = $coordinates;
-        return $object;
+        $this->tooltip = $tooltip;
+        $this->type = $type;
+        $this->coordinates = $coordinates;
     }
 
     /**

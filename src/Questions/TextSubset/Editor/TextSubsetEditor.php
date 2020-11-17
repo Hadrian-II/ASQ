@@ -77,7 +77,7 @@ class TextSubsetEditor extends AbstractEditor
     private function calculateSize() : int
     {
         $max = 1;
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             max($max, strlen($option->getScoringDefinition()->getText()));
         }
 

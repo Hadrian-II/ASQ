@@ -30,16 +30,13 @@ class ClozeGapItem extends AbstractValueObject
     protected $points;
 
     /**
-     * @param ?string $text
-     * @param ?float $points
-     * @return ClozeGapItem
+     * @param string $text
+     * @param float $points
      */
-    public static function create(?string $text, ?float $points) : ClozeGapItem
+    public function __constructe(?string $text = null, ?float $points = null)
     {
-        $item = new ClozeGapItem();
-        $item->text = $text;
-        $item->points = $points;
-        return $item;
+        $this->text = $text;
+        $this->points = $points;
     }
 
     /**

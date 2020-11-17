@@ -15,11 +15,5 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ClozeScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @return ClozeScoringConfiguration
-     */
-    public static function create() : ClozeScoringConfiguration
-    {
-        return new ClozeScoringConfiguration();
-    }
+    public function __constructe() {}
 }

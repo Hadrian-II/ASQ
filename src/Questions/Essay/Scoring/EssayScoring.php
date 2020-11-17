@@ -86,7 +86,7 @@ class EssayScoring extends AbstractScoring
 
         $this->answer_options = array_map(function ($option) {
             return new EssayScoringProcessedAnswerOption($option->getScoringDefinition(), $this->configuration->getMatchingMode() === TextScoring::TM_CASE_INSENSITIVE);
-        }, $this->question->getAnswerOptions()->getOptions());
+        }, $this->question->getAnswerOptions());
 
         $points = 0;
 
@@ -181,7 +181,7 @@ class EssayScoring extends AbstractScoring
                     function ($option) {
                         return $option->getScoringDefinition()->getPoints();
                     },
-                    $this->question->getAnswerOptions()->getOptions()
+                    $this->question->getAnswerOptions())
                 )
             );
         } else {
@@ -201,7 +201,7 @@ class EssayScoring extends AbstractScoring
 
         $text = implode(' ', array_map(function ($option) {
             return $option->getScoringDefinition()->getText();
-        }, $this->question->getAnswerOptions()->getOptions()));
+        }, $this->question->getAnswerOptions()));
 
         return EssayAnswer::create($text);
     }
@@ -216,7 +216,7 @@ class EssayScoring extends AbstractScoring
         }
 
         if ($this->configuration->getScoringMode() !== self::SCORING_MANUAL) {
-            foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+            foreach ($this->question->getAnswerOptions() as $option) {
                 /** @var EssayScoringDefinition $definition */
                 $definition = $option->getScoringDefinition();
 

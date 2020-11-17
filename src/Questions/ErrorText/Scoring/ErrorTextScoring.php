@@ -29,7 +29,7 @@ class ErrorTextScoring extends AbstractScoring
         $selected_words = $answer->getSelectedWordIndexes();
         $correct_words = [];
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ErrorTextScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
 
@@ -75,7 +75,7 @@ class ErrorTextScoring extends AbstractScoring
     {
         $max_score = 0.0;
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ErrorTextScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
             $max_score += $scoring_definition->getPoints();
@@ -92,7 +92,7 @@ class ErrorTextScoring extends AbstractScoring
     {
         $selected_word_indexes = [];
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ErrorTextScoringDefinition $scoring_definition */
             $scoring_definition = $option->getScoringDefinition();
 
@@ -116,11 +116,11 @@ class ErrorTextScoring extends AbstractScoring
             return false;
         }
 
-        if (count($this->question->getAnswerOptions()->getOptions()) < 1) {
+        if (count($this->question->getAnswerOptions()) < 1) {
             return false;
         }
 
-        foreach ($this->question->getAnswerOptions()->getOptions() as $option) {
+        foreach ($this->question->getAnswerOptions() as $option) {
             /** @var ErrorTextScoringDefinition $option_config */
             $option_config = $option->getScoringDefinition();
 

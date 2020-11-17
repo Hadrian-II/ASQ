@@ -45,22 +45,19 @@ class NumericGapConfiguration extends ClozeGapConfiguration
      * @param float $lower
      * @param float $points
      * @param int $field_length
-     * @return NumericGapConfiguration
      */
-    public static function Create(
+    public function __construct(
         ?float $value = null,
         ?float $upper = null,
         ?float $lower = null,
         ?float $points = null,
         ?int $field_length = null
-    ) : NumericGapConfiguration {
-        $object = new NumericGapConfiguration();
-        $object->value = $value;
-        $object->upper = $upper;
-        $object->lower = $lower;
-        $object->points = $points;
-        $object->field_length = $field_length;
-        return $object;
+    ) {
+        $this->value = $value;
+        $this->upper = $upper;
+        $this->lower = $lower;
+        $this->points = $points;
+        $this->field_length = $field_length;
     }
 
     /**

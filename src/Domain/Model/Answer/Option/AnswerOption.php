@@ -35,7 +35,7 @@ class AnswerOption extends AbstractValueObject
      * @param AbstractValueObject $scoring_definition
      */
     public function __construct(
-        string $id,
+        string $id = null,
         ?AbstractValueObject $display_definition = null,
         ?AbstractValueObject $scoring_definition = null
     ) {

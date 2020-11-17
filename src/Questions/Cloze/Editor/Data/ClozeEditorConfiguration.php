@@ -29,14 +29,11 @@ class ClozeEditorConfiguration extends AbstractValueObject
     /**
      * @param string $cloze_text
      * @param array $gaps
-     * @return ClozeEditorConfiguration
      */
-    public static function create(string $cloze_text, array $gaps) : ClozeEditorConfiguration
+    public function __construct(?string $cloze_text = null, ?array $gaps = null)
     {
-        $config = new ClozeEditorConfiguration();
-        $config->cloze_text = $cloze_text;
-        $config->gaps = $gaps;
-        return $config;
+        $this->cloze_text = $cloze_text;
+        $this->gaps = $gaps;
     }
 
     /**
