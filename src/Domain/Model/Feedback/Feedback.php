@@ -22,11 +22,11 @@ class Feedback extends AbstractValueObject
     const OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT = 3;
 
     /**
-     * @var string
+     * @var ?string
      */
     protected $answer_correct_feedback;
     /**
-     * @var string
+     * @var ?string
      */
     protected $answer_wrong_feedback;
     /**
@@ -39,23 +39,16 @@ class Feedback extends AbstractValueObject
      */
     protected $answer_option_feedbacks;
 
-    public static function create(
-        string $answer_correct_feedback,
-        string $answer_wrong_feedback,
-        ?int $answer_option_feedback_mode,
+    public function __construct(
+        ?string $answer_correct_feedback = null,
+        ?string $answer_wrong_feedback = null,
+        ?int $answer_option_feedback_mode = null,
         array $answer_option_feedbacks = []
     ) {
-        $obj = new Feedback();
-        $obj->answer_correct_feedback = $answer_correct_feedback;
-        $obj->answer_wrong_feedback = $answer_wrong_feedback;
-        $obj->answer_option_feedback_mode = $answer_option_feedback_mode;
-        $obj->answer_option_feedbacks = $answer_option_feedbacks;
-        return $obj;
-    }
-
-    public function __construct()
-    {
-        $this->answer_option_feedbacks = [];
+        $this->answer_correct_feedback = $answer_correct_feedback;
+        $this->answer_wrong_feedback = $answer_wrong_feedback;
+        $this->answer_option_feedback_mode = $answer_option_feedback_mode;
+        $this->answer_option_feedbacks = $answer_option_feedbacks;
     }
 
     /**
@@ -99,6 +92,10 @@ class Feedback extends AbstractValueObject
         return array_key_exists($option_id, $this->answer_option_feedbacks);
     }
 
+    /**
+     * @param string $option_id
+     * @return string
+     */
     public function getFeedbackForAnswerOption(string $option_id) : string
     {
         return $this->answer_option_feedbacks[$option_id];

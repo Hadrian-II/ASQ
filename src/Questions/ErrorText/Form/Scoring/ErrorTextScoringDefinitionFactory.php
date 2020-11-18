@@ -84,7 +84,7 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return ErrorTextScoringDefinition::create(
+        return new ErrorTextScoringDefinition(
             intval($values[self::VAR_WORD_INDEX]),
             intval($values[self::VAR_WORD_LENGTH]),
             $values[self::VAR_CORRECT_TEXT],
@@ -97,6 +97,6 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        ErrorTextScoringDefinition::create(null, null, null, null);
+        return new ErrorTextScoringDefinition();
     }
 }

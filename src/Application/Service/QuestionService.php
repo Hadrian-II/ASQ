@@ -197,7 +197,7 @@ class QuestionService extends ASQService
         string $editor_class,
         string $scoring_class
     ) : void {
-        $type = QuestionType::createNew($title_key, $factory_class, $editor_class, $scoring_class);
+        $type = new QuestionType($title_key, $factory_class, $editor_class, $scoring_class);
         $type->create();
     }
 

@@ -32,18 +32,18 @@ class NumericTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    NumericEditorConfiguration::create(),
-                    NumericScoringConfiguration::create(2, 2, 2)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new NumericEditorConfiguration(),
+                    new NumericScoringConfiguration(2, 2, 2)
                 ),
                 null
             ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    NumericEditorConfiguration::create(),
-                    NumericScoringConfiguration::create(3, 3, 4)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new NumericEditorConfiguration(),
+                    new NumericScoringConfiguration(3, 3, 4)
                 ),
                 null
             )
@@ -57,10 +57,10 @@ class NumericTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => NumericAnswer::create(2),
-            'answer 2' => NumericAnswer::create(3),
-            'answer 3' => NumericAnswer::create(4),
-            'answer 4' => NumericAnswer::create(5)
+            'answer 1' => new NumericAnswer(2),
+            'answer 2' => new NumericAnswer(3),
+            'answer 3' => new NumericAnswer(4),
+            'answer 4' => new NumericAnswer(5)
         ];
     }
 
@@ -104,7 +104,7 @@ class NumericTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'numeric',
             NumericFormFactory::class,
             NumericEditor::class,

@@ -46,7 +46,7 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return OrderingScoringConfiguration::create($this->readFloat($postdata[self::VAR_POINTS]));
+        return new OrderingScoringConfiguration($this->readFloat($postdata[self::VAR_POINTS]));
     }
 
     /**
@@ -54,6 +54,6 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return OrderingScoringConfiguration::create();
+        return new OrderingScoringConfiguration();
     }
 }

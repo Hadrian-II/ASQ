@@ -6,7 +6,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
@@ -37,67 +36,67 @@ class MultipleChoiceTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(false, 1),
-                    MultipleChoiceScoringConfiguration::create()
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MultipleChoiceEditorConfiguration(false, 1),
+                    new MultipleChoiceScoringConfiguration()
                     ),
-                    AnswerOptions::create([
-                        AnswerOption::create('1',
-                            ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
-                            MultipleChoiceScoringDefinition::create(1, 0)),
-                        AnswerOption::create('2',
-                            ImageAndTextDisplayDefinition::create('2'),
-                            MultipleChoiceScoringDefinition::create(2, 0)),
-                        AnswerOption::create('3',
-                            ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
-                            MultipleChoiceScoringDefinition::create(3, 0)),
-                        AnswerOption::create('4',
-                            ImageAndTextDisplayDefinition::create('4'),
-                            MultipleChoiceScoringDefinition::create(4, 0))
-                    ])
+                    [
+                        new AnswerOption('1',
+                            new ImageAndTextDisplayDefinition('1', 'blah.jpg'),
+                            new MultipleChoiceScoringDefinition(1, 0)),
+                        new AnswerOption('2',
+                            new ImageAndTextDisplayDefinition('2'),
+                            new MultipleChoiceScoringDefinition(2, 0)),
+                        new AnswerOption('3',
+                            new ImageAndTextDisplayDefinition('3', 'blah.jpg'),
+                            new MultipleChoiceScoringDefinition(3, 0)),
+                        new AnswerOption('4',
+                            new ImageAndTextDisplayDefinition('4'),
+                            new MultipleChoiceScoringDefinition(4, 0))
+                    ]
                 ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(true, 2, 100),
-                    MultipleChoiceScoringConfiguration::create()
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MultipleChoiceEditorConfiguration(true, 2, 100),
+                    new MultipleChoiceScoringConfiguration()
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
-                        MultipleChoiceScoringDefinition::create(1, 0)),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('2'),
-                        MultipleChoiceScoringDefinition::create(0, 0)),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
-                        MultipleChoiceScoringDefinition::create(1, 0)),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('4'),
-                        MultipleChoiceScoringDefinition::create(0, 1))
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('1', 'blah.jpg'),
+                        new MultipleChoiceScoringDefinition(1, 0)),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('2'),
+                        new MultipleChoiceScoringDefinition(0, 0)),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('3', 'blah.jpg'),
+                        new MultipleChoiceScoringDefinition(1, 0)),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('4'),
+                        new MultipleChoiceScoringDefinition(0, 1))
+                ]
                 ),
             'question 3' => $this->createQuestion(
-                QuestionData::create('Question 3', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MultipleChoiceEditorConfiguration::create(false, 3, 100),
-                    MultipleChoiceScoringConfiguration::create()
+                new QuestionData('Question 3', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MultipleChoiceEditorConfiguration(false, 3, 100),
+                    new MultipleChoiceScoringConfiguration()
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('1', 'blah.jpg'),
-                        MultipleChoiceScoringDefinition::create(2, -2)),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('2'),
-                        MultipleChoiceScoringDefinition::create(1, 0)),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('3', 'blah.jpg'),
-                        MultipleChoiceScoringDefinition::create(1, 0)),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('4'),
-                        MultipleChoiceScoringDefinition::create(-1, 1))
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('1', 'blah.jpg'),
+                        new MultipleChoiceScoringDefinition(2, -2)),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('2'),
+                        new MultipleChoiceScoringDefinition(1, 0)),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('3', 'blah.jpg'),
+                        new MultipleChoiceScoringDefinition(1, 0)),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('4'),
+                        new MultipleChoiceScoringDefinition(-1, 1))
+                ]
                 )
         ];
     }
@@ -109,12 +108,12 @@ class MultipleChoiceTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => MultipleChoiceAnswer::create([]),
-            'answer 2' => MultipleChoiceAnswer::create(['1']),
-            'answer 3' => MultipleChoiceAnswer::create(['4']),
-            'answer 4' => MultipleChoiceAnswer::create(['1', '2']),
-            'answer 5' => MultipleChoiceAnswer::create(['1', '3']),
-            'answer 6' => MultipleChoiceAnswer::create(['1', '2', '3'])
+            'answer 1' => new MultipleChoiceAnswer([]),
+            'answer 2' => new MultipleChoiceAnswer(['1']),
+            'answer 3' => new MultipleChoiceAnswer(['4']),
+            'answer 4' => new MultipleChoiceAnswer(['1', '2']),
+            'answer 5' => new MultipleChoiceAnswer(['1', '3']),
+            'answer 6' => new MultipleChoiceAnswer(['1', '2', '3'])
         ];
     }
 
@@ -171,7 +170,7 @@ class MultipleChoiceTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'multiple_choice',
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,

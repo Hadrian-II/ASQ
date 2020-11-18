@@ -58,7 +58,7 @@ class FormulaEditor extends AbstractEditor
             $index += 1;
         }
 
-        return FormulaAnswer::create($answers);
+        return new FormulaAnswer($answers);
     }
 
     /**

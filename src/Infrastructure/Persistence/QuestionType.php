@@ -70,20 +70,17 @@ class QuestionType extends ActiveRecord
      * @param string $factory_class
      * @param string $editor_class
      * @param string $scoring_class
-     * @return QuestionType
      */
-    public static function createNew(
-        string $title_key,
-        string $factory_class,
-        string $editor_class,
-        string $scoring_class
-    ) : QuestionType {
-        $object = new QuestionType();
-        $object->title_key = $title_key;
-        $object->factory_class = $factory_class;
-        $object->editor_class = $editor_class;
-        $object->scoring_class = $scoring_class;
-        return $object;
+    public function __construct(
+        string $title_key = '',
+        string $factory_class = '',
+        string $editor_class = '',
+        string $scoring_class = ''
+    ) {
+        $this->title_key = $title_key;
+        $this->factory_class = $factory_class;
+        $this->editor_class = $editor_class;
+        $this->scoring_class = $scoring_class;
     }
 
     /**

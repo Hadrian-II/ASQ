@@ -23,13 +23,10 @@ class FormulaAnswer extends AbstractValueObject
 
     /**
      * @param array $values
-     * @return FormulaAnswer
      */
-    public static function create(?array $values = null) : FormulaAnswer
+    public function __construct(?array $values = null)
     {
-        $object = new FormulaAnswer();
-        $object->values = $values;
-        return $object;
+        $this->values = $values;
     }
 
     /**

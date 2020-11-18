@@ -21,13 +21,10 @@ class NumericAnswer extends AbstractValueObject
 
     /**
      * @param float $value
-     * @return NumericAnswer
      */
-    public static function create(?float $value = null) : NumericAnswer
+    public function __construct(?float $value = null)
     {
-        $object = new NumericAnswer();
-        $object->value = $value;
-        return $object;
+        $this->value = $value;
     }
 
     /**

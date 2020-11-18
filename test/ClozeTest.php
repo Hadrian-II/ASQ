@@ -37,40 +37,40 @@ class ClozeTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    ClozeEditorConfiguration::create('lorem {1} ipsum {2} dolor {3} sit', [
-                        NumericGapConfiguration::Create(2, 3, 1, 2, 77),
-                        SelectGapConfiguration::Create([
-                            ClozeGapItem::create('asdf', 1),
-                            ClozeGapItem::create('sdfg', 2),
-                            ClozeGapItem::create('yxcv', 3)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new ClozeEditorConfiguration('lorem {1} ipsum {2} dolor {3} sit', [
+                        new NumericGapConfiguration(2, 3, 1, 2, 77),
+                        new SelectGapConfiguration([
+                            new ClozeGapItem('asdf', 1),
+                            new ClozeGapItem('sdfg', 2),
+                            new ClozeGapItem('yxcv', 3)
                         ]),
-                        TextGapConfiguration::Create([
-                            ClozeGapItem::create('qqqq', 1),
-                            ClozeGapItem::create('wwww', 2),
-                            ClozeGapItem::create('eeee', 3)
+                        new TextGapConfiguration([
+                            new ClozeGapItem('qqqq', 1),
+                            new ClozeGapItem('wwww', 2),
+                            new ClozeGapItem('eeee', 3)
                         ], 88, TextScoring::TM_CASE_INSENSITIVE)
                     ]),
-                    ClozeScoringConfiguration::create()
+                    new ClozeScoringConfiguration()
                     ),
                 null
                 ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    ClozeEditorConfiguration::create('lorem {1} ipsum {2} dolor {3} sit', [
-                        NumericGapConfiguration::Create(3, 4, 2, 1, 66),
-                        SelectGapConfiguration::Create([
-                            ClozeGapItem::create('asdf', 2),
-                            ClozeGapItem::create('sdfg', 1)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new ClozeEditorConfiguration('lorem {1} ipsum {2} dolor {3} sit', [
+                        new NumericGapConfiguration(3, 4, 2, 1, 66),
+                        new SelectGapConfiguration([
+                            new ClozeGapItem('asdf', 2),
+                            new ClozeGapItem('sdfg', 1)
                         ]),
-                        TextGapConfiguration::Create([
-                            ClozeGapItem::create('qqqq', 2),
-                            ClozeGapItem::create('wwww', 1)
+                        new TextGapConfiguration([
+                            new ClozeGapItem('qqqq', 2),
+                            new ClozeGapItem('wwww', 1)
                         ], 300, TextScoring::TM_CASE_SENSITIVE)
                     ]),
-                    ClozeScoringConfiguration::create()
+                    new ClozeScoringConfiguration()
                     ),
                 null
                 ),
@@ -84,11 +84,11 @@ class ClozeTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => ClozeAnswer::create(['1' => '2', '2' => 'yxcv', '3' => 'eeee']),
-            'answer 2' => ClozeAnswer::create(['1' => '3', '2' => 'asdf', '3' => 'qqqq']),
-            'answer 3' => ClozeAnswer::create(['1' => '4', '2' => 'sdfg', '3' => 'Wwww']),
-            'answer 4' => ClozeAnswer::create(['1' => '1', '2' => 'asdf', '3' => 'qqqq']),
-            'answer 5' => ClozeAnswer::create(),
+            'answer 1' => new ClozeAnswer(['1' => '2', '2' => 'yxcv', '3' => 'eeee']),
+            'answer 2' => new ClozeAnswer(['1' => '3', '2' => 'asdf', '3' => 'qqqq']),
+            'answer 3' => new ClozeAnswer(['1' => '4', '2' => 'sdfg', '3' => 'Wwww']),
+            'answer 4' => new ClozeAnswer(['1' => '1', '2' => 'asdf', '3' => 'qqqq']),
+            'answer 5' => new ClozeAnswer(),
         ];
     }
 
@@ -134,7 +134,7 @@ class ClozeTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'cloze',
             ClozeFormFactory::class,
             ClozeEditor::class,

@@ -118,9 +118,9 @@ class ErrorTextEditor extends AbstractEditor
                 return intval($answer);
             }, $answers);
 
-            return ErrorTextAnswer::create($answers);
+            return new ErrorTextAnswer($answers);
         } else {
-            return ErrorTextAnswer::create();
+            return new ErrorTextAnswer();
         }
     }
 

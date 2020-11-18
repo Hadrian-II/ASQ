@@ -21,15 +21,11 @@ class TextSubsetEditorConfiguration extends AbstractValueObject
     protected $number_of_requested_answers;
 
     /**
-     * @param int $number_of_requested_answers
-     *
-     * @return TextSubsetEditorConfiguration
+     * @param ?int $number_of_requested_answers
      */
-    public static function create(?int $number_of_requested_answers = null)
+    public function __construct(?int $number_of_requested_answers = null)
     {
-        $object = new TextSubsetEditorConfiguration();
-        $object->number_of_requested_answers = $number_of_requested_answers;
-        return $object;
+        $this->number_of_requested_answers = $number_of_requested_answers;
     }
 
     /**

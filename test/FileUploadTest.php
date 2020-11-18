@@ -33,18 +33,18 @@ class FileUploadTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    FileUploadEditorConfiguration::create(),
-                    FileUploadScoringConfiguration::create(2, true)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new FileUploadEditorConfiguration(),
+                    new FileUploadScoringConfiguration(2, true)
                     ),
                 null
             ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    FileUploadEditorConfiguration::create(1000000, "png,jpg,funnyfile"),
-                    FileUploadScoringConfiguration::create(1, false)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new FileUploadEditorConfiguration(1000000, "png,jpg,funnyfile"),
+                    new FileUploadScoringConfiguration(1, false)
                     ),
                 null
             )
@@ -58,8 +58,8 @@ class FileUploadTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => FileUploadAnswer::create(),
-            'answer 2' => FileUploadAnswer::create([ 'file1' => 'blah.png', 'file2' => 'blubber.png'])
+            'answer 1' => new FileUploadAnswer(),
+            'answer 2' => new FileUploadAnswer([ 'file1' => 'blah.png', 'file2' => 'blubber.png'])
         ];
     }
 
@@ -99,7 +99,7 @@ class FileUploadTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'fileupload',
             FileUploadFormFactory::class,
             FileUploadEditor::class,

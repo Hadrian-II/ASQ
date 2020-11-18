@@ -5,7 +5,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Formula\FormulaAnswer;
@@ -37,58 +36,71 @@ class FormulaTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    FormulaEditorConfiguration::create(),
-                    FormulaScoringConfiguration::create(
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new FormulaEditorConfiguration(),
+                    new FormulaScoringConfiguration(
                         '$r1 = ($v1 + $v2) / $v3',
                         'm, cm',
                         2,
                         10,
                         FormulaScoringConfiguration::TYPE_ALL,
                         [
-                            FormulaScoringVariable::create(2, 10, 'm', 1),
-                            FormulaScoringVariable::create(2, 8, 'm', 2),
-                            FormulaScoringVariable::create(2, 5, 'm', 1)
+                            new FormulaScoringVariable(2, 10, 'm', 1),
+                            new FormulaScoringVariable(2, 8, 'm', 2),
+                            new FormulaScoringVariable(2, 5, 'm', 1)
                         ])
                     ),
-                AnswerOptions::create([AnswerOption::create('1', EmptyDefinition::create(), FormulaScoringDefinition::create('($v1 + $v2) / $v3', 'cm', 2))])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new FormulaScoringDefinition('($v1 + $v2) / $v3', 'cm', 2))
+                ]
                 ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    FormulaEditorConfiguration::create(),
-                    FormulaScoringConfiguration::create(
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new FormulaEditorConfiguration(),
+                    new FormulaScoringConfiguration(
                         '$r1 = ($v1 + $v2) / $v3',
                         'm, cm',
                         2,
                         10,
                         FormulaScoringConfiguration::TYPE_DECIMAL,
                         [
-                            FormulaScoringVariable::create(2, 10, 'm', 1),
-                            FormulaScoringVariable::create(2, 8, 'm', 2),
-                            FormulaScoringVariable::create(2, 5, 'm', 1)
+                            new FormulaScoringVariable(2, 10, 'm', 1),
+                            new FormulaScoringVariable(2, 8, 'm', 2),
+                            new FormulaScoringVariable(2, 5, 'm', 1)
                         ])
                     ),
-                AnswerOptions::create([AnswerOption::create('1', EmptyDefinition::create(), FormulaScoringDefinition::create('($v1 + $v2) / $v3', 'cm', 2))])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new FormulaScoringDefinition('($v1 + $v2) / $v3', 'cm', 2))
+
+                ]
                 ),
             'question 3' => $this->createQuestion(
-                QuestionData::create('Question 3', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    FormulaEditorConfiguration::create(),
-                    FormulaScoringConfiguration::create(
+                new QuestionData('Question 3', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new FormulaEditorConfiguration(),
+                    new FormulaScoringConfiguration(
                         '$r1 = ($v1 + $v2) / $v3',
                         'm, cm',
                         2,
                         10,
                         FormulaScoringConfiguration::TYPE_COPRIME_FRACTION,
                         [
-                            FormulaScoringVariable::create(2, 10, 'm', 1),
-                            FormulaScoringVariable::create(2, 8, 'm', 2),
-                            FormulaScoringVariable::create(2, 5, 'm', 1)
+                            new FormulaScoringVariable(2, 10, 'm', 1),
+                            new FormulaScoringVariable(2, 8, 'm', 2),
+                            new FormulaScoringVariable(2, 5, 'm', 1)
                         ])
                     ),
-                AnswerOptions::create([AnswerOption::create('1', EmptyDefinition::create(), FormulaScoringDefinition::create('($v1 + $v2) / $v3', 'cm', 2))])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new FormulaScoringDefinition('($v1 + $v2) / $v3', 'cm', 2))
+                ]
                 )
         ];
     }
@@ -100,10 +112,10 @@ class FormulaTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => FormulaAnswer::create(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '2.5', '$r1fe_unit' => 'cm']),
-            'answer 2' => FormulaAnswer::create(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '5 / 2', '$r1fe_unit' => 'cm']),
-            'answer 3' => FormulaAnswer::create(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '10 / 4', '$r1fe_unit' => 'cm']),
-            'answer 4' => FormulaAnswer::create()
+            'answer 1' => new FormulaAnswer(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '2.5', '$r1fe_unit' => 'cm']),
+            'answer 2' => new FormulaAnswer(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '5 / 2', '$r1fe_unit' => 'cm']),
+            'answer 3' => new FormulaAnswer(['$v1' => '4', '$v2' => '6', '$v3' => '4', '$r1' => '10 / 4', '$r1fe_unit' => 'cm']),
+            'answer 4' => new FormulaAnswer()
         ];
     }
 
@@ -154,7 +166,7 @@ class FormulaTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'formula',
             FormulaFormFactory::class,
             FormulaEditor::class,

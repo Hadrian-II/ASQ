@@ -22,14 +22,11 @@ class TextSubsetScoringConfiguration extends AbstractValueObject
     protected $text_matching;
 
     /**
-     * @param int $text_matching
-     * @return TextSubsetScoringConfiguration
+     * @param ?int $text_matching
      */
-    public static function create(?int $text_matching = null) : TextSubsetScoringConfiguration
+    public function __construct(?int $text_matching = null)
     {
-        $object = new TextSubsetScoringConfiguration();
-        $object->text_matching = $text_matching;
-        return $object;
+        $this->text_matching = $text_matching;
     }
 
     /**

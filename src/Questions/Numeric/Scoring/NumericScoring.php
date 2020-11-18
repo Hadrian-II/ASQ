@@ -59,7 +59,7 @@ class NumericScoring extends AbstractScoring
         /** @var NumericScoringConfiguration $conf */
         $conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
 
-        return NumericAnswer::create(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
+        return new NumericAnswer(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
     }
 
     /**

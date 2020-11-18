@@ -33,7 +33,7 @@ class FormulaEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return FormulaEditorConfiguration::create();
+        return new FormulaEditorConfiguration();
     }
 
     /**
@@ -41,6 +41,6 @@ class FormulaEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return FormulaEditorConfiguration::create();
+        return new FormulaEditorConfiguration();
     }
 }

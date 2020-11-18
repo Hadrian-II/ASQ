@@ -188,9 +188,9 @@ class MultipleChoiceEditor extends AbstractEditor
                     $result[] = $this->getPostValue($poststring);
                 }
             }
-            $this->answer = MultipleChoiceAnswer::create($result);
+            $this->answer = new MultipleChoiceAnswer($result);
         } else {
-            $this->answer = MultipleChoiceAnswer::create([
+            $this->answer = new MultipleChoiceAnswer([
                 $this->getPostValue($this->getPostName())
             ]);
         }

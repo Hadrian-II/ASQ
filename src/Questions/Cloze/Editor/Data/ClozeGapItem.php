@@ -33,7 +33,7 @@ class ClozeGapItem extends AbstractValueObject
      * @param string $text
      * @param float $points
      */
-    public function __constructe(?string $text = null, ?float $points = null)
+    public function __construct(?string $text = null, ?float $points = null)
     {
         $this->text = $text;
         $this->points = $points;

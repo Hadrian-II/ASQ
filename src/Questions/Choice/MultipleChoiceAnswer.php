@@ -21,13 +21,17 @@ class MultipleChoiceAnswer extends AbstractValueObject
      */
     protected $selected_ids;
 
-    public static function create(array $selected_ids) : MultipleChoiceAnswer
+    /**
+     * @param array $selected_ids
+     */
+    public function __construct(array $selected_ids)
     {
-        $object = new MultipleChoiceAnswer();
-        $object->selected_ids = $selected_ids;
-        return $object;
+        $this->selected_ids = $selected_ids;
     }
 
+    /**
+     * @return array
+     */
     public function getSelectedIds() : array
     {
         return $this->selected_ids;

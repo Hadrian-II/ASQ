@@ -38,20 +38,17 @@ class ErrorTextScoringDefinition extends AbstractValueObject
      * @param int $wrong_word_length
      * @param string $correct_text
      * @param float $points
-     * @return ErrorTextScoringDefinition
      */
-    public static function create(
-        ?int $wrong_word_index,
-        ?int $wrong_word_length,
-        ?string $correct_text,
-        ?float $points
-    ) : ErrorTextScoringDefinition {
-        $object = new ErrorTextScoringDefinition();
-        $object->wrong_word_index = $wrong_word_index;
-        $object->wrong_word_length = $wrong_word_length;
-        $object->correct_text = $correct_text;
-        $object->points = $points;
-        return $object;
+    public function __construct(
+        ?int $wrong_word_index = null,
+        ?int $wrong_word_length = null,
+        ?string $correct_text = null,
+        ?float $points = null
+    ) {
+        $this->wrong_word_index = $wrong_word_index;
+        $this->wrong_word_length = $wrong_word_length;
+        $this->correct_text = $correct_text;
+        $this->points = $points;
     }
 
     /**

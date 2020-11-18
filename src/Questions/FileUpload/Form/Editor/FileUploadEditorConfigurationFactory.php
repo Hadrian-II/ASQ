@@ -57,7 +57,7 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return FileUploadEditorConfiguration::create(
+        return new FileUploadEditorConfiguration(
             $this->readInt($postdata[self::VAR_MAX_UPLOAD]),
             str_replace(' ', '', $this->readString($postdata[self::VAR_ALLOWED_EXTENSIONS]))
         );
@@ -68,6 +68,6 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return FileUploadEditorConfiguration::create();
+        return new FileUploadEditorConfiguration();
     }
 }

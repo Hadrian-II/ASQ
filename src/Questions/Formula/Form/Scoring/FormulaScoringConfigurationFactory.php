@@ -151,7 +151,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
         $variables = [];
 
         foreach ($postdata[self::VAR_VARIABLES] as $raw_variable) {
-            $variables[] = FormulaScoringVariable::create(
+            $variables[] = new FormulaScoringVariable(
                 floatval($raw_variable[FormulaScoringVariable::VAR_MIN]),
                 floatval($raw_variable[FormulaScoringVariable::VAR_MAX]),
                 $raw_variable[FormulaScoringVariable::VAR_UNIT],
@@ -161,7 +161,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             );
         }
 
-        return FormulaScoringConfiguration::create(
+        return new FormulaScoringConfiguration(
             $postdata[self::VAR_FORMULA],
             $postdata[self::VAR_UNITS],
             $this->readInt($postdata[self::VAR_PRECISION]),
@@ -176,6 +176,6 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return FormulaScoringConfiguration::create();
+        return new FormulaScoringConfiguration();
     }
 }

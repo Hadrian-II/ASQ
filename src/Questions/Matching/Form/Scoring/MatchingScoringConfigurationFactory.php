@@ -45,7 +45,7 @@ class MatchingScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return MatchingScoringConfiguration::create($this->readFloat($postdata[self::VAR_WRONG_DEDUCTION]));
+        return new MatchingScoringConfiguration($this->readFloat($postdata[self::VAR_WRONG_DEDUCTION]));
     }
 
     /**
@@ -53,6 +53,6 @@ class MatchingScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return MatchingScoringConfiguration::create();
+        return new MatchingScoringConfiguration();
     }
 }

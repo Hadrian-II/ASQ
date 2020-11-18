@@ -91,7 +91,7 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
             $points = $this->readFloat($postdata[self::VAR_POINTS]);
         }
 
-        return EssayScoringConfiguration::create(
+        return new EssayScoringConfiguration(
             $this->readInt($postdata[self::VAR_TEXT_MATCHING]),
             $scoring_mode,
             $points
@@ -103,6 +103,6 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return EssayScoringConfiguration::create(null, null, null, null);
+        return new EssayScoringConfiguration();
     }
 }

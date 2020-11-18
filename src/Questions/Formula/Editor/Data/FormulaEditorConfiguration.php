@@ -16,8 +16,5 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class FormulaEditorConfiguration extends AbstractValueObject
 {
-    public static function create() : FormulaEditorConfiguration
-    {
-        return new FormulaEditorConfiguration();
-    }
+    public  function __construct() {}
 }

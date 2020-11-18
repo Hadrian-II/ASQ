@@ -78,7 +78,7 @@ class KprimChoiceEditor extends AbstractEditor
             }
         }
 
-        return KprimChoiceAnswer::create($answers);
+        return new KprimChoiceAnswer($answers);
     }
 
     /**

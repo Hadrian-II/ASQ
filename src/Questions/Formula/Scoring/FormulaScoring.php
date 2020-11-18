@@ -140,7 +140,7 @@ class FormulaScoring extends AbstractScoring
             $this->generateResult($values, $option->getScoringDefinition(), $option->getOptionId());
         }
 
-        return FormulaAnswer::create($values);
+        return new FormulaAnswer($values);
     }
 
     /**

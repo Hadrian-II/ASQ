@@ -35,15 +35,15 @@ class MatchingMapping extends AbstractValueObject
      * @param string $definition_id
      * @param string $term_id
      * @param float $points
-     * @return MatchingMapping
      */
-    public static function create(?string $definition_id, ?string $term_id, ?float $points) : MatchingMapping
-    {
-        $object = new MatchingMapping();
-        $object->definition_id = $definition_id;
-        $object->term_id = $term_id;
-        $object->points = $points;
-        return $object;
+    public function __construct(
+        ?string $definition_id = null,
+        ?string $term_id = null,
+        ?float $points = null
+    ) {
+        $this->definition_id = $definition_id;
+        $this->term_id = $term_id;
+        $this->points = $points;
     }
 
     /**

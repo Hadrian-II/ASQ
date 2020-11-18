@@ -55,7 +55,7 @@ class ClozeEditor extends AbstractEditor
             $answers[$i] = $this->getPostValue($this->getPostVariable($i));
         }
 
-        $this->answer = ClozeAnswer::create($answers);
+        $this->answer = new ClozeAnswer($answers);
 
         return $this->answer;
     }

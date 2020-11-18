@@ -35,88 +35,88 @@ class MatchingTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MatchingEditorConfiguration::create(
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MatchingEditorConfiguration(
                         MatchingEditorConfiguration::SHUFFLE_NONE,
                         100,
                         MatchingEditorConfiguration::MATCHING_ONE_TO_ONE,
                         [
-                            MatchingItem::create('1', 'a', 'image.jpg'),
-                            MatchingItem::create('2', 'b', 'image.jpg'),
-                            MatchingItem::create('3', 'c', 'image.jpg'),
-                            MatchingItem::create('4', 'd', 'image.jpg')
+                            new MatchingItem('1', 'a', 'image.jpg'),
+                            new MatchingItem('2', 'b', 'image.jpg'),
+                            new MatchingItem('3', 'c', 'image.jpg'),
+                            new MatchingItem('4', 'd', 'image.jpg')
                         ],
                         [
-                            MatchingItem::create('1', '1', 'image.jpg'),
-                            MatchingItem::create('2', '2', 'image.jpg'),
-                            MatchingItem::create('3', '3', 'image.jpg'),
-                            MatchingItem::create('4', '4', 'image.jpg')
+                            new MatchingItem('1', '1', 'image.jpg'),
+                            new MatchingItem('2', '2', 'image.jpg'),
+                            new MatchingItem('3', '3', 'image.jpg'),
+                            new MatchingItem('4', '4', 'image.jpg')
                         ],
                         [
-                            MatchingMapping::create('1', '1', 2),
-                            MatchingMapping::create('2', '2', 2),
-                            MatchingMapping::create('3', '3', 2)
+                            new MatchingMapping('1', '1', 2),
+                            new MatchingMapping('2', '2', 2),
+                            new MatchingMapping('3', '3', 2)
                         ]),
-                    MatchingScoringConfiguration::create(1)
+                    new MatchingScoringConfiguration(1)
                     ),
                 null),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MatchingEditorConfiguration::create(
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MatchingEditorConfiguration(
                         MatchingEditorConfiguration::SHUFFLE_DEFINITIONS,
                         100,
                         MatchingEditorConfiguration::MATCHING_MANY_TO_ONE,
                         [
-                            MatchingItem::create('1', 'a', 'image.jpg'),
-                            MatchingItem::create('2', 'b', 'image.jpg'),
-                            MatchingItem::create('3', 'c', 'image.jpg'),
-                            MatchingItem::create('4', 'd', 'image.jpg')
+                            new MatchingItem('1', 'a', 'image.jpg'),
+                            new MatchingItem('2', 'b', 'image.jpg'),
+                            new MatchingItem('3', 'c', 'image.jpg'),
+                            new MatchingItem('4', 'd', 'image.jpg')
                         ],
                         [
-                            MatchingItem::create('1', '1', 'image.jpg'),
-                            MatchingItem::create('2', '2', 'image.jpg'),
-                            MatchingItem::create('3', '3', 'image.jpg'),
-                            MatchingItem::create('4', '4', 'image.jpg')
+                            new MatchingItem('1', '1', 'image.jpg'),
+                            new MatchingItem('2', '2', 'image.jpg'),
+                            new MatchingItem('3', '3', 'image.jpg'),
+                            new MatchingItem('4', '4', 'image.jpg')
                         ],
                         [
-                            MatchingMapping::create('1', '1', 3),
-                            MatchingMapping::create('1', '2', 3),
-                            MatchingMapping::create('3', '3', 3),
-                            MatchingMapping::create('3', '4', 3)
+                            new MatchingMapping('1', '1', 3),
+                            new MatchingMapping('1', '2', 3),
+                            new MatchingMapping('3', '3', 3),
+                            new MatchingMapping('3', '4', 3)
                         ]),
-                    MatchingScoringConfiguration::create(2)
+                    new MatchingScoringConfiguration(2)
                     ),
                 null),
             'question 3' => $this->createQuestion(
-                QuestionData::create('Question 3', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    MatchingEditorConfiguration::create(
+                new QuestionData('Question 3', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new MatchingEditorConfiguration(
                         MatchingEditorConfiguration::SHUFFLE_BOTH,
                         125,
                         MatchingEditorConfiguration::MATCHING_MANY_TO_MANY,
                         [
-                            MatchingItem::create('1', 'a', 'image.jpg'),
-                            MatchingItem::create('2', 'b', 'image.jpg'),
-                            MatchingItem::create('3', 'c', 'image.jpg'),
-                            MatchingItem::create('4', 'd', 'image.jpg')
+                            new MatchingItem('1', 'a', 'image.jpg'),
+                            new MatchingItem('2', 'b', 'image.jpg'),
+                            new MatchingItem('3', 'c', 'image.jpg'),
+                            new MatchingItem('4', 'd', 'image.jpg')
                         ],
                         [
-                            MatchingItem::create('1', '1', 'image.jpg'),
-                            MatchingItem::create('2', '2', 'image.jpg'),
-                            MatchingItem::create('3', '3', 'image.jpg'),
-                            MatchingItem::create('4', '4', 'image.jpg')
+                            new MatchingItem('1', '1', 'image.jpg'),
+                            new MatchingItem('2', '2', 'image.jpg'),
+                            new MatchingItem('3', '3', 'image.jpg'),
+                            new MatchingItem('4', '4', 'image.jpg')
                         ],
                         [
-                            MatchingMapping::create('1', '1', 5),
-                            MatchingMapping::create('1', '2', 5),
-                            MatchingMapping::create('2', '1', 5),
-                            MatchingMapping::create('2', '2', 5),
-                            MatchingMapping::create('2', '3', 5),
-                            MatchingMapping::create('2', '4', 5)
+                            new MatchingMapping('1', '1', 5),
+                            new MatchingMapping('1', '2', 5),
+                            new MatchingMapping('2', '1', 5),
+                            new MatchingMapping('2', '2', 5),
+                            new MatchingMapping('2', '3', 5),
+                            new MatchingMapping('2', '4', 5)
                         ]),
-                    MatchingScoringConfiguration::create(3)
+                    new MatchingScoringConfiguration(3)
                     ),
                 null)
         ];
@@ -129,12 +129,12 @@ class MatchingTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => MatchingAnswer::create(),
-            'answer 2' => MatchingAnswer::create(['1-1', '2-2', '3-3']),
-            'answer 3' => MatchingAnswer::create(['1-1', '1-2', '3-3', '3-4']),
-            'answer 4' => MatchingAnswer::create(['1-1', '1-2', '2-1', '2-2', '2-3', '2-4']),
-            'answer 5' => MatchingAnswer::create(['1-1', '3-4', '2-3']),
-            'answer 6' => MatchingAnswer::create(['1-1', '1-1'])
+            'answer 1' => new MatchingAnswer(),
+            'answer 2' => new MatchingAnswer(['1-1', '2-2', '3-3']),
+            'answer 3' => new MatchingAnswer(['1-1', '1-2', '3-3', '3-4']),
+            'answer 4' => new MatchingAnswer(['1-1', '1-2', '2-1', '2-2', '2-3', '2-4']),
+            'answer 5' => new MatchingAnswer(['1-1', '3-4', '2-3']),
+            'answer 6' => new MatchingAnswer(['1-1', '1-1'])
         ];
     }
 
@@ -191,7 +191,7 @@ class MatchingTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'matching',
             MatchingFormFactory::class,
             MatchingEditor::class,

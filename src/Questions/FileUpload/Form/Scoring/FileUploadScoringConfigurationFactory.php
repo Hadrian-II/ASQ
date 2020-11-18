@@ -57,7 +57,7 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return FileUploadScoringConfiguration::create(
+        return new FileUploadScoringConfiguration(
             $this->readFloat($postdata[self::VAR_POINTS]),
             $postdata[self::VAR_COMPLETED_ON_UPLOAD]
         );
@@ -68,6 +68,6 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return FileUploadScoringConfiguration::create();
+        return new FileUploadScoringConfiguration();
     }
 }

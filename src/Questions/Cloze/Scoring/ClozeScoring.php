@@ -157,7 +157,7 @@ class ClozeScoring extends AbstractScoring
             $i += 1;
         }
 
-        return ClozeAnswer::create($answers);
+        return new ClozeAnswer($answers);
     }
 
     /**

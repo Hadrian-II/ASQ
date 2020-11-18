@@ -23,13 +23,10 @@ class ClozeAnswer extends AbstractValueObject
 
     /**
      * @param array $answers
-     * @return ClozeAnswer
      */
-    public static function create(?array $answers = []) : ClozeAnswer
+    public function __construct(?array $answers = [])
     {
-        $object = new ClozeAnswer();
-        $object->answers = $answers;
-        return $object;
+        $this->answers = $answers;
     }
 
     /**

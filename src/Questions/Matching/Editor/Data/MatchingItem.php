@@ -35,15 +35,12 @@ class MatchingItem extends AbstractValueObject
      * @param ?string $id
      * @param ?string $text
      * @param ?string $image
-     * @return MatchingItem
      */
-    public static function create(?string $id, ?string $text, ?string $image) : MatchingItem
+    public function __construct(?string $id = null, ?string $text = null, ?string $image = null)
     {
-        $object = new MatchingItem();
-        $object->id = $id;
-        $object->text = $text;
-        $object->image = $image;
-        return $object;
+        $this->id = $id;
+        $this->text = $text;
+        $this->image = $image;
     }
 
     /**

@@ -35,15 +35,15 @@ class FormulaScoringDefinition extends AbstractValueObject
      * @param ?string $formula
      * @param ?string $unit
      * @param ?float $points
-     * @return FormulaScoringDefinition
      */
-    public static function create(?string $formula, ?string $unit, ?float $points) : FormulaScoringDefinition
-    {
-        $object = new FormulaScoringDefinition();
-        $object->formula = $formula;
-        $object->unit = $unit;
-        $object->points = $points;
-        return $object;
+    public function __construct(
+        ?string $formula = null,
+        ?string $unit = null,
+        ?float $points = null
+    ) {
+        $this->formula = $formula;
+        $this->unit = $unit;
+        $this->points = $points;
     }
 
     /**

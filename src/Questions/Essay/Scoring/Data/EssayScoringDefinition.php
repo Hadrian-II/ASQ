@@ -29,14 +29,11 @@ class EssayScoringDefinition extends AbstractValueObject
     /**
      * @param string $text
      * @param float $points
-     * @return EssayScoringDefinition
      */
-    public static function create(?string $text, ?float $points) : EssayScoringDefinition
+    public function __construct(?string $text = null, ?float $points = null)
     {
-        $object = new EssayScoringDefinition();
-        $object->points = $points;
-        $object->text = $text;
-        return $object;
+        $this->points = $points;
+        $this->text = $text;
     }
 
     /**

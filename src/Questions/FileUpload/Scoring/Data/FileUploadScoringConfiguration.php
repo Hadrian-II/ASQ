@@ -29,14 +29,11 @@ class FileUploadScoringConfiguration extends AbstractValueObject
     /**
      * @param int $points
      * @param bool $completed_by_submition
-     * @return FileUploadScoringConfiguration
      */
-    public static function create(?float $points = null, ?bool $completed_by_submition = null) : FileUploadScoringConfiguration
+    public function __construct(?float $points = null, ?bool $completed_by_submition = null)
     {
-        $object = new FileUploadScoringConfiguration();
-        $object->points = $points;
-        $object->completed_by_submition = $completed_by_submition;
-        return $object;
+        $this->points = $points;
+        $this->completed_by_submition = $completed_by_submition;
     }
 
     /**

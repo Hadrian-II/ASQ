@@ -21,13 +21,17 @@ class FileUploadAnswer extends AbstractValueObject
      */
     protected $files;
 
-    public static function create(?array $files = [])
+    /**
+     * @param array $files
+     */
+    public function __construct(?array $files = [])
     {
-        $object = new FileUploadAnswer();
-        $object->files = $files;
-        return $object;
+        $this->files = $files;
     }
 
+    /**
+     * @return array|NULL
+     */
     public function getFiles() : ?array
     {
         return $this->files;

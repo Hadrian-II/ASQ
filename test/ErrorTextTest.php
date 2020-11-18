@@ -5,7 +5,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\ErrorText\ErrorTextAnswer;
@@ -36,32 +35,32 @@ class ErrorTextTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    ErrorTextEditorConfiguration::create('word1 word2 word3 word4 word5', null),
-                    ErrorTextScoringConfiguration::create(1)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new ErrorTextEditorConfiguration('word1 word2 word3 word4 word5', null),
+                    new ErrorTextScoringConfiguration(1)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        ErrorTextScoringDefinition::create(0, 1, 'correct1', 1)),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        ErrorTextScoringDefinition::create(2, 2, 'correct2 correct2', 2)),
-                    ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new ErrorTextScoringDefinition(0, 1, 'correct1', 1)),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new ErrorTextScoringDefinition(2, 2, 'correct2 correct2', 2)),
+                    ]
                 ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    ErrorTextEditorConfiguration::create('word1 word2 word3 word4 word5 word6', 100),
-                    ErrorTextScoringConfiguration::create(2)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new ErrorTextEditorConfiguration('word1 word2 word3 word4 word5 word6', 100),
+                    new ErrorTextScoringConfiguration(2)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        ErrorTextScoringDefinition::create(3, 3, 'correct3 correct3 correct3', 3))
-                    ])
-                )
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new ErrorTextScoringDefinition(3, 3, 'correct3 correct3 correct3', 3))
+                ]
+            )
         ];
     }
 
@@ -72,11 +71,11 @@ class ErrorTextTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => ErrorTextAnswer::create(),
-            'answer 2' => ErrorTextAnswer::create([0, 1]),
-            'answer 3' => ErrorTextAnswer::create([0, 2, 3]),
-            'answer 4' => ErrorTextAnswer::create([3, 4, 5]),
-            'answer 5' => ErrorTextAnswer::create([0, 1, 2, 3, 4])
+            'answer 1' => new ErrorTextAnswer(),
+            'answer 2' => new ErrorTextAnswer([0, 1]),
+            'answer 3' => new ErrorTextAnswer([0, 2, 3]),
+            'answer 4' => new ErrorTextAnswer([3, 4, 5]),
+            'answer 5' => new ErrorTextAnswer([0, 1, 2, 3, 4])
         ];
     }
 
@@ -122,7 +121,7 @@ class ErrorTextTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'errortext',
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,

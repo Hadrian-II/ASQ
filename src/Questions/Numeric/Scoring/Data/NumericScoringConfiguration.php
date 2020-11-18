@@ -33,7 +33,6 @@ class NumericScoringConfiguration extends AbstractValueObject
      * @param float $points
      * @param float $lower_bound
      * @param float $upper_bound
-     * @return \srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration
      */
     public function __construct(
         ?float $points = null,

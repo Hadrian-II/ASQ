@@ -268,7 +268,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             function ($value) use (&$id) {
                 $id += 1;
 
-                return MatchingItem::create(
+                return new MatchingItem(
                     strval($id),
                     $value[self::VAR_DEFINITION_TEXT],
                     $value[self::VAR_DEFINITION_IMAGE]
@@ -283,7 +283,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             function ($value) use (&$id) {
                 $id += 1;
 
-                return MatchingItem::create(
+                return new MatchingItem(
                     strval($id),
                     $value[self::VAR_TERM_TEXT],
                     $value[self::VAR_TERM_IMAGE]
@@ -294,7 +294,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         $match = array_map(
             function ($value) {
-                return MatchingMapping::create(
+                return new MatchingMapping(
                     $value[self::VAR_MATCH_DEFINITION],
                     $value[self::VAR_MATCH_TERM],
                     floatval($value[self::VAR_MATCH_POINTS])
@@ -303,7 +303,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             $postdata[self::VAR_MATCHES]
         );
 
-        return MatchingEditorConfiguration::create(
+        return new MatchingEditorConfiguration(
             $this->readInt($postdata[self::VAR_SHUFFLE]),
             $this->readInt($postdata[self::VAR_THUMBNAIL]),
             $this->readInt(substr($postdata[self::VAR_MATCHING_MODE], strlen(self::USELESS_PREFIX))),
@@ -318,6 +318,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return MatchingEditorConfiguration::create();
+        return new MatchingEditorConfiguration();
     }
 }

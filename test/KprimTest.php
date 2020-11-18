@@ -5,7 +5,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
@@ -36,46 +35,46 @@ class KprimTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    KprimChoiceEditorConfiguration::create(true, 100, 'yay', 'nay'),
-                    KprimChoiceScoringConfiguration::create(4, 3)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new KprimChoiceEditorConfiguration(true, 100, 'yay', 'nay'),
+                    new KprimChoiceScoringConfiguration(4, 3)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('bild1.jpg', 'lorem'),
-                        KprimChoiceScoringDefinition::create(true)),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('bild2.jpg', 'ipsum'),
-                        KprimChoiceScoringDefinition::create(false)),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('bild3.jpg', 'dolor'),
-                        KprimChoiceScoringDefinition::create(true)),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('bild4.jpg', 'lorem'),
-                        KprimChoiceScoringDefinition::create(false))
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('bild1.jpg', 'lorem'),
+                        new KprimChoiceScoringDefinition(true)),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('bild2.jpg', 'ipsum'),
+                        new KprimChoiceScoringDefinition(false)),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('bild3.jpg', 'dolor'),
+                        new KprimChoiceScoringDefinition(true)),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('bild4.jpg', 'lorem'),
+                        new KprimChoiceScoringDefinition(false))
+                ]
             ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    KprimChoiceEditorConfiguration::create(false, 80, 'true', 'false'),
-                    KprimChoiceScoringConfiguration::create(6, 2)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new KprimChoiceEditorConfiguration(false, 80, 'true', 'false'),
+                    new KprimChoiceScoringConfiguration(6, 2)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('bild1.jpg', 'lorem'),
-                        KprimChoiceScoringDefinition::create(false)),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('bild2.jpg', 'ipsum'),
-                        KprimChoiceScoringDefinition::create(true)),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('bild3.jpg', 'dolor'),
-                        KprimChoiceScoringDefinition::create(false)),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('bild4.jpg', 'lorem'),
-                        KprimChoiceScoringDefinition::create(true))
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('bild1.jpg', 'lorem'),
+                        new KprimChoiceScoringDefinition(false)),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('bild2.jpg', 'ipsum'),
+                        new KprimChoiceScoringDefinition(true)),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('bild3.jpg', 'dolor'),
+                        new KprimChoiceScoringDefinition(false)),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('bild4.jpg', 'lorem'),
+                        new KprimChoiceScoringDefinition(true))
+                ]
                 )
         ];
     }
@@ -87,10 +86,10 @@ class KprimTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => KprimChoiceAnswer::create(['1' => true, '2' => false, '3' => true, '4' => false]),
-            'answer 2' => KprimChoiceAnswer::create(['1' => false, '2' => false, '3' => true, '4' => false]),
-            'answer 3' => KprimChoiceAnswer::create(['1' => false, '2' => true, '3' => true, '4' => false]),
-            'answer 4' => KprimChoiceAnswer::create(['1' => false, '2' => true, '3' => false, '4' => true])
+            'answer 1' => new KprimChoiceAnswer(['1' => true, '2' => false, '3' => true, '4' => false]),
+            'answer 2' => new KprimChoiceAnswer(['1' => false, '2' => false, '3' => true, '4' => false]),
+            'answer 3' => new KprimChoiceAnswer(['1' => false, '2' => true, '3' => true, '4' => false]),
+            'answer 4' => new KprimChoiceAnswer(['1' => false, '2' => true, '3' => false, '4' => true])
         ];
     }
 
@@ -134,7 +133,7 @@ class KprimTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'kprim',
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,

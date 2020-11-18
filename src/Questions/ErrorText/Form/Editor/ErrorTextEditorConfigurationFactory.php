@@ -68,7 +68,7 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postvalues) : AbstractValueObject
     {
-        return ErrorTextEditorConfiguration::create(
+        return new ErrorTextEditorConfiguration(
             $this->readString($postvalues[self::VAR_ERROR_TEXT]),
             $this->readInt($postvalues[self::VAR_TEXT_SIZE])
         );
@@ -79,6 +79,6 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ErrorTextEditorConfiguration::create('', self::DEFAULT_TEXTSIZE_PERCENT);
+        return new ErrorTextEditorConfiguration('', self::DEFAULT_TEXTSIZE_PERCENT);
     }
 }

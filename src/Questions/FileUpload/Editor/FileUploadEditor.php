@@ -86,7 +86,7 @@ class FileUploadEditor extends AbstractEditor
 
         $this->deleteOldFiles();
 
-        return FileUploadAnswer::create($this->files);
+        return new FileUploadAnswer($this->files);
     }
 
     private function UploadNewFile() : void

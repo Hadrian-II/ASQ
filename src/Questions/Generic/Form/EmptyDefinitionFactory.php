@@ -43,7 +43,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return EmptyDefinition::create();
+        return new EmptyDefinition();
     }
 
     /**
@@ -51,6 +51,6 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return EmptyDefinition::create();
+        return new EmptyDefinition();
     }
 }

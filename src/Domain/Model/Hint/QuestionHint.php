@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model\Hint;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class QuestionHint
@@ -18,58 +17,52 @@ use srag\asq\Application\Exception\AsqException;
 class QuestionHint extends AbstractValueObject
 {
     /**
-     * @var string
+     * @var ?string
      */
     protected $id;
     /**
-     * @var string
+     * @var ?string
      */
     protected $content;
     /**
-     * @var float
+     * @var ?float
      */
     protected $point_deduction;
 
     /**
-     * Hint constructor.
-     *
-     * @param string $id
-     * @param string $content
-     * @param float  $point_deduction
-     *
-     * @throws AsqException
+     * @param ?string $id
+     * @param ?string $content
+     * @param ?float $point_deduction
      */
-    public static function create(string $id, string $content, float $point_deduction) : QuestionHint
+    public function __construct(?string $id = null, ?string $content = null, ?float $point_deduction = null)
     {
-        $object = new QuestionHint();
-        $object->id = $id;
-        $object->content = $content;
-        $object->point_deduction = $point_deduction;
-        return $object;
+        $this->id = $id;
+        $this->content = $content;
+        $this->point_deduction = $point_deduction;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getId() : string
+    public function getId() : ?string
     {
         return $this->id;
     }
 
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getContent() : string
+    public function getContent() : ?string
     {
         return $this->content;
     }
 
 
     /**
-     * @return float
+     * @return ?float
      */
-    public function getPointDeduction() : float
+    public function getPointDeduction() : ?float
     {
         return $this->point_deduction;
     }

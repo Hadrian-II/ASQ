@@ -29,12 +29,12 @@ class ImageAndTextDisplayDefinition extends AbstractValueObject
      * @param string $image
      * @return ImageAndTextDisplayDefinition
      */
-    public static function create(?string $text = null, ?string $image = null) : ImageAndTextDisplayDefinition
-    {
-        $object = new ImageAndTextDisplayDefinition();
-        $object->text = $text;
-        $object->image = $image;
-        return $object;
+    public function __construct(
+        ?string $text = null,
+        ?string $image = null
+    ) {
+        $this->text = $text;
+        $this->image = $image;
     }
 
     /**

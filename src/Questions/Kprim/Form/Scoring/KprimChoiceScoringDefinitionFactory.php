@@ -67,7 +67,7 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return KprimChoiceScoringDefinition::create($values[self::VAR_KPSD_CORRECT] === KprimChoiceEditor::STR_TRUE);
+        return new KprimChoiceScoringDefinition($values[self::VAR_KPSD_CORRECT] === KprimChoiceEditor::STR_TRUE);
     }
 
     /**
@@ -75,6 +75,6 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return KprimChoiceScoringDefinition::create(false);
+        return new KprimChoiceScoringDefinition(false);
     }
 }

@@ -67,7 +67,7 @@ class NumericEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return NumericAnswer::create(floatval($this->getPostValue($this->question->getId()->toString())));
+        return new NumericAnswer(floatval($this->getPostValue($this->question->getId()->toString())));
     }
 
     /**

@@ -48,7 +48,7 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postvalue) : AbstractValueObject
     {
-        return ErrorTextScoringConfiguration::create($this->readFloat($postvalue[self::VAR_POINTS_WRONG]));
+        return new ErrorTextScoringConfiguration($this->readFloat($postvalue[self::VAR_POINTS_WRONG]));
     }
 
     /**
@@ -56,6 +56,6 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ErrorTextScoringConfiguration::create();
+        return new ErrorTextScoringConfiguration();
     }
 }

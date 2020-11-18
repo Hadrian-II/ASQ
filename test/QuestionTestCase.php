@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Application\Service\ASQServices;
@@ -69,10 +69,10 @@ abstract class QuestionTestCase extends TestCase
     /**
      * @param QuestionData $data
      * @param QuestionPlayConfiguration $play
-     * @param AnswerOptions $options
+     * @param AnswerOption[] $options
      * @return QuestionDto
      */
-    protected function createQuestion(QuestionData $data, QuestionPlayConfiguration $play, ?AnswerOptions $options) : QuestionDto
+    protected function createQuestion(QuestionData $data, QuestionPlayConfiguration $play, ?array $options) : QuestionDto
     {
         $factory = new Factory();
 

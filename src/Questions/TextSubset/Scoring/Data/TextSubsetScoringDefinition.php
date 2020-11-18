@@ -25,15 +25,13 @@ class TextSubsetScoringDefinition extends AbstractValueObject
     protected $text;
 
     /**
-     * TextSubsetScoringDefinition constructor.
-     * @param int $points
+     * @param float $points
+     * @param string $text
      */
-    public static function create(?float $points = null, ?string $text = null) : TextSubsetScoringDefinition
+    public function __construct(?float $points = null, ?string $text = null)
     {
-        $object = new TextSubsetScoringDefinition();
-        $object->points = $points;
-        $object->text = $text;
-        return $object;
+        $this->points = $points;
+        $this->text = $text;
     }
 
     /**

@@ -66,7 +66,7 @@ class MatchingScoring extends AbstractScoring
             $matches[] = $match->getDefinitionId() . '-' . $match->getTermId();
         };
 
-        return MatchingAnswer::create($matches);
+        return new MatchingAnswer($matches);
     }
 
     /**

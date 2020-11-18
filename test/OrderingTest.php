@@ -5,7 +5,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
@@ -36,46 +35,46 @@ class OrderingTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    OrderingEditorConfiguration::create(true),
-                    OrderingScoringConfiguration::create(1)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new OrderingEditorConfiguration(true),
+                    new OrderingScoringConfiguration(1)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('lorem', 'image.png'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('ipsum', 'image.png'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('dolor', 'image.png'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('sit', 'image.png'),
-                        EmptyDefinition::create())
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('lorem', 'image.png'),
+                        new EmptyDefinition()),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('ipsum', 'image.png'),
+                        new EmptyDefinition()),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('dolor', 'image.png'),
+                        new EmptyDefinition()),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('sit', 'image.png'),
+                        new EmptyDefinition())
+                ]
             ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    OrderingEditorConfiguration::create(false),
-                    OrderingScoringConfiguration::create(2)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new OrderingEditorConfiguration(false),
+                    new OrderingScoringConfiguration(2)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        ImageAndTextDisplayDefinition::create('one'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('2',
-                        ImageAndTextDisplayDefinition::create('two'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('3',
-                        ImageAndTextDisplayDefinition::create('three'),
-                        EmptyDefinition::create()),
-                    AnswerOption::create('4',
-                        ImageAndTextDisplayDefinition::create('four'),
-                        EmptyDefinition::create())
-                ])
+                [
+                    new AnswerOption('1',
+                        new ImageAndTextDisplayDefinition('one'),
+                        new EmptyDefinition()),
+                    new AnswerOption('2',
+                        new ImageAndTextDisplayDefinition('two'),
+                        new EmptyDefinition()),
+                    new AnswerOption('3',
+                        new ImageAndTextDisplayDefinition('three'),
+                        new EmptyDefinition()),
+                    new AnswerOption('4',
+                        new ImageAndTextDisplayDefinition('four'),
+                        new EmptyDefinition())
+                ]
             )
         ];
     }
@@ -87,9 +86,9 @@ class OrderingTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => OrderingAnswer::create(),
-            'answer 2' => OrderingAnswer::create([1,2,3,4]),
-            'answer 3' => OrderingAnswer::create([1,3,2,4])
+            'answer 1' => new OrderingAnswer(),
+            'answer 2' => new OrderingAnswer([1,2,3,4]),
+            'answer 3' => new OrderingAnswer([1,3,2,4])
         ];
     }
 
@@ -131,7 +130,7 @@ class OrderingTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'ordering',
             OrderingFormFactory::class,
             OrderingEditor::class,

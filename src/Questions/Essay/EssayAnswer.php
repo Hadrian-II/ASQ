@@ -23,13 +23,10 @@ class EssayAnswer extends AbstractValueObject
 
     /**
      * @param string $text
-     * @return EssayAnswer
      */
-    public static function create(?string $text = null) : EssayAnswer
+    public function __construct(?string $text = null)
     {
-        $object = new EssayAnswer();
-        $object->text = $text;
-        return $object;
+        $this->text = $text;
     }
 
     /**

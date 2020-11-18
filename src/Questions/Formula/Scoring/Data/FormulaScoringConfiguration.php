@@ -57,24 +57,21 @@ class FormulaScoringConfiguration extends AbstractValueObject
      * @param float $tolerance
      * @param int $result_type
      * @param array $variables
-     * @return FormulaScoringConfiguration
      */
-    public static function create(
+    public function __construct(
         ?string $formula = null,
         ?string $units = null,
         ?int $precision = null,
         ?float $tolerance = null,
         ?int $result_type = null,
         ?array $variables = []
-    ) : FormulaScoringConfiguration {
-        $object = new FormulaScoringConfiguration();
-        $object->formula = $formula;
-        $object->units = $units;
-        $object->precision = $precision;
-        $object->tolerance = $tolerance;
-        $object->result_type = $result_type;
-        $object->variables = $variables;
-        return $object;
+    ) {
+        $this->formula = $formula;
+        $this->units = $units;
+        $this->precision = $precision;
+        $this->tolerance = $tolerance;
+        $this->result_type = $result_type;
+        $this->variables = $variables;
     }
 
     /**

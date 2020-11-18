@@ -102,7 +102,7 @@ class TextSubsetScoring extends AbstractScoring
             }
         }
 
-        return TextSubsetAnswer::create($answers);
+        return new TextSubsetAnswer($answers);
     }
 
     /**

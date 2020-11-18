@@ -97,7 +97,7 @@ class EssayEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        return EssayAnswer::create($this->getPostValue($this->question->getId()->toString()));
+        return new EssayAnswer($this->getPostValue($this->question->getId()->toString()));
     }
 
     /**

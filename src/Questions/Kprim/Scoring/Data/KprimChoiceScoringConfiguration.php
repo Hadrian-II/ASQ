@@ -28,14 +28,11 @@ class KprimChoiceScoringConfiguration extends AbstractValueObject
     /**
      * @param ?float $points
      * @param ?int $half_points_at
-     * @return KprimChoiceScoringConfiguration
      */
-    public static function create(?float $points = null, ?int $half_points_at = null) : KprimChoiceScoringConfiguration
+    public function __construct(?float $points = null, ?int $half_points_at = null)
     {
-        $object = new KprimChoiceScoringConfiguration();
-        $object->points = $points;
-        $object->half_points_at = $half_points_at;
-        return $object;
+        $this->points = $points;
+        $this->half_points_at = $half_points_at;
     }
 
     /**

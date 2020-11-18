@@ -21,13 +21,10 @@ class MatchingAnswer extends AbstractValueObject
 
     /**
      * @param array $matches
-     * @return MatchingAnswer
      */
-    public static function create(?array $matches = []) : MatchingAnswer
+    public function __construct(?array $matches = [])
     {
-        $object = new MatchingAnswer();
-        $object->matches = $matches;
-        return $object;
+        $this->matches = $matches;
     }
 
     /**

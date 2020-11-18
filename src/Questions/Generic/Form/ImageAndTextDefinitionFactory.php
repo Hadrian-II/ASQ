@@ -52,7 +52,7 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return ImageAndTextDisplayDefinition::create(
+        return new ImageAndTextDisplayDefinition(
             $values[self::VAR_MCDD_TEXT],
             $values[self::VAR_MCDD_IMAGE]
         );
@@ -60,7 +60,7 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
 
     public function getDefaultValue() : AbstractValueObject
     {
-        return ImageAndTextDisplayDefinition::create();
+        return new ImageAndTextDisplayDefinition();
     }
 
     /**

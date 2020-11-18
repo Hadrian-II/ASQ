@@ -174,7 +174,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         $thumbsize = $this->readInt(self::VAR_THUMBNAIL_SIZE);
 
-        return KprimChoiceEditorConfiguration::create(
+        return new KprimChoiceEditorConfiguration(
             $postdata[self::VAR_SHUFFLE_ANSWERS],
             $thumbsize,
             $label_true,
@@ -187,6 +187,6 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return KprimChoiceEditorConfiguration::create(null, null, self::STR_RIGHT, self::STR_WRONG);
+        return new KprimChoiceEditorConfiguration(null, null, self::STR_RIGHT, self::STR_WRONG);
     }
 }

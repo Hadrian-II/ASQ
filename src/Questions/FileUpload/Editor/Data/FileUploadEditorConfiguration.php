@@ -31,14 +31,11 @@ class FileUploadEditorConfiguration extends AbstractValueObject
      * @param int $maximum_size
      * @param string $allowed_extensions
      * @param int $upload_type
-     * @return FileUploadEditorConfiguration
      */
-    public static function create(?int $maximum_size = null, ?string $allowed_extensions = null) : FileUploadEditorConfiguration
+    public function __construct(?int $maximum_size = null, ?string $allowed_extensions = null)
     {
-        $object = new FileUploadEditorConfiguration();
-        $object->maximum_size = $maximum_size;
-        $object->allowed_extensions = $allowed_extensions;
-        return $object;
+        $this->maximum_size = $maximum_size;
+        $this->allowed_extensions = $allowed_extensions;
     }
 
     /**

@@ -146,7 +146,7 @@ class OrderingEditor extends AbstractEditor
             return null;
         }
 
-        return OrderingAnswer::create(array_map(function ($display_id) {
+        return new OrderingAnswer(array_map(function ($display_id) {
             return array_search($display_id, $this->display_ids);
         }, explode(',', $this->getPostValue($this->question->getId()->toString()))));
     }

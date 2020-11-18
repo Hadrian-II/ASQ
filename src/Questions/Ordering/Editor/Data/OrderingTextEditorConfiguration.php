@@ -20,17 +20,12 @@ class OrderingTextEditorConfiguration extends OrderingEditorConfiguration
     protected $text;
 
     /**
-     * Different name to the usual create, due to php missing method overloading
-     *
      * @param string $text
-     * @return OrderingTextEditorConfiguration
      */
-    public static function createNew(?string $text = null) : OrderingEditorConfiguration
+    public function __construct(?string $text = null)
     {
-        $object = new OrderingTextEditorConfiguration();
-        $object->vertical = false;
-        $object->text = $text;
-        return $object;
+        $this->vertical = false;
+        $this->text = $text;
     }
 
     /**

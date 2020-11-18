@@ -23,13 +23,10 @@ class OrderingEditorConfiguration extends AbstractValueObject
 
     /**
      * @param bool $vertical
-     * @return OrderingEditorConfiguration
      */
-    public static function create(?bool $vertical = null) : OrderingEditorConfiguration
+    public function __construct(?bool $vertical = null)
     {
-        $object = new OrderingEditorConfiguration();
-        $object->vertical = $vertical;
-        return $object;
+        $this->vertical = $vertical;
     }
 
     /**

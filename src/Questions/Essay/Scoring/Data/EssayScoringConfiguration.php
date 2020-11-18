@@ -37,20 +37,15 @@ class EssayScoringConfiguration extends AbstractValueObject
      * @param int $matching_mode
      * @param int $scoring_mode
      * @param float $points
-     * @return EssayScoringConfiguration
      */
-    public static function create(
+    public function __construct(
         ?int $matching_mode = TextScoring::TM_CASE_INSENSITIVE,
         ?int $scoring_mode = EssayScoring::SCORING_MANUAL,
         ?float $points = null
-    ) : EssayScoringConfiguration {
-        $object = new EssayScoringConfiguration();
-
-        $object->matching_mode = $matching_mode;
-        $object->scoring_mode = $scoring_mode;
-        $object->points = $points;
-
-        return $object;
+    ) {
+        $this->matching_mode = $matching_mode;
+        $this->scoring_mode = $scoring_mode;
+        $this->points = $points;
     }
 
     /**

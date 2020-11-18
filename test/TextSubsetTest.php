@@ -6,7 +6,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Infrastructure\Persistence\QuestionType;
@@ -39,58 +38,58 @@ class TextSubsetTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    TextSubsetEditorConfiguration::create(2),
-                    TextSubsetScoringConfiguration::create(TextScoring::TM_CASE_INSENSITIVE)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new TextSubsetEditorConfiguration(2),
+                    new TextSubsetScoringConfiguration(TextScoring::TM_CASE_INSENSITIVE)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(1, 'aaaaaa')),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(2, 'bbbbbb')),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(3, 'cccccc')),
-                    ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(1, 'aaaaaa')),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(2, 'bbbbbb')),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(3, 'cccccc')),
+                    ]
                 ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    TextSubsetEditorConfiguration::create(3),
-                    TextSubsetScoringConfiguration::create(TextScoring::TM_CASE_SENSITIVE)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new TextSubsetEditorConfiguration(3),
+                    new TextSubsetScoringConfiguration(TextScoring::TM_CASE_SENSITIVE)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(1, 'aaaAaa')),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(2, 'Bbbbbb')),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(3, 'cccccC')),
-                    ])
-                ),
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(1, 'aaaAaa')),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(2, 'Bbbbbb')),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(3, 'cccccC')),
+                ]
+            ),
             'question 3' => $this->createQuestion(
-                QuestionData::create('Question 3', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    TextSubsetEditorConfiguration::create(3),
-                    TextSubsetScoringConfiguration::create(TextScoring::TM_LEVENSHTEIN_2)
+                new QuestionData('Question 3', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new TextSubsetEditorConfiguration(3),
+                    new TextSubsetScoringConfiguration(TextScoring::TM_LEVENSHTEIN_2)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(1, 'bbaaaa')),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(2, 'bbccbb')),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        TextSubsetScoringDefinition::create(3, 'ccccdd')),
-                ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(1, 'bbaaaa')),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(2, 'bbccbb')),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new TextSubsetScoringDefinition(3, 'ccccdd')),
+                ]
             ),
         ];
     }
@@ -102,12 +101,12 @@ class TextSubsetTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => TextSubsetAnswer::create(),
-            'answer 2' => TextSubsetAnswer::create([1 => 'bbbbbb', 2 => 'cccccc']),
-            'answer 3' => TextSubsetAnswer::create([1 => 'AAAAAA', 2 => 'CCCCCC']),
-            'answer 4' => TextSubsetAnswer::create([1 => 'aaaaaa', 2 => 'bbbbbb', 3 => 'cccccc']),
-            'answer 5' => TextSubsetAnswer::create([1 => 'aaaAaa', 2 => 'Bbbbbb', 3 => 'cccccC']),
-            'answer 6' => TextSubsetAnswer::create([1 => 'bbbaaa', 2 => 'bbbbbb', 3 => 'dccccc']),
+            'answer 1' => new TextSubsetAnswer(),
+            'answer 2' => new TextSubsetAnswer([1 => 'bbbbbb', 2 => 'cccccc']),
+            'answer 3' => new TextSubsetAnswer([1 => 'AAAAAA', 2 => 'CCCCCC']),
+            'answer 4' => new TextSubsetAnswer([1 => 'aaaaaa', 2 => 'bbbbbb', 3 => 'cccccc']),
+            'answer 5' => new TextSubsetAnswer([1 => 'aaaAaa', 2 => 'Bbbbbb', 3 => 'cccccC']),
+            'answer 6' => new TextSubsetAnswer([1 => 'bbbaaa', 2 => 'bbbbbb', 3 => 'dccccc']),
         ];
     }
 
@@ -164,7 +163,7 @@ class TextSubsetTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'textsubset',
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,

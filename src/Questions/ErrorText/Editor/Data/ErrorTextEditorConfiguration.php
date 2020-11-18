@@ -26,17 +26,13 @@ class ErrorTextEditorConfiguration extends AbstractValueObject
     protected $error_text;
 
     /**
-     *
      * @param string $error_text
      * @param int $text_size
-     * @return ErrorTextEditorConfiguration
      */
-    public static function create(?string $error_text, ?int $text_size) : ErrorTextEditorConfiguration
+    public function __construct(?string $error_text = null, ?int $text_size = null)
     {
-        $object = new ErrorTextEditorConfiguration();
-        $object->error_text = $error_text;
-        $object->text_size = $text_size;
-        return $object;
+        $this->error_text = $error_text;
+        $this->text_size = $text_size;
     }
 
     /**

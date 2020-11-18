@@ -55,7 +55,7 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return KprimChoiceScoringConfiguration::create(
+        return new KprimChoiceScoringConfiguration(
             $this->readFloat($postdata[self::VAR_POINTS]),
             $postdata[self::VAR_HALF_POINTS] ? self::HALFPOINTS_AT : null
         );
@@ -66,6 +66,6 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return KprimChoiceScoringConfiguration::create();
+        return new KprimChoiceScoringConfiguration();
     }
 }

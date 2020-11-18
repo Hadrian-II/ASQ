@@ -99,7 +99,7 @@ class TextSubsetEditor extends AbstractEditor
             $answer[$i] = $this->getPostValue($this->getPostName($i));
         }
 
-        return TextSubsetAnswer::create($answer);
+        return new TextSubsetAnswer($answer);
     }
 
     /**

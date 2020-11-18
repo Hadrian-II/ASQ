@@ -61,7 +61,7 @@ class MatchingEditor extends AbstractEditor
 
         $matches = array_diff($matches, ['']);
 
-        return MatchingAnswer::create($matches);
+        return new MatchingAnswer($matches);
     }
 
     /**

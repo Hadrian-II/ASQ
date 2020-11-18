@@ -84,7 +84,7 @@ class MultipleChoiceScoring extends AbstractScoring
             ->getMaxAnswers();
         $answers = array_slice($answers, 0, $length, true);
 
-        return MultipleChoiceAnswer::create(array_keys($answers));
+        return new MultipleChoiceAnswer(array_keys($answers));
     }
 
     /**

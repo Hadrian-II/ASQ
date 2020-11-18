@@ -81,7 +81,7 @@ class KprimChoiceScoring extends AbstractScoring
             }
         }
 
-        return KprimChoiceAnswer::create($answers);
+        return new KprimChoiceAnswer($answers);
     }
 
     /**

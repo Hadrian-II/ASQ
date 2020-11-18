@@ -18,21 +18,22 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 class QuestionHints extends AbstractValueObject
 {
     /**
-     * @var QuestionHint[]
+     * @var ?QuestionHint[]
      */
     protected $hints;
 
-    public static function create(array $hints)
-    {
-        $object = new QuestionHints();
-        $object->hints = $hints;
-        return $object;
-    }
-    
     /**
-     * @return QuestionHint[]
+     * @param ?QuestionHint[] $hints
      */
-    public function getHints() : array
+    public function __construct(?array $hints = null)
+    {
+        $this->hints = $hints;
+    }
+
+    /**
+     * @return ?QuestionHint[]
+     */
+    public function getHints() : ?array
     {
         return $this->hints;
     }

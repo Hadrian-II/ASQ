@@ -16,8 +16,5 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class EmptyDefinition extends AbstractValueObject
 {
-    public static function create() : EmptyDefinition
-    {
-        return new EmptyDefinition();
-    }
+    public function __construct() {}
 }

@@ -6,7 +6,6 @@ namespace ILIAS\AssessmentQuestion\Test;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Infrastructure\Persistence\QuestionType;
@@ -38,64 +37,64 @@ class EssayTest extends QuestionTestCase
     {
         return [
             'question 1' => $this->createQuestion(
-                QuestionData::create('Question 1', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    EssayEditorConfiguration::create(),
-                    EssayScoringConfiguration::create(TextScoring::TM_CASE_INSENSITIVE, EssayScoring::SCORING_AUTOMATIC_ALL, 1)
+                new QuestionData('Question 1', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new EssayEditorConfiguration(),
+                    new EssayScoringConfiguration(TextScoring::TM_CASE_INSENSITIVE, EssayScoring::SCORING_AUTOMATIC_ALL, 1)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('lorem', null)),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('ipsum', null)),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('verylongword', null))
-                ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('lorem', null)),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('ipsum', null)),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('verylongword', null))
+                ]
             ),
             'question 2' => $this->createQuestion(
-                QuestionData::create('Question 2', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    EssayEditorConfiguration::create(),
-                    EssayScoringConfiguration::create(TextScoring::TM_CASE_SENSITIVE, EssayScoring::SCORING_AUTOMATIC_ANY)
+                new QuestionData('Question 2', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new EssayEditorConfiguration(),
+                    new EssayScoringConfiguration(TextScoring::TM_CASE_SENSITIVE, EssayScoring::SCORING_AUTOMATIC_ANY)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('lorem', 1)),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('ipsum', 1)),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('verylongword', 2))
-                ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('lorem', 1)),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('ipsum', 1)),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('verylongword', 2))
+                ]
             ),
             'question 3' => $this->createQuestion(
-                QuestionData::create('Question 3', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    EssayEditorConfiguration::create(),
-                    EssayScoringConfiguration::create(TextScoring::TM_LEVENSHTEIN_2, EssayScoring::SCORING_AUTOMATIC_ONE, 3)
+                new QuestionData('Question 3', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new EssayEditorConfiguration(),
+                    new EssayScoringConfiguration(TextScoring::TM_LEVENSHTEIN_2, EssayScoring::SCORING_AUTOMATIC_ONE, 3)
                     ),
-                AnswerOptions::create([
-                    AnswerOption::create('1',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('lorem', null)),
-                    AnswerOption::create('2',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('ipsum', null)),
-                    AnswerOption::create('3',
-                        EmptyDefinition::create(),
-                        EssayScoringDefinition::create('verylongword', null))
-                ])
+                [
+                    new AnswerOption('1',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('lorem', null)),
+                    new AnswerOption('2',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('ipsum', null)),
+                    new AnswerOption('3',
+                        new EmptyDefinition(),
+                        new EssayScoringDefinition('verylongword', null))
+                ]
             ),
             'question 4' => $this->createQuestion(
-                QuestionData::create('Question 4', '', '', '', 1),
-                QuestionPlayConfiguration::create(
-                    EssayEditorConfiguration::create(),
-                    EssayScoringConfiguration::create(null, EssayScoring::SCORING_MANUAL, 5)
+                new QuestionData('Question 4', '', '', '', 1),
+                new QuestionPlayConfiguration(
+                    new EssayEditorConfiguration(),
+                    new EssayScoringConfiguration(null, EssayScoring::SCORING_MANUAL, 5)
                     ),
                 null
             )
@@ -109,11 +108,11 @@ class EssayTest extends QuestionTestCase
     public function getAnswers() : array
     {
         return [
-            'answer 1' => EssayAnswer::create(),
-            'answer 2' => EssayAnswer::create('lorem ipsum verylongword'),
-            'answer 3' => EssayAnswer::create('lorem IPSUM verylongword'),
-            'answer 4' => EssayAnswer::create('lorem Ipsum dolor'),
-            'answer 5' => EssayAnswer::create('vxxrylongword'),
+            'answer 1' => new EssayAnswer(),
+            'answer 2' => new EssayAnswer('lorem ipsum verylongword'),
+            'answer 3' => new EssayAnswer('lorem IPSUM verylongword'),
+            'answer 4' => new EssayAnswer('lorem Ipsum dolor'),
+            'answer 5' => new EssayAnswer('vxxrylongword'),
         ];
     }
 
@@ -175,7 +174,7 @@ class EssayTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return QuestionType::createNew(
+        return new QuestionType(
             'essay',
             EssayFormFactory::class,
             EssayEditor::class,

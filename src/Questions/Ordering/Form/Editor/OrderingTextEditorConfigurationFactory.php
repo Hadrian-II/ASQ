@@ -45,7 +45,7 @@ class OrderingTextEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return OrderingTextEditorConfiguration::createNew($this->readString($postdata[SELF::VAR_ORDERING_TEXT]));
+        return new OrderingTextEditorConfiguration($this->readString($postdata[SELF::VAR_ORDERING_TEXT]));
     }
 
     /**
@@ -53,6 +53,6 @@ class OrderingTextEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return OrderingTextEditorConfiguration::createNew();
+        return new OrderingTextEditorConfiguration();
     }
 }

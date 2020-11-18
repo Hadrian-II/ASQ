@@ -146,12 +146,12 @@ class HintFormGUI
 
         $index = 0;
 
-        return QuestionHints::create(
+        return new QuestionHints(
             array_map(
                 function ($raw_hint) use ($index) {
                     $index += 1;
 
-                    return QuestionHint::create(
+                    return new QuestionHint(
                         strval($index),
                         $raw_hint[self::HINT_CONTENT_POSTVAR],
                         floatval($raw_hint[self::HINT_POINTS_POSTVAR])

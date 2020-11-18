@@ -7,7 +7,7 @@ use JsonSerializable;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionData;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
+use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;

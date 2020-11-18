@@ -71,7 +71,7 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return FormulaScoringDefinition::create(
+        return new FormulaScoringDefinition(
             $values[self::VAR_FORMULA],
             empty($values[self::VAR_UNIT]) ? null : $values[self::VAR_UNIT],
             floatval($values[self::VAR_POINTS])
@@ -83,6 +83,6 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return FormulaScoringDefinition::create(null, null, null);
+        return new FormulaScoringDefinition();
     }
 }

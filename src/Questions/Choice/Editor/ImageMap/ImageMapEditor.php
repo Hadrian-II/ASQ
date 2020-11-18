@@ -217,7 +217,7 @@ class ImageMapEditor extends AbstractEditor
             return null;
         }
 
-        return MultipleChoiceAnswer::create(explode(',', $this->getPostValue($post_name)));
+        return new MultipleChoiceAnswer(explode(',', $this->getPostValue($post_name)));
     }
 
     /**

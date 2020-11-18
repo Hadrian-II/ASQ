@@ -181,7 +181,7 @@ class EssayScoring extends AbstractScoring
                     function ($option) {
                         return $option->getScoringDefinition()->getPoints();
                     },
-                    $this->question->getAnswerOptions())
+                    $this->question->getAnswerOptions()
                 )
             );
         } else {
@@ -203,7 +203,7 @@ class EssayScoring extends AbstractScoring
             return $option->getScoringDefinition()->getText();
         }, $this->question->getAnswerOptions()));
 
-        return EssayAnswer::create($text);
+        return new EssayAnswer($text);
     }
 
     /**

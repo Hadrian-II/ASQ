@@ -21,13 +21,10 @@ class TextSubsetAnswer extends AbstractValueObject
 
     /**
      * @param array $answers
-     * @return TextSubsetAnswer
      */
-    public static function create(?array $answers = []) : TextSubsetAnswer
+    public function __construct(?array $answers = [])
     {
-        $object = new TextSubsetAnswer();
-        $object->answers = $answers;
-        return $object;
+        $this->answers = $answers;
     }
 
     /**

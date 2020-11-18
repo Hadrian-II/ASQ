@@ -46,20 +46,17 @@ class FormulaScoringVariable extends AbstractValueObject
      * @param ?float $max
      * @param ?string $unit
      * @param ?float $divisor
-     * @return FormulaScoringVariable
      */
-    public static function create(
+    public function __construct(
         ?float $min,
         ?float $max,
         ?string $unit,
         ?float $multiple_of
-    ) : FormulaScoringVariable {
-        $object = new FormulaScoringVariable();
-        $object->min = $min;
-        $object->max = $max;
-        $object->unit = $unit;
-        $object->multiple_of = $multiple_of;
-        return $object;
+    ) {
+        $this->min = $min;
+        $this->max = $max;
+        $this->unit = $unit;
+        $this->multiple_of = $multiple_of;
     }
 
     /**

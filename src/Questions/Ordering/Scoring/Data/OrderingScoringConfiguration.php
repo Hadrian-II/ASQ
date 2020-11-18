@@ -23,13 +23,10 @@ class OrderingScoringConfiguration extends AbstractValueObject
 
     /**
      * @param float $points
-     * @return OrderingScoringConfiguration
      */
-    public static function create(?float $points = null) : OrderingScoringConfiguration
+    public function __construct(?float $points = null)
     {
-        $object = new OrderingScoringConfiguration();
-        $object->points = $points;
-        return $object;
+        $this->points = $points;
     }
 
     /**

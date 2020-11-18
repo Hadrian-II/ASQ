@@ -74,7 +74,7 @@ class OrderingScoring extends AbstractScoring
             $answers[] = $i;
         }
 
-        return OrderingAnswer::create($answers);
+        return new OrderingAnswer($answers);
     }
 
     /**

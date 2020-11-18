@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Feedback;
 
-use JsonSerializable;
 use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
@@ -15,7 +14,7 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-abstract class AnswerFeedback extends AbstractValueObject implements JsonSerializable
+abstract class AnswerFeedback extends AbstractValueObject
 {
     const VAR_ANSWER_FEEDBACK_CORRECT = 'answer_feedback_correct';
     const VAR_ANSWER_FEEDBACK_WRONG = 'answer_feedback_wrong';
@@ -37,33 +36,5 @@ abstract class AnswerFeedback extends AbstractValueObject implements JsonSeriali
     public function getAnswerFeedback() : string
     {
         return $this->answer_feedback;
-    }
-
-
-    public function equals(AbstractValueObject $other) : bool
-    {
-        if (get_class($this) !== get_class($other)) {
-            return false;
-        }
-
-        if ($this->getAnswerFeedback() !== $other->getAnswerFeedback()) {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Specify data which should be serialized to JSON
-     *
-     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

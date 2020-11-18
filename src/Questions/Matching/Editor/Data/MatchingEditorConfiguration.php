@@ -62,24 +62,21 @@ class MatchingEditorConfiguration extends AbstractValueObject
      * @param ?MatchingItem[] $definitions
      * @param ?MatchingItem[] $terms
      * @param ?MatchingItem[] $matches
-     * @return MatchingEditorConfiguration
      */
-    public static function create(
+    public function __construct(
         ?int $shuffle = self::SHUFFLE_NONE,
         ?int $thumbnail_size = 100,
         ?int $matching_mode = self::MATCHING_ONE_TO_ONE,
         ?array $definitions = [],
         ?array $terms = [],
         ?array $matches = []
-    ) : MatchingEditorConfiguration {
-        $object = new MatchingEditorConfiguration();
-        $object->shuffle = $shuffle;
-        $object->thumbnail_size = $thumbnail_size;
-        $object->matching_mode = $matching_mode;
-        $object->definitions = $definitions;
-        $object->terms = $terms;
-        $object->matches = $matches;
-        return $object;
+    ) {
+        $this->shuffle = $shuffle;
+        $this->thumbnail_size = $thumbnail_size;
+        $this->matching_mode = $matching_mode;
+        $this->definitions = $definitions;
+        $this->terms = $terms;
+        $this->matches = $matches;
     }
 
     /**

@@ -23,13 +23,10 @@ class MatchingScoringConfiguration extends AbstractValueObject
 
     /**
      * @param float $wrong_deduction
-     * @return MatchingScoringConfiguration
      */
-    public static function create(?float $wrong_deduction = null) : MatchingScoringConfiguration
+    public function __construct(?float $wrong_deduction = null)
     {
-        $object = new MatchingScoringConfiguration();
-        $object->wrong_deduction = $wrong_deduction;
-        return $object;
+        $this->wrong_deduction = $wrong_deduction;
     }
 
     /**

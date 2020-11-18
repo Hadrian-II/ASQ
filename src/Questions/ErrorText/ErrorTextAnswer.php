@@ -23,13 +23,10 @@ class ErrorTextAnswer extends AbstractValueObject
 
     /**
      * @param array $selected_word_indexes
-     * @return ErrorTextAnswer
      */
-    public static function create(array $selected_word_indexes = []) : ErrorTextAnswer
+    public function __construct(array $selected_word_indexes = [])
     {
-        $object = new ErrorTextAnswer();
-        $object->selected_word_indexes = $selected_word_indexes;
-        return $object;
+        $this->selected_word_indexes = $selected_word_indexes;
     }
 
     /**

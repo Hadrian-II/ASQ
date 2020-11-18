@@ -35,25 +35,20 @@ class KprimChoiceEditorConfiguration extends AbstractValueObject
 
     /**
      * @param bool $shuffle_answers
-     * @param bool $single_line
      * @param int $thumbnail_size
      * @param string $label_true
      * @param string $label_false
-     * @return KprimChoiceEditorConfiguration
      */
-    public static function create(
-        ?bool $shuffle_answers,
-        ?int $thumbnail_size,
-        ?string $label_true,
-        ?string $label_false
-    ) : KprimChoiceEditorConfiguration {
-        $object = new KprimChoiceEditorConfiguration();
-        $object->shuffle_answers = $shuffle_answers;
-        $object->thumbnail_size = $thumbnail_size;
-        $object->label_true = $label_true;
-        $object->label_false = $label_false;
-
-        return $object;
+    public function __construct(
+        ?bool $shuffle_answers = null,
+        ?int $thumbnail_size = null,
+        ?string $label_true = null,
+        ?string $label_false = null
+    ) {
+        $this->shuffle_answers = $shuffle_answers;
+        $this->thumbnail_size = $thumbnail_size;
+        $this->label_true = $label_true;
+        $this->label_false = $label_false;
     }
 
     /**

@@ -181,7 +181,7 @@ class QuestionFeedbackFormGUI
             }
         }
 
-        return Feedback::create($feedback_correct, $feedback_wrong, $answer_option_feedback_mode, $answer_option_feedbacks);
+        return new Feedback($feedback_correct, $feedback_wrong, $answer_option_feedback_mode, $answer_option_feedbacks);
     }
 
     /**

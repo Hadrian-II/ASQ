@@ -21,11 +21,9 @@ class ErrorTextScoringConfiguration extends AbstractValueObject
      */
     protected $points_wrong;
 
-    public static function create(?float $points_wrong = null) : ErrorTextScoringConfiguration
+    public function __construct(?float $points_wrong = null)
     {
-        $object = new ErrorTextScoringConfiguration();
-        $object->points_wrong = $points_wrong;
-        return $object;
+        $this->points_wrong = $points_wrong;
     }
 
     /**

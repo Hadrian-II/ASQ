@@ -101,7 +101,7 @@ class ErrorTextScoring extends AbstractScoring
             }
         }
 
-        return ErrorTextAnswer::create($selected_word_indexes);
+        return new ErrorTextAnswer($selected_word_indexes);
     }
 
     /**

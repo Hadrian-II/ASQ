@@ -47,7 +47,7 @@ class TextSubsetScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return TextSubsetScoringConfiguration::create(
+        return new TextSubsetScoringConfiguration(
             $this->readInt($postdata[self::VAR_TEXT_MATCHING])
         );
     }
@@ -57,6 +57,6 @@ class TextSubsetScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return TextSubsetScoringConfiguration::create();
+        return new TextSubsetScoringConfiguration();
     }
 }

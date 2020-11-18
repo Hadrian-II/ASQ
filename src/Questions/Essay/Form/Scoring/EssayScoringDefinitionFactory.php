@@ -63,7 +63,7 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return EssayScoringDefinition::create(
+        return new EssayScoringDefinition(
             $values[self::VAR_TEXT],
             floatval($values[self::VAR_POINTS])
         );
@@ -74,6 +74,6 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        EssayScoringDefinition::create(null, null);
+        return new EssayScoringDefinition();
     }
 }

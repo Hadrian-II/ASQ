@@ -23,13 +23,10 @@ class EssayEditorConfiguration extends AbstractValueObject
 
     /**
      * @param int $max_length
-     * @return EssayEditorConfiguration
      */
-    public static function create(?int $max_length = null) : EssayEditorConfiguration
+    public function __construct(?int $max_length = null)
     {
-        $object = new EssayEditorConfiguration();
-        $object->max_length = $max_length;
-        return $object;
+        $this->max_length = $max_length;
     }
 
     /**

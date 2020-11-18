@@ -21,13 +21,18 @@ class KprimChoiceAnswer extends AbstractValueObject
      */
     protected $answers;
 
-    public static function create(array $answers) : KprimChoiceAnswer
+    /**
+     * @param array $answers
+     */
+    public function __construct(array $answers)
     {
-        $object = new KprimChoiceAnswer();
-        $object->answers = $answers;
-        return $object;
+        $this->answers = $answers;
     }
 
+    /**
+     * @param string $id
+     * @return bool|NULL
+     */
     public function getAnswerForId(string $id) : ?bool
     {
         return $this->answers[$id];
