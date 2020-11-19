@@ -92,7 +92,7 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
-        return ImageMapEditorDefinition::create(
+        return new ImageMapEditorDefinition(
             $values[self::VAR_TOOLTIP],
             intval($values[self::VAR_TYPE]),
             $values[self::VAR_COORDINATES]
@@ -104,6 +104,6 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ImageMapEditorDefinition::create(null, null, null);
+        return new ImageMapEditorDefinition();
     }
 }

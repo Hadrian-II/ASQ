@@ -90,7 +90,7 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
     {
         $multiple_choice = $this->readString($postdata[self::VAR_MULTIPLE_CHOICE][0]);
 
-        return ImageMapEditorConfiguration::create(
+        return new ImageMapEditorConfiguration(
             $postdata[self::VAR_IMAGE],
             $multiple_choice === self::STR_MULTICHOICE,
             $multiple_choice === self::STR_MULTICHOICE ? $this->readInt($postdata[self::VAR_MULTIPLE_CHOICE][1][self::VAR_MAX_ANSWERS]) : 1
@@ -102,6 +102,6 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return ImageMapEditorConfiguration::create(null, null, null);
+        return new ImageMapEditorConfiguration();
     }
 }

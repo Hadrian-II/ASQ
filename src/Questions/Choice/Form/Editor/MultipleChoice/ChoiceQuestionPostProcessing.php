@@ -31,7 +31,7 @@ trait ChoiceQuestionPostProcessing
                 function ($option) {
                     return new AnswerOption(
                         $option->getOptionId(),
-                        ImageAndTextDisplayDefinition::create($option->getDisplayDefinition()->getText(), ''),
+                        new ImageAndTextDisplayDefinition($option->getDisplayDefinition()->getText(), ''),
                         $option->getScoringDefinition()
                     );
                 },

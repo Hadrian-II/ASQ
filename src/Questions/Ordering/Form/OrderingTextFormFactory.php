@@ -51,10 +51,10 @@ class OrderingTextFormFactory extends QuestionFormFactory
             $words = explode(' ', $text_input);
 
             foreach ($words as $word) {
-                $options[] = AnswerOption::create(
+                $options[] = new AnswerOption(
                     strval($i),
-                    ImageAndTextDisplayDefinition::create($word, ''),
-                    EmptyDefinition::create()
+                    new ImageAndTextDisplayDefinition($word, ''),
+                    new EmptyDefinition()
                 );
 
                 $i += 1;
