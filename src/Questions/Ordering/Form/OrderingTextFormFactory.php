@@ -7,7 +7,6 @@ use ILIAS\DI\UIServices;
 use ilLanguage;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\asq\Domain\Model\Answer\Option\AnswerOptions;
 use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
@@ -62,7 +61,7 @@ class OrderingTextFormFactory extends QuestionFormFactory
             }
         }
 
-        $question->setAnswerOptions(AnswerOptions::create($options));
+        $question->setAnswerOptions($options);
 
         return $question;
     }
