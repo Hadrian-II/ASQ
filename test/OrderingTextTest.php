@@ -131,7 +131,7 @@ class OrderingTextTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'orderingtext',
             OrderingTextFormFactory::class,
             OrderingEditor::class,

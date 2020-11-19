@@ -104,7 +104,7 @@ class NumericTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'numeric',
             NumericFormFactory::class,
             NumericEditor::class,

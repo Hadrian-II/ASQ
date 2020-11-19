@@ -163,7 +163,7 @@ class TextSubsetTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'textsubset',
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,

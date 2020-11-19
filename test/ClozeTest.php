@@ -134,7 +134,7 @@ class ClozeTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'cloze',
             ClozeFormFactory::class,
             ClozeEditor::class,

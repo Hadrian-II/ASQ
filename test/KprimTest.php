@@ -133,7 +133,7 @@ class KprimTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'kprim',
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,

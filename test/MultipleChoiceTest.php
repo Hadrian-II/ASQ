@@ -170,7 +170,7 @@ class MultipleChoiceTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'multiple_choice',
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,

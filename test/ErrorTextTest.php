@@ -121,7 +121,7 @@ class ErrorTextTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'errortext',
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,

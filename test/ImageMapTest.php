@@ -170,7 +170,7 @@ class ImageMapTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'multiple_choice',
             ImageMapFormFactory::class,
             ImageMapEditor::class,

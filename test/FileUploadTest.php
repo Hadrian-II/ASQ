@@ -99,7 +99,7 @@ class FileUploadTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'fileupload',
             FileUploadFormFactory::class,
             FileUploadEditor::class,

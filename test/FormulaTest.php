@@ -166,7 +166,7 @@ class FormulaTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'formula',
             FormulaFormFactory::class,
             FormulaEditor::class,

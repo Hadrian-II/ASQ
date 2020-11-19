@@ -174,7 +174,7 @@ class EssayTest extends QuestionTestCase
      */
     public function getTypeDefinition() : QuestionType
     {
-        return new QuestionType(
+        return QuestionType::createNew(
             'essay',
             EssayFormFactory::class,
             EssayEditor::class,
