@@ -14,6 +14,7 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use ILIAS\Data\UUID\Uuid;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionDto
@@ -294,6 +295,7 @@ class QuestionDto implements JsonSerializable
     {
         $vars = get_object_vars($this);
         $vars['type'] = $this->getType()->serialize();
+        $vars['id'] = $this->getId()->toString();
         return $vars;
     }
 
@@ -304,9 +306,10 @@ class QuestionDto implements JsonSerializable
     public static function deserialize(string $json_data) : QuestionDto
     {
         $data = json_decode($json_data, true);
+        $facory = new Factory();
 
         $object = new QuestionDto();
-        $object->id = $data['id'];
+        $object->id = $facory->fromString($data['id']);
         $object->type = QuestionType::deserialize($data['type']);
         $object->answer_options = AbstractValueObject::createFromArray($data['answer_options']);
         $object->data = QuestionData::createFromArray($data['data']);

@@ -156,7 +156,7 @@ class QuestionService extends ASQService
      *
      * @param QuestionDto $question_dto
      */
-    public function saveQuestion(QuestionDto $question_dto)
+    public function saveQuestion(QuestionDto $question_dto) : void
     {
         // check changes and trigger them on question if there are any
         $question = QuestionRepository::getInstance()->getAggregateRootById($question_dto->getId());
@@ -209,5 +209,50 @@ class QuestionService extends ASQService
     public function removeQuestionType(string $form_class)
     {
         QuestionType::where(['form_class' => $form_class])->first()->delete();
+    }
+
+    /**
+     * Exports a Question as JSON
+     *
+     * @param Uuid $id
+     * @return string
+     */
+    public function exportQuestion(Uuid $id) : string
+    {
+        $question = $this->getQuestionByQuestionId($id);
+
+        return json_encode($question);
+    }
+
+    /**
+     * @param string $json
+     * @throws AsqException
+     * @return QuestionDto
+     */
+    public function importQuestion(string $json) : QuestionDto
+    {
+        $decoded = json_decode($json, true);
+
+        if (is_null($decoded)) {
+            throw new AsqException(sprintf('JSON decoding failed with message: "%s"', json_last_error_msg()));
+        }
+
+        $dto = QuestionDto::deserialize($json);
+
+        if (QuestionRepository::getInstance()->aggregateExists($dto->getId())) {
+            throw new AsqException(sprintf('Question with Id: "%s" already in the System', $dto->getId()->toString()));
+        }
+
+        $this->getCommandBus()->handle(
+            new CreateQuestionCommand(
+                $dto->getId(),
+                $dto->getType(),
+                $this->getActiveUser()
+                )
+            );
+
+        $this->saveQuestion($dto);
+
+        return $this->getQuestionByQuestionId($dto->getId());
     }
 }
