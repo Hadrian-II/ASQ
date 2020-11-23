@@ -11,6 +11,7 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
+use function PHPUnit\Framework\isNull;
 
 /**
  * Class QuestionFeedbackFormGUI
@@ -118,7 +119,7 @@ class QuestionFeedbackFormGUI
                         $this->language->txt('asq_option_feedback_correct')
                     );
 
-            if (!is_null($this->feedback)) {
+            if (!is_null($this->feedback) && !is_null($this->feedback->getAnswerOptionFeedbackMode())) {
                 $feedback_setting = $feedback_setting->withValue(self::USELESS_PREFIX . strval($this->feedback->getAnswerOptionFeedbackMode()));
             }
 
@@ -166,7 +167,9 @@ class QuestionFeedbackFormGUI
 
         $feedback_correct = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_CORRECT]);
         $feedback_wrong = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_WRONG]);
-        $answer_option_feedback_mode = $this->readInt(substr($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE], strlen(self::USELESS_PREFIX)));
+        if (! empty($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE])) {
+            $answer_option_feedback_mode = $this->readInt(substr($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE], strlen(self::USELESS_PREFIX)));
+        }
         $answer_option_feedbacks = [];
 
         if ($this->question_dto->hasAnswerOptions()) {
