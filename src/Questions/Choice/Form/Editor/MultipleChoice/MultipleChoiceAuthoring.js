@@ -47,7 +47,7 @@
             return;
         }
 
-        if ($('select[name=form_input_9]').val() === 'false') {
+        if ($('select[name=form_input_8]').val() === 'false') {
             showMultilineEditor();
         } else {
             hideMultilineEditor();
@@ -55,10 +55,8 @@
     }
 
     $(window).load(() => {
-        if ($('select[name=form_input_9]').length > 0) {
-            updateEditor();
-        }
+        updateEditor();
     });
 
-    $(document).on('change', 'select[name=form_input_9]', updateEditor);
+    $(document).on('change', 'select[name=form_input_8]', updateEditor);
 }(jQuery));

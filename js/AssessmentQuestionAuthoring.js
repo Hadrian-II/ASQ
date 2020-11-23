@@ -1,11 +1,15 @@
 const asqAuthoring = (function () {
     let hasTiny;
-    const tinySettings = {
+    let tinySettings = {
         selector: 'textarea',
         menubar: false
     };
 
     function clearTiny(selector = null) {
+    	if (selector) {
+    		tinySettings.selector = 'textarea, ' + selector;
+    	}
+    
         let i;
         const editors = tinymce.editors.map((x) => x);
         for (i = 0; i < editors.length; i += 1) {

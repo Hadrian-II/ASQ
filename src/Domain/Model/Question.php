@@ -21,6 +21,7 @@ use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class Question
@@ -232,18 +233,8 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      */
     public function setAnswerOptions(?array $options, int $creator_id)
     {
-        if (is_null($options) ||
-            (!is_null($this->answer_options) && count($options) !== count($this->answer_options))) {
+        if (AbstractValueObject::isNullableArrayEqual($options, $this->answer_options)) {
             return;
-        }
-
-        if (!is_null($this->answer_options)) {
-            for ($i = 0; $i < count($options); $i += 1) {
-                if (!$options[$i]->equals($this->answer_options[$i]))
-                {
-                    return;
-                }
-            }
         }
 
         $this->ExecuteEvent(new QuestionAnswerOptionsSetEvent(

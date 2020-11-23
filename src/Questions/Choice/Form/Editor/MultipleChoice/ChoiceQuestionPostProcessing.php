@@ -39,7 +39,6 @@ trait ChoiceQuestionPostProcessing
             );
 
             $question->setAnswerOptions($stripped_options);
-            $this->option_form->setAnswerOptions($stripped_options);
         }
 
         return $question;
