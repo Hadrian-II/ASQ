@@ -84,7 +84,7 @@ class AsqImageUpload extends Input
     /**
      * @return string
      */
-    public function readValue(InputData $input) : string
+    public function readValue(InputData $input) : ?string
     {
         $image_uploader = new ImageUploader();
 

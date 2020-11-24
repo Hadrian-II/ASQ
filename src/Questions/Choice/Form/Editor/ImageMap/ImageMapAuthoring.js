@@ -362,7 +362,7 @@
             $previewCanvas[0].width = previewImage.width();
             $previewCanvas[0].height = previewImage.height();
             $previewCanvas.css('bottom', previewImage.css('marginBottom'));
-            $previewCanvas.css('left', previewImage.parents('.col-sm-9').css('paddingLeft'));
+            $previewCanvas.css('left', '0px');
             previewImage.after($previewCanvas);
         }
     }
