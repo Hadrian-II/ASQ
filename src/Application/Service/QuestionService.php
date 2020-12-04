@@ -204,11 +204,11 @@ class QuestionService extends ASQService
     /**
      * Remova an existing question type
      *
-     * @param string $form_class
+     * @param string $title_key
      */
-    public function removeQuestionType(string $form_class)
+    public function removeQuestionType(string $title_key)
     {
-        QuestionType::where(['form_class' => $form_class])->first()->delete();
+        QuestionType::where(['$title_key' => $title_key])->first()->delete();
     }
 
     /**
