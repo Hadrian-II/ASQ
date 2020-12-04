@@ -61,7 +61,7 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
-            QuestionData::create(
+            new QuestionData(
                 $row['title'] ?? '',
                 $row['text'] ?? '',
                 $row['author'] ?? '',

@@ -72,7 +72,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
-            Feedback::create(
+            new Feedback(
                 $row['f.feedback_correct'],
                 $row['f.feedback_wrong'],
                 intval($row['f.answer_feedback_type']),

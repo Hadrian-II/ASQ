@@ -87,7 +87,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
 
         if ($value !== null) {
-            $cloze_text = $cloze_text->withValue($value->getClozeText());
+            $cloze_text = $cloze_text->withValue($value->getClozeText() ?? '');
         }
 
         $fields[self::VAR_CLOZE_TEXT] = $cloze_text;

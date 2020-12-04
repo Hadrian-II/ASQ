@@ -64,6 +64,15 @@ class QuestionType extends ActiveRecord
      * @con_is_notnull true
      */
     protected $scoring_class;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     128
+     * @con_is_notnull true
+     */
+    protected $storage_class;
 
     /**
      * @param string $title_key
@@ -76,13 +85,15 @@ class QuestionType extends ActiveRecord
         string $title_key = '',
         string $factory_class = '',
         string $editor_class = '',
-        string $scoring_class = ''
+        string $scoring_class = '',
+        string $storage_class = ''
     ) : QuestionType {
         $object = new QuestionType();
         $object->title_key = $title_key;
         $object->factory_class = $factory_class;
         $object->editor_class = $editor_class;
         $object->scoring_class = $scoring_class;
+        $object->storage_class = $storage_class;
         return $object;
     }
 
@@ -121,6 +132,14 @@ class QuestionType extends ActiveRecord
     /**
      * @return string
      */
+    public function getStorageClass() : string
+    {
+        return $this->storage_class;
+    }
+
+    /**
+     * @return string
+     */
     public static function returnDbTableName()
     {
         return self::STORAGE_NAME;
@@ -130,6 +149,7 @@ class QuestionType extends ActiveRecord
     const FORM_FACOTRY = 'form_factory';
     const EDITOR = 'editor';
     const SCORING = 'scoring';
+    const STORAGE = 'storage';
 
     /**
      * @return array
@@ -141,6 +161,7 @@ class QuestionType extends ActiveRecord
         $data[self::FORM_FACOTRY] = $this->getFactoryClass();
         $data[self::EDITOR] = $this->getEditorClass();
         $data[self::SCORING] = $this->getScoringClass();
+        $data[self::STORAGE] = $this->getStorageClass();
         return $data;
     }
 
@@ -154,7 +175,8 @@ class QuestionType extends ActiveRecord
             $data[self::KEY],
             $data[self::FORM_FACOTRY],
             $data[self::EDITOR],
-            $data[self::SCORING]
+            $data[self::SCORING],
+            $data[self::STORAGE]
         );
     }
 }

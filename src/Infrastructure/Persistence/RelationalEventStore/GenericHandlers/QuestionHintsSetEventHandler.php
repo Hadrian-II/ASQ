@@ -57,14 +57,14 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
         $hints = [];
         while ($row = $this->db->fetchAssoc($res))
         {
-            $hints[] = QuestionHint::create($row['hint_id'], $row['content'], floatval($row['deduction']));
+            $hints[] = new QuestionHint($row['hint_id'], $row['content'], floatval($row['deduction']));
         }
 
         return new QuestionHintsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
-            QuestionHints::create($hints)
+            new QuestionHints($hints)
        );
     }
 }

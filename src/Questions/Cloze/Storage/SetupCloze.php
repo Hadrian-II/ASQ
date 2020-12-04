@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup;
+namespace srag\asq\Questions\Cloze\Storage;
 
-use ilDBInterface;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\AbstractQuestionDBSetup;
 
 /**
  * Class SetupCloze
@@ -14,29 +14,13 @@ use ilDBInterface;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class SetupCloze
+class SetupCloze extends AbstractQuestionDBSetup
 {
     const TABLENAME_CLOZE_CONFIGURATION = 'rqes_cloze_config';
     const TABLENAME_CLOZE_GAP = 'rqes_cloze_gap';
     const TABLENAME_CLOZE_GAP_ITEM = 'rqes_cloze_item';
 
-    /**
-     * @var ilDBInterface
-     */
-    private $db;
-
-    /**
-     * @param ilDBInterface $db
-     */
-    public function __construct(ilDBInterface $db)
-    {
-        $this->db = $db;
-    }
-
-    /**
-     *
-     */
-    public function setup()
+    public function setup() : void
     {
         $this->db->createTable(
             self::TABLENAME_CLOZE_CONFIGURATION,
@@ -81,7 +65,7 @@ class SetupCloze
         $this->db->addIndex(self::TABLENAME_CLOZE_GAP_ITEM, ['gap_id'], 'i2');
     }
 
-    public function drop()
+    public function drop() : void
     {
         $this->db->dropTable(self::TABLENAME_CLOZE_CONFIGURATION, false);
         $this->db->dropTable(self::TABLENAME_CLOZE_GAP, false);

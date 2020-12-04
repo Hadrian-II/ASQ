@@ -19,9 +19,9 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\Agg
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionDataSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionFeedbackSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionHintsSetEventHandler;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozeAnswerOptionsSetEventHandler;
-use srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers\ClozePlayConfigurationSetEventHandler;
 use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
+use srag\asq\Questions\Cloze\Storage\ClozeAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -235,6 +235,25 @@ class RelationalQuestionEventStore implements IEventStore
         }
 
         return $events;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\CQRS\Event\IEventStore::aggregateExists()
+     */
+    public function aggregateExists(Uuid $id): bool
+    {
+        global $DIC;
+
+        $sql = sprintf(
+            'SELECT Count(*) as count FROM %s where aggregate_id = %s',
+            self::TABLE_NAME,
+            $DIC->database()->quote($id->toString(), 'string')
+            );
+
+        $res = $DIC->database()->query($sql);
+
+        return $DIC->database()->fetchAssoc($res)['count'] > 0;
     }
 
     /**

@@ -59,7 +59,7 @@ trait InputHandlingTrait
      * @param string $value
      * @return ?float
      */
-    protected function readFloat(string $value) : ?float
+    protected function readFloat(?string $value) : ?float
     {
         if (empty($value) ||
             !is_numeric($value)) {
@@ -75,7 +75,7 @@ trait InputHandlingTrait
      * @param string $value
      * @return ?int
      */
-    protected function readInt(string $value) : ?int
+    protected function readInt(?string $value) : ?int
     {
         if (empty($value) ||
             !is_numeric($value)) {
@@ -89,7 +89,7 @@ trait InputHandlingTrait
      * @param string $postvar
      * @return ?string
      */
-    protected function readString(string $value) : ?string
+    protected function readString(?string $value) : ?string
     {
         return $this->getInputPurifier()->purify($value);
     }

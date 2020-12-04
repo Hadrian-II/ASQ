@@ -46,6 +46,9 @@ use srag\asq\Questions\TextSubset\Form\TextSubsetFormFactory;
 use srag\asq\Questions\TextSubset\Scoring\TextSubsetScoring;
 use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
 use srag\asq\Application\Service\ASQServices;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\SetupRQES;
+use ilDBInterface;
+use srag\asq\Questions\Cloze\Storage\ClozeStorage;
 
 /**
  * Class SetupDatabase
@@ -74,11 +77,18 @@ class SetupDatabase
      */
     private $asq;
 
+    /**
+     * @var ilDBInterface
+     */
+    private $db;
+
     private function __construct()
     {
         global $ASQDIC;
+        global $DIC;
 
         $this->asq = $ASQDIC->asq();
+        $this->db = $DIC->database();
     }
 
 
@@ -90,7 +100,6 @@ class SetupDatabase
 
     public function run() : void
     {
-        QuestionEventStoreAr::updateDB();
         QuestionListItemAr::updateDB();
         QuestionAr::updateDB();
         SimpleStoredAnswer::updateDB();
@@ -98,6 +107,9 @@ class SetupDatabase
         QuestionType::truncateDB();
 
         $this->addQuestionTypes();
+
+        $rqes_setup = new SetupRQES($this->db);
+        $rqes_setup->setup();
     }
 
     private function addQuestionTypes() : void
@@ -106,98 +118,112 @@ class SetupDatabase
             self::SINGLE_CHOICE,
             SingleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
-            MultipleChoiceScoring::class
+            MultipleChoiceScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::MULTIPLE_CHOICE,
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
-            MultipleChoiceScoring::class
+            MultipleChoiceScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::KPRIM,
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,
-            KprimChoiceScoring::class
+            KprimChoiceScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::ERROR_TEXT,
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,
-            ErrorTextScoring::class
+            ErrorTextScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::IMAGE_MAP,
             ImageMapFormFactory::class,
             ImageMapEditor::class,
-            MultipleChoiceScoring::class
+            MultipleChoiceScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::CLOZE,
             ClozeFormFactory::class,
             ClozeEditor::class,
-            ClozeScoring::class
+            ClozeScoring::class,
+            ClozeStorage::class
         );
 
         $this->asq->question()->addQuestionType(
             self::NUMERIC,
             NumericFormFactory::class,
             NumericEditor::class,
-            NumericScoring::class
+            NumericScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::FORMULA,
             FormulaFormFactory::class,
             FormulaEditor::class,
-            FormulaScoring::class
+            FormulaScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::TEXT_SUBSET,
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,
-            TextSubsetScoring::class
+            TextSubsetScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::ORDERING,
             OrderingFormFactory::class,
             OrderingEditor::class,
-            OrderingScoring::class
+            OrderingScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::MATCHING,
             MatchingFormFactory::class,
             MatchingEditor::class,
-            MatchingScoring::class
+            MatchingScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::ESSAY,
             EssayFormFactory::class,
             EssayEditor::class,
-            EssayScoring::class
+            EssayScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::FILE_UPLOAD,
             FileUploadFormFactory::class,
             FileUploadEditor::class,
-            FileUploadScoring::class
+            FileUploadScoring::class,
+            ''
         );
 
         $this->asq->question()->addQuestionType(
             self::ORDERING_TEXT,
             OrderingTextFormFactory::class,
             OrderingEditor::class,
-            OrderingScoring::class
+            OrderingScoring::class,
+            ''
         );
     }
 
@@ -210,5 +236,8 @@ class SetupDatabase
         $DIC->database()->dropTable(QuestionAr::STORAGE_NAME, false);
         $DIC->database()->dropTable(SimpleStoredAnswer::STORAGE_NAME, false);
         $DIC->database()->dropTable(QuestionType::STORAGE_NAME, false);
+
+        $rqes_setup = new SetupRQES($this->db);
+        $rqes_setup->drop();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\QuestionHandlers;
+namespace srag\asq\Questions\Cloze\Storage;
 
 use ilDateTime;
 use srag\CQRS\Event\DomainEvent;

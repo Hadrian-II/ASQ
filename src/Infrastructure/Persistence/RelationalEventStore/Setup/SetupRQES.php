@@ -5,6 +5,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup;
 
 use ilDBInterface;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
+use srag\asq\Questions\Cloze\Storage\SetupCloze;
 
 /**
  * Class SetupRQES
