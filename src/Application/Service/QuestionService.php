@@ -121,7 +121,7 @@ class QuestionService extends ASQService
      * @param string $name
      * @param Uuid $question_id
      */
-    public function createQuestionRevision(string $name, Uuid $question_id)
+    public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
         $this->getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }
@@ -206,7 +206,7 @@ class QuestionService extends ASQService
      *
      * @param string $title_key
      */
-    public function removeQuestionType(string $title_key)
+    public function removeQuestionType(string $title_key) : void
     {
         QuestionType::where(['$title_key' => $title_key])->first()->delete();
     }
