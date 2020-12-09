@@ -25,20 +25,20 @@ class SetupCloze extends AbstractQuestionDBSetup
         $this->db->createTable(
             self::TABLENAME_CLOZE_CONFIGURATION,
             [
-                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'cloze_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'text' => ['type' => 'text']
             ]
             );
-        $this->db->addPrimaryKey(self::TABLENAME_CLOZE_CONFIGURATION,['id']);
+        $this->db->addPrimaryKey(self::TABLENAME_CLOZE_CONFIGURATION,['cloze_id']);
         $this->db->createSequence(self::TABLENAME_CLOZE_CONFIGURATION);
-        $this->db->addIndex(self::TABLENAME_CLOZE_CONFIGURATION, ['id'], 'i1');
+        $this->db->addIndex(self::TABLENAME_CLOZE_CONFIGURATION, ['cloze_id'], 'i1');
         $this->db->addIndex(self::TABLENAME_CLOZE_CONFIGURATION, ['event_id'], 'i2');
 
         $this->db->createTable(
             self::TABLENAME_CLOZE_GAP,
             [
-                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'gap_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'cloze_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'gap_type' => ['type' => 'text','length' => 16,'notnull' => true],
                 'field_length' => ['type' => 'integer', 'length' => 4],
@@ -46,20 +46,20 @@ class SetupCloze extends AbstractQuestionDBSetup
                 'value' => ['type' => 'float'],
                 'upper' => ['type' => 'float'],
                 'lower' => ['type' => 'float'],
-                'points' => ['type' => 'float']
+                'gap_points' => ['type' => 'float']
             ]
             );
-        $this->db->addPrimaryKey(self::TABLENAME_CLOZE_GAP,['id']);
+        $this->db->addPrimaryKey(self::TABLENAME_CLOZE_GAP,['gap_id']);
         $this->db->createSequence(self::TABLENAME_CLOZE_GAP);
-        $this->db->addIndex(self::TABLENAME_CLOZE_GAP, ['id'], 'i1');
+        $this->db->addIndex(self::TABLENAME_CLOZE_GAP, ['gap_id'], 'i1');
         $this->db->addIndex(self::TABLENAME_CLOZE_GAP, ['cloze_id'], 'i2');
 
         $this->db->createTable(
             self::TABLENAME_CLOZE_GAP_ITEM,
             [
                 'gap_id' => ['type' => 'integer','length' => 4,'notnull' => true],
-                'text' => ['type' => 'text', 'length' => 128],
-                'points' => ['type' => 'float']
+                'item_text' => ['type' => 'text', 'length' => 128],
+                'item_points' => ['type' => 'float']
             ]
             );
         $this->db->addIndex(self::TABLENAME_CLOZE_GAP_ITEM, ['gap_id'], 'i2');

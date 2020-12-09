@@ -4,7 +4,7 @@
     const TYPE_TEXT = 'clz_text';
     const FORM_INPUT = 'form_input';
     
-    const clozeRegex = /{[^}]*}/g;
+    const clozeRegex = /├[^}]*┤/g;
 
     function updateGapNames($gap_item) {
         $gap_item.find('select, input').each((ix, item) => {
@@ -77,7 +77,7 @@
         const text = clozeText.val();
         const beforeCursor = text.substring(0, cursor);
         const afterCursor = text.substring(cursor);
-        clozeText.val(`${beforeCursor}{${gapIndex}}${afterCursor}`);
+        clozeText.val(`${beforeCursor}├${gapIndex}┤${afterCursor}`);
 
         const lastNonGap = clozeText.parents('.form-group');
         lastNonGap.siblings('.il-standard-form-footer').before(createNewGap(gapIndex));

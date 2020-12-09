@@ -43,7 +43,7 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
 
         $cloze_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_CONFIGURATION));
         $this->db->insert(SetupCloze::TABLENAME_CLOZE_CONFIGURATION, [
-            'id' => ['integer', $cloze_id],
+            'cloze_id' => ['integer', $cloze_id],
             'event_id' => ['integer', $event_id],
             'text' => ['clob', $cloze_config->getClozeText()]
         ]);
@@ -80,7 +80,7 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
         $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'id' => ['integer', $gap_id],
+            'gap_id' => ['integer', $gap_id],
             'cloze_id' => ['integer', $cloze_id],
             'gap_type' => ['text', ClozeGapConfiguration::TYPE_TEXT],
             'field_length' => ['integer', $gap->getFieldLength()],
@@ -98,7 +98,7 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
         $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'id' => ['integer', $gap_id],
+            'gap_id' => ['integer', $gap_id],
             'cloze_id' => ['integer', $cloze_id],
             'gap_type' => ['text', ClozeGapConfiguration::TYPE_DROPDOWN]
         ]);
@@ -115,8 +115,8 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
         foreach ($items as $item) {
             $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP_ITEM, [
                 'gap_id' => ['integer', $gap_id],
-                'text' => ['text', $item->getText()],
-                'points' => ['float', $item->getPoints()]
+                'item_text' => ['text', $item->getText()],
+                'item_points' => ['float', $item->getPoints()]
             ]);
         }
     }
@@ -129,7 +129,7 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
         $this->db->insert(SetupCloze::TABLENAME_CLOZE_GAP, [
-            'id' => ['integer', $gap_id],
+            'gap_id' => ['integer', $gap_id],
             'cloze_id' => ['integer', $cloze_id],
             'gap_type' => ['text', ClozeGapConfiguration::TYPE_NUMBER],
             'field_length' => ['integer', $gap->getFieldLength()],
@@ -149,8 +149,8 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
         $res = $this->db->query(
             sprintf(
                 'select * from ' . SetupCloze::TABLENAME_CLOZE_CONFIGURATION .' c
-                 inner join ' . SetupCloze::TABLENAME_CLOZE_GAP .' g on c.id = g.cloze_id
-                 inner join ' . SetupCloze::TABLENAME_CLOZE_GAP_ITEM . ' i on g.id = i.gap_id
+                 left join ' . SetupCloze::TABLENAME_CLOZE_GAP .' g on c.cloze_id = g.cloze_id
+                 left join ' . SetupCloze::TABLENAME_CLOZE_GAP_ITEM . ' i on g.gap_id = i.gap_id
                  where c.event_id = %s',
                 $this->db->quote($data['id'], 'int')
             )
@@ -160,24 +160,19 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
         $cloze_text = '';
         while ($row = $this->db->fetchAssoc($res))
         {
-            $cloze_id = $row['c.id'];
-            $gap_id = $row['g.id'] ?? self::DEFAULT_GAP;
+            $gap_id = $row['gap_id'] ?? self::DEFAULT_GAP;
 
-            if (!array_key_exists($cloze_id, $items)) {
-                $cloze_text = $row['c.text'];
-                $items[$cloze_id] = [];
-            }
-            if (!array_key_exists($gap_id, $items[$cloze_id])) {
-                $items[$cloze_id][$gap_id] = [];
+            if (!array_key_exists($gap_id, $items)) {
+                $items[$gap_id] = [];
             }
 
-            $items[$cloze_id][$gap_id] = $row;
+            $items[$gap_id][] = $row;
         }
 
         $gaps = [];
 
         foreach ($items as $gap) {
-            switch (current($gap)['g.gap_type']) {
+            switch (current($gap)['gap_type']) {
                 case ClozeGapConfiguration::TYPE_DROPDOWN:
                     $gaps[] = $this->createSelectGap($gap);
                     break;
@@ -220,8 +215,8 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
 
         return new TextGapConfiguration(
             $this->createGapItems($gap),
-            intval($data['g.field_length']),
-            intval($data['g.text_match_method']));
+            intval($data['field_length']),
+            intval($data['text_match_method']));
     }
 
     /**
@@ -231,7 +226,7 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
     private function createGapItems(array $gap_items) : array
     {
         return array_map(function($item) {
-            return new ClozeGapItem($item['i.text'], floatval($item['i.points']));
+            return new ClozeGapItem($item['item_text'], floatval($item['item_points']));
         }, $gap_items);
     }
 
@@ -244,10 +239,10 @@ class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
         $data = reset($gap);
 
         return new NumericGapConfiguration(
-            floatval($data['g.value']),
-            floatval($data['g.upper']),
-            floatval($data['g.lower']),
-            floatval($data['g.points']),
-            intval($data['g.field_length']));
+            floatval($data['value']),
+            floatval($data['upper']),
+            floatval($data['lower']),
+            floatval($data['gap_points']),
+            intval($data['field_length']));
     }
 }
