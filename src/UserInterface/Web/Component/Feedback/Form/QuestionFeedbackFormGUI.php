@@ -95,8 +95,8 @@ class QuestionFeedbackFormGUI
         $feedback_wrong = $this->ui->factory()->input()->field()->textarea($this->language->txt('asq_input_feedback_wrong'));
 
         if (!is_null($this->feedback)) {
-            $feedback_correct = $feedback_correct->withValue($this->feedback->getAnswerCorrectFeedback());
-            $feedback_wrong = $feedback_wrong->withValue($this->feedback->getAnswerWrongFeedback());
+            $feedback_correct = $feedback_correct->withValue($this->feedback->getAnswerCorrectFeedback() ?? '');
+            $feedback_wrong = $feedback_wrong->withValue($this->feedback->getAnswerWrongFeedback() ?? '');
         }
 
         $fields[self::VAR_ANSWER_FEEDBACK_CORRECT] = $feedback_correct;

@@ -31,7 +31,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
 
         $feedback_id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK);
         $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, [
-            'id' => ['integer' => $feedback_id],
+            'id' => ['integer', $feedback_id],
             'event_id' => ['integer', $event_id],
             'feedback_correct' => ['clob', $feedback->getAnswerCorrectFeedback()],
             'feedback_wrong' => ['clob', $feedback->getAnswerWrongFeedback()],
@@ -55,17 +55,25 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
     {
         $res = $this->db->query(
             sprintf(
-                'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' as f
-                 inner join' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' as af on f.feedback_id = af.feedback_id
+                'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' f
+                 left join ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' af on f.id = af.feedback_id
                  where f.event_id = %s',
                 $this->db->quote($data['id'], 'int')
                 )
             );
 
         $answer_feedback = [];
+        $first = true;
+        $feedback_correct = '';
+        $feedback_wrong = '';
         while ($row = $this->db->fetchAssoc($res))
         {
-            $answer_feedback[$row['af.answer_id']] = $row['af.content'];
+            if ($first) {
+                $feedback_correct = $row['feedback_correct'];
+                $feedback_wrong = $row['feedback_wrong'];
+                $first = false;
+            }
+            $answer_feedback[$row['answer_id']] = $row['content'];
         }
 
         return new QuestionFeedbackSetEvent(
@@ -73,9 +81,9 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new Feedback(
-                $row['f.feedback_correct'],
-                $row['f.feedback_wrong'],
-                intval($row['f.answer_feedback_type']),
+                $feedback_correct,
+                $feedback_wrong,
+                intval($row['answer_feedback_type']),
                 $answer_feedback
             )
         );
