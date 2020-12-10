@@ -22,6 +22,8 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\Que
 use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
 use srag\asq\Questions\Cloze\Storage\ClozeAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHandler;
+use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -68,6 +70,14 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::CLOZE => [
             QuestionAnswerOptionsSetEvent::class => ClozeAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => ClozePlayConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::SINGLE_CHOICE => [
+            QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => MultipleChoiceConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::MULTIPLE_CHOICE => [
+            QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => MultipleChoiceConfigurationSetEventHandler::class
         ]
     ];
 

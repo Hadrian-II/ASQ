@@ -6,6 +6,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup;
 use ilDBInterface;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 use srag\asq\Questions\Cloze\Storage\SetupCloze;
+use srag\asq\Questions\Choice\Storage\MultipleChoice\SetupMultipleChoice;
 
 /**
  * Class SetupRQES
@@ -19,7 +20,8 @@ use srag\asq\Questions\Cloze\Storage\SetupCloze;
 class SetupRQES
 {
     const QUESTION_TYPES = [
-        SetupCloze::class
+        SetupCloze::class,
+        SetupMultipleChoice::class
     ];
 
     /**

@@ -49,6 +49,7 @@ use srag\asq\Application\Service\ASQServices;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\SetupRQES;
 use ilDBInterface;
 use srag\asq\Questions\Cloze\Storage\ClozeStorage;
+use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceStorage;
 
 /**
  * Class SetupDatabase
@@ -119,7 +120,7 @@ class SetupDatabase
             SingleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class,
-            ''
+            MultipleChoiceStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -127,7 +128,7 @@ class SetupDatabase
             MultipleChoiceFormFactory::class,
             MultipleChoiceEditor::class,
             MultipleChoiceScoring::class,
-            ''
+            MultipleChoiceStorage::class
         );
 
         $this->asq->question()->addQuestionType(
