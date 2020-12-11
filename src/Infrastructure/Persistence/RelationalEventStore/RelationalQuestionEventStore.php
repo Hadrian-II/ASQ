@@ -24,6 +24,8 @@ use srag\asq\Questions\Cloze\Storage\ClozeAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHandler;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceConfigurationSetEventHandler;
+use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -78,6 +80,10 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::MULTIPLE_CHOICE => [
             QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => MultipleChoiceConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::IMAGE_MAP => [
+            QuestionAnswerOptionsSetEvent::class => ImageMapAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => ImageMapConfigurationSetEventHandler::class
         ]
     ];
 

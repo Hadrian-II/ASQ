@@ -50,6 +50,7 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\SetupRQES;
 use ilDBInterface;
 use srag\asq\Questions\Cloze\Storage\ClozeStorage;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceStorage;
+use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapStorage;
 
 /**
  * Class SetupDatabase
@@ -152,7 +153,7 @@ class SetupDatabase
             ImageMapFormFactory::class,
             ImageMapEditor::class,
             MultipleChoiceScoring::class,
-            ''
+            ImageMapStorage::class
         );
 
         $this->asq->question()->addQuestionType(

@@ -7,6 +7,7 @@ use ilDBInterface;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 use srag\asq\Questions\Cloze\Storage\SetupCloze;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\SetupMultipleChoice;
+use srag\asq\Questions\Choice\Storage\ImageMap\SetupImageMap;
 
 /**
  * Class SetupRQES
@@ -21,7 +22,8 @@ class SetupRQES
 {
     const QUESTION_TYPES = [
         SetupCloze::class,
-        SetupMultipleChoice::class
+        SetupMultipleChoice::class,
+        SetupImageMap::class
     ];
 
     /**
