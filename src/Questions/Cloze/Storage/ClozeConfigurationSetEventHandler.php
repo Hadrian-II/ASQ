@@ -21,7 +21,7 @@ use function srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHand
 use function srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHandler\storeTextGap;
 
 /**
- * Class ClozePlayConfigurationSetEventHandler
+ * Class ClozeConfigurationSetEventHandler
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -29,7 +29,7 @@ use function srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHand
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozePlayConfigurationSetEventHandler extends AbstractEventStorageHandler
+class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
     const DEFAULT_GAP = -1;
 

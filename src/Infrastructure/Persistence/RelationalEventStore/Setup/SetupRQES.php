@@ -8,6 +8,7 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
 use srag\asq\Questions\Cloze\Storage\SetupCloze;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\SetupMultipleChoice;
 use srag\asq\Questions\Choice\Storage\ImageMap\SetupImageMap;
+use srag\asq\Questions\ErrorText\Storage\SetupErrorText;
 
 /**
  * Class SetupRQES
@@ -23,7 +24,8 @@ class SetupRQES
     const QUESTION_TYPES = [
         SetupCloze::class,
         SetupMultipleChoice::class,
-        SetupImageMap::class
+        SetupImageMap::class,
+        SetupErrorText::class
     ];
 
     /**

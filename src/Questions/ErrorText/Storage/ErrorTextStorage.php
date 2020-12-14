@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Questions\Cloze\Storage;
+namespace srag\asq\Questions\ErrorText\Storage;
 
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\IQuestionStorage;
 
 /**
- * Class ClozeStorage
+ * Class ErrorTextStorage
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -14,20 +14,20 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\IQuestionStorage;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ClozeStorage implements IQuestionStorage
+class ErrorTextStorage implements IQuestionStorage
 {
     public function getPlayConfigurationHandler(): string
     {
-        return ClozeConfigurationSetEventHandler::class;
+        return ErrorTextConfigurationSetEventHandler::class;
     }
 
     public function getAnswerOptionHandler(): string
     {
-        return ClozeAnswerOptionsSetEventHandler::class;
+        return ErrorTextAnswerOptionsSetEventHandler::class;
     }
 
     public function getSetup(): string
     {
-        return SetupCloze::class;
+        return SetupErrorText::class;
     }
 }

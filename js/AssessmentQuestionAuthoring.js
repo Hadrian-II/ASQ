@@ -1,13 +1,13 @@
 const asqAuthoring = (function () {
     let hasTiny;
     let tinySettings = {
-        selector: 'textarea',
+        selector: '[name=form_input_5]',
         menubar: false
     };
 
     function clearTiny(selector = null) {
     	if (selector) {
-    		tinySettings.selector = 'textarea, ' + selector;
+    		tinySettings.selector = '[name=form_input_5], ' + selector;
     	}
     
         let i;

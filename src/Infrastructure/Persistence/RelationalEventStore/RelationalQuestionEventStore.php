@@ -21,11 +21,13 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\Que
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionHintsSetEventHandler;
 use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
 use srag\asq\Questions\Cloze\Storage\ClozeAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Cloze\Storage\ClozePlayConfigurationSetEventHandler;
+use srag\asq\Questions\Cloze\Storage\ClozeConfigurationSetEventHandler;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceConfigurationSetEventHandler;
 use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapConfigurationSetEventHandler;
+use srag\asq\Questions\ErrorText\Storage\ErrorTextAnswerOptionsSetEventHandler;
+use srag\asq\Questions\ErrorText\Storage\ErrorTextConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -71,7 +73,7 @@ class RelationalQuestionEventStore implements IEventStore
     const TYPE_HANDLERS = [
         SetupDatabase::CLOZE => [
             QuestionAnswerOptionsSetEvent::class => ClozeAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => ClozePlayConfigurationSetEventHandler::class
+            QuestionPlayConfigurationSetEvent::class => ClozeConfigurationSetEventHandler::class
         ],
         SetupDatabase::SINGLE_CHOICE => [
             QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
@@ -84,6 +86,10 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::IMAGE_MAP => [
             QuestionAnswerOptionsSetEvent::class => ImageMapAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => ImageMapConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::ERROR_TEXT => [
+            QuestionAnswerOptionsSetEvent::class => ErrorTextAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => ErrorTextConfigurationSetEventHandler::class
         ]
     ];
 
