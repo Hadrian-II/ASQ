@@ -9,6 +9,7 @@ use srag\asq\Questions\Cloze\Storage\SetupCloze;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\SetupMultipleChoice;
 use srag\asq\Questions\Choice\Storage\ImageMap\SetupImageMap;
 use srag\asq\Questions\ErrorText\Storage\SetupErrorText;
+use srag\asq\Questions\Essay\Storage\SetupEssay;
 
 /**
  * Class SetupRQES
@@ -25,7 +26,8 @@ class SetupRQES
         SetupCloze::class,
         SetupMultipleChoice::class,
         SetupImageMap::class,
-        SetupErrorText::class
+        SetupErrorText::class,
+        SetupEssay::class
     ];
 
     /**

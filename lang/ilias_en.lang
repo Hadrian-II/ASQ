@@ -156,6 +156,7 @@ label_user_true#:#Label for 'TRUE'
 label_user_false#:#Label for 'FALSE'
 label_error_text#:#Error Text
 label_text_size#:#Text Size
+label_text#:#Text
 label_points_wrong#:#Wrong Selections
 label_wrong_text#:#Wrong Text
 label_correct_text#:#Correct Text

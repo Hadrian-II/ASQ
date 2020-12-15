@@ -28,6 +28,8 @@ use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapAnswerOptionsSetEventHand
 use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapConfigurationSetEventHandler;
 use srag\asq\Questions\ErrorText\Storage\ErrorTextAnswerOptionsSetEventHandler;
 use srag\asq\Questions\ErrorText\Storage\ErrorTextConfigurationSetEventHandler;
+use srag\asq\Questions\Essay\Storage\EssayAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Essay\Storage\EssayConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -90,7 +92,11 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::ERROR_TEXT => [
             QuestionAnswerOptionsSetEvent::class => ErrorTextAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => ErrorTextConfigurationSetEventHandler::class
-        ]
+        ],
+        SetupDatabase::ESSAY => [
+            QuestionAnswerOptionsSetEvent::class => EssayAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => EssayConfigurationSetEventHandler::class
+        ],
     ];
 
     /**

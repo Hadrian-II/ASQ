@@ -156,6 +156,7 @@ label_user_true#:#Bezeichnung für "WAHR"
 label_user_false#:#Bezeichnung für "FALSCH"
 label_error_text#:#Fehler/Worte markieren
 label_text_size#:#Textgröße
+label_text#:#Text
 label_points_wrong#:#Falsche Selektionen
 label_wrong_text#:#Fehlerhafter Text
 label_correct_text#:#Korrekter Text
