@@ -30,6 +30,7 @@ use srag\asq\Questions\ErrorText\Storage\ErrorTextAnswerOptionsSetEventHandler;
 use srag\asq\Questions\ErrorText\Storage\ErrorTextConfigurationSetEventHandler;
 use srag\asq\Questions\Essay\Storage\EssayAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Essay\Storage\EssayConfigurationSetEventHandler;
+use srag\asq\Questions\FileUpload\Storage\FileUploadConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -96,6 +97,9 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::ESSAY => [
             QuestionAnswerOptionsSetEvent::class => EssayAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => EssayConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::FILE_UPLOAD => [
+            QuestionPlayConfigurationSetEvent::class => FileUploadConfigurationSetEventHandler::class
         ],
     ];
 

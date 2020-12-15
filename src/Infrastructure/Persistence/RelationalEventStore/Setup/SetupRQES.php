@@ -10,6 +10,7 @@ use srag\asq\Questions\Choice\Storage\MultipleChoice\SetupMultipleChoice;
 use srag\asq\Questions\Choice\Storage\ImageMap\SetupImageMap;
 use srag\asq\Questions\ErrorText\Storage\SetupErrorText;
 use srag\asq\Questions\Essay\Storage\SetupEssay;
+use srag\asq\Questions\FileUpload\Storage\SetupFileUpload;
 
 /**
  * Class SetupRQES
@@ -27,7 +28,8 @@ class SetupRQES
         SetupMultipleChoice::class,
         SetupImageMap::class,
         SetupErrorText::class,
-        SetupEssay::class
+        SetupEssay::class,
+        SetupFileUpload::class
     ];
 
     /**
