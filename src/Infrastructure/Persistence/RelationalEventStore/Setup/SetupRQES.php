@@ -11,6 +11,7 @@ use srag\asq\Questions\Choice\Storage\ImageMap\SetupImageMap;
 use srag\asq\Questions\ErrorText\Storage\SetupErrorText;
 use srag\asq\Questions\Essay\Storage\SetupEssay;
 use srag\asq\Questions\FileUpload\Storage\SetupFileUpload;
+use srag\asq\Questions\Formula\Storage\SetupFormula;
 
 /**
  * Class SetupRQES
@@ -29,7 +30,8 @@ class SetupRQES
         SetupImageMap::class,
         SetupErrorText::class,
         SetupEssay::class,
-        SetupFileUpload::class
+        SetupFileUpload::class,
+        SetupFormula::class
     ];
 
     /**
