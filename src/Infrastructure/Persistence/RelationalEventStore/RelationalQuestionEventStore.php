@@ -33,6 +33,8 @@ use srag\asq\Questions\Essay\Storage\EssayConfigurationSetEventHandler;
 use srag\asq\Questions\FileUpload\Storage\FileUploadConfigurationSetEventHandler;
 use srag\asq\Questions\Formula\Storage\FormulaAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Formula\Storage\FormulaConfigurationSetEventHandler;
+use srag\asq\Questions\Kprim\Storage\KprimAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Kprim\Storage\KprimConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -107,6 +109,10 @@ class RelationalQuestionEventStore implements IEventStore
             QuestionAnswerOptionsSetEvent::class => FormulaAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => FormulaConfigurationSetEventHandler::class
         ],
+        SetupDatabase::KPRIM => [
+            QuestionAnswerOptionsSetEvent::class => KprimAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => KprimConfigurationSetEventHandler::class
+        ]
     ];
 
     /**

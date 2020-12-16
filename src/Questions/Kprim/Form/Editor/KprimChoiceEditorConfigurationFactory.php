@@ -63,7 +63,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         if ($value !== null) {
             $shuffle = $shuffle->withValue($value->isShuffleAnswers() ?? false);
-            $thumb_size = $thumb_size->withValue($value->getThumbnailSize() ?? '');
+            $thumb_size = $thumb_size->withValue(strval($value->getThumbnailSize()));
         }
 
         $fields[self::VAR_SHUFFLE_ANSWERS] = $shuffle;

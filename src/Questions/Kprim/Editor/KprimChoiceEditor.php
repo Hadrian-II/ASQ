@@ -64,17 +64,18 @@ class KprimChoiceEditor extends AbstractEditor
     {
         $answers = [];
 
+        if (! is_null($this->answer_options)) {
         /** @var AnswerOption $answer_option */
         foreach ($this->answer_options as $answer_option) {
-            $answer = $this->getPostValue($this->getPostName($answer_option->getOptionId()));
+                $answer = $this->getPostValue($this->getPostName($answer_option->getOptionId()));
 
-
-            if ($answer === self::STR_TRUE) {
-                $answers[$answer_option->getOptionId()] = true;
-            } elseif ($answer === self::STR_FALSE) {
-                $answers[$answer_option->getOptionId()] = false;
-            } else {
-                $answers[$answer_option->getOptionId()] = null;
+                if ($answer === self::STR_TRUE) {
+                    $answers[$answer_option->getOptionId()] = true;
+                } elseif ($answer === self::STR_FALSE) {
+                    $answers[$answer_option->getOptionId()] = false;
+                } else {
+                    $answers[$answer_option->getOptionId()] = null;
+                }
             }
         }
 

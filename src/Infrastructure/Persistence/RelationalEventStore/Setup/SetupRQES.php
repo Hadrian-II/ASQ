@@ -12,6 +12,7 @@ use srag\asq\Questions\ErrorText\Storage\SetupErrorText;
 use srag\asq\Questions\Essay\Storage\SetupEssay;
 use srag\asq\Questions\FileUpload\Storage\SetupFileUpload;
 use srag\asq\Questions\Formula\Storage\SetupFormula;
+use srag\asq\Questions\Kprim\Storage\SetupKprim;
 
 /**
  * Class SetupRQES
@@ -31,7 +32,8 @@ class SetupRQES
         SetupErrorText::class,
         SetupEssay::class,
         SetupFileUpload::class,
-        SetupFormula::class
+        SetupFormula::class,
+        SetupKprim::class
     ];
 
     /**
