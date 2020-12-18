@@ -14,6 +14,7 @@ use srag\asq\Questions\FileUpload\Storage\SetupFileUpload;
 use srag\asq\Questions\Formula\Storage\SetupFormula;
 use srag\asq\Questions\Kprim\Storage\SetupKprim;
 use srag\asq\Questions\Matching\Storage\SetupMatching;
+use srag\asq\Questions\Numeric\Storage\SetupNumeric;
 
 /**
  * Class SetupRQES
@@ -35,7 +36,8 @@ class SetupRQES
         SetupFileUpload::class,
         SetupFormula::class,
         SetupKprim::class,
-        SetupMatching::class
+        SetupMatching::class,
+        SetupNumeric::class
     ];
 
     /**
