@@ -9,7 +9,6 @@ use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
-use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringConfiguration;
 use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringDefinition;
 
 /**
