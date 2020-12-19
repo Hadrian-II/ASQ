@@ -22,11 +22,17 @@ class OrderingEditorConfiguration extends AbstractValueObject
     protected $vertical;
 
     /**
+     * @var ?string
+     */
+    protected $text;
+
+    /**
      * @param bool $vertical
      */
-    public function __construct(?bool $vertical = null)
+    public function __construct(?bool $vertical = null, ?string $text = null)
     {
         $this->vertical = $vertical;
+        $this->text = $text;
     }
 
     /**
@@ -35,5 +41,13 @@ class OrderingEditorConfiguration extends AbstractValueObject
     public function isVertical() : ?bool
     {
         return $this->vertical;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getText() : ?string
+    {
+        return $this->text;
     }
 }

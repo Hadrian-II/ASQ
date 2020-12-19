@@ -37,6 +37,8 @@ use srag\asq\Questions\Kprim\Storage\KprimAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Kprim\Storage\KprimConfigurationSetEventHandler;
 use srag\asq\Questions\Matching\Storage\MatchingConfigurationSetEventHandler;
 use srag\asq\Questions\Numeric\Storage\NumericConfigurationSetEventHandler;
+use srag\asq\Questions\Ordering\Storage\OrderingAnswerOptionsSetEventHandler;
+use srag\asq\Questions\Ordering\Storage\OrderingConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -120,6 +122,14 @@ class RelationalQuestionEventStore implements IEventStore
         ],
         SetupDatabase::NUMERIC => [
             QuestionPlayConfigurationSetEvent::class => NumericConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::ORDERING => [
+            QuestionAnswerOptionsSetEvent::class => OrderingAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => OrderingConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::ORDERING_TEXT => [
+            QuestionAnswerOptionsSetEvent::class => OrderingAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => OrderingConfigurationSetEventHandler::class
         ]
     ];
 

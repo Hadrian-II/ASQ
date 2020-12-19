@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace srag\asq\Questions\Ordering\Form\Editor;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
-use srag\asq\Questions\Ordering\Editor\Data\OrderingTextEditorConfiguration;
+use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 
 /**
@@ -41,18 +41,18 @@ class OrderingTextEditorConfigurationFactory extends AbstractObjectFactory
 
     /**
      * @param $postdata array
-     * @return OrderingTextEditorConfiguration
+     * @return OrderingEditorConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return new OrderingTextEditorConfiguration($this->readString($postdata[SELF::VAR_ORDERING_TEXT]));
+        return new OrderingEditorConfiguration(false, $this->readString($postdata[SELF::VAR_ORDERING_TEXT]));
     }
 
     /**
-     * @return OrderingTextEditorConfiguration
+     * @return OrderingEditorConfiguration
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return new OrderingTextEditorConfiguration();
+        return new OrderingEditorConfiguration();
     }
 }
