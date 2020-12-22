@@ -16,6 +16,7 @@ use srag\asq\Questions\Kprim\Storage\SetupKprim;
 use srag\asq\Questions\Matching\Storage\SetupMatching;
 use srag\asq\Questions\Numeric\Storage\SetupNumeric;
 use srag\asq\Questions\Ordering\Storage\SetupOrdering;
+use srag\asq\Questions\TextSubset\Storage\SetupTextSubset;
 
 /**
  * Class SetupRQES
@@ -39,7 +40,8 @@ class SetupRQES
         SetupKprim::class,
         SetupMatching::class,
         SetupNumeric::class,
-        SetupOrdering::class
+        SetupOrdering::class,
+        SetupTextSubset::class
     ];
 
     /**

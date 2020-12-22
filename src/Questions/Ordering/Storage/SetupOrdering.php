@@ -41,7 +41,7 @@ class SetupOrdering extends AbstractQuestionDBSetup
             [
                 'answer_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
-                'text' => ['type' => 'text'],
+                'text' => ['type' => 'text', 'length' => 64],
                 'image' => ['type' => 'text', 'length' => 64]
             ]
             );

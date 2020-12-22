@@ -39,6 +39,8 @@ use srag\asq\Questions\Matching\Storage\MatchingConfigurationSetEventHandler;
 use srag\asq\Questions\Numeric\Storage\NumericConfigurationSetEventHandler;
 use srag\asq\Questions\Ordering\Storage\OrderingAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Ordering\Storage\OrderingConfigurationSetEventHandler;
+use srag\asq\Questions\TextSubset\Storage\TextSubsetAnswerOptionsSetEventHandler;
+use srag\asq\Questions\TextSubset\Storage\TextSubsetConfigurationSetEventHandler;
 
 /**
  * Class RelationalQuestionEventStore
@@ -130,6 +132,10 @@ class RelationalQuestionEventStore implements IEventStore
         SetupDatabase::ORDERING_TEXT => [
             QuestionAnswerOptionsSetEvent::class => OrderingAnswerOptionsSetEventHandler::class,
             QuestionPlayConfigurationSetEvent::class => OrderingConfigurationSetEventHandler::class
+        ],
+        SetupDatabase::TEXT_SUBSET => [
+            QuestionAnswerOptionsSetEvent::class => TextSubsetAnswerOptionsSetEventHandler::class,
+            QuestionPlayConfigurationSetEvent::class => TextSubsetConfigurationSetEventHandler::class
         ]
     ];
 
