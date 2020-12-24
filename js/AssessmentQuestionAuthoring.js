@@ -98,7 +98,9 @@ const asqAuthoring = (function () {
         const row = $(this).parents('.aot_row').eq(0);
         const table = $(this).parents('.aot_table').children('tbody');
 
-        if (hasTiny) {
+		const containsTiny = table.find('.tox').length > 0;
+
+        if (hasTiny && containsTiny) {
             clearTiny();
         }
 
@@ -108,7 +110,7 @@ const asqAuthoring = (function () {
         row.after(newRow);
         setInputIds(table);
 
-        if (hasTiny) {
+        if (hasTiny && containsTiny) {
             tinymce.init(tinySettings);
         }
 
