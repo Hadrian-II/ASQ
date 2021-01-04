@@ -161,6 +161,7 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         while ($row = $this->db->fetchAssoc($res))
         {
             $gap_id = $row['gap_id'] ?? self::DEFAULT_GAP;
+            $cloze_text = $row['text'];
 
             if (!array_key_exists($gap_id, $items)) {
                 $items[$gap_id] = [];

@@ -5,6 +5,7 @@ namespace srag\asq\Questions\Cloze\Form\Editor;
 
 use ILIAS\DI\UIServices;
 use ILIAS\UI\Renderer;
+use ILIAS\UI\Component\Input\Container\Form\Form;
 use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\UI\Component\Input\Field\Section;
 use ilLanguage;
@@ -296,10 +297,21 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                             <div class="number">%s</div>
                             <div class="select">%s</div>
                         </div>',
-            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_TEXT)),
-            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_NUMBER)),
-            $this->renderer->render($this->createGapFields(ClozeGapConfiguration::TYPE_DROPDOWN))
+            $this->createTemplate(ClozeGapConfiguration::TYPE_TEXT),
+            $this->createTemplate(ClozeGapConfiguration::TYPE_NUMBER),
+            $this->createTemplate(ClozeGapConfiguration::TYPE_DROPDOWN)
         );
+    }
+
+    /**
+     * @param string $type
+     * @return Form
+     */
+    private function createTemplate(string $type) : string
+    {
+        $section = $this->createGapFields($type);
+        $form = $this->factory->input()->container()->form()->standard('', [ $section ]);
+        return str_replace('</form', '</div', str_replace('<form', '<div', $this->renderer->render($form)));
     }
 
     /**

@@ -110,15 +110,16 @@
     }
 
     function prepareForm() {
-        const templateForms = $('.cloze_template .il-section-input');
+        const templateForms = $('.text,.number,.select');
 
         templateForms.each((index, item) => {
             const form = $(item);
-            form.parent().append(form.children());
-            form.remove();
+            const template = form.find('.il-section-input');
+            form.append(template.children());
+            form.children(':not(.il-section-input-header,.form-group)').remove();
+            form.find('select:first').addClass('js_select_type');
+            form.find('[name]').removeAttr('name');
         });
-        
-        $('.il-section-input').find('select:first').addClass('js_select_type');
     }
     
     function deleteGapUIItems($pressedFormItem) {
