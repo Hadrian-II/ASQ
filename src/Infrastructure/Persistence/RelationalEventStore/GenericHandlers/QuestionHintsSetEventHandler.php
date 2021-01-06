@@ -42,20 +42,22 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT .' where event_id = %s',
-                $this->db->quote($data['id'], 'int')
-            )
-        );
+        return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT .' where event_id in(%s)';
+    }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         $hints = [];
-        while ($row = $this->db->fetchAssoc($res))
+        foreach ($rows as $row)
         {
             $hints[] = new QuestionHint($row['hint_id'], $row['content'], floatval($row['deduction']));
         }
@@ -65,6 +67,6 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionHints($hints)
-       );
+        );
     }
 }

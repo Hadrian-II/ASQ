@@ -7,6 +7,7 @@ use ilDateTime;
 use srag\CQRS\Event\DomainEvent;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 use srag\asq\Domain\Model\Question;
 
 /**
@@ -25,19 +26,33 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
      */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
-        //nothing to do
+        $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED);
+        $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED, [
+            'id' => ['integer', $id],
+            'event_id' => ['integer', $event_id],
+            'type' => ['text', $event->getAdditionalData()[Question::VAR_TYPE]]
+        ]);
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
+    {
+        return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED .' where event_id in(%s)';
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
     {
         return new AggregateCreatedEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
-            [Question::VAR_TYPE => $data[Question::VAR_TYPE]]);
+            [Question::VAR_TYPE => $rows[0]['type']]);
     }
 }

@@ -41,33 +41,32 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
             'lifecycle' => ['integer', $question_data->getLifecycle()]
         ]);
     }
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
+     */
+    public function getQueryString(): string
+    {
+        return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id in (%s)';
+    }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function createEvent(array $data, array $rows): DomainEvent
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id = %s',
-                $this->db->quote($data['id'], 'int')
-            )
-        );
-
-        $row = $this->db->fetchAssoc($res);
-
         return new QuestionDataSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionData(
-                $row['title'] ?? '',
-                $row['text'] ?? '',
-                $row['author'] ?? '',
-                $row['description'] ?? '',
-                intval($row['working_time']),
-                intval($row['lifecycle'])
+                $rows[0]['title'] ?? '',
+                $rows[0]['text'] ?? '',
+                $rows[0]['author'] ?? '',
+                $rows[0]['description'] ?? '',
+                intval($rows[0]['working_time']),
+                intval($rows[0]['lifecycle'])
             )
         );
     }

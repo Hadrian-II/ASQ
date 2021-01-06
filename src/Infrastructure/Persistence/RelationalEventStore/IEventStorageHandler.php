@@ -23,7 +23,7 @@ interface IEventStorageHandler
 
     /**
      * @param array $data
-     * @return DomainEvent
+     * @return DomainEvent[]
      */
-    public function loadEvent(array $data) : DomainEvent;
+    public function loadEvents(array $data) : array;
 }

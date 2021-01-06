@@ -5,6 +5,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
 use ILIAS\Data\UUID\Factory;
 use ilDBInterface;
+use srag\CQRS\Event\DomainEvent;
 
 /**
  * Abstract Class AbstractEventStorageHandler
@@ -33,4 +34,76 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
 
         $this->factory = new Factory();
     }
+
+    /**
+     * @param array $data
+     * @return DomainEvent[]
+     */
+    public function loadEvents(array $data) : array
+    {
+        $res = $this->db->query(
+            sprintf(
+                $this->getQueryString(),
+                $this->getEventIds($data)
+                )
+            );
+
+        $rows = $this->db->fetchAll($res);
+
+        return $this->mapDataAndRows(
+            $data,
+            $rows);
+    }
+
+    /**
+     * @return string
+     */
+    abstract function getQueryString() : string;
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected function getEventIds(array $data) : string
+    {
+        return implode(
+            ', ',
+            array_map(
+                function($item)
+                {
+                    return $item['id'];
+                },
+                $data
+            )
+        );
+    }
+
+    /**
+     * @param array $data
+     * @param array $rows
+     * @return array
+     */
+    protected function mapDataAndRows(array $data, array $rows) : array
+    {
+        return array_map(
+            function($current_data) use ($rows) {
+                $current_rows = array_values(array_filter(
+                    $rows,
+                    function($row) use ($current_data) {
+                        return $current_data['id'] === $row['event_id'];
+                    }
+                ));
+
+                return $this->createEvent($current_data, $current_rows);
+            },
+            $data
+        );
+    }
+
+    /**
+     * @param array $data
+     * @param array $rows
+     * @return DomainEvent
+     */
+    abstract function createEvent(array $data, array $rows) : DomainEvent;
 }

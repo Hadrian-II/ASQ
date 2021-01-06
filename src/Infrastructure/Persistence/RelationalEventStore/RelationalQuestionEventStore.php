@@ -5,6 +5,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
 use ILIAS\Data\UUID\Factory;
 use ILIAS\Data\UUID\Uuid;
+use ilDateTime;
 use ilDBInterface;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\IEventStore;
@@ -55,6 +56,7 @@ class RelationalQuestionEventStore implements IEventStore
 {
     const TABLE_NAME = 'rqes_events';
     const TABLE_NAME_QUESTION_INDEX = 'rqes_question_index';
+    const TABLE_NAME_QUESTION_CREATED = 'rqes_question_created';
     const TABLE_NAME_QUESTION_DATA = 'rqes_question_data';
     const TABLE_NAME_QUESTION_HINT = 'rqes_question_hint';
     const TABLE_NAME_QUESTION_FEEDBACK = 'rqes_question_feedback';
@@ -281,28 +283,63 @@ class RelationalQuestionEventStore implements IEventStore
                 )
             );
 
-        $events = new DomainEvents();
-        while ($row = $this->db->fetchAssoc($res))
+        $events = [];
+
+        $data = $this->db->fetchAll($res);
+
+        $event_names = array_unique(
+            array_map(
+                function($row) {
+                    return $row['event_name'];
+                },
+                $data
+            )
+        );
+
+        foreach ($event_names as $event_name)
         {
-            $event_type = $row['event_name'];
+            $event_data = array_filter($data, function($row) use($event_name) {
+                return $row['event_name'] === $event_name;
+            });
 
-            if ($event_type === AggregateCreatedEvent::class) {
-                $row[Question::VAR_TYPE] = $type;
-            }
-
-            if ($this->isGenericEvent($event_type))
+            if ($this->isGenericEvent($event_name))
             {
-                $generic_handler = $this->getGenericHandler($event_type);
-                $events->addEvent($generic_handler->loadEvent($row));
+                $generic_handler = $this->getGenericHandler($event_name);
+
+                foreach ($generic_handler->loadEvents($event_data) as $event) {
+                    $events[] = $event;
+                }
+
             }
             else
             {
-                $type_specific_handler = $this->getTypeSpecificHandler($type, $event_type);
-                $events->addEvent($type_specific_handler->loadEvent($row));
+                $type_specific_handler = $this->getTypeSpecificHandler($type, $event_name);
+
+                foreach ($type_specific_handler->loadEvents($event_data) as $event) {
+                    $events[] = $event;
+                }
             }
         }
 
-        return $events;
+        usort(
+            $events,
+            function($a, $b) {
+                $atime = $a->getOccurredOn();
+                $btime = $b->getOccurredOn();
+
+                if (ilDateTime::_equals($atime, $btime)) {
+                    return 0;
+                }
+
+                return ilDateTime::_before($atime, $btime) ? -1 : 1;
+            }
+        );
+
+        $domain_events = new DomainEvents();
+        foreach ($events as $event) {
+            $domain_events->addEvent($event);
+        }
+        return $domain_events;
     }
 
     /**

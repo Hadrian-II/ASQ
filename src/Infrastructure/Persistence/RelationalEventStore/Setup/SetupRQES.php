@@ -57,6 +57,7 @@ class SetupRQES
     public function setup() : void
     {
         $this->setupBase();
+        $this->setupCreated();
         $this->setupQuestionData();
         $this->setupHint();
         $this->setupFeedback();
@@ -94,6 +95,22 @@ class SetupRQES
             ]
         );
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_INDEX, ['question_id'], 'i1');
+    }
+
+    private function setupCreated() : void
+    {
+        $this->db->createTable(
+            RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED,
+            [
+                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'type' => ['type' => 'text','length' => 64]
+            ]
+            );
+        $this->db->addPrimaryKey(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED,['id']);
+        $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED);
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED, ['id'], 'i1');
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED, ['event_id'], 'i2');
     }
 
     private function setupQuestionData() : void
@@ -166,6 +183,7 @@ class SetupRQES
     public function drop() : void
     {
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, false);
