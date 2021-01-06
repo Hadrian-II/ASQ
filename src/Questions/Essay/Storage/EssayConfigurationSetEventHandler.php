@@ -44,35 +44,34 @@ class EssayConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupEssay::TABLENAME_ESSAY_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupEssay::TABLENAME_ESSAY_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $row = $this->db->fetchAssoc($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new EssayEditorConfiguration(
-                        intval($row['max_length'])
-                    ),
+                    intval($rows[0]['max_length'])
+                ),
                 new EssayScoringConfiguration(
-                        intval($row['matchmode']),
-                        intval($row['scoremode']),
-                        floatval($row['points'])
-                    )
+                    intval($rows[0]['matchmode']),
+                    intval($rows[0]['scoremode']),
+                    floatval($rows[0]['points'])
                 )
-            );
+            )
+        );
     }
 }

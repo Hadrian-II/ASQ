@@ -41,31 +41,30 @@ class ImageMapConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupImageMap::TABLENAME_IMAGEMAP_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupImageMap::TABLENAME_IMAGEMAP_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $row = $this->db->fetchAssoc($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new ImageMapEditorConfiguration(
-                    $row['image'],
-                    boolval($row['is_multi']),
-                    intval($row['max_answers'])
-                ),
+                    $rows[0]['image'],
+                    boolval($rows[0]['is_multi']),
+                    intval($rows[0]['max_answers'])
+                    ),
                 new MultipleChoiceScoringConfiguration()
             )
         );

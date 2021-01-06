@@ -83,4 +83,42 @@ class ErrorTextAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
             $options
         );
     }
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
+     */
+    public function getQueryString(): string
+    {
+        return 'select * from ' . SetupErrorText::TABLENAME_ERRORTEXT_ANSWER . ' where event_id in(%s)';
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
+        $id = 1;
+        foreach($rows as $row) {
+            $options[] = new AnswerOption(
+                strval($id),
+                new EmptyDefinition(),
+                new ErrorTextScoringDefinition(
+                    intval($row['wrong_index']),
+                    intval($row['wrong_length']),
+                    $row['correct_text'],
+                    floatval($row['points'])
+                    )
+                );
+            $id += 1;
+        }
+
+        return new QuestionAnswerOptionsSetEvent(
+            $this->factory->fromString($data['question_id']),
+            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
+            intval($data['initiating_user_id']),
+            $options
+        );
+    }
 }

@@ -45,23 +45,22 @@ class ImageMapAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $options = [];
+        return 'select * from ' . SetupImageMap::TABLENAME_IMAGEMAP_ANSWER . ' where event_id in(%s)';
+    }
 
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupImageMap::TABLENAME_IMAGEMAP_ANSWER . ' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         $id = 1;
-        while($row = $this->db->fetchAssoc($res)) {
+        foreach($rows as $row) {
             $options[] = new AnswerOption(
                 strval($id),
                 new ImageMapEditorDefinition(
@@ -71,8 +70,8 @@ class ImageMapAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
                 new MultipleChoiceScoringDefinition(
                     floatval($row['points_selected']),
                     floatval($row['points_unselected'])
-                )
-            );
+                    )
+                );
             $id += 1;
         }
 

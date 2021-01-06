@@ -28,10 +28,19 @@ class ClozeAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
     {
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),

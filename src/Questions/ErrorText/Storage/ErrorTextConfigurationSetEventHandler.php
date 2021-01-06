@@ -43,32 +43,31 @@ class ErrorTextConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupErrorText::TABLENAME_ERRORTEXT_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupErrorText::TABLENAME_ERRORTEXT_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $row = $this->db->fetchAssoc($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new ErrorTextEditorConfiguration(
-                        $row['errortext'],
-                        intval($row['txt_size'])
+                    $rows[0]['errortext'],
+                    intval($rows[0]['txt_size'])
                     ),
                 new ErrorTextScoringConfiguration(
-                        floatval($row['points_wrong'])
+                    floatval($rows[0]['points_wrong'])
                     )
                 )
             );

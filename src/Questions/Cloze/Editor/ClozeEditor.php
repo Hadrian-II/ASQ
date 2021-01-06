@@ -91,7 +91,7 @@ class ClozeEditor extends AbstractEditor
      */
     private function createDropdown(int $index, ClozeGapConfiguration $gap_config, string $output) : string
     {
-        $name = '{' . $index . '}';
+        $name = '├' . $index . '┤';
 
         $html = sprintf(
             '<select length="20" name="%s">%s</select>',
@@ -128,7 +128,7 @@ class ClozeEditor extends AbstractEditor
      */
     private function createText(int $index, ClozeGapConfiguration $gap_config, string $output) : string
     {
-        $name = '{' . $index . '}';
+        $name = '├' . $index . '┤';
 
         $html = sprintf(
             '<input type="text" length="20" name="%s" value="%s" style="width: %spx;" />',

@@ -141,27 +141,27 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupCloze::TABLENAME_CLOZE_CONFIGURATION .' c
+        return 'select * from ' . SetupCloze::TABLENAME_CLOZE_CONFIGURATION .' c
                  left join ' . SetupCloze::TABLENAME_CLOZE_GAP .' g on c.cloze_id = g.cloze_id
                  left join ' . SetupCloze::TABLENAME_CLOZE_GAP_ITEM . ' i on g.gap_id = i.gap_id
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-            )
-        );
+                 where c.event_id in(%s)';
+    }
 
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         $items = [];
-        $cloze_text = '';
-        while ($row = $this->db->fetchAssoc($res))
+        foreach ($rows as $row)
         {
             $gap_id = $row['gap_id'] ?? self::DEFAULT_GAP;
-            $cloze_text = $row['text'];
 
             if (!array_key_exists($gap_id, $items)) {
                 $items[$gap_id] = [];
@@ -191,7 +191,10 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
-                new ClozeEditorConfiguration($cloze_text, $gaps),
+                new ClozeEditorConfiguration(
+                    $rows[0]['text'],
+                    $gaps
+                ),
                 new ClozeScoringConfiguration()
             )
         );
