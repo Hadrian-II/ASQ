@@ -152,7 +152,7 @@ class MultipleChoiceEditor extends AbstractEditor
             case Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT:
                 $points_selected = $option->getScoringDefinition()->getPointsSelected();
                 $points_unselected = $option->getScoringDefinition()->getPointsUnselected();
-                return ($is_selected && ($points_selected > $points_unselected) || (!$is_selected && ($points_unselected > $points_selected)));
+                return (($is_selected && ($points_selected > $points_unselected)) || (!$is_selected && ($points_unselected > $points_selected)));
             default:
                 return false;
         }

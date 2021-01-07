@@ -38,6 +38,10 @@ class Renderer extends AbstractComponentRenderer
 
         if (! is_null($input->getAnswer())) {
             $editor->setAnswer($input->getAnswer());
+
+            if ($input->doesShowFeedback() && $question->hasFeedback()) {
+                $editor->setRenderFeedback(true);
+            }
         }
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
