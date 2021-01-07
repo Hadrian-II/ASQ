@@ -229,3 +229,4 @@ header_seconds#:#Sekunden
 label_scoring_type#:#Scoring Art
 you_received_a_of_b_points#:#Sie haben %s von %s möglichen Punkten erreicht.
 label_formula#:#Formel
+error_too_long#:#Eingegebener text ist zu lang

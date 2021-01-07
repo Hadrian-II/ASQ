@@ -28,7 +28,7 @@
         return true;
     }
 
-    $(document).on('keyup', '#ilAsqQuestionView', updateCounts);
+    $(document).on('keyup', '.js_essay', updateCounts);
     $(document).on('submit', 'main form', checkValues);
 
     $(document).ready(() => {
@@ -40,7 +40,7 @@
             selector: 'textarea',
             menubar: false,
             init_instance_callback(editor) {
-                editor.onKeyUp.add(updateCounts);
+                editor.on('keyup', updateCounts);
                 updateCounts();
             },
         });
