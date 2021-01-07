@@ -47,6 +47,10 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
+    /**
+     * @param int $id
+     * @param FormulaScoringVariable $var
+     */
     private function saveVariable(int $id, FormulaScoringVariable $var) : void
     {
         $this->db->insert(SetupFormula::TABLENAME_FORMULA_VARIABLE, [
@@ -59,24 +63,24 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupFormula::TABLENAME_FORMULA_CONFIGURATION .' c
-                 left join ' . SetupFormula::TABLENAME_FORMULA_VARIABLE .' v on c.config_id = v.config_id
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupFormula::TABLENAME_FORMULA_CONFIGURATION .' c
+                left join ' . SetupFormula::TABLENAME_FORMULA_VARIABLE .' v on c.config_id = v.config_id
+                where c.event_id in(%s)';
+    }
 
-        $values = $this->db->fetchAll($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         $variables = [];
-        foreach ($values as $value) {
+        foreach ($rows as $value) {
             $variables[] = new FormulaScoringVariable(
                 floatval($value['min']),
                 floatval($value['max']),
@@ -92,11 +96,11 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
             new QuestionPlayConfiguration(
                 new FormulaEditorConfiguration(),
                 new FormulaScoringConfiguration(
-                    $values[0]['formula'],
-                    $values[0]['units'],
-                    intval($values[0]['precision']),
-                    floatval($values[0]['tolerance']),
-                    intval($values[0]['result_type']),
+                    $rows[0]['formula'],
+                    $rows[0]['units'],
+                    intval($rows[0]['precision']),
+                    floatval($rows[0]['tolerance']),
+                    intval($rows[0]['result_type']),
                     $variables
                 )
             )

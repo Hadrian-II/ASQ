@@ -89,25 +89,25 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupMatching::TABLENAME_MATCHING_CONFIGURATION .' c
-                 left join ' . SetupMatching::TABLENAME_MATCHING_ITEM . ' i on c.config_id = i.config_id
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupMatching::TABLENAME_MATCHING_CONFIGURATION .' c
+                left join ' . SetupMatching::TABLENAME_MATCHING_ITEM . ' i on c.config_id = i.config_id
+                where c.event_id in(%s)';
+    }
 
-        $items = $this->db->fetchAll($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         $terms = [];
         $definitions = [];
-        foreach ($items as $entry) {
+        foreach ($rows as $entry) {
             $item = new MatchingItem(
                 $entry['id'],
                 $entry['text'],
@@ -130,15 +130,15 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new MatchingEditorConfiguration(
-                        intval($items[0]['shuffle']),
-                        intval($items[0]['thumbnail_size']),
-                        intval($items[0]['matching_mode']),
-                        $definitions,
-                        $terms,
-                        $this->getMappings($items[0]['config_id'])
+                    intval($rows[0]['shuffle']),
+                    intval($rows[0]['thumbnail_size']),
+                    intval($rows[0]['matching_mode']),
+                    $definitions,
+                    $terms,
+                    $this->getMappings($rows[0]['config_id'])
                     ),
                 new MatchingScoringConfiguration(
-                        floatval($items[0]['wrong_deduction'])
+                    floatval($rows[0]['wrong_deduction'])
                     )
                 )
             );
@@ -166,4 +166,5 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
             );
         }, $this->db->fetchAll($res));
     }
+
 }

@@ -46,20 +46,21 @@ class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupKprim::TABLENAME_KPRIM_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupKprim::TABLENAME_KPRIM_CONFIGURATION .' where event_id = %s';
+    }
 
-        $row = $this->db->fetchAssoc($res);
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
+        $row = $rows[0];
 
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
@@ -67,16 +68,16 @@ class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new KprimChoiceEditorConfiguration(
-                        boolval($row['shuffle']),
-                        intval($row['thumbnail_size']),
-                        $row['label_true'],
-                        $row['label_false']
-                    ),
+                    boolval($row['shuffle']),
+                    intval($row['thumbnail_size']),
+                    $row['label_true'],
+                    $row['label_false']
+                ),
                 new KprimChoiceScoringConfiguration(
-                        floatval($row['points']),
-                        intval($row['half_points_at'])
-                    )
+                    floatval($row['points']),
+                    intval($row['half_points_at'])
                 )
-            );
+            )
+        );
     }
 }

@@ -42,20 +42,21 @@ class TextSubsetConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupTextSubset::TABLENAME_TEXT_SUBSET_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupTextSubset::TABLENAME_TEXT_SUBSET_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $item = $this->db->fetchAssoc($res);
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
+        $item = $rows[0];
 
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),

@@ -44,20 +44,21 @@ class NumericConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupNumeric::TABLENAME_NUMERIC_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupNumeric::TABLENAME_NUMERIC_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $item = $this->db->fetchAssoc($res);
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
+        $item = $rows[0];
 
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
@@ -65,7 +66,7 @@ class NumericConfigurationSetEventHandler extends AbstractEventStorageHandler
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new NumericEditorConfiguration(
-                        intval($item['max_chars'])
+                    intval($item['max_chars'])
                 ),
                 new NumericScoringConfiguration(
                     floatval($item['points']),

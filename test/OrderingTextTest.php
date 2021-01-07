@@ -11,7 +11,7 @@ use srag\asq\Questions\Generic\Data\EmptyDefinition;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\Questions\Ordering\OrderingAnswer;
 use srag\asq\Questions\Ordering\Editor\OrderingEditor;
-use srag\asq\Questions\Ordering\Editor\Data\OrderingTextEditorConfiguration;
+use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
 use srag\asq\Questions\Ordering\Form\OrderingTextFormFactory;
 use srag\asq\Questions\Ordering\Scoring\OrderingScoring;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
@@ -38,7 +38,7 @@ class OrderingTextTest extends QuestionTestCase
             'question 1' => $this->createQuestion(
                 new QuestionData('Question 1', '', '', '', 1),
                 new QuestionPlayConfiguration(
-                    new OrderingTextEditorConfiguration('lorem ipsum dolor sit'),
+                    new OrderingEditorConfiguration(false, 'lorem ipsum dolor sit'),
                     new OrderingScoringConfiguration(1)
                     ),
                 [
@@ -59,7 +59,7 @@ class OrderingTextTest extends QuestionTestCase
             'question 2' => $this->createQuestion(
                 new QuestionData('Question 2', '', '', '', 1),
                 new QuestionPlayConfiguration(
-                    new OrderingTextEditorConfiguration('one two three four'),
+                    new OrderingEditorConfiguration(false, 'one two three four'),
                     new OrderingScoringConfiguration(2)
                     ),
                 [

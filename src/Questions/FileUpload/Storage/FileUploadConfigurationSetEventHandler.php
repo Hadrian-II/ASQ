@@ -44,35 +44,34 @@ class FileUploadConfigurationSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function loadEvent(array $data) : DomainEvent
+    public function getQueryString(): string
     {
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupFileUpload::TABLENAME_FILEUPLOAD_CONFIGURATION .' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
+        return 'select * from ' . SetupFileUpload::TABLENAME_FILEUPLOAD_CONFIGURATION .' where event_id in(%s)';
+    }
 
-        $row = $this->db->fetchAssoc($res);
-
+    /**
+     * {@inheritDoc}
+     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
+     */
+    public function createEvent(array $data, array $rows): DomainEvent
+    {
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new FileUploadEditorConfiguration(
-                        intval($row['max_size']),
-                        $row['allowed_extensions']
-                    ),
+                    intval($rows[0]['max_size']),
+                    $rows[0]['allowed_extensions']
+                ),
                 new FileUploadScoringConfiguration(
-                        floatval($row['points']),
-                        boolval($row['completed_by_sub'])
-                    )
+                    floatval($rows[0]['points']),
+                    boolval($rows[0]['completed_by_sub'])
                 )
-            );
+            )
+        );
     }
 }
