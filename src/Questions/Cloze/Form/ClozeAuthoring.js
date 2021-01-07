@@ -4,7 +4,7 @@
     const TYPE_TEXT = 'clz_text';
     const FORM_INPUT = 'form_input';
     
-    const clozeRegex = /├[^}]*┤/g;
+    const clozeRegex = /├[^┤]*┤/g;
 
     function updateGapNames($gap_item) {
         $gap_item.find('select, input').each((ix, item) => {
@@ -121,34 +121,29 @@
             form.find('[name]').removeAttr('name');
         });
     }
-    
-    function deleteGapUIItems($pressedFormItem) {
-        $pressedFormItem.prev().remove();
-        $pressedFormItem.nextUntil('.il-standard-form-footer, .il-section-input-header').remove();
-        $pressedFormItem.remove();        
-    }
+   
     
     function updateClozeText(currentId, replacementId = -1) {
         const clozeText = $('input[name=form_input_7]');
         const clozeTextVal = clozeText.val();
-        const gapStr = `{${currentId}}`;
+        const gapStr = `├${currentId}┤`;
         let gapIndex = clozeTextVal.indexOf(gapStr);
         const beforeGap = clozeTextVal.substring(0, gapIndex);
         const afterGap = clozeTextVal.substring(gapIndex + gapStr.length);
         if (replacementId > 0) {
-            clozeText.val(`${beforeGap}{${replacementId}}${afterGap}`);
+            clozeText.val(`${beforeGap}├${replacementId}┤${afterGap}`);
         } else {
             clozeText.val(`${beforeGap}${afterGap}`);
         }
     }
     
     function deleteGapItem() {
-        const pressedFormItem = $(this).parents('.form-group');
+        const pressedFormItem = $(this).parents('.il-section-input');
         
         const gapCount = $('input[name=form_input_7]').val().match(clozeRegex).length;
-        const doomedGapId = pressedFormItem.prevAll('.il-section-input-header').length;
+        const doomedGapId = pressedFormItem.prevAll('.il-section-input').length + 1;
         
-        deleteGapUIItems(pressedFormItem);
+        pressedFormItem.remove();
         
         updateClozeText(doomedGapId);
         

@@ -136,7 +136,7 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
             'value' => ['float', $gap->getValue()],
             'upper' => ['float', $gap->getUpper()],
             'lower' => ['float', $gap->getLower()],
-            'points' => ['float', $gap->getPoints()]
+            'gap_points' => ['float', $gap->getPoints()]
         ]);
     }
 
