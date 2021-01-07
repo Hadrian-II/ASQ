@@ -30,6 +30,10 @@ class ImageMapAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         /** @var $answer_options AnswerOption[] */
         $answer_options = $event->getAnswerOptions();
 
+        if (is_null($answer_options)) {
+            return;
+        }
+
         foreach ($answer_options as $option) {
             $answer_id = intval($this->db->nextId(SetupImageMap::TABLENAME_IMAGEMAP_ANSWER));
             $this->db->insert(SetupImageMap::TABLENAME_IMAGEMAP_ANSWER, [

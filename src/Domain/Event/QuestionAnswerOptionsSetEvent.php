@@ -21,7 +21,7 @@ use srag\CQRS\Aggregate\AbstractValueObject;
 class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
 {
     /**
-     * @var AnswerOption[]
+     * @var ?AnswerOption[]
      */
     protected $answer_options;
 
@@ -36,7 +36,7 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
         Uuid $aggregate_id,
         ilDateTime $occured_on,
         int $initiating_user_id,
-        array $options = null
+        ?array $options = null
     ) {
         parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
 
@@ -44,9 +44,9 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
     }
 
     /**
-     * @return AnswerOption[]
+     * @return ?AnswerOption[]
      */
-    public function getAnswerOptions() : array
+    public function getAnswerOptions() : ?array
     {
         return $this->answer_options;
     }

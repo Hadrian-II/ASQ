@@ -6,6 +6,7 @@ namespace srag\asq\Questions\Choice\Form\Editor\ImageMap;
 use ILIAS\DI\UIServices;
 use ilLanguage;
 use srag\asq\Application\Service\UIService;
+use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringConfigurationFactory;
 use srag\asq\Questions\Choice\Form\Scoring\MultipleChoiceScoringDefinitionFactory;
@@ -40,5 +41,22 @@ class ImageMapFormFactory extends QuestionFormFactory
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Choice/Form/Editor/ImageMap/ImageMapAuthoring.js' ];
+    }
+
+    /**
+     * @param QuestionDto $question
+     * @return QuestionDto
+     */
+    public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
+    {
+        //delete answer options if image is removed
+        $image = $question->getPlayConfiguration()->getEditorConfiguration()->getImage();
+
+        if ((is_null($image) || empty($image)) && count($question->getAnswerOptions()))
+        {
+            $question->setAnswerOptions(null);
+        }
+
+        return $question;
     }
 }
