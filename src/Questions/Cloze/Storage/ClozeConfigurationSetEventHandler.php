@@ -189,7 +189,7 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new ClozeEditorConfiguration(
                     $rows[0]['text'],
@@ -219,8 +219,8 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
 
         return new TextGapConfiguration(
             $this->createGapItems($gap),
-            intval($data['field_length']),
-            intval($data['text_match_method']));
+            $this->readInt($data['field_length']),
+            $this->readInt($data['text_match_method']));
     }
 
     /**
@@ -230,7 +230,7 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
     private function createGapItems(array $gap_items) : array
     {
         return array_map(function($item) {
-            return new ClozeGapItem($item['item_text'], floatval($item['item_points']));
+            return new ClozeGapItem($item['item_text'], $this->readFloat($item['item_points']));
         }, $gap_items);
     }
 
@@ -243,10 +243,10 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         $data = reset($gap);
 
         return new NumericGapConfiguration(
-            floatval($data['value']),
-            floatval($data['upper']),
-            floatval($data['lower']),
-            floatval($data['gap_points']),
-            intval($data['field_length']));
+            $this->readFloat($data['value']),
+            $this->readFloat($data['upper']),
+            $this->readFloat($data['lower']),
+            $this->readFloat($data['gap_points']),
+            $this->readInt($data['field_length']));
     }
 }

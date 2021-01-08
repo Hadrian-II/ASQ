@@ -65,8 +65,8 @@ class MultipleChoiceAnswerOptionsSetEventHandler extends AbstractEventStorageHan
                 strval($id),
                 new ImageAndTextDisplayDefinition($row['text'], $row['image']),
                 new MultipleChoiceScoringDefinition(
-                    floatval($row['points_selected']),
-                    floatval($row['points_unselected'])
+                    $this->readFloat($row['points_selected']),
+                    $this->readFloat($row['points_unselected'])
                 )
             );
 
@@ -76,7 +76,7 @@ class MultipleChoiceAnswerOptionsSetEventHandler extends AbstractEventStorageHan
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             $options
         );
     }

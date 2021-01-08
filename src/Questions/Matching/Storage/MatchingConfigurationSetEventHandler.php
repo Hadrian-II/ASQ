@@ -127,18 +127,18 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new MatchingEditorConfiguration(
-                    intval($rows[0]['shuffle']),
-                    intval($rows[0]['thumbnail_size']),
-                    intval($rows[0]['matching_mode']),
+                    $this->readInt($rows[0]['shuffle']),
+                    $this->readInt($rows[0]['thumbnail_size']),
+                    $this->readInt($rows[0]['matching_mode']),
                     $definitions,
                     $terms,
                     $this->getMappings($rows[0]['config_id'])
                     ),
                 new MatchingScoringConfiguration(
-                    floatval($rows[0]['wrong_deduction'])
+                    $this->readFloat($rows[0]['wrong_deduction'])
                     )
                 )
             );
@@ -162,7 +162,7 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
             return new MatchingMapping(
                 $entry['definition_id'],
                 $entry['term_id'],
-                floatval($entry['points'])
+                $this->readFloat($entry['points'])
             );
         }, $this->db->fetchAll($res));
     }

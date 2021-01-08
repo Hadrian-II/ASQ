@@ -58,12 +58,12 @@ class ImageMapConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new ImageMapEditorConfiguration(
                     $rows[0]['image'],
-                    boolval($rows[0]['is_multi']),
-                    intval($rows[0]['max_answers'])
+                    $this->readBool($rows[0]['is_multi']),
+                    $this->readInt($rows[0]['max_answers'])
                     ),
                 new MultipleChoiceScoringConfiguration()
             )

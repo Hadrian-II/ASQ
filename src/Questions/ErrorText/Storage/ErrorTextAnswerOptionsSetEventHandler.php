@@ -46,45 +46,6 @@ class ErrorTextAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
     }
 
     /**
-     * @param array $data
-     * @return DomainEvent
-     */
-    public function loadEvent(array $data) : DomainEvent
-    {
-        $options = [];
-
-        $res = $this->db->query(
-            sprintf(
-                'select * from ' . SetupErrorText::TABLENAME_ERRORTEXT_ANSWER . ' c
-                 where c.event_id = %s',
-                $this->db->quote($data['id'], 'int')
-                )
-            );
-
-        $id = 1;
-        while($row = $this->db->fetchAssoc($res)) {
-            $options[] = new AnswerOption(
-                strval($id),
-                new EmptyDefinition(),
-                new ErrorTextScoringDefinition(
-                    intval($row['wrong_index']),
-                    intval($row['wrong_length']),
-                    $row['correct_text'],
-                    floatval($row['points'])
-                    )
-                );
-            $id += 1;
-        }
-
-        return new QuestionAnswerOptionsSetEvent(
-            $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
-            $options
-        );
-    }
-
-    /**
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
@@ -105,10 +66,10 @@ class ErrorTextAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
                 strval($id),
                 new EmptyDefinition(),
                 new ErrorTextScoringDefinition(
-                    intval($row['wrong_index']),
-                    intval($row['wrong_length']),
+                    $this->readInt($row['wrong_index']),
+                    $this->readInt($row['wrong_length']),
                     $row['correct_text'],
-                    floatval($row['points'])
+                    $this->readFloat($row['points'])
                     )
                 );
             $id += 1;

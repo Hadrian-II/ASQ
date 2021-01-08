@@ -54,7 +54,22 @@ trait InputHandlingTrait
     }
 
     /**
-     * Reads float value from POST
+     * Reads bool value from string
+     *
+     * @param string $value
+     * @return ?bool
+     */
+    protected function readBool(?string $value) : ?bool
+    {
+        if (empty($value)) {
+                return null;
+        }
+
+            return boolval($value);
+    }
+
+    /**
+     * Reads float value from string
      *
      * @param string $value
      * @return ?float
@@ -70,7 +85,7 @@ trait InputHandlingTrait
     }
 
     /**
-     * Reads int value from POST
+     * Reads int value from string
      *
      * @param string $value
      * @return ?int

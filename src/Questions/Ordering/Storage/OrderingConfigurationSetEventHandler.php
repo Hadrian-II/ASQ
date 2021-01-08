@@ -62,14 +62,14 @@ class OrderingConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new OrderingEditorConfiguration(
-                    boolval($item['is_vertical']),
+                    $this->readBool($item['is_vertical']),
                     $item['text']
                 ),
                 new OrderingScoringConfiguration(
-                    floatval($item['points'])
+                    $this->readFloat($item['points'])
                 )
             )
         );

@@ -66,7 +66,7 @@ class EssayAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
                 new EmptyDefinition(),
                 new EssayScoringDefinition(
                     $row['text'],
-                    floatval($row['points'])
+                    $this->readFloat($row['points'])
                     )
                 );
             $id += 1;
@@ -75,7 +75,7 @@ class EssayAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             $options
         );
     }

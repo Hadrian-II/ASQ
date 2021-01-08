@@ -60,16 +60,16 @@ class ErrorTextConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new ErrorTextEditorConfiguration(
                     $rows[0]['errortext'],
-                    intval($rows[0]['txt_size'])
-                    ),
+                    $this->readInt($rows[0]['txt_size'])
+                ),
                 new ErrorTextScoringConfiguration(
-                    floatval($rows[0]['points_wrong'])
-                    )
+                    $this->readFloat($rows[0]['points_wrong'])
                 )
-            );
+            )
+        );
     }
 }

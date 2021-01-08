@@ -61,15 +61,15 @@ class EssayConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new EssayEditorConfiguration(
-                    intval($rows[0]['max_length'])
+                    $this->readInt($rows[0]['max_length'])
                 ),
                 new EssayScoringConfiguration(
-                    intval($rows[0]['matchmode']),
-                    intval($rows[0]['scoremode']),
-                    floatval($rows[0]['points'])
+                    $this->readInt($rows[0]['matchmode']),
+                    $this->readInt($rows[0]['scoremode']),
+                    $this->readFloat($rows[0]['points'])
                 )
             )
         );

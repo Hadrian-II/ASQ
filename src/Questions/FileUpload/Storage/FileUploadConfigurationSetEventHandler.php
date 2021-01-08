@@ -61,15 +61,15 @@ class FileUploadConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new FileUploadEditorConfiguration(
-                    intval($rows[0]['max_size']),
+                    $this->readInt($rows[0]['max_size']),
                     $rows[0]['allowed_extensions']
                 ),
                 new FileUploadScoringConfiguration(
-                    floatval($rows[0]['points']),
-                    boolval($rows[0]['completed_by_sub'])
+                    $this->readFloat($rows[0]['points']),
+                    $this->readBool($rows[0]['completed_by_sub'])
                 )
             )
         );

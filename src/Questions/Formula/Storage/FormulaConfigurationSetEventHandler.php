@@ -82,25 +82,25 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
         $variables = [];
         foreach ($rows as $value) {
             $variables[] = new FormulaScoringVariable(
-                floatval($value['min']),
-                floatval($value['max']),
+                $this->readFloat($value['min']),
+                $this->readFloat($value['max']),
                 $value['unit'],
-                floatval($value['multiple_of'])
+                $this->readFloat($value['multiple_of'])
             );
         }
 
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new FormulaEditorConfiguration(),
                 new FormulaScoringConfiguration(
                     $rows[0]['formula'],
                     $rows[0]['units'],
-                    intval($rows[0]['precision']),
-                    floatval($rows[0]['tolerance']),
-                    intval($rows[0]['result_type']),
+                    $this->readInt($rows[0]['precision']),
+                    $this->readFloat($rows[0]['tolerance']),
+                    $this->readInt($rows[0]['result_type']),
                     $variables
                 )
             )

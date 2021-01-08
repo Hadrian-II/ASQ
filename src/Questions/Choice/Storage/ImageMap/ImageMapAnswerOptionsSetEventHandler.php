@@ -69,20 +69,21 @@ class ImageMapAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
                 strval($id),
                 new ImageMapEditorDefinition(
                     $row['tooltip'],
-                    intval($row['type']),
-                    $row['coordinates']),
+                    $this->readInt($row['type']),
+                    $row['coordinates']
+                ),
                 new MultipleChoiceScoringDefinition(
-                    floatval($row['points_selected']),
-                    floatval($row['points_unselected'])
-                    )
-                );
+                    $this->readFloat($row['points_selected']),
+                    $this->readFloat($row['points_unselected'])
+                )
+            );
             $id += 1;
         }
 
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             $options
         );
     }

@@ -55,13 +55,13 @@ class MultipleChoiceConfigurationSetEventHandler extends AbstractEventStorageHan
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new MultipleChoiceEditorConfiguration(
-                    boolval($rows[0]['shuffle']),
-                    intval($rows[0]['max_answers']),
-                    intval($rows[0]['thumbnail']),
-                    boolval($rows[0]['singleline'])
+                    $this->readBool($rows[0]['shuffle']),
+                    $this->readInt($rows[0]['max_answers']),
+                    $this->readInt($rows[0]['thumbnail']),
+                    $this->readBool($rows[0]['singleline'])
                 ),
                 new MultipleChoiceScoringConfiguration()
             )

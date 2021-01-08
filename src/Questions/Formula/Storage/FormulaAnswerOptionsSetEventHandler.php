@@ -68,7 +68,7 @@ class FormulaAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
                 new FormulaScoringDefinition(
                     $row['formula'],
                     $row['unit'],
-                    floatval($row['points'])
+                    $this->readFloat($row['points'])
                     )
                 );
             $id += 1;
@@ -77,7 +77,7 @@ class FormulaAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             $options
         );
     }

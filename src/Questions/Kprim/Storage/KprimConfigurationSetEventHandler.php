@@ -65,17 +65,17 @@ class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $this->readInt($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new KprimChoiceEditorConfiguration(
-                    boolval($row['shuffle']),
-                    intval($row['thumbnail_size']),
+                    $this->readBool($row['shuffle']),
+                    $this->readInt($row['thumbnail_size']),
                     $row['label_true'],
                     $row['label_false']
                 ),
                 new KprimChoiceScoringConfiguration(
-                    floatval($row['points']),
-                    intval($row['half_points_at'])
+                    $this->readFloat($row['points']),
+                    $this->readInt($row['half_points_at'])
                 )
             )
         );

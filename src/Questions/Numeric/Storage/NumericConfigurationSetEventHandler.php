@@ -66,12 +66,12 @@ class NumericConfigurationSetEventHandler extends AbstractEventStorageHandler
             intval($data['initiating_user_id']),
             new QuestionPlayConfiguration(
                 new NumericEditorConfiguration(
-                    intval($item['max_chars'])
+                    $this->readInt($item['max_chars'])
                 ),
                 new NumericScoringConfiguration(
-                    floatval($item['points']),
-                    floatval($item['lower_bound']),
-                    floatval($item['upper_bound'])
+                    $this->readFloat($item['points']),
+                    $this->readFloat($item['lower_bound']),
+                    $this->readFloat($item['upper_bound'])
                 )
             )
         );

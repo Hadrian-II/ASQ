@@ -45,7 +45,7 @@ class ClozeAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id'])
+            $this->readInt($data['initiating_user_id'])
         );
     }
 }
