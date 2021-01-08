@@ -51,7 +51,7 @@ class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
      */
     public function getQueryString(): string
     {
-        return 'select * from ' . SetupKprim::TABLENAME_KPRIM_CONFIGURATION .' where event_id = %s';
+        return 'select * from ' . SetupKprim::TABLENAME_KPRIM_CONFIGURATION .' where event_id in(%s)';
     }
 
     /**
