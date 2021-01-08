@@ -48,7 +48,7 @@ class OrderingConfigurationSetEventHandler extends AbstractEventStorageHandler
      */
     public function getQueryString(): string
     {
-        return 'select * from ' . SetupOrdering::TABLENAME_ORDERING_CONFIGURATION .' where event_id = %s';
+        return 'select * from ' . SetupOrdering::TABLENAME_ORDERING_CONFIGURATION .' where event_id in(%s)';
     }
 
     /**
