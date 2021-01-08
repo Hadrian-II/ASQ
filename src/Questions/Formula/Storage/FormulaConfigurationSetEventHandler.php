@@ -36,7 +36,7 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
             'config_id' => ['integer', $id],
             'event_id' => ['integer', $event_id],
             'formula' => ['text', $scoring_config->getFormula()],
-            'units' => ['text', $scoring_config->getUnits()],
+            'units' => ['text', $scoring_config->getUnitString()],
             'precision' => ['integer', $scoring_config->getPrecision()],
             'tolerance' => [ 'float', $scoring_config->getTolerance()],
             'result_type' => ['integer', $scoring_config->getResultType()]

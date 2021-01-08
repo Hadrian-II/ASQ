@@ -160,7 +160,7 @@ class FormulaScoring extends AbstractScoring
 
         $math = new EvalMath();
 
-        $result = $math->evaluate($formula);
+        $result = floatval($math->evaluate($formula));
 
         if ($this->configuration->getResultType() == FormulaScoringConfiguration::TYPE_ALL ||
             $this->configuration->getResultType() == FormulaScoringConfiguration::TYPE_DECIMAL)
@@ -168,13 +168,13 @@ class FormulaScoring extends AbstractScoring
             $values['$r' . $ix] = strval($result);
         }
         else {
-            $mod = $result % 1;
+            $mod = fmod($result, 1);
 
-            if ($mod === 0) {
+            if ($mod === 0.0) {
                 $divisor = 1;
             }
             else {
-                $divisor = 1 / ($result % 1);
+                $divisor = 1 / $mod;
             }
 
             $values['$r' . $ix] = sprintf('%d / %d', $result * $divisor, $divisor);
