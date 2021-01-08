@@ -265,7 +265,8 @@
                         },
                     );
 
-                    if (matchingMode === MATCHING_ONE_TO_ONE) {
+                    if (matchingMode === MATCHING_ONE_TO_ONE ||
+                        matchingMode === MATCHING_MANY_TO_ONE) {
                         termDraggable.draggable('disable');
                         termDraggable.addClass('draggableDisabled');
                     }
