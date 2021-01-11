@@ -51,7 +51,7 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
         );
 
         if ($value !== null) {
-            $shuffle = $shuffle->withValue($value->isShuffleAnswers());
+            $shuffle = $shuffle->withValue($value->isShuffleAnswers() ?? false);
             $thumb_size = $thumb_size->withValue(strval($value->getThumbnailSize()));
             $singleline = $singleline->withValue($value->isSingleLine() ? self::STR_TRUE : self::STR_FALSE);
         }
