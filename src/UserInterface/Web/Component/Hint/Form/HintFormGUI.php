@@ -129,7 +129,9 @@ class HintFormGUI
     public function getHTML() : string
     {
         $panel = $this->ui->factory()->panel()->standard(
-            sprintf($this->language->txt('asq_question_hints_form_header'), $this->question_dto->getData()->getTitle()),
+            sprintf(
+                $this->language->txt('asq_question_hints_form_header'),
+                $this->language->txt($this->question_dto->getType()->getTitleKey())),
             $this->form
         );
 
