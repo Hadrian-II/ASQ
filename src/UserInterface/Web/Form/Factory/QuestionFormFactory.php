@@ -19,7 +19,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionFormFactory
+class QuestionFormFactory implements IQuestionFormFactory
 {
     /**
      * @var IObjectFactory

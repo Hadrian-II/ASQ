@@ -11,7 +11,7 @@ use srag\asq\Application\Service\UIService;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionDataFormFactory;
-use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\UserInterface\Web\Form\Factory\IQuestionFormFactory;
 
 /**
  * Class QuestionFormGUI
@@ -57,7 +57,7 @@ class QuestionFormGUI
     protected $post_question;
 
     /**
-     * @var QuestionFormFactory
+     * @var IQuestionFormFactory
      */
     protected $form_factory;
 
