@@ -67,7 +67,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             ]
         );
 
-        $thumbnail = $this->factory->input()->field()->text($this->language->txt('asq_label_thumbnail'));
+        $thumbnail = $this->factory->input()->field()->numeric($this->language->txt('asq_label_thumbnail'));
 
         $matching_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_matching_mode'))
         ->withOption(
@@ -86,7 +86,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         if (!is_null($value)) {
             $shuffle_answers = $shuffle_answers->withValue($value->getShuffle());
-            $thumbnail = $thumbnail->withValue(strval($value->getThumbnailSize()));
+            $thumbnail = $thumbnail->withValue($value->getThumbnailSize());
             $matching_mode = $matching_mode->withValue(
                 self::USELESS_PREFIX . strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE)
             );

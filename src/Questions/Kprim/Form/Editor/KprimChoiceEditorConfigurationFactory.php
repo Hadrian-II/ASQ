@@ -53,7 +53,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         $shuffle = $this->factory->input()->field()->checkbox($this->language->txt('asq_label_shuffle'));
 
-        $thumb_size = $this->factory->input()->field()->text(
+        $thumb_size = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_thumb_size'),
             $this->language->txt('asq_description_thumb_size')
         );
@@ -63,7 +63,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
 
         if ($value !== null) {
             $shuffle = $shuffle->withValue($value->isShuffleAnswers() ?? false);
-            $thumb_size = $thumb_size->withValue(strval($value->getThumbnailSize()));
+            $thumb_size = $thumb_size->withValue($value->getThumbnailSize());
         }
 
         $fields[self::VAR_SHUFFLE_ANSWERS] = $shuffle;
@@ -172,7 +172,7 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
                 break;
         }
 
-        $thumbsize = $this->readInt(self::VAR_THUMBNAIL_SIZE);
+        $thumbsize = $this->readInt($postdata[self::VAR_THUMBNAIL_SIZE]);
 
         return new KprimChoiceEditorConfiguration(
             $postdata[self::VAR_SHUFFLE_ANSWERS],

@@ -29,7 +29,7 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_upload = $this->factory->input()->field()->text(
+        $max_upload = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_max_upload'),
             $this->language->txt('asq_description_max_upload')
         );
@@ -41,7 +41,7 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
 
 
         if ($value !== null) {
-            $max_upload = $max_upload->withValue(strval($value->getMaximumSize()));
+            $max_upload = $max_upload->withValue($value->getMaximumSize());
             $allowed_extensions = $allowed_extensions->withValue($value->getAllowedExtensions() ?? '');
         }
 

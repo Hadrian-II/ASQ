@@ -37,13 +37,13 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_answers = $this->factory->input()->field()->text(
+        $max_answers = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_answering_limitation'),
             $this->language->txt('asq_info_answering_limitation')
         );
 
         if (!is_null($value)) {
-            $max_answers = $max_answers->withValue(strval($value->getMaxAnswers()));
+            $max_answers = $max_answers->withValue($value->getMaxAnswers());
         }
 
         $mode = $this->factory->input()->field()->switchableGroup(

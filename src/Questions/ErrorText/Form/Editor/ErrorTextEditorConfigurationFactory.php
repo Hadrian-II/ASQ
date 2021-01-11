@@ -36,11 +36,11 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
             $this->createErrorTextInfo()
         );
 
-        $text_size = $this->factory->input()->field()->text($this->language->txt('asq_label_text_size'));
+        $text_size = $this->factory->input()->field()->numeric($this->language->txt('asq_label_text_size'));
 
         if ($value !== null) {
             $error_text = $error_text->withValue($value->getErrorText());
-            $text_size = $text_size->withValue(strval($value->getTextSize()));
+            $text_size = $text_size->withValue($value->getTextSize());
         } else {
             $text_size = $text_size->withValue(self::DEFAULT_TEXTSIZE_PERCENT);
         }

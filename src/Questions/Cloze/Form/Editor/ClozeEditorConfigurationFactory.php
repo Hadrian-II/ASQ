@@ -213,15 +213,14 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->getClozeGapItemFieldDefinitions()
         );
 
-        // needs value to render in template
-        $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
+        $field_size = $this->factory->input()->field()->numeric($this->language->txt('asq_textfield_size'));
 
         $text_scoring = new TextScoring($this->language);
         $text_method = $text_scoring->getScoringTypeSelectionField($this->factory)->withValue('');
 
         if (!is_null($gap)) {
             $gap_items = $gap_items->withValue($gap->getItemsArray());
-            $field_size = $field_size->withValue(strval($gap->getFieldLength()));
+            $field_size = $field_size->withValue($gap->getFieldLength());
             $text_method = $text_method->withValue($gap->getMatchingMethod());
         }
 
@@ -263,18 +262,18 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         $fields = [];
 
         // needs value to render in template
-        $value = $this->factory->input()->field()->text($this->language->txt('asq_correct_value'))->withValue('');
-        $upper = $this->factory->input()->field()->text($this->language->txt('asq_label_upper_bound'))->withValue('');
-        $lower = $this->factory->input()->field()->text($this->language->txt('asq_label_lower_bound'))->withValue('');
-        $points = $this->factory->input()->field()->text($this->language->txt('asq_header_points'))->withValue('');
-        $field_size = $this->factory->input()->field()->text($this->language->txt('asq_textfield_size'))->withValue('');
+        $value = $this->factory->input()->field()->numeric($this->language->txt('asq_correct_value'));
+        $upper = $this->factory->input()->field()->numeric($this->language->txt('asq_label_upper_bound'));
+        $lower = $this->factory->input()->field()->numeric($this->language->txt('asq_label_lower_bound'));
+        $points = $this->factory->input()->field()->numeric($this->language->txt('asq_header_points'));
+        $field_size = $this->factory->input()->field()->numeric($this->language->txt('asq_textfield_size'));
 
         if (!is_null($gap)) {
-            $value = $value->withValue(strval($gap->getValue()));
-            $upper = $upper->withValue(strval($gap->getUpper()));
-            $lower = $lower->withValue(strval($gap->getLower()));
-            $points = $points->withValue(strval($gap->getPoints()));
-            $field_size = $field_size->withValue(strval($gap->getFieldLength()));
+            $value = $value->withValue($gap->getValue());
+            $upper = $upper->withValue($gap->getUpper());
+            $lower = $lower->withValue($gap->getLower());
+            $points = $points->withValue($gap->getPoints());
+            $field_size = $field_size->withValue($gap->getFieldLength());
         }
 
         $fields[self::VAR_GAP_VALUE] = $value;

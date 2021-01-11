@@ -28,10 +28,10 @@ class TextSubsetEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $requested_answers = $this->factory->input()->field()->text($this->language->txt('asq_label_requested_answers'));
+        $requested_answers = $this->factory->input()->field()->numeric($this->language->txt('asq_label_requested_answers'));
 
         if ($value !== null) {
-            $requested_answers = $requested_answers->withValue(strval($value->getNumberOfRequestedAnswers()));
+            $requested_answers = $requested_answers->withValue($value->getNumberOfRequestedAnswers());
         }
 
         $fields[self::VAR_REQUESTED_ANSWERS] = $requested_answers;

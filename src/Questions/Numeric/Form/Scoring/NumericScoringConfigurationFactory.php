@@ -30,16 +30,16 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
+        $points = $this->factory->input()->field()->numeric($this->language->txt('asq_label_points'));
 
-        $lower_bound = $this->factory->input()->field()->text($this->language->txt('asq_label_lower_bound'));
+        $lower_bound = $this->factory->input()->field()->numeric($this->language->txt('asq_label_lower_bound'));
 
-        $upper_bound = $this->factory->input()->field()->text($this->language->txt('asq_label_upper_bound'));
+        $upper_bound = $this->factory->input()->field()->numeric($this->language->txt('asq_label_upper_bound'));
 
         if ($value !== null) {
-            $points = $points->withValue(strval($value->getPoints()));
-            $lower_bound = $lower_bound->withValue(strval($value->getLowerBound()));
-            $upper_bound = $upper_bound->withValue(strval($value->getUpperBound()));
+            $points = $points->withValue($value->getPoints());
+            $lower_bound = $lower_bound->withValue($value->getLowerBound());
+            $upper_bound = $upper_bound->withValue($value->getUpperBound());
         }
 
         $fields[self::VAR_POINTS] = $points;

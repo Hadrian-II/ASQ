@@ -46,7 +46,7 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
             ]
         );
 
-        $thumb_size = $this->factory->input()->field()->text(
+        $thumb_size = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_thumb_size'),
             $this->language->txt('asq_description_thumb_size')
         );
@@ -54,7 +54,7 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
         if ($value !== null) {
             $shuffle = $shuffle->withValue($value->isShuffleAnswers() ?? false);
             $max_answers = $max_answers->withValue($value->getMaxAnswers());
-            $thumb_size = $thumb_size->withValue(strval($value->getThumbnailSize()));
+            $thumb_size = $thumb_size->withValue($value->getThumbnailSize());
             $singleline = $singleline->withValue($value->isSingleLine() ? self::STR_TRUE : self::STR_FALSE);
         }
 

@@ -56,12 +56,12 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_description_units')
         );
 
-        $precision = $this->factory->input()->field()->text(
+        $precision = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_precision'),
             $this->language->txt('asq_description_precision')
         );
 
-        $tolerance = $this->factory->input()->field()->text(
+        $tolerance = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_tolerance'),
             $this->language->txt('asq_description_tolerance')
         );
@@ -123,8 +123,8 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
         if ($value !== null) {
             $formula = $formula->withValue(strval($value->getFormula()));
             $units = $units->withValue(strval($value->getUnitString()));
-            $precision = $precision->withValue(strval($value->getPrecision()));
-            $tolerance = $tolerance->withValue(strval($value->getTolerance()));
+            $precision = $precision->withValue($value->getPrecision());
+            $tolerance = $tolerance->withValue($value->getTolerance());
             $result_type = $result_type->withValue(
                 self::USELESS_PREFIX . (strval($value->getResultType() ?? strval(FormulaScoringConfiguration::TYPE_ALL)))
             );

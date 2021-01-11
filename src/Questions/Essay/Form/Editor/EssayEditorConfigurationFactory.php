@@ -28,13 +28,13 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $max_length = $this->factory->input()->field()->text(
+        $max_length = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_max_length'),
             $this->language->txt('asq_info_max_length')
         );
 
         if (!is_null($value)) {
-            $max_length = $max_length->withValue(strval($value->getMaxLength()));
+            $max_length = $max_length->withValue($value->getMaxLength());
         }
 
         $fields[self::VAR_MAX_LENGTH] = $max_length;

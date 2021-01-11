@@ -31,7 +31,7 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
+        $points = $this->factory->input()->field()->numeric($this->language->txt('asq_label_points'));
 
         $completed_by_submition = $this->factory->input()->field()->checkbox(
             $this->language->txt(
@@ -41,7 +41,7 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
         );
 
         if ($value !== null) {
-            $points = $points->withValue(strval($value->getPoints()));
+            $points = $points->withValue($value->getPoints());
             $completed_by_submition = $completed_by_submition->withValue($value->isCompletedBySubmition() ?? false);
         }
 
