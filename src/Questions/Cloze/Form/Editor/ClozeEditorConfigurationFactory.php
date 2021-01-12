@@ -78,7 +78,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $cloze_text = $this->factory->input()->field()->text(
+        $cloze_text = $this->factory->input()->field()->textarea(
             $this->language->txt('asq_label_cloze_text'),
             $this->language->txt('asq_description_cloze_text') .
             '<br /><input type="button"
