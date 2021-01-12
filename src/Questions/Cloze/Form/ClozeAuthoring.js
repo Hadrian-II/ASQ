@@ -5,6 +5,7 @@
     const FORM_INPUT = 'form_input';
     
     const clozeRegex = /├[^┤]*┤/g;
+	const renameRegex = /(\d+_form_input_)(\d+)(_.*)$/;
 
     function updateGapNames($gap_item) {
         $gap_item.find('select, input').each((ix, item) => {
@@ -29,14 +30,12 @@
             if ($item.find('.aot_table').length > 0) {
                 $item.find('.aot_table').find('input, select').each((jx, jtem) => {
                     const $jtem = $(jtem);
-                    const oldname = $jtem.prop('name');
+                    const oldName = $jtem.prop('id');
+					
+					const newName = oldName.replace(renameRegex, '$1' + next_input + '$3')
                     
-                    if (oldname.indexOf(FORM_INPUT) === -1) {
-                        $jtem.prop('name', oldname.substring(0, 2) + FORM_INPUT + '_' + next_input + oldname.substring(2));
-                    }
-                    else {
-                        $jtem.prop('name', oldname.substring(0, 2) + FORM_INPUT + '_' + next_input + oldname.substring(FORM_INPUT.length + 5));
-                    }
+                    $jtem.prop('name', newName);
+                    $item.prop('id', newName);
                 });
                 
                 next_input += 1;
