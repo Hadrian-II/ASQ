@@ -28,11 +28,11 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        $points = $this->factory->input()->field()->numeric($this->language->txt('asq_label_points'));
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
 
 
         if ($value !== null) {
-            $points = $points->withValue($value->getPoints());
+            $points = $points->withValue(strval($value->getPoints()));
         }
 
         $fields[self::VAR_POINTS] = $points;

@@ -261,18 +261,17 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     {
         $fields = [];
 
-        // needs value to render in template
-        $value = $this->factory->input()->field()->numeric($this->language->txt('asq_correct_value'));
-        $upper = $this->factory->input()->field()->numeric($this->language->txt('asq_label_upper_bound'));
-        $lower = $this->factory->input()->field()->numeric($this->language->txt('asq_label_lower_bound'));
-        $points = $this->factory->input()->field()->numeric($this->language->txt('asq_header_points'));
+        $value = $this->factory->input()->field()->text($this->language->txt('asq_correct_value'));
+        $upper = $this->factory->input()->field()->text($this->language->txt('asq_label_upper_bound'));
+        $lower = $this->factory->input()->field()->text($this->language->txt('asq_label_lower_bound'));
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_header_points'));
         $field_size = $this->factory->input()->field()->numeric($this->language->txt('asq_textfield_size'));
 
         if (!is_null($gap)) {
-            $value = $value->withValue($gap->getValue());
-            $upper = $upper->withValue($gap->getUpper());
-            $lower = $lower->withValue($gap->getLower());
-            $points = $points->withValue($gap->getPoints());
+            $value = $value->withValue(strval($gap->getValue()));
+            $upper = $upper->withValue(strval($gap->getUpper()));
+            $lower = $lower->withValue(strval($gap->getLower()));
+            $points = $points->withValue(strval($gap->getPoints()));
             $field_size = $field_size->withValue($gap->getFieldLength());
         }
 
