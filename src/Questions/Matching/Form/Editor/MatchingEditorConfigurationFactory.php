@@ -39,11 +39,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     const VAR_MATCH_TERM = 'me_match_term';
     const VAR_MATCH_POINTS = 'me_match_points';
 
-    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
-    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
-    // Add some string to value to prevent autocast
-    const USELESS_PREFIX = 'x';
-
     /**
      * @param AbstractValueObject $value
      * @return array
@@ -71,15 +66,15 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         $matching_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_matching_mode'))
         ->withOption(
-            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_ONE_TO_ONE),
+            strval(MatchingEditorConfiguration::MATCHING_ONE_TO_ONE),
             $this->language->txt('asq_option_one_to_one')
         )
         ->withOption(
-            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_ONE),
+            strval(MatchingEditorConfiguration::MATCHING_MANY_TO_ONE),
             $this->language->txt('asq_option_many_to_one')
         )
         ->withOption(
-            self::USELESS_PREFIX . strval(MatchingEditorConfiguration::MATCHING_MANY_TO_MANY),
+            strval(MatchingEditorConfiguration::MATCHING_MANY_TO_MANY),
             $this->language->txt('asq_option_many_to_many')
         );
 
@@ -88,7 +83,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             $shuffle_answers = $shuffle_answers->withValue($value->getShuffle());
             $thumbnail = $thumbnail->withValue($value->getThumbnailSize());
             $matching_mode = $matching_mode->withValue(
-                self::USELESS_PREFIX . strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE)
+                strval($value->getMatchingMode() ?? MatchingEditorConfiguration::MATCHING_ONE_TO_ONE)
             );
         }
 
@@ -306,7 +301,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         return new MatchingEditorConfiguration(
             $this->readInt($postdata[self::VAR_SHUFFLE]),
             $this->readInt($postdata[self::VAR_THUMBNAIL]),
-            $this->readInt(substr($postdata[self::VAR_MATCHING_MODE], strlen(self::USELESS_PREFIX))),
+            $this->readInt($postdata[self::VAR_MATCHING_MODE]),
             $def,
             $term,
             $match

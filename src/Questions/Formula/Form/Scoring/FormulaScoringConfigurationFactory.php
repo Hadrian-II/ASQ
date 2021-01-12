@@ -28,11 +28,6 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_RESULT_TYPE = 'fs_type';
     const VAR_VARIABLES = 'fs_variables';
 
-    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
-    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
-    // Add some string to value to prevent autocast
-    const USELESS_PREFIX = 'x';
-
     /**
      * @var AsqTableInput
      */
@@ -68,22 +63,22 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
 
         $result_type = $this->factory->input()->field()->radio($this->language->txt('asq_label_result_type'))
             ->withOption(
-                self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_ALL),
+                strval(FormulaScoringConfiguration::TYPE_ALL),
                 $this->language->txt('asq_label_result_all'),
                 $this->language->txt('asq_description_result_all')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_DECIMAL),
+                strval(FormulaScoringConfiguration::TYPE_DECIMAL),
                 $this->language->txt('asq_label_result_decimal'),
                 $this->language->txt('asq_description_result_decimal')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_FRACTION),
+                strval(FormulaScoringConfiguration::TYPE_FRACTION),
                 $this->language->txt('asq_label_result_fraction'),
                 $this->language->txt('asq_description_result_fraction')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_COPRIME_FRACTION),
+                strval(FormulaScoringConfiguration::TYPE_COPRIME_FRACTION),
                 $this->language->txt('asq_label_result_coprime_fraction'),
                 $this->language->txt('asq_description_result_coprime_fraction')
             );
@@ -114,8 +109,8 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             ]
         )->withOptions(
             [
-                    AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
-                ]
+                AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
+            ]
         );
 
 
@@ -126,12 +121,12 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $precision = $precision->withValue($value->getPrecision());
             $tolerance = $tolerance->withValue($value->getTolerance());
             $result_type = $result_type->withValue(
-                self::USELESS_PREFIX . (strval($value->getResultType() ?? strval(FormulaScoringConfiguration::TYPE_ALL)))
+                strval($value->getResultType() ?? strval(FormulaScoringConfiguration::TYPE_ALL))
             );
             $variables_table = $variables_table->withValue($value->getVariablesArray());
         } else {
             $tolerance = $tolerance->withValue("0");
-            $result_type = $result_type->withValue(self::USELESS_PREFIX . strval(FormulaScoringConfiguration::TYPE_ALL));
+            $result_type = $result_type->withValue(strval(FormulaScoringConfiguration::TYPE_ALL));
         }
 
         $fields[self::VAR_FORMULA] = $formula;
@@ -168,7 +163,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $postdata[self::VAR_UNITS],
             $this->readInt($postdata[self::VAR_PRECISION]),
             $this->readFloat($postdata[self::VAR_TOLERANCE]),
-            $this->readInt(substr($postdata[self::VAR_RESULT_TYPE], strlen(self::USELESS_PREFIX))),
+            $this->readInt($postdata[self::VAR_RESULT_TYPE]),
             $variables
         );
     }

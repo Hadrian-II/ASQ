@@ -24,11 +24,6 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_SCORING_MODE = 'es_scoring_mode';
     const VAR_POINTS = 'es_points';
 
-    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
-    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
-    // Add some string to value to prevent autocast
-    const USELESS_PREFIX = 'x';
-
     /**
      * @param AbstractValueObject $value
      * @return array
@@ -42,22 +37,22 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
 
         $scoring_mode = $this->factory->input()->field()->radio($this->language->txt('asq_label_scoring_type'))
             ->withOption(
-                self::USELESS_PREFIX . strval(EssayScoring::SCORING_MANUAL),
+                strval(EssayScoring::SCORING_MANUAL),
                 $this->language->txt('asq_label_manual_scoring'),
                 $this->language->txt('asq_info_manual_scoring')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ANY),
+                strval(EssayScoring::SCORING_AUTOMATIC_ANY),
                 $this->language->txt('asq_label_automatic_any'),
                 $this->language->txt('asq_info_automatic_any')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ALL),
+                strval(EssayScoring::SCORING_AUTOMATIC_ALL),
                 $this->language->txt('asq_label_automatic_all'),
                 $this->language->txt('asq_info_automatic_all')
             )
             ->withOption(
-                self::USELESS_PREFIX . strval(EssayScoring::SCORING_AUTOMATIC_ONE),
+                strval(EssayScoring::SCORING_AUTOMATIC_ONE),
                 $this->language->txt('asq_label_automatic_one'),
                 $this->language->txt('asq_info_automatic_one')
             );
@@ -66,7 +61,9 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
 
         if ($value !== null) {
             $text_matching = $text_matching->withValue($value->getMatchingMode());
-            $scoring_mode = $scoring_mode->withValue(self::USELESS_PREFIX . strval($value->getScoringMode() ?? EssayScoring::SCORING_MANUAL));
+            $scoring_mode = $scoring_mode->withValue(
+                strval($value->getScoringMode() ?? EssayScoring::SCORING_MANUAL)
+            );
             $points = $points->withValue(strval($value->getPoints()));
         }
 
@@ -83,18 +80,10 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        $scoring_mode = $this->readInt(substr($postdata[self::VAR_SCORING_MODE], strlen(self::USELESS_PREFIX)));
-        $points = null;
-
-        if ($scoring_mode === EssayScoring::SCORING_AUTOMATIC_ALL ||
-            $scoring_mode === EssayScoring::SCORING_AUTOMATIC_ONE) {
-            $points = $this->readFloat($postdata[self::VAR_POINTS]);
-        }
-
         return new EssayScoringConfiguration(
             $this->readInt($postdata[self::VAR_TEXT_MATCHING]),
-            $scoring_mode,
-            $points
+            $this->readInt($postdata[self::VAR_SCORING_MODE]),
+            $this->readFloat($postdata[self::VAR_POINTS])
         );
     }
 

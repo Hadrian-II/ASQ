@@ -32,11 +32,6 @@ class QuestionFeedbackFormGUI
     const VAR_ANSWER_OPTION_FEEDBACK_MODE = 'answer_option_feedback_mode';
     const VAR_FEEDBACK_FOR_ANSWER = "feedback_for_answer";
 
-    // Essay scorings are ints, but need to be sent as string are then as indexes in arrays and later used to compare with value
-    // PHP somehow autocasts "1" array index to int which makes $value === "1" fail as value is now an int
-    // Add some string to value to prevent autocast
-    const USELESS_PREFIX = 'x';
-
     /**
      * @var QuestionDto
      */
@@ -107,20 +102,20 @@ class QuestionFeedbackFormGUI
             $feedback_setting =
                 $this->ui->factory()->input()->field()->radio($this->language->txt('asq_label_feedback_setting'))
                     ->withOption(
-                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL),
+                        strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_ALL),
                         $this->language->txt('asq_option_feedback_all')
                     )
                     ->withOption(
-                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED),
+                        strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED),
                         $this->language->txt('asq_option_feedback_checked')
                     )
                     ->withOption(
-                        self::USELESS_PREFIX . strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT),
+                        strval(Feedback::OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT),
                         $this->language->txt('asq_option_feedback_correct')
                     );
 
             if (!is_null($this->feedback) && !is_null($this->feedback->getAnswerOptionFeedbackMode())) {
-                $feedback_setting = $feedback_setting->withValue(self::USELESS_PREFIX . strval($this->feedback->getAnswerOptionFeedbackMode()));
+                $feedback_setting = $feedback_setting->withValue(strval($this->feedback->getAnswerOptionFeedbackMode()));
             }
 
             $fields[self::VAR_ANSWER_OPTION_FEEDBACK_MODE] = $feedback_setting;
@@ -165,10 +160,8 @@ class QuestionFeedbackFormGUI
         $this->form = $this->form->withRequest($this->request);
         $postdata = $this->form->getData();
 
-        $feedback_correct = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_CORRECT]);
-        $feedback_wrong = $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_WRONG]);
         if (! empty($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE])) {
-            $answer_option_feedback_mode = $this->readInt(substr($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE], strlen(self::USELESS_PREFIX)));
+            $answer_option_feedback_mode = $this->readInt($postdata[self::VAR_ANSWER_OPTION_FEEDBACK_MODE]);
         }
         $answer_option_feedbacks = [];
 
@@ -184,7 +177,11 @@ class QuestionFeedbackFormGUI
             }
         }
 
-        return new Feedback($feedback_correct, $feedback_wrong, $answer_option_feedback_mode, $answer_option_feedbacks);
+        return new Feedback(
+            $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_CORRECT]),
+            $this->readString($postdata[self::VAR_ANSWER_FEEDBACK_WRONG]),
+            $answer_option_feedback_mode,
+            $answer_option_feedbacks);
     }
 
     /**

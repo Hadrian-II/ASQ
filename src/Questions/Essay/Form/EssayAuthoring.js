@@ -1,8 +1,8 @@
 (function ($) {
-    const NO_AUTO = 'x1';
-    const AUTO_ANY = 'x2';
-    const AUTO_ALL = 'x3';
-    const AUTO_ONE = 'x4';
+    const NO_AUTO = '1';
+    const AUTO_ANY = '2';
+    const AUTO_ALL = '3';
+    const AUTO_ONE = '4';
     
     let pointsHeader = '';
     
