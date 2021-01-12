@@ -120,6 +120,8 @@
             form.find('select:first').addClass('js_select_type');
             form.find('[name]').removeAttr('name');
         });
+        
+        $('.il-section-input').find('select:first').addClass('js_select_type');
     }
    
     
