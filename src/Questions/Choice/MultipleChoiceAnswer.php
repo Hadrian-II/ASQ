@@ -24,7 +24,7 @@ class MultipleChoiceAnswer extends AbstractValueObject
     /**
      * @param array $selected_ids
      */
-    public function __construct(array $selected_ids)
+    public function __construct(array $selected_ids = [])
     {
         $this->selected_ids = $selected_ids;
     }

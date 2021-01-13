@@ -24,7 +24,7 @@ class KprimChoiceAnswer extends AbstractValueObject
     /**
      * @param array $answers
      */
-    public function __construct(array $answers)
+    public function __construct(array $answers = [])
     {
         $this->answers = $answers;
     }

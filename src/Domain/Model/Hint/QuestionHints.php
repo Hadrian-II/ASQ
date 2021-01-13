@@ -25,7 +25,7 @@ class QuestionHints extends AbstractValueObject
     /**
      * @param ?QuestionHint[] $hints
      */
-    public function __construct(?array $hints = null)
+    public function __construct(?array $hints = [])
     {
         $this->hints = $hints;
     }
