@@ -67,7 +67,7 @@ const asqAuthoring = (function () {
 
             if (existingGroup.length > 0) {
                 const myName = input.attr('name');
-                const myGroup = $(`name="${myName}"]`);
+                const myGroup = $(`[name="${myName}"]`);
                 myGroup.attr('name', 'totally_random');
                 existingGroup.attr('name', myName);
                 myGroup.attr('name', newName);
