@@ -61,7 +61,7 @@ trait InputHandlingTrait
      */
     protected function readBool(?string $value) : ?bool
     {
-        if (empty($value)) {
+        if (!(is_bool($value) || is_numeric($value))) {
             return null;
         }
 
