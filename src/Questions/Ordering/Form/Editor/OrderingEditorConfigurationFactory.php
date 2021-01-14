@@ -40,7 +40,9 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
         );
 
         if ($value !== null) {
-            $is_vertical = $is_vertical->withValue($value->isVertical() ? self::VERTICAL : self::HORICONTAL);
+            if (! is_null($value->isVertical())) {
+                $is_vertical = $is_vertical->withValue($value->isVertical() ? self::VERTICAL : self::HORICONTAL);
+            }
         }
 
         $fields[self::VAR_VERTICAL] = $is_vertical;
@@ -54,7 +56,16 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return new OrderingEditorConfiguration($this->readString($postdata[self::VAR_VERTICAL]) === self::VERTICAL);
+        $raw_order = $this->readString($postdata[self::VAR_VERTICAL]);
+
+        if ($raw_order === self::VERTICAL || $raw_order === self::HORICONTAL) {
+            $order = $raw_order === self::VERTICAL;
+        }
+        else {
+            $order = null;
+        }
+
+        return new OrderingEditorConfiguration($order);
     }
 
     /**
