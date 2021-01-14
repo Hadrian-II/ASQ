@@ -62,10 +62,10 @@ trait InputHandlingTrait
     protected function readBool(?string $value) : ?bool
     {
         if (empty($value)) {
-                return null;
+            return null;
         }
 
-            return boolval($value);
+        return boolval($value);
     }
 
     /**
@@ -76,8 +76,7 @@ trait InputHandlingTrait
      */
     protected function readFloat(?string $value) : ?float
     {
-        if (empty($value) ||
-            !is_numeric($value)) {
+        if (!is_numeric($value)) {
             return null;
         }
 
@@ -92,8 +91,7 @@ trait InputHandlingTrait
      */
     protected function readInt(?string $value) : ?int
     {
-        if (empty($value) ||
-            !is_numeric($value)) {
+        if (!is_numeric($value)) {
             return null;
         }
 
