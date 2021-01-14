@@ -68,7 +68,7 @@
     function addGapItem() {
         $('input[disabled=disabled]').parents('.form-group').remove();
         
-        const clozeText = $('input[name=form_input_7]');
+        const clozeText = $('[name=form_input_7]');
         const matches = clozeText.val().match(clozeRegex);
         const gapIndex = matches ? matches.length + 1 : 1;
 
@@ -125,7 +125,7 @@
    
     
     function updateClozeText(currentId, replacementId = -1) {
-        const clozeText = $('input[name=form_input_7]');
+        const clozeText = $('[name=form_input_7]');
         const clozeTextVal = clozeText.val();
         const gapStr = `├${currentId}┤`;
         let gapIndex = clozeTextVal.indexOf(gapStr);
@@ -141,7 +141,7 @@
     function deleteGapItem() {
         const pressedFormItem = $(this).parents('.il-section-input');
         
-        const gapCount = $('input[name=form_input_7]').val().match(clozeRegex).length;
+        const gapCount = $('[name=form_input_7]').val().match(clozeRegex).length;
         const doomedGapId = pressedFormItem.prevAll('.il-section-input').length + 1;
         
         pressedFormItem.remove();
