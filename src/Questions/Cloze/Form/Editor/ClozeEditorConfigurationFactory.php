@@ -193,8 +193,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         }
 
         $section = $this->factory->input()->field()->section(
-            $fields,
-            $this->language->txt('asq_header_feedback_answers')
+            $fields, '&nbsp;'
         );
 
         return $section;
