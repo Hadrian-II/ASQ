@@ -27,6 +27,7 @@
 .imagemap_editor {
 	position: relative;
 	margin-bottom: 10px;
+	display: inline-block;
 }
 
 .imagemap_editor img {
