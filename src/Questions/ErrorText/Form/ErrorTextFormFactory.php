@@ -11,6 +11,7 @@ use srag\asq\Questions\ErrorText\Form\Editor\ErrorTextEditorConfigurationFactory
 use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringConfigurationFactory;
 use srag\asq\Questions\ErrorText\Form\Scoring\ErrorTextScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
 
 /**
@@ -42,5 +43,13 @@ class ErrorTextFormFactory extends QuestionFormFactory
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Form/ErrorTextAuthoring.js' ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAnswerOptionConfiguration() : array
+    {
+        return [ AsqTableInput::OPTION_HIDE_ADD_REMOVE => true ];
     }
 }
