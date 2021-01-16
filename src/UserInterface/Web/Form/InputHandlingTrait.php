@@ -76,6 +76,8 @@ trait InputHandlingTrait
      */
     protected function readFloat(?string $value) : ?float
     {
+        $value = str_replace(',', '.', $value);
+
         if (!is_numeric($value)) {
             return null;
         }
