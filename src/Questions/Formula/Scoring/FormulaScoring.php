@@ -13,6 +13,7 @@ use srag\asq\Questions\Formula\Editor\FormulaEditor;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringDefinition;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class FormulaScoring
@@ -25,6 +26,8 @@ use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
  */
 class FormulaScoring extends AbstractScoring
 {
+    use InputHandlingTrait;
+
     /**
      * @var FormulaScoringConfiguration
      */
@@ -75,8 +78,8 @@ class FormulaScoring extends AbstractScoring
             //get decimal value of answer if allowed
             if (($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_ALL ||
                 $this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_DECIMAL) &&
-                is_numeric($raw_result)) {
-                $result_given = floatval($raw_result);
+                is_numeric($this->readFloat($raw_result))) {
+                $result_given = $this->readFloat($raw_result);
             }
 
             //get compound result if no value yet and it is allowed

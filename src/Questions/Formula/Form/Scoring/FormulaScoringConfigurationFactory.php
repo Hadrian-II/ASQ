@@ -149,12 +149,12 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
 
         foreach ($postdata[self::VAR_VARIABLES] as $raw_variable) {
             $variables[] = new FormulaScoringVariable(
-                floatval($raw_variable[FormulaScoringVariable::VAR_MIN]),
-                floatval($raw_variable[FormulaScoringVariable::VAR_MAX]),
+                $this->readFloat($raw_variable[FormulaScoringVariable::VAR_MIN]),
+                $this->readFloat($raw_variable[FormulaScoringVariable::VAR_MAX]),
                 $raw_variable[FormulaScoringVariable::VAR_UNIT],
                 empty($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF]) ?
                     null:
-                    floatval($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF])
+                    $this->readFloat($raw_variable[FormulaScoringVariable::VAR_MULTIPLE_OF])
             );
         }
 
