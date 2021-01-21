@@ -85,10 +85,19 @@ class OrderingEditor extends AbstractEditor
         }
 
         foreach ($items as $item) {
+            $display_definition = $item->getDisplayDefinition();
+
+            if (!empty($display_definition->getImage())) {
+                $tpl->setCurrentBlock('answer_image');
+                $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
+                $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
+                $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
+                $tpl->parseCurrentBlock();
+            }
+
             $tpl->setCurrentBlock('item');
             $tpl->setVariable('OPTION_ID', $this->display_ids[$item->getOptionId()]);
-            $tpl->setVariable('ITEM_TEXT', $item->getDisplayDefinition()
-                ->getText());
+            $tpl->setVariable('ITEM_TEXT', $display_definition->getText());
             $tpl->parseCurrentBlock();
         }
 

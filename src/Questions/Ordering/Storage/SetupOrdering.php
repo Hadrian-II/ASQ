@@ -42,7 +42,7 @@ class SetupOrdering extends AbstractQuestionDBSetup
                 'answer_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'text' => ['type' => 'text', 'length' => 64],
-                'image' => ['type' => 'text', 'length' => 64]
+                'image' => ['type' => 'text', 'length' => 128]
             ]
             );
         $this->db->addPrimaryKey(self::TABLENAME_ORDERING_ANSWER,['answer_id']);

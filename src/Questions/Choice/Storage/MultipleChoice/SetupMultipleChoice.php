@@ -45,7 +45,7 @@ class SetupMultipleChoice extends AbstractQuestionDBSetup
                 'points_selected' => ['type' => 'float'],
                 'points_unselected' => ['type' => 'float'],
                 'text' => ['type' => 'text'],
-                'image' => ['type' => 'text', 'length' => 64]
+                'image' => ['type' => 'text', 'length' => 128]
             ]
             );
         $this->db->addPrimaryKey(self::TABLENAME_MULTIPLE_CHOICE_ANSWER,['answer_id']);

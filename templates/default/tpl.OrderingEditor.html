@@ -2,7 +2,12 @@
 <div>
 	<div class="order_list {ADD_CLASS}">
 		<!-- BEGIN item -->
-	        <div class="list_item" draggable="true" data-id="{OPTION_ID}">{ITEM_TEXT}</div>  
+	        <div class="list_item" draggable="true" data-id="{OPTION_ID}">
+	        	{ITEM_TEXT}
+	        	<!-- BEGIN answer_image -->
+			    <img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE}/>
+				<!-- END answer_image -->
+	        </div>  
 		<!-- END item -->
 	</div>
 	<input class="js_order_answer" type="hidden" name="{POST_NAME}" value="{ANSWER}" />

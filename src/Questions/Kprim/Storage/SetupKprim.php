@@ -46,7 +46,7 @@ class SetupKprim extends AbstractQuestionDBSetup
                 'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'correct_answer' => ['type' => 'integer','length' => 1],
                 'text' => ['type' => 'text'],
-                'image' => ['type' => 'text', 'length' => 64]
+                'image' => ['type' => 'text', 'length' => 128]
             ]
         );
         $this->db->addPrimaryKey(self::TABLENAME_KPRIM_ANSWER,['answer_id']);

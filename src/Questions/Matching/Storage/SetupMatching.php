@@ -46,7 +46,7 @@ class SetupMatching extends AbstractQuestionDBSetup
                 'type' => ['type' => 'integer', 'length' => 1],
                 'id' => ['type' => 'text', 'length' => 16],
                 'text' => ['type' => 'text'],
-                'image' => ['type' => 'text', 'length' => 64]
+                'image' => ['type' => 'text', 'length' => 128]
             ]
         );
         $this->db->addPrimaryKey(self::TABLENAME_MATCHING_ITEM,['item_id']);
