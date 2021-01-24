@@ -40,11 +40,6 @@ abstract class AbstractEditor implements IAsqQuestionEditor
     public function __construct(QuestionDto $question)
     {
         $this->question = $question;
-
-        if (array_key_exists('REQUEST_METHOD', $_SERVER) &&
-            $_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->setAnswer($this->readAnswer());
-        }
     }
 
     public function setRenderFeedback(bool $render_feedback)
