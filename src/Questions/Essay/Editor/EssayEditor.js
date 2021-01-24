@@ -13,13 +13,19 @@
             textLength = text.length;            
         }
 
+		if (textLength > maxLength) {
+			$('.js_letter_count').parent().addClass('essay_alert');
+		}
+		else {
+			$('.js_letter_count').parent().removeClass('essay_alert');
+		}
+
         $('.js_letter_count').html(textLength);
     }
 
     function checkValues() {
         if (hasMaxLength) {
             if (textLength > maxLength) {
-                // TODO use ilias modalpopup
                 alert($('.js_error').val());
                 return false;
             }

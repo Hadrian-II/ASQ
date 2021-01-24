@@ -170,3 +170,9 @@
 .file_upload_table * {
 	text-align: center;
 }
+
+/* Essay Editor */
+.essay_alert {
+	font-size: 24px;
+	color: red;
+}
