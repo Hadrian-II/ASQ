@@ -44,7 +44,7 @@ class FileUploadScoring extends AbstractScoring
         $reached_points = 0;
 
         if ($this->configuration->isCompletedBySubmition()) {
-            if (count($answer->getFiles()) > 0) {
+            if ($answer->getFiles() !== null && count($answer->getFiles()) > 0) {
                 $reached_points = $this->getMaxScore();
             }
         } else {
