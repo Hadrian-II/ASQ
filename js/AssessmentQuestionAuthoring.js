@@ -1,4 +1,7 @@
 const asqAuthoring = (function () {
+    //number used to create newlines and swap lines to prevent radiogroup clashes
+    const RADIO_SAFE_OFFSET = 1234567890;
+
     let hasTiny;
     let tinySettings = {
         selector: '[name=form_input_5]:first',
@@ -56,26 +59,7 @@ const asqAuthoring = (function () {
     }
 
     function processItem(input, currentRow) {
-        const newName = updateInputName(input.attr('name'), currentRow);
-
-        // if already an item with the new name exists
-        // (when swapping) set the other element name
-        // to current oldname to prevent name collision
-        // and losing of radio values
-        if (input.attr('type') === 'radio') {
-            const existingGroup = $(`[name="${newName}"]`);
-
-            if (existingGroup.length > 0) {
-                const myName = input.attr('name');
-                const myGroup = $(`[name="${myName}"]`);
-                myGroup.attr('name', 'totally_random');
-                existingGroup.attr('name', myName);
-                myGroup.attr('name', newName);
-            }
-        } else {
-            input.attr('name', newName);
-        }
-
+        input.attr('name', updateInputName(input.attr('name'), currentRow));
         input.prop('id', updateInputName(input.prop('id'), currentRow));
     }
 
@@ -86,11 +70,18 @@ const asqAuthoring = (function () {
     }
 
     function setInputIds(table) {
-        let currentRow = 1;
+        if (table.find('input[type=radio]').length > 0) {
+            // create row ids that are outside existing values, as radio group would be the same over multiple lines
+            // (one row would loose its value when adding/switching rows with radios)
+            const offset = RADIO_SAFE_OFFSET;
+
+            table.children().each((index, item) => {
+                processRow($(item), index + offset);
+            });
+        }
 
         table.children().each((index, item) => {
-            processRow($(item), currentRow);
-            currentRow += 1;
+            processRow($(item), index + 1);
         });
     }
 
@@ -107,6 +98,8 @@ const asqAuthoring = (function () {
         let newRow = row.clone();
 
         newRow = clearRow(newRow);
+        //set ids to big number to prevent clash of ids/radiogroups
+        processRow(newRow, RADIO_SAFE_OFFSET);
         row.after(newRow);
         setInputIds(table);
 
