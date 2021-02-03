@@ -42,6 +42,7 @@ use srag\asq\Questions\Ordering\Storage\OrderingAnswerOptionsSetEventHandler;
 use srag\asq\Questions\Ordering\Storage\OrderingConfigurationSetEventHandler;
 use srag\asq\Questions\TextSubset\Storage\TextSubsetAnswerOptionsSetEventHandler;
 use srag\asq\Questions\TextSubset\Storage\TextSubsetConfigurationSetEventHandler;
+use srag\asq\Application\Service\AsqServices;
 
 /**
  * Class RelationalQuestionEventStore
@@ -68,6 +69,11 @@ class RelationalQuestionEventStore implements IEventStore
     private $db;
 
     /**
+     * @var AsqServices
+     */
+    private $asq;
+
+    /**
      * @var Factory
      */
     private $uuid_factory;
@@ -85,73 +91,20 @@ class RelationalQuestionEventStore implements IEventStore
     /**
      * @var array
      */
-    const TYPE_HANDLERS = [
-        SetupDatabase::CLOZE => [
-            QuestionAnswerOptionsSetEvent::class => ClozeAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => ClozeConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::SINGLE_CHOICE => [
-            QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => MultipleChoiceConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::MULTIPLE_CHOICE => [
-            QuestionAnswerOptionsSetEvent::class => MultipleChoiceAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => MultipleChoiceConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::IMAGE_MAP => [
-            QuestionAnswerOptionsSetEvent::class => ImageMapAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => ImageMapConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::ERROR_TEXT => [
-            QuestionAnswerOptionsSetEvent::class => ErrorTextAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => ErrorTextConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::ESSAY => [
-            QuestionAnswerOptionsSetEvent::class => EssayAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => EssayConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::FILE_UPLOAD => [
-            QuestionPlayConfigurationSetEvent::class => FileUploadConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::FORMULA => [
-            QuestionAnswerOptionsSetEvent::class => FormulaAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => FormulaConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::KPRIM => [
-            QuestionAnswerOptionsSetEvent::class => KprimAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => KprimConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::MATCHING => [
-            QuestionPlayConfigurationSetEvent::class => MatchingConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::NUMERIC => [
-            QuestionPlayConfigurationSetEvent::class => NumericConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::ORDERING => [
-            QuestionAnswerOptionsSetEvent::class => OrderingAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => OrderingConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::ORDERING_TEXT => [
-            QuestionAnswerOptionsSetEvent::class => OrderingAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => OrderingConfigurationSetEventHandler::class
-        ],
-        SetupDatabase::TEXT_SUBSET => [
-            QuestionAnswerOptionsSetEvent::class => TextSubsetAnswerOptionsSetEventHandler::class,
-            QuestionPlayConfigurationSetEvent::class => TextSubsetConfigurationSetEventHandler::class
-        ]
-    ];
+    private $handlers = [];
 
     /**
      * @var array
      */
-    private $handlers = [];
+    private $type_handlers;
 
     /**
      * @param ilDBInterface $db
      */
-    public function __construct(ilDBInterface $db)
+    public function __construct(ilDBInterface $db, AsqServices $asq)
     {
         $this->db = $db;
+        $this->asq = $asq;
         $this->uuid_factory = new Factory();
     }
 
@@ -246,11 +199,32 @@ class RelationalQuestionEventStore implements IEventStore
         }
 
         if (! array_key_exists($event_type, $this->handlers[$type])) {
-            $classname = self::TYPE_HANDLERS[$type][$event_type];
+            $classname = $this->getTypeHandlers()[$type][$event_type];
             $this->handlers[$type][$event_type] = new $classname($this->db);
         }
 
         return $this->handlers[$type][$event_type];
+    }
+
+    /**
+     * @return array
+     */
+    private function getTypeHandlers() : array
+    {
+        if ($this->type_handlers === null) {
+            foreach ($this->asq->question()->getAvailableQuestionTypes() as $type) {
+                $storage_class =  $type->getStorageClass();
+                $storage = new $storage_class();
+
+                $this->type_handlers[$type->getTitleKey()] = [
+                    QuestionAnswerOptionsSetEvent::class => $storage->getAnswerOptionHandler(),
+                    QuestionPlayConfigurationSetEvent::class => $storage->getPlayConfigurationHandler()
+                ];
+            }
+        }
+
+
+        return $this->type_handlers;
     }
 
     /**

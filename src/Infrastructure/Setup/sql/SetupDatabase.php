@@ -32,6 +32,7 @@ use srag\asq\Questions\Formula\Scoring\FormulaScoring;
 use srag\asq\Questions\Kprim\Editor\KprimChoiceEditor;
 use srag\asq\Questions\Kprim\Form\KprimChoiceFormFactory;
 use srag\asq\Questions\Kprim\Scoring\KprimChoiceScoring;
+use srag\asq\Questions\Kprim\Storage\KprimStorage;
 use srag\asq\Questions\Matching\Editor\MatchingEditor;
 use srag\asq\Questions\Matching\Form\MatchingFormFactory;
 use srag\asq\Questions\Matching\Scoring\MatchingScoring;
@@ -51,6 +52,14 @@ use ilDBInterface;
 use srag\asq\Questions\Cloze\Storage\ClozeStorage;
 use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceStorage;
 use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapStorage;
+use srag\asq\Questions\ErrorText\Storage\ErrorTextStorage;
+use srag\asq\Questions\Numeric\Storage\NumericStorage;
+use srag\asq\Questions\Formula\Storage\FormulaStorage;
+use srag\asq\Questions\TextSubset\Storage\TextSubsetStorage;
+use srag\asq\Questions\Ordering\Storage\OrderingStorage;
+use srag\asq\Questions\Matching\Storage\MatchingStorage;
+use srag\asq\Questions\Essay\Storage\EssayStorage;
+use srag\asq\Questions\FileUpload\Storage\FileUploadStorage;
 
 /**
  * Class SetupDatabase
@@ -137,7 +146,7 @@ class SetupDatabase
             KprimChoiceFormFactory::class,
             KprimChoiceEditor::class,
             KprimChoiceScoring::class,
-            ''
+            KprimStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -145,7 +154,7 @@ class SetupDatabase
             ErrorTextFormFactory::class,
             ErrorTextEditor::class,
             ErrorTextScoring::class,
-            ''
+            ErrorTextStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -169,7 +178,7 @@ class SetupDatabase
             NumericFormFactory::class,
             NumericEditor::class,
             NumericScoring::class,
-            ''
+            NumericStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -177,7 +186,7 @@ class SetupDatabase
             FormulaFormFactory::class,
             FormulaEditor::class,
             FormulaScoring::class,
-            ''
+            FormulaStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -185,7 +194,7 @@ class SetupDatabase
             TextSubsetFormFactory::class,
             TextSubsetEditor::class,
             TextSubsetScoring::class,
-            ''
+            TextSubsetStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -193,7 +202,7 @@ class SetupDatabase
             OrderingFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class,
-            ''
+            OrderingStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -201,7 +210,7 @@ class SetupDatabase
             MatchingFormFactory::class,
             MatchingEditor::class,
             MatchingScoring::class,
-            ''
+            MatchingStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -209,7 +218,7 @@ class SetupDatabase
             EssayFormFactory::class,
             EssayEditor::class,
             EssayScoring::class,
-            ''
+            EssayStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -217,7 +226,7 @@ class SetupDatabase
             FileUploadFormFactory::class,
             FileUploadEditor::class,
             FileUploadScoring::class,
-            ''
+            FileUploadStorage::class
         );
 
         $this->asq->question()->addQuestionType(
@@ -225,7 +234,7 @@ class SetupDatabase
             OrderingTextFormFactory::class,
             OrderingEditor::class,
             OrderingScoring::class,
-            ''
+            OrderingStorage::class
         );
     }
 
