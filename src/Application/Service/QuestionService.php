@@ -198,6 +198,10 @@ class QuestionService extends ASQService
         string $scoring_class,
         string $storage_class
     ) : void {
+        if(QuestionType::where(['title_key' => $title_key])->count() > 0) {
+            throw new AsqException(sprintf('Question Type: "%s" already exists', $title_key));
+        }
+
         $type = QuestionType::createNew($title_key, $factory_class, $editor_class, $scoring_class, $storage_class);
         $type->create();
     }
@@ -209,7 +213,7 @@ class QuestionService extends ASQService
      */
     public function removeQuestionType(string $title_key) : void
     {
-        QuestionType::where(['$title_key' => $title_key])->first()->delete();
+        QuestionType::where(['title_key' => $title_key])->first()->delete();
     }
 
     /**
