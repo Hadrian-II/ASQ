@@ -38,7 +38,7 @@ const asqAuthoring = (function () {
 
             if (input.attr('type') === 'radio'
                     || input.attr('type') === 'checkbox') {
-                input.attr('checked', false);
+                input.prop('checked', false);
             } else {
                 input.val('');
             }
@@ -128,7 +128,9 @@ const asqAuthoring = (function () {
         const row = $(this).parents('.aot_row');
         const table = $(this).parents('.aot_table').children('tbody');
 
-        if (hasTiny) {
+		const containsTiny = table.find('.tox').length > 0;
+
+        if (hasTiny && containsTiny) {
             clearTiny();
         }
 
@@ -139,7 +141,7 @@ const asqAuthoring = (function () {
             clearRow(row);
         }
 
-        if (hasTiny) {
+        if (hasTiny && containsTiny) {
             tinymce.init(tinySettings);
         }
     }
