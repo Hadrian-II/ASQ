@@ -208,6 +208,8 @@ class Renderer extends AbstractComponentRenderer
                 return $this->generateHiddenField($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value ?? $definition->getOptions()[0]);
             case AsqTableInputFieldDefinition::TYPE_LABEL:
                 return $this->generateLabel($value, $definition->getPostVar());
+            case AsqTableInputFieldDefinition::TYPE_CHECKBOX:
+                return $this->generateCheckbox($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value);
             default:
                 throw new Exception('Please implement all fieldtypes you define');
         }
@@ -232,6 +234,20 @@ class Renderer extends AbstractComponentRenderer
     private function generateTextArea(string $post_var, $value) : string
     {
         return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm">%2$s</textarea>', $post_var, $value);
+    }
+
+    /**
+     * @param string $post_var
+     * @param $value
+     * @return string
+     */
+    private function generateCheckbox(string $post_var, $value) : string
+    {
+        return sprintf(
+            '<input type="checkbox" id="%1$s" name="%1$s" class="form-control form-control-sm" %2$s/',
+            $post_var,
+            $value === true ? 'checked="checked"' : ''
+        );
     }
 
     /**

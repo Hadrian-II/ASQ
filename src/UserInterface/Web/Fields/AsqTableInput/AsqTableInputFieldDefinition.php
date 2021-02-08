@@ -23,6 +23,7 @@ class AsqTableInputFieldDefinition
     const TYPE_BUTTON = 7;
     const TYPE_HIDDEN = 8;
     const TYPE_LABEL = 9;
+    const TYPE_CHECKBOX = 10;
 
     /**
      * @var string
