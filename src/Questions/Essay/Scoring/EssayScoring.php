@@ -215,6 +215,12 @@ class EssayScoring extends AbstractScoring
             return false;
         }
 
+        if (($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ALL ||
+            $this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ONE) &&
+            $this->configuration->getPoints() === null) {
+            return false;
+        }
+
         if ($this->configuration->getScoringMode() !== self::SCORING_MANUAL) {
             foreach ($this->question->getAnswerOptions() as $option) {
                 /** @var EssayScoringDefinition $definition */
