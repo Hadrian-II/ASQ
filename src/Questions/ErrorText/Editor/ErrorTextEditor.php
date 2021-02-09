@@ -97,7 +97,11 @@ class ErrorTextEditor extends AbstractEditor
             if (!is_null($this->answer) && in_array($i, $this->answer->getSelectedWordIndexes())) {
                 $css .= ' selected';
             }
-            $text .= '<span class="' . $css . '" data-index="' . $i . '">' . $words[$i] . '</span> ';
+
+            $word = preg_replace('/[^a-z0-9]+/i', '', $words[$i]);
+            $punctuation = substr($words[$i], strlen($word));
+
+            $text .= '<span class="' . $css . '" data-index="' . $i . '">' . $word . '</span>' . $punctuation . ' ';
         }
 
         return $text;

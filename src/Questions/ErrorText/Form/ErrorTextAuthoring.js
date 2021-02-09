@@ -67,7 +67,7 @@
             const error = errors[i];
             const row = $(rrow);
             let label = text.slice(error.start, error.start + error.length).join(' ');
-            label = label.replace('((', '').replace('))', '').replace('#', '');
+            label = label.replace(/[.,!?#\(\)]/g, '');
 
             row.find('.etsd_wrong_text').text(label);
         });
