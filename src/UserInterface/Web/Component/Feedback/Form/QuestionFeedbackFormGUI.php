@@ -12,6 +12,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 use function PHPUnit\Framework\isNull;
+use srag\asq\Infrastructure\Helpers\PathHelper;
 
 /**
  * Class QuestionFeedbackFormGUI
@@ -25,6 +26,7 @@ use function PHPUnit\Framework\isNull;
 class QuestionFeedbackFormGUI
 {
     use InputHandlingTrait;
+    use PathHelper;
 
     const VAR_ANSWER_FEEDBACK_CORRECT = 'answer_feedback_correct';
     const VAR_ANSWER_FEEDBACK_WRONG = 'answer_feedback_wrong';
@@ -72,6 +74,10 @@ class QuestionFeedbackFormGUI
         $this->ui = $ui;
         $this->request = $request;
 
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/tinymce.min.js');
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/FeedbackAuthoring.js');
+
+
         $this->question_dto = $question_dto;
         $this->feedback = $question_dto->getFeedback();
 
@@ -114,7 +120,9 @@ class QuestionFeedbackFormGUI
                         $this->language->txt('asq_option_feedback_correct')
                     );
 
-            if (!is_null($this->feedback) && !is_null($this->feedback->getAnswerOptionFeedbackMode())) {
+            if (!is_null($this->feedback) &&
+                !is_null($this->feedback->getAnswerOptionFeedbackMode()) &&
+                $this->feedback->getAnswerOptionFeedbackMode() !== 0) {
                 $feedback_setting = $feedback_setting->withValue(strval($this->feedback->getAnswerOptionFeedbackMode()));
             }
 

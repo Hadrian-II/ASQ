@@ -96,7 +96,7 @@ class Feedback extends AbstractValueObject
      * @param string $option_id
      * @return string
      */
-    public function getFeedbackForAnswerOption(string $option_id) : string
+    public function getFeedbackForAnswerOption(string $option_id) : ?string
     {
         return $this->answer_option_feedbacks[$option_id];
     }
