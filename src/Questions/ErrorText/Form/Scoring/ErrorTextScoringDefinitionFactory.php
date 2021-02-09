@@ -85,10 +85,10 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return new ErrorTextScoringDefinition(
-            intval($values[self::VAR_WORD_INDEX]),
-            intval($values[self::VAR_WORD_LENGTH]),
+            $this->readInt($values[self::VAR_WORD_INDEX]),
+            $this->readInt($values[self::VAR_WORD_LENGTH]),
             $values[self::VAR_CORRECT_TEXT],
-            floatval($values[self::VAR_POINTS])
+            $this->readFloat($values[self::VAR_POINTS])
         );
     }
 

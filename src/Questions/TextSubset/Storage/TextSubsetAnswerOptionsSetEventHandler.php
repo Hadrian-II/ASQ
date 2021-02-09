@@ -61,7 +61,7 @@ class TextSubsetAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
             $options[] = new AnswerOption(
                 strval($id),
                 new EmptyDefinition(),
-                new TextSubsetScoringDefinition(floatval($row['points']), $row['text'])
+                new TextSubsetScoringDefinition($this->readFloat($row['points']), $row['text'])
                 );
             $id += 1;
         }

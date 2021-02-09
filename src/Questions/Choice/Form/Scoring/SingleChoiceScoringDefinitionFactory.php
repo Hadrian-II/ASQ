@@ -58,7 +58,7 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return new MultipleChoiceScoringDefinition(
-            floatval($values[self::VAR_MCSD_SELECTED]),
+            $this->readFloat($values[self::VAR_MCSD_SELECTED]),
             self::ZERO_BY_DEFAULT
         );
     }

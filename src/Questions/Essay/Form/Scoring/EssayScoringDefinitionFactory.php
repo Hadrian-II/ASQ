@@ -65,7 +65,7 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
     {
         return new EssayScoringDefinition(
             $values[self::VAR_TEXT],
-            floatval($values[self::VAR_POINTS])
+            $this->readFloat($values[self::VAR_POINTS])
         );
     }
 

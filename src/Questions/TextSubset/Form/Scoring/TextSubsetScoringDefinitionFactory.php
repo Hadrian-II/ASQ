@@ -64,7 +64,7 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
         return new TextSubsetScoringDefinition(
-            floatval($values[self::VAR_TSSD_POINTS]),
+            $this->readFloat($values[self::VAR_TSSD_POINTS]),
             $values[self::VAR_TSSD_TEXT]
         );
     }

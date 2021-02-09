@@ -14,6 +14,7 @@ use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
+use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**
  * Class HintFormGUI
@@ -27,6 +28,7 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition
 class HintFormGUI
 {
     use PathHelper;
+    use InputHandlingTrait;
 
     const HINT_POSTVAR = 'hints';
     const HINT_CONTENT_POSTVAR = 'hint_content';
@@ -157,7 +159,7 @@ class HintFormGUI
                     return new QuestionHint(
                         strval($index),
                         $raw_hint[self::HINT_CONTENT_POSTVAR],
-                        floatval($raw_hint[self::HINT_POINTS_POSTVAR])
+                        $this->readFloat($raw_hint[self::HINT_POINTS_POSTVAR])
                     );
                 },
                 $postdata[self::HINT_POSTVAR]

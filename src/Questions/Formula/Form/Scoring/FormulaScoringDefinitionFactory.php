@@ -74,7 +74,7 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
         return new FormulaScoringDefinition(
             $values[self::VAR_FORMULA],
             empty($values[self::VAR_UNIT]) ? null : $values[self::VAR_UNIT],
-            floatval($values[self::VAR_POINTS])
+            $this->readFloat($values[self::VAR_POINTS])
         );
     }
 

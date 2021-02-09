@@ -292,7 +292,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
                 return new MatchingMapping(
                     $value[self::VAR_MATCH_DEFINITION],
                     $value[self::VAR_MATCH_TERM],
-                    floatval($value[self::VAR_MATCH_POINTS])
+                    $this->readFloat($value[self::VAR_MATCH_POINTS])
                 );
             },
             $postdata[self::VAR_MATCHES]

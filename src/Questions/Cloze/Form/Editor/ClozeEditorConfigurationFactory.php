@@ -403,7 +403,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                 function ($raw_item) {
                     return new ClozeGapItem(
                         $raw_item[ClozeGapItem::VAR_TEXT],
-                        floatval($raw_item[ClozeGapItem::VAR_POINTS])
+                        $this->readFloat($raw_item[ClozeGapItem::VAR_POINTS])
                     );
                 },
                 $postdata[self::VAR_GAP_ITEMS]
@@ -422,7 +422,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                 function ($raw_item) {
                     return new ClozeGapItem(
                         $raw_item[ClozeGapItem::VAR_TEXT],
-                        floatval($raw_item[ClozeGapItem::VAR_POINTS])
+                        $this->readFloat($raw_item[ClozeGapItem::VAR_POINTS])
                     );
                 },
                 $postdata[self::VAR_GAP_ITEMS]
