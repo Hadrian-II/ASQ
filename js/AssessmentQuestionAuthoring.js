@@ -4,7 +4,7 @@ const asqAuthoring = (function () {
 
     let hasTiny;
     let tinySettings = {
-        selector: '[name=form_input_5]:first',
+        selector: '[name=form_input_5]:first,textarea[name$=_hint_content]',
         menubar: false
     };
 

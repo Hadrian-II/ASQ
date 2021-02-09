@@ -104,6 +104,7 @@ class HintFormGUI
                 ->withValue($this->getHintData())
         ]);
 
+        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/tinymce.min.js');
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
