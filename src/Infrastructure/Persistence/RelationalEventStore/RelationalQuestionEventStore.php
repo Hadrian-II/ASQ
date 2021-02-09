@@ -5,11 +5,12 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
 use ILIAS\Data\UUID\Factory;
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
 use ilDBInterface;
+use ilDateTime;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\IEventStore;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
+use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
@@ -20,29 +21,6 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\Agg
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionDataSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionFeedbackSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionHintsSetEventHandler;
-use srag\asq\Infrastructure\Setup\sql\SetupDatabase;
-use srag\asq\Questions\Cloze\Storage\ClozeAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Cloze\Storage\ClozeConfigurationSetEventHandler;
-use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Choice\Storage\MultipleChoice\MultipleChoiceConfigurationSetEventHandler;
-use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Choice\Storage\ImageMap\ImageMapConfigurationSetEventHandler;
-use srag\asq\Questions\ErrorText\Storage\ErrorTextAnswerOptionsSetEventHandler;
-use srag\asq\Questions\ErrorText\Storage\ErrorTextConfigurationSetEventHandler;
-use srag\asq\Questions\Essay\Storage\EssayAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Essay\Storage\EssayConfigurationSetEventHandler;
-use srag\asq\Questions\FileUpload\Storage\FileUploadConfigurationSetEventHandler;
-use srag\asq\Questions\Formula\Storage\FormulaAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Formula\Storage\FormulaConfigurationSetEventHandler;
-use srag\asq\Questions\Kprim\Storage\KprimAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Kprim\Storage\KprimConfigurationSetEventHandler;
-use srag\asq\Questions\Matching\Storage\MatchingConfigurationSetEventHandler;
-use srag\asq\Questions\Numeric\Storage\NumericConfigurationSetEventHandler;
-use srag\asq\Questions\Ordering\Storage\OrderingAnswerOptionsSetEventHandler;
-use srag\asq\Questions\Ordering\Storage\OrderingConfigurationSetEventHandler;
-use srag\asq\Questions\TextSubset\Storage\TextSubsetAnswerOptionsSetEventHandler;
-use srag\asq\Questions\TextSubset\Storage\TextSubsetConfigurationSetEventHandler;
-use srag\asq\Application\Service\AsqServices;
 
 /**
  * Class RelationalQuestionEventStore
