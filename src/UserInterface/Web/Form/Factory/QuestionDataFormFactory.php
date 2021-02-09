@@ -37,7 +37,8 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         $fields = [];
 
         $title = $this->factory->input()->field()
-                    ->text($this->language->txt('asq_label_title'));
+                    ->text($this->language->txt('asq_label_title'))
+                    ->withMaxLength(64);
 
         $author = $this->factory->input()->field()
                      ->text($this->language->txt('asq_label_author'));
