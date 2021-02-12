@@ -172,11 +172,9 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
                 break;
         }
 
-        $thumbsize = $this->readInt($postdata[self::VAR_THUMBNAIL_SIZE]);
-
         return new KprimChoiceEditorConfiguration(
             $postdata[self::VAR_SHUFFLE_ANSWERS],
-            $thumbsize,
+            $postdata[self::VAR_THUMBNAIL_SIZE],
             $label_true,
             $label_false
         );

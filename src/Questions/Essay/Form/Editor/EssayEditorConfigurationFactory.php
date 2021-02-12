@@ -48,7 +48,7 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return new EssayEditorConfiguration($this->readInt($postdata[self::VAR_MAX_LENGTH]));
+        return new EssayEditorConfiguration($postdata[self::VAR_MAX_LENGTH]);
     }
 
     /**

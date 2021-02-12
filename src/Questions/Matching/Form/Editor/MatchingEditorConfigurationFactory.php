@@ -300,7 +300,7 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
 
         return new MatchingEditorConfiguration(
             $this->readInt($postdata[self::VAR_SHUFFLE]),
-            $this->readInt($postdata[self::VAR_THUMBNAIL]),
+            $postdata[self::VAR_THUMBNAIL],
             $this->readInt($postdata[self::VAR_MATCHING_MODE]),
             $def,
             $term,

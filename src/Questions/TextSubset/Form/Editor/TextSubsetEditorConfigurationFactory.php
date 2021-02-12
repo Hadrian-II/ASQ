@@ -45,7 +45,7 @@ class TextSubsetEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return new TextSubsetEditorConfiguration($this->readInt($postdata[self::VAR_REQUESTED_ANSWERS]));
+        return new TextSubsetEditorConfiguration($postdata[self::VAR_REQUESTED_ANSWERS]);
     }
 
     /**

@@ -388,7 +388,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             $this->readFloat($postdata[self::VAR_GAP_UPPER]),
             $this->readFloat($postdata[self::VAR_GAP_LOWER]),
             $this->readFloat($postdata[self::VAR_GAP_POINTS]),
-            $this->readInt($postdata[self::VAR_GAP_SIZE])
+            $postdata[self::VAR_GAP_SIZE]
         );
     }
 
@@ -427,7 +427,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                 },
                 $postdata[self::VAR_GAP_ITEMS]
             ),
-            $this->readInt($postdata[self::VAR_GAP_SIZE]),
+            $postdata[self::VAR_GAP_SIZE],
             $this->readInt($postdata[self::VAR_TEXT_METHOD])
         );
     }

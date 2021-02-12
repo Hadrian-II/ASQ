@@ -74,8 +74,8 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
     {
         return new MultipleChoiceEditorConfiguration(
             $postvalue[self::VAR_MCE_SHUFFLE],
-            $this->readInt($postvalue[self::VAR_MCE_MAX_ANSWERS]),
-            $this->readInt($postvalue[self::VAR_MCE_THUMB_SIZE]),
+            $postvalue[self::VAR_MCE_MAX_ANSWERS],
+            $postvalue[self::VAR_MCE_THUMB_SIZE],
             $postvalue[self::VAR_MCE_IS_SINGLELINE] === self::STR_TRUE
         );
     }

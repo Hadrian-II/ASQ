@@ -48,7 +48,7 @@ class NumericEditorConfigurationFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        return new NumericEditorConfiguration($this->readInt($postdata[self::VAR_MAX_NR_OF_CHARS]));
+        return new NumericEditorConfiguration($postdata[self::VAR_MAX_NR_OF_CHARS]);
     }
 
     /**

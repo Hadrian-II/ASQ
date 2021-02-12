@@ -56,7 +56,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $this->language->txt('asq_description_precision')
         );
 
-        $tolerance = $this->factory->input()->field()->numeric(
+        $tolerance = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_tolerance'),
             $this->language->txt('asq_description_tolerance')
         );
@@ -161,7 +161,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
         return new FormulaScoringConfiguration(
             $postdata[self::VAR_FORMULA],
             $postdata[self::VAR_UNITS],
-            $this->readInt($postdata[self::VAR_PRECISION]),
+            $postdata[self::VAR_PRECISION],
             $this->readFloat($postdata[self::VAR_TOLERANCE]),
             $this->readInt($postdata[self::VAR_RESULT_TYPE]),
             $variables
