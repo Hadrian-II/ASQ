@@ -1,9 +1,11 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Essay = (function($) {
     let textLength;
     let maxLength;
     let hasMaxLength = false;
 
-    function updateCounts() {
+    const updateCounts = function() {
         if (typeof (tinymce) === 'undefined') {
             textLength = $('js_essay').val().length;
         }
@@ -23,7 +25,7 @@
         $('.js_letter_count').html(textLength);
     }
 
-    function checkValues() {
+    const checkValues = function() {
         if (hasMaxLength) {
             if (textLength > maxLength) {
                 alert($('.js_error').val());
@@ -56,4 +58,4 @@
             hasMaxLength = true;
         }
     });
-}(jQuery));
+})($);

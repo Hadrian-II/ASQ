@@ -1,5 +1,7 @@
-(function ($) {
-    function shapeClick() {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.ImageMap = (function($) {
+    const shapeClick = function() {
         const shape = $(this);
 
         if (shape.hasClass('multiple_choice')) {
@@ -34,4 +36,4 @@
             '.imagemap_editor rect, .imagemap_editor ellipse, .imagemap_editor polygon',
             shapeClick,
         );
-}(jQuery));
+})($);

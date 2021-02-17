@@ -1,4 +1,6 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.ErrorText = (function($, asqAuthoring) {
     class ErrorDefinition {
         constructor(start, length) {
             this.start = start;
@@ -6,7 +8,7 @@
         }
     }
 
-    function prepareTable(length) {
+    const prepareTable = function(length) {
         $('.aot_table_div').show();
         const table = $('.aot_table tbody');
         const row = table.children().eq(0);
@@ -22,7 +24,7 @@
         asqAuthoring.setInputIds(table);
     }
 
-    function findErrors(text) {
+    const findErrors = function(text) {
         const errors = [];
 
         let multiword = false;
@@ -50,7 +52,7 @@
         return errors;
     }
 
-    function storeErrors(errors) {
+    const storeErrors = function(errors) {
         const name = $('.aot_table').attr('name');
         
         $('.aot_table tbody').children().each((i, rrow) => {
@@ -62,7 +64,7 @@
         });
     }
 
-    function displayErrors(errors, text) {
+    const displayErrors = function(errors, text) {
         $('.aot_table tbody').children().each((i, rrow) => {
             const error = errors[i];
             const row = $(rrow);
@@ -73,7 +75,7 @@
         });
     }
 
-    function processErrorText() {
+    const processErrorText = function() {
         const text = getErrorText();
 
         const errors = findErrors(text);
@@ -88,7 +90,7 @@
         displayErrors(errors, text);
     }
     
-    function getErrorText() {
+    const getErrorText = function() {
         return $('#process_error_text').parent().siblings('textarea').val().split(' ');
     }
 
@@ -102,8 +104,9 @@
         if (errors.length === 0) {
             $('.aot_table_div').hide();
         }
-
-        storeErrors(errors);
-        displayErrors(errors, text);
+		else {
+        	storeErrors(errors);
+        	displayErrors(errors, text);
+        }
     });
-}(jQuery));
+})($, il.ASQ.Authoring);

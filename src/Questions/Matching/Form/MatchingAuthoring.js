@@ -1,13 +1,15 @@
-(function ($) {
-    const MATCHING_ONE_TO_ONE = 'x0';
-    const MATCHING_MANY_TO_ONE = 'x1';
-    const MATCHING_MANY_TO_MANY = 'x2';
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Matching = (function($) {
+    const MATCHING_ONE_TO_ONE = '0';
+    const MATCHING_MANY_TO_ONE = '1';
+    const MATCHING_MANY_TO_MANY = '2';
     let matchingMode;
 
     let usedTerms = [];
     let usedDefinitions = [];
 
-    function updateValues(source, destination, useds) {
+    const updateValues = function(source, destination, useds) {
         const values = {};
 
         $(`input[id$="${source}"]`).each((index, item) => {
@@ -29,16 +31,16 @@
         });
     }
 
-    function updateDefinitions() {
+    const updateDefinitions = function() {
         updateValues('me_definition_text', 'me_match_definition',
             usedDefinitions);
     }
 
-    function updateTerms() {
+    const updateTerms = function() {
         updateValues('me_term_text', 'me_match_term', usedTerms);
     }
 
-    function updateUsed(selects, useds) {
+    const updateUsed = function(selects, useds) {
         useds.splice(0, useds.length);
 
         $(`select[id$="${selects}"]`).each((index, item) => {
@@ -50,7 +52,7 @@
     }
 
 
-    function updateUsedDefinitions() {
+    const updateUsedDefinitions = function() {
         if (matchingMode === MATCHING_ONE_TO_ONE) {
             updateUsed('me_match_definition', usedDefinitions);
         } else {
@@ -61,7 +63,7 @@
             usedDefinitions);
     }
 
-    function updateUsedTerms() {
+    const updateUsedTerms = function() {
         if (matchingMode === MATCHING_ONE_TO_ONE
                 || matchingMode === MATCHING_MANY_TO_ONE) {
             updateUsed('me_match_term', usedTerms);
@@ -72,7 +74,7 @@
         updateValues('me_term_text', 'me_match_term', usedTerms);
     }
 
-    function cleanAddedRow() {
+    const cleanAddedRow = function() {
         $('table[name=form_input_12]').find('tr').last().find('select')
             .each((index, item) => {
                 $(item).empty();
@@ -82,7 +84,7 @@
         updateTerms();
     }
 
-    function setMatchingMode() {
+    const setMatchingMode = function() {
         matchingMode = $('input[name=form_input_9]:checked').val();
         updateUsedDefinitions();
         updateUsedTerms();
@@ -115,4 +117,4 @@
     $(document).on('click', 'table[name=form_input_10] .js_remove', () => {
         setTimeout(updateDefinitions, 1);
     });
-}(jQuery));
+})($);

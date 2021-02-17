@@ -1,9 +1,11 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Choice = (function($) {
     let imageHeader = '';
 
-    function showMultilineEditor() {
+    const showMultilineEditor = function() {
         const tinySettings = tinymce.EditorManager.editors[0].settings;
-        asqAuthoring.clearTiny('input[id$=mcdd_text]');
+        il.ASQ.Authoring.clearTiny('input[id$=mcdd_text]');
 
         tinySettings.mode = '';
         tinySettings.selector = 'input[id$=mcdd_text]';
@@ -21,8 +23,8 @@
         });
     }
 
-    function hideMultilineEditor() {
-        asqAuthoring.clearTiny('input[id$=mcdd_text]');
+    const hideMultilineEditor = function() {
+        il.ASQ.Authoring.clearTiny('input[id$=mcdd_text]');
 
         $('input[id$=mcdd_image]').each((index, item) => {
             const td = $(item).parents('td');
@@ -36,7 +38,7 @@
         });
     }
 
-    function updateEditor() {
+    const updateEditor = function() {
         if (typeof (tinymce) === 'undefined') {
             return;
         }
@@ -47,7 +49,7 @@
             return;
         }
 
-        if ($('select[name=form_input_8]').val() === 'false') {
+        if ($('select[name=form_input_9]').val() === 'false') {
             showMultilineEditor();
         } else {
             hideMultilineEditor();
@@ -58,5 +60,5 @@
         updateEditor();
     });
 
-    $(document).on('change', 'select[name=form_input_8]', updateEditor);
-}(jQuery));
+    $(document).on('change', 'select[name=form_input_9]', updateEditor);
+})($);

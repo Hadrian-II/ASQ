@@ -1,18 +1,20 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Formula = (function($, asqAuthoring) {
     const varRegex = /\$(v|r)\d+/g;
 
-    function clearTable(selector) {
+    const clearTable = function(selector) {
         const firstRow = $(`${selector} .aot_row`).eq(0);
         firstRow.siblings().remove();
         asqAuthoring.clearRow(firstRow);
     }
 
-    function addRowTo(selector) {
+    const addRowTo = function(selector) {
         const firstRow = $(`${selector} .aot_row`).eq(0);
         firstRow.after(firstRow.clone());
     }
 
-    function addTableItems() {
+    const addTableItems = function() {
         clearTable('table[name=form_input_12]');
         clearTable('table[name=form_input_13]');
 
@@ -41,4 +43,4 @@
     }
 
     $(document).on('click', '.js_parse_question', addTableItems);
-}(jQuery));
+})($, il.ASQ.Authoring);

@@ -1,4 +1,6 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Essay = (function($) {
     const NO_AUTO = '1';
     const AUTO_ANY = '2';
     const AUTO_ALL = '3';
@@ -59,4 +61,4 @@
 
     $(document).ready(processForm);
     $(document).on('change', 'input[name=form_input_9]', processForm);
-}(jQuery));
+})($);

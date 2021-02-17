@@ -119,7 +119,7 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             $formula = $formula->withValue(strval($value->getFormula()));
             $units = $units->withValue(strval($value->getUnitString()));
             $precision = $precision->withValue($value->getPrecision());
-            $tolerance = $tolerance->withValue($value->getTolerance());
+            $tolerance = $tolerance->withValue(strval($value->getTolerance()));
             $result_type = $result_type->withValue(
                 strval($value->getResultType() ?? strval(FormulaScoringConfiguration::TYPE_ALL))
             );

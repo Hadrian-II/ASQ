@@ -1,4 +1,6 @@
-const asqAuthoring = (function () {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Authoring = (function($) {
     //number used to create newlines and swap lines to prevent radiogroup clashes
     const RADIO_SAFE_OFFSET = 1234567890;
 
@@ -8,7 +10,7 @@ const asqAuthoring = (function () {
         menubar: false
     };
 
-    function clearTiny(selector = null) {
+    const clearTiny = function(selector = null) {
     	if (selector) {
     		tinySettings.selector = '[name=form_input_5], ' + selector;
     	}
@@ -32,7 +34,7 @@ const asqAuthoring = (function () {
         }
     }
 
-    function clearRow(row) {
+    const clearRow = function(row) {
         row.find('input[type!="Button"], textarea').each((index, item) => {
             const input = $(item);
 
@@ -54,22 +56,22 @@ const asqAuthoring = (function () {
         return row;
     }
 
-    function updateInputName(oldName, currentRow) {
+    const updateInputName = function(oldName, currentRow) {
         return currentRow + oldName.match(/\D.*/);
     }
 
-    function processItem(input, currentRow) {
+    const processItem = function(input, currentRow) {
         input.attr('name', updateInputName(input.attr('name'), currentRow));
         input.prop('id', updateInputName(input.prop('id'), currentRow));
     }
 
-    function processRow(row, currentRow) {
+    const processRow = function(row, currentRow) {
         row.find('input[name],textarea[name],select').each((index, item) => {
             processItem($(item), currentRow);
         });
     }
 
-    function setInputIds(table) {
+    const setInputIds = function(table) {
         if (table.find('input[type=radio]').length > 0) {
             // create row ids that are outside existing values, as radio group would be the same over multiple lines
             // (one row would loose its value when adding/switching rows with radios)
@@ -85,7 +87,7 @@ const asqAuthoring = (function () {
         });
     }
 
-    function addRow() {
+    const addRow = function() {
         const row = $(this).parents('.aot_row').eq(0);
         const table = $(this).parents('.aot_table').children('tbody');
 
@@ -110,7 +112,7 @@ const asqAuthoring = (function () {
         return false;
     }
 
-    function saveTiny() {
+    const saveTiny = function() {
         if (!hasTiny) {
             return;
         }
@@ -124,7 +126,7 @@ const asqAuthoring = (function () {
         }
     }
 
-    function removeRow() {
+    const removeRow = function() {
         const row = $(this).parents('.aot_row');
         const table = $(this).parents('.aot_table').children('tbody');
 
@@ -146,13 +148,13 @@ const asqAuthoring = (function () {
         }
     }
 
-    function upRow() {
+    const upRow = function() {
         const row = $(this).parents('.aot_row');
         row.prev('.aot_row').before(row);
         setInputIds(row.parents('.aot_table').children('tbody'));
     }
 
-    function downRow() {
+    const downRow = function() {
         const row = $(this).parents('.aot_row');
         row.next('.aot_row').after(row);
         setInputIds(row.parents('.aot_table').children('tbody'));
@@ -177,4 +179,4 @@ const asqAuthoring = (function () {
     return {
         clearTiny, clearRow, setInputIds, processItem, processRow,
     };
-}());
+})($);

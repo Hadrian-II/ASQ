@@ -1,10 +1,12 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Matching = (function($) {
     const MATCHING_ONE_TO_ONE = 0;
     const MATCHING_MANY_TO_ONE = 1;
     const MATCHING_MANY_TO_MANY = 2;
     let matchingMode;
 
-    function buildDragHelper(event) {
+    const buildDragHelper = function(event) {
         let draggable = $(event.target);
 
         if (!draggable.hasClass('draggable')) {
@@ -21,7 +23,7 @@
         return helper;
     }
 
-    function isValidDroppable(droppable, draggable) {
+    const isValidDroppable = function(droppable, draggable) {
         if (droppable.attr('id') === draggable.parents('.droparea').attr('id')) {
             return false;
         }
@@ -41,7 +43,7 @@
         return true;
     }
 
-    function startDrag() {
+    const startDrag = function() {
         const that = $(this);
 
         that.addClass('draggableDisabled');
@@ -65,7 +67,7 @@
         }
     }
 
-    function isDraggableToBeReactivated(draggable) {
+    const isDraggableToBeReactivated = function(draggable) {
         if ($(draggable).parents('.droparea').length > 0) {
             return true;
         }
@@ -93,7 +95,7 @@
         return reactivationRequired;
     }
 
-    function stopDrag() {
+    const stopDrag = function() {
         if (isDraggableToBeReactivated(this)) {
             $(this).removeClass('draggableDisabled');
         }
@@ -119,11 +121,11 @@
         }
     }
 
-    function getAnswerItem(item) {
+    const getAnswerItem = function(item) {
         return item.parents('.answers').find('input[type=hidden].answer').eq(0);
     }
 
-    function removeTermInputFromDefinition(draggable, droppable) {
+    const removeTermInputFromDefinition = function(draggable, droppable) {
         const inputId = `data_${droppable.attr('data-type')}_${
             droppable.attr('data-id')}_${draggable.attr('data-type')
         }_${draggable.attr('data-id')}`;
@@ -141,7 +143,7 @@
         answerItem.val(currentAnswers.join(';'));
     }
 
-    function buildDroppedDraggableCloneId(draggable, droppable) {
+    const buildDroppedDraggableCloneId = function(draggable, droppable) {
         const cloneId = `${droppable.attr('data-type')}_${
             droppable.attr('data-id')}_${draggable.attr('data-type')
         }_${draggable.attr('data-id')}`;
@@ -149,7 +151,7 @@
         return cloneId;
     }
 
-    function appendTermInputToDefinition(draggable, droppable) {
+    const appendTermInputToDefinition = function(draggable, droppable) {
         const input = $('<input type="hidden" />');
 
         input.attr('id', `data_${draggable.attr('id')}`);
@@ -165,7 +167,7 @@
         answerItem.val(currentAnswers.join(';'));
     }
 
-    function dropElementHandler(event, ui) {
+    const dropElementHandler = function(event, ui) {
         ui.helper.remove();
 
         if (ui.draggable.parents('.droparea').length > 0) {
@@ -228,7 +230,7 @@
         $('.js_definition').removeClass('droppableTarget');
     }
 
-    function restoreMatches() {
+    const restoreMatches = function() {
         $('input[type=hidden].answer').eq(0).val().split(';')
             .forEach(
                 (match) => {
@@ -305,4 +307,4 @@
             restoreMatches();
         },
     );
-}(jQuery));
+})($);

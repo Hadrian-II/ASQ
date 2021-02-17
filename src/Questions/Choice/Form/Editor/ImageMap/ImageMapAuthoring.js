@@ -1,4 +1,6 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.ImageMap = (function($) {
     // consts track definitions in ImageMapEditorDisplayDefinition.php
     const TYPE_RECTANGLE = '1';
     const TYPE_CIRCLE = '2';
@@ -24,15 +26,15 @@
     let existingShapes;
     let usedCanvas;
 
-    function recordStart(e) {
+    const recordStart = function(e) {
         start = new Point(e.offsetX, e.offsetY);
     }
 
-    function transformToPercentage(part, whole) {
+    const transformToPercentage = function(part, whole) {
         return Math.round((part / whole) * 100);
     }
 
-    function shiftPoint(stop) {
+    const shiftPoint = function(stop) {
         const side = Math.max(
             Math.abs(start.X - stop.offsetX),
             Math.abs(start.Y - stop.offsetY),
@@ -44,7 +46,7 @@
         );
     }
 
-    function createPoints(stop) {
+    const createPoints = function(stop) {
         const stopProcessed = shifted
             ? shiftPoint(stop)
             : new Point(stop.offsetX, stop.offsetY);
@@ -61,22 +63,22 @@
         return point;
     }
 
-    function mapToPreview(value, previewValue) {
+    const mapToPreview = function(value, previewValue) {
         const floatval = parseFloat(value);
         return (floatval / 100.0) * previewValue;
     }
 
-    function mapToPreviewHeight(value) {
+    const mapToPreviewHeight = function(value) {
         return mapToPreview(value, usedCanvas.height);
     }
 
-    function mapToPreviewWidth(value) {
+    const mapToPreviewWidth = function(value) {
         return mapToPreview(value, usedCanvas.width);
     }
 
     const rectangleRegex = /x:([^;]*);y:([^;]*);width:([^;]*);height:([^;]*)/;
 
-    function drawPreviewRectangle(cords, g) {
+    const drawPreviewRectangle = function(cords, g) {
         const matches = cords.match(rectangleRegex);
 
         g.beginPath();
@@ -89,7 +91,7 @@
 
     const circleRegex = /cx:([^;]*);cy:([^;]*);rx:([^;]*);ry:([^;]*)/;
 
-    function drawPreviewCircle(cords, g) {
+    const drawPreviewCircle = function(cords, g) {
         const matches = cords.match(circleRegex);
 
         g.beginPath();
@@ -101,7 +103,7 @@
         g.fill();
     }
 
-    function drawPreviewPolygon(cords, g) {
+    const drawPreviewPolygon = function(cords, g) {
         const points = cords.substring(7).split(' ');
 
         g.beginPath();
@@ -122,7 +124,7 @@
         g.fill();
     }
 
-    function drawShapes(rows, cv) {
+    const drawShapes = function(rows, cv) {
         usedCanvas = cv;
 
         const g = usedCanvas.getContext('2d');
@@ -148,7 +150,7 @@
         });
     }
 
-    function drawCircle(origin, destination) {
+    const drawCircle = function(origin, destination) {
         const g = $popupCanvas[0].getContext('2d');
 
         g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
@@ -176,7 +178,7 @@
         g.stroke();
     }
 
-    function previewCircle(e) {
+    const previewCircle = function(e) {
         if (start === null) {
             return;
         }
@@ -186,7 +188,7 @@
         drawCircle(points.topLeft, points.bottomRight);
     }
 
-    function generateCircle(e) {
+    const generateCircle = function(e) {
         const points = createPoints(e);
 
         drawCircle(points.topLeft, points.bottomRight);
@@ -199,7 +201,7 @@
         start = null;
     }
 
-    function drawRectangle(origin, destination) {
+    const drawRectangle = function(origin, destination) {
         const g = $popupCanvas[0].getContext('2d');
 
         g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
@@ -219,7 +221,7 @@
         g.stroke();
     }
 
-    function previewRectangle(e) {
+    const previewRectangle = function(e) {
         if (start === null) {
             return;
         }
@@ -229,7 +231,7 @@
         drawRectangle(points.topLeft, points.bottomRight);
     }
 
-    function generateRectangle(e) {
+    const generateRectangle = function(e) {
         const points = createPoints(e);
 
         drawRectangle(points.topLeft, points.bottomRight);
@@ -242,7 +244,7 @@
         start = null;
     }
 
-    function mapPoly(g) {
+    const mapPoly = function(g) {
         if (polyPoints.length < 2) {
             return;
         }
@@ -257,7 +259,7 @@
         g.closePath();
     }
 
-    function drawPolygon() {
+    const drawPolygon = function() {
         const g = $popupCanvas[0].getContext('2d');
 
         g.clearRect(0, 0, $popupCanvas.width(), $popupCanvas.height());
@@ -277,7 +279,7 @@
         g.stroke();
     }
 
-    function generatePolygon(e) {
+    const generatePolygon = function(e) {
         if (e.button === 1) {
             currentCoordinates = null;
             polyPoints = [];
@@ -298,7 +300,7 @@
         drawPolygon();
     }
 
-    function displayCoordinateSelector() {
+    const displayCoordinateSelector = function() {
         const image = $('.image_preview').attr('src');
 
         if (image.length === 0) {
@@ -349,11 +351,11 @@
         drawShapes(existingShapes, $popupCanvas[0]);
     }
 
-    function closePopup() {
+    const closePopup = function() {
         popup.hide();
     }
 
-    function initializePreview() {
+    const initializePreview = function() {
         const previewImage = $('.image_preview');
 
         if (previewImage.length === 1) {
@@ -367,7 +369,7 @@
         }
     }
 
-    function updatePreview() {
+    const updatePreview = function() {
         if ($previewCanvas == null) {
             initializePreview();
             
@@ -383,7 +385,7 @@
         drawShapes($('.aot_row'), $previewCanvas[0]);
     }
 
-    function submitPopup() {
+    const submitPopup = function() {
         if (currentCoordinates !== null) {
             $cordinateInput.val(currentCoordinates);
             $coordinateLabel.html(currentCoordinates);
@@ -392,7 +394,7 @@
         }
     }
 
-    function processImgKeyUp(e) {
+    const processImgKeyUp = function(e) {
         if (popup === null) {
             return;
         }
@@ -409,14 +411,14 @@
         }
     }
 
-    function processImgKeyDown(e) {
+    const processImgKeyDown = function(e) {
         // ctrl
         if (e.keyCode === 17) {
             shifted = true;
         }
     }
 
-    function clearExistingCoordinates() {
+    const clearExistingCoordinates = function() {
         const row = $(this).closest('tr');
         row.find('.imedd_coordinates').html('');
         row.find('input[id$=imedd_coordinates]').val('');
@@ -433,4 +435,4 @@
     $(document).on('click', '.js_image_cancel, .close', closePopup);
     $(document).on('click', '.js_remove', updatePreview);
     $(document).on('change', 'select[id$=imedd_type]', clearExistingCoordinates);
-}(jQuery));
+})($);

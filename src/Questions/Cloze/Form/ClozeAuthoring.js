@@ -1,4 +1,6 @@
-(function ($) {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Cloze = (function($) {
     const TYPE_NUMBER = 'clz_number';
     const TYPE_DROPDOWN = 'clz_dropdown';
     const TYPE_TEXT = 'clz_text';
@@ -7,7 +9,7 @@
     const clozeRegex = /├[^┤]*┤/g;
 	const renameRegex = /(\d+_form_input_)(\d+)(_.*)$/;
 
-    function updateGapNames($gap_item) {
+    const updateGapNames = function($gap_item) {
         $gap_item.find('select, input').each((ix, item) => {
             const $item = $(item);
             if ($item.parents('.aot_table').length > 0) {
@@ -23,7 +25,7 @@
         });        
     }
     
-    function updateNames() {
+    const updateNames = function() {
         let next_input = 8;
         $(document).find('.form-group:visible').slice(7).each((ix, item) => {
             const $item = $(item);
@@ -57,7 +59,7 @@
         });
     }
     
-    function createNewGap(i, type = 'text') {
+    const createNewGap = function(i, type = 'text') {
         const template = $(`.cloze_template .${type}`).clone();
         
         template.find('select').eq(0).addClass('js_select_type');
@@ -65,7 +67,7 @@
         return template.children();
     }
 
-    function addGapItem() {
+    const addGapItem = function() {
         $('input[disabled=disabled]').parents('.form-group').remove();
         
         const clozeText = $('[name=form_input_7]');
@@ -86,7 +88,7 @@
 
     const nrRegex = /\d*/;
 
-    function changeGapForm() {
+    const changeGapForm = function() {
         const selected = $(this);
         const id = selected.prop('id').match(nrRegex);
         let template = null;
@@ -108,7 +110,7 @@
         updateNames();
     }
 
-    function prepareForm() {
+    const prepareForm = function() {
         const templateForms = $('.text,.number,.select');
 
         templateForms.each((index, item) => {
@@ -124,7 +126,7 @@
     }
    
     
-    function updateClozeText(currentId, replacementId = -1) {
+    const updateClozeText = function(currentId, replacementId = -1) {
         const clozeText = $('[name=form_input_7]');
         const clozeTextVal = clozeText.val();
         const gapStr = `├${currentId}┤`;
@@ -138,7 +140,7 @@
         }
     }
     
-    function deleteGapItem() {
+    const deleteGapItem = function() {
         const pressedFormItem = $(this).parents('.il-section-input');
         
         const gapCount = $('[name=form_input_7]').val().match(clozeRegex).length;
@@ -162,4 +164,4 @@
     $(document).on('change', '.js_select_type', changeGapForm);
     $(document).on('click', '.js_parse_cloze_question', addGapItem);
     $(document).on('click', '.js_delete_button', deleteGapItem);
-}(jQuery));
+})($);

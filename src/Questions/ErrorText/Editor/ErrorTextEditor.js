@@ -1,5 +1,7 @@
-(function ($) {
-    function wordSelected() {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.ErrorText = (function($) {
+    const wordSelected = function() {
         const word = $(this);
         const index = word.attr('data-index');
         const selectedInput = word.siblings('input').eq(0);
@@ -18,4 +20,4 @@
     }
 
     $(document).on('click', '.errortext_word', wordSelected);
-}(jQuery));
+})($);

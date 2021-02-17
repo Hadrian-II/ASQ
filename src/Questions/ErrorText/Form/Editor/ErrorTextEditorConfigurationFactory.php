@@ -70,7 +70,7 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
     {
         return new ErrorTextEditorConfiguration(
             $this->readString($postvalues[self::VAR_ERROR_TEXT]),
-            $this->readInt($postvalues[self::VAR_TEXT_SIZE])
+            $postvalues[self::VAR_TEXT_SIZE]
         );
     }
 

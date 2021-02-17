@@ -1,5 +1,7 @@
-(function ($) {
-    function answerSelected() {
+il = il || {};
+il.ASQ = il.ASQ || {};
+il.ASQ.Choice = (function($) {
+    const answerSelected = function() {
         const parent = $(this).parents('.js_multiple_choice');
         const max = parent.children('.js_max_answers').val();
         const current = parent.find('.js_multiple_choice_answer:checkbox:checked').length;
@@ -13,4 +15,4 @@
     }
 
     $(document).on('change', 'input[type=checkbox].js_multiple_choice_answer', answerSelected);
-}(jQuery));
+})($);
