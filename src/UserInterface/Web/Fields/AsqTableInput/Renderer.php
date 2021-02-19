@@ -90,6 +90,13 @@ class Renderer extends AbstractComponentRenderer
 
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.TableInput.html", true, true);
 
+        if ($this->component->getOnLoadCode() !== null) {
+            $id = $this->bindJavaScript($this->component);
+            $tpl->setCurrentBlock('id');
+            $tpl->setVariable('ID', $id);
+            $tpl->parseCurrentBlock();
+        }
+
         $tpl->setCurrentBlock('name');
         $tpl->setVariable('NAME', $this->component->getName());
         $tpl->parseCurrentBlock();

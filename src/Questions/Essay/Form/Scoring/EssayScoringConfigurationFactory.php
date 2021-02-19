@@ -55,9 +55,15 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
                 strval(EssayScoring::SCORING_AUTOMATIC_ONE),
                 $this->language->txt('asq_label_automatic_one'),
                 $this->language->txt('asq_info_automatic_one')
-            );
+            )
+            ->withAdditionalOnLoadCode(function($id) {
+                    return "il.ASQ.Essay.setScoringMode($($id));";
+            });
 
-        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'));
+        $points = $this->factory->input()->field()->text($this->language->txt('asq_label_points'))
+                        ->withAdditionalOnLoadCode(function($id) {
+                            return "il.ASQ.Essay.setPointsInput($($id));";
+                        });
 
         if ($value !== null) {
             $text_matching = $text_matching->withValue($value->getMatchingMode());

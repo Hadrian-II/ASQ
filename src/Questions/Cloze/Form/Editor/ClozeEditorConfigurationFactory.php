@@ -85,7 +85,9 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
                value="' . $this->language->txt('asq_parse_question') . '"
                class="js_parse_cloze_question btn btn-default" />' .
                $this->createTemplates()
-        );
+        )->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Cloze.setClozeText($($id));";
+        });
 
         if ($value !== null) {
             $cloze_text = $cloze_text->withValue($value->getClozeText() ?? '');

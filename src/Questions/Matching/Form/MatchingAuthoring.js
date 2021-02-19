@@ -9,6 +9,38 @@ il.ASQ.Matching = (function($) {
     let usedTerms = [];
     let usedDefinitions = [];
 
+    let modeSelect;
+    let matchTable;
+    
+    const setModeSelect = function(select) {
+    	$(select).on('change', setMatchingMode);
+		modeSelect = $(select);
+		setMatchingMode();
+	}
+    
+    const setDefinitionsTable = function(table) {
+		$(table).find('.js_remove').on('click', () => {
+	        setTimeout(updateDefinitions, 1);
+	    });
+	}
+    
+    const setTermsTable = function(table) {
+		$(table).find('.js_remove').on('click', () => {
+	        setTimeout(updateTerms, 1);
+	    });
+	}
+	
+	const setMatchTable = function(table) {
+		$(table).find('.js_remove').on('click', () => {
+	        setTimeout(updateUsedDefinitions, 1);
+	        setTimeout(updateUsedTerms, 1);
+	    });
+		$(table).find('.js_add').on('click', () => {
+	        setTimeout(cleanAddedRow, 1);
+	    });
+		matchTable = $(table);
+	}
+
     const updateValues = function(source, destination, useds) {
         const values = {};
 
@@ -32,8 +64,11 @@ il.ASQ.Matching = (function($) {
     }
 
     const updateDefinitions = function() {
-        updateValues('me_definition_text', 'me_match_definition',
-            usedDefinitions);
+        updateValues(
+        	'me_definition_text', 
+        	'me_match_definition',
+            usedDefinitions
+        );
     }
 
     const updateTerms = function() {
@@ -59,8 +94,11 @@ il.ASQ.Matching = (function($) {
             usedDefinitions = [];
         }
 
-        updateValues('me_definition_text', 'me_match_definition',
-            usedDefinitions);
+        updateValues(
+        	'me_definition_text', 
+        	'me_match_definition',
+            usedDefinitions
+        );
     }
 
     const updateUsedTerms = function() {
@@ -75,7 +113,7 @@ il.ASQ.Matching = (function($) {
     }
 
     const cleanAddedRow = function() {
-        $('table[name=form_input_12]').find('tr').last().find('select')
+        matchTable.find('tr').last().find('select')
             .each((index, item) => {
                 $(item).empty();
             });
@@ -85,36 +123,15 @@ il.ASQ.Matching = (function($) {
     }
 
     const setMatchingMode = function() {
-        matchingMode = $('input[name=form_input_9]:checked').val();
+        matchingMode = modeSelect.find(':checked').val();
         updateUsedDefinitions();
         updateUsedTerms();
     }
-
-    $(document).ready(() => {
-        if ($('input[name=form_input_9]').length > 0) {
-            setMatchingMode();
-        }
-    });
-
-    $(document).on('change', 'input[name=form_input_9]', setMatchingMode);
 
     $(document).on('change', 'input[id$="me_definition_text"]', updateDefinitions);
     $(document).on('change', 'input[id$="me_term_text"]', updateTerms);
     $(document).on('change', 'select[id$=me_match_definition]', updateUsedDefinitions);
     $(document).on('change', 'select[id$=me_match_term]', updateUsedTerms);
-
-    // remove/add needs to trigger after remove event that actually removes the row
-    $(document).on('click', 'table[name=form_input_12] .js_add', () => {
-        setTimeout(cleanAddedRow, 1);
-    });
-    $(document).on('click', 'table[name=form_input_12] .js_remove', () => {
-        setTimeout(updateUsedDefinitions, 1);
-        setTimeout(updateUsedTerms, 1);
-    });
-    $(document).on('click', 'table[name=form_input_11] .js_remove', () => {
-        setTimeout(updateTerms, 1);
-    });
-    $(document).on('click', 'table[name=form_input_10] .js_remove', () => {
-        setTimeout(updateDefinitions, 1);
-    });
+    
+    return { setModeSelect, setDefinitionsTable, setTermsTable, setMatchTable };
 })($);

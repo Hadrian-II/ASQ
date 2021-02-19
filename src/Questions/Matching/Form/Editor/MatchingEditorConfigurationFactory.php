@@ -76,7 +76,10 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         ->withOption(
             strval(MatchingEditorConfiguration::MATCHING_MANY_TO_MANY),
             $this->language->txt('asq_option_many_to_many')
-        );
+        )
+        ->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Matching.setModeSelect($($id));";
+        });
 
 
         if (!is_null($value)) {
@@ -119,7 +122,13 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_DEFINITION_IMAGE
         );
 
-        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_definitions'), $columns);
+        $table = $this->asq_ui->getAsqTableInput(
+            $this->language->txt('asq_label_definitions'),
+            $columns
+        )
+        ->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Matching.setDefinitionsTable($($id));";
+        });
 
         if (!is_null($config)) {
             $table = $table->withValue(
@@ -153,7 +162,13 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_TERM_IMAGE
         );
 
-        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_terms'), $columns);
+        $table = $this->asq_ui->getAsqTableInput(
+            $this->language->txt('asq_label_terms'),
+            $columns
+        )
+        ->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Matching.setTermsTable($($id));";
+        });
 
         if (!is_null($config)) {
             $table = $table->withValue(
@@ -224,7 +239,13 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
             self::VAR_MATCH_POINTS
         );
 
-        $table = $this->asq_ui->getAsqTableInput($this->language->txt('asq_label_matches'), $columns);
+        $table = $this->asq_ui->getAsqTableInput(
+            $this->language->txt('asq_label_matches'),
+            $columns
+            )
+            ->withAdditionalOnLoadCode(function($id) {
+                return "il.ASQ.Matching.setMatchTable($($id));";
+            });
 
         if (!is_null($config)) {
             $table = $table->withValue($this->getMatchesValues($config));

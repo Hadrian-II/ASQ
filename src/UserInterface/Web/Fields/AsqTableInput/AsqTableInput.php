@@ -28,6 +28,7 @@ class AsqTableInput extends Input
     const OPTION_HIDE_ADD_REMOVE = 'TableInputHideAddRemove';
     const OPTION_HIDE_EMPTY = 'TableInputHideEmpty';
     const OPTION_MIN_ROWS = 'TableInputMinRows';
+    const OPTION_ADDITIONAL_ON_LOAD = 'TableInputAdditionalOnLoad';
     const DEFAULT_MIN_ROWS = 1;
 
     /**
@@ -80,6 +81,10 @@ class AsqTableInput extends Input
     {
         $clone = clone $this;
         $clone->options = $options;
+
+        if (array_key_exists(self::OPTION_ADDITIONAL_ON_LOAD, $options)) {
+            $clone = $clone->withAdditionalOnLoadCode($options[self::OPTION_ADDITIONAL_ON_LOAD]);
+        }
 
         return $clone;
     }

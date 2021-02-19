@@ -50,6 +50,12 @@ class FormulaFormFactory extends QuestionFormFactory
      */
     public function getAnswerOptionConfiguration() : array
     {
-        return [ AsqTableInput::OPTION_HIDE_ADD_REMOVE => true ];
+        return [
+            AsqTableInput::OPTION_HIDE_ADD_REMOVE => true,
+            AsqTableInput::OPTION_ADDITIONAL_ON_LOAD =>
+                function($id) {
+                    return "il.ASQ.Formula.setResultsTable($($id));";
+                }
+        ];
     }
 }

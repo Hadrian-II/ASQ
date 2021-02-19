@@ -9,6 +9,12 @@ il.ASQ.Cloze = (function($) {
     const clozeRegex = /├[^┤]*┤/g;
 	const renameRegex = /(\d+_form_input_)(\d+)(_.*)$/;
 
+	let clozeText;
+	 
+	const setClozeText = function(text) {
+		clozeText = $(text);
+	}
+
     const updateGapNames = function($gap_item) {
         $gap_item.find('select, input').each((ix, item) => {
             const $item = $(item);
@@ -70,7 +76,6 @@ il.ASQ.Cloze = (function($) {
     const addGapItem = function() {
         $('input[disabled=disabled]').parents('.form-group').remove();
         
-        const clozeText = $('[name=form_input_7]');
         const matches = clozeText.val().match(clozeRegex);
         const gapIndex = matches ? matches.length + 1 : 1;
 
@@ -127,7 +132,6 @@ il.ASQ.Cloze = (function($) {
    
     
     const updateClozeText = function(currentId, replacementId = -1) {
-        const clozeText = $('[name=form_input_7]');
         const clozeTextVal = clozeText.val();
         const gapStr = `├${currentId}┤`;
         let gapIndex = clozeTextVal.indexOf(gapStr);
@@ -143,7 +147,7 @@ il.ASQ.Cloze = (function($) {
     const deleteGapItem = function() {
         const pressedFormItem = $(this).parents('.il-section-input');
         
-        const gapCount = $('[name=form_input_7]').val().match(clozeRegex).length;
+        const gapCount = clozeText.val().match(clozeRegex).length;
         const doomedGapId = pressedFormItem.prevAll('.il-section-input').length + 1;
         
         pressedFormItem.remove();
@@ -164,4 +168,6 @@ il.ASQ.Cloze = (function($) {
     $(document).on('change', '.js_select_type', changeGapForm);
     $(document).on('click', '.js_parse_cloze_question', addGapItem);
     $(document).on('click', '.js_delete_button', deleteGapItem);
+    
+    return { setClozeText };
 })($);

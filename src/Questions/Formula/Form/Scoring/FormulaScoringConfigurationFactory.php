@@ -44,7 +44,9 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
         $formula = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_formula'),
             '<br /><input type="button" value="' . $this->language->txt('asq_parse_question') . '" class="js_parse_question btn btn-default" />'
-        );
+        )->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Formula.setFormulaText($($id));";
+        });
 
         $units = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_units'),
@@ -111,7 +113,9 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
             [
                 AsqTableInput::OPTION_HIDE_ADD_REMOVE => true
             ]
-        );
+        )->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Formula.setVariablesTable($($id));";
+        });
 
 
 

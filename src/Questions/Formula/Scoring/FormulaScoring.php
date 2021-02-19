@@ -204,8 +204,7 @@ class FormulaScoring extends AbstractScoring
      */
     public function isComplete() : bool
     {
-        if (is_null($this->configuration->getPrecision()) ||
-            is_null($this->configuration->getResultType())) {
+        if (is_null($this->configuration->getResultType())) {
             return false;
         }
 
@@ -261,9 +260,9 @@ class FormulaScoring extends AbstractScoring
      * @param float $number
      * @return bool
      */
-    private function inPrecision(float $number, int $precision) : bool
+    private function inPrecision(float $number, ?int $precision) : bool
     {
-        $mult = $number * (10 ** $precision);
+        $mult = $number * (10 ** $precision ?? 0);
 
         return ceil($mult) === floor($mult);
     }

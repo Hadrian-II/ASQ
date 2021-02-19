@@ -3,22 +3,38 @@ il.ASQ = il.ASQ || {};
 il.ASQ.Formula = (function($, asqAuthoring) {
     const varRegex = /\$(v|r)\d+/g;
 
-    const clearTable = function(selector) {
-        const firstRow = $(`${selector} .aot_row`).eq(0);
+    let formulaText;
+    let variablesTable;
+    let resultsTable;
+    
+    const setFormulaText = function(text) {
+		formulaText = $(text);
+	}
+    
+    const setVariablesTable = function(table) {
+		variablesTable = $(table).parents('.form-group');
+	}
+    
+    const setResultsTable = function(table) {
+		resultsTable = $(table).parents('.form-group');
+	}
+
+    const clearTable = function(table) {
+        const firstRow = table.find('.aot_row').eq(0);
         firstRow.siblings().remove();
         asqAuthoring.clearRow(firstRow);
     }
 
-    const addRowTo = function(selector) {
-        const firstRow = $(`${selector} .aot_row`).eq(0);
+    const addRowTo = function(table) {
+        const firstRow = table.find('.aot_row').eq(0);
         firstRow.after(firstRow.clone());
     }
 
     const addTableItems = function() {
-        clearTable('table[name=form_input_12]');
-        clearTable('table[name=form_input_13]');
+        clearTable(variablesTable);
+        clearTable(resultsTable);
 
-        const variables = $('input[name=form_input_7]').val().match(varRegex);
+        const variables = formulaText.val().match(varRegex);
 
         let vars = 0;
         let res = 0;
@@ -32,15 +48,17 @@ il.ASQ.Formula = (function($, asqAuthoring) {
         });
 
         for (vars; vars > 1; vars -= 1) {
-            addRowTo('table[name=form_input_12]');
+            addRowTo(variablesTable);
         }
-        asqAuthoring.setInputIds($('table[name=form_input_12] tbody'));
+        asqAuthoring.setInputIds(variablesTable.find('tbody'));
 
         for (res; res > 1; res -= 1) {
-            addRowTo('table[name=form_input_13]');
+            addRowTo(resultsTable);
         }
-        asqAuthoring.setInputIds($('table[name=form_input_13] tbody'));
+        asqAuthoring.setInputIds(resultsTable.find('tbody'));
     }
 
     $(document).on('click', '.js_parse_question', addTableItems);
+    
+    return { setFormulaText, setVariablesTable, setResultsTable };
 })($, il.ASQ.Authoring);

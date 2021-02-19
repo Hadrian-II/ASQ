@@ -12,6 +12,7 @@ use srag\asq\Questions\Essay\Form\Scoring\EssayScoringConfigurationFactory;
 use srag\asq\Questions\Essay\Form\Scoring\EssayScoringDefinitionFactory;
 use srag\asq\Questions\Generic\Form\EmptyDefinitionFactory;
 use srag\asq\UserInterface\Web\Form\Factory\QuestionFormFactory;
+use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 
 /**
  * Class EssayFormFactory
@@ -34,6 +35,21 @@ class EssayFormFactory extends QuestionFormFactory
             new EmptyDefinitionFactory($language, $ui),
             new EssayScoringDefinitionFactory($language, $ui)
         );
+    }
+
+    /**
+     * Returns AsqTableInput Options array
+     *
+     * @return array
+     */
+    public function getAnswerOptionConfiguration() : array
+    {
+        return [
+            AsqTableInput::OPTION_ADDITIONAL_ON_LOAD =>
+                function($id) {
+                    return "il.ASQ.Essay.setAnswersInput($($id));";
+                }
+        ];
     }
 
     /**

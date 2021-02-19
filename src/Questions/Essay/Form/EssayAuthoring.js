@@ -8,10 +8,36 @@ il.ASQ.Essay = (function($) {
     
     let pointsHeader = '';
     
-    function processForm() {
-        const value = $('input[name=form_input_9]:checked').val();
-        const pointsInput = $('input[name=form_input_10]').parents('.form-group');
-        const answersInput = $('table[name=form_input_11]').parents('.form-group');
+    let scoringMode;
+    let pointsInput;
+    let answersInput;
+    
+    const setScoringMode = function(select) {
+		scoringMode = $(select);
+		scoringMode.on('change', processForm);
+		processIfReady();
+	}
+    
+    const setPointsInput = function(text) {
+		pointsInput = $(text).parents('.form-group');
+		processIfReady();
+	}
+    
+    const setAnswersInput = function(text) {
+		answersInput = $(text).parents('.form-group');
+		processIfReady();
+	}
+    
+    const processIfReady = function() {
+    	if (scoringMode !== undefined &&
+    	    pointsInput !== undefined &&
+    	    answersInput !== undefined) {
+    		processForm();    
+    	}
+    }
+    
+    const processForm = function() {
+        const value = scoringMode.find(':checked').val();
         
         switch (value) {
             case AUTO_ANY:
@@ -32,7 +58,7 @@ il.ASQ.Essay = (function($) {
         }
     }
     
-    function showPointsRow() {
+    const showPointsRow = function() {
         $('input[id$=es_def_points').each((index, item) => {
             const td = $(item).parents('td');
             td.children().show();
@@ -46,7 +72,7 @@ il.ASQ.Essay = (function($) {
       
     }
     
-    function hidePointsRow() {
+    const hidePointsRow = function() {
         $('input[id$=es_def_points]').each((index, item) => {
             const td = $(item).parents('td');
             td.children().hide();
@@ -59,6 +85,5 @@ il.ASQ.Essay = (function($) {
         });         
     }
 
-    $(document).ready(processForm);
-    $(document).on('change', 'input[name=form_input_9]', processForm);
+	return { setScoringMode, setPointsInput, setAnswersInput };
 })($);

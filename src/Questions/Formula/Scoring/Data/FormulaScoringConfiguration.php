@@ -174,6 +174,12 @@ class FormulaScoringConfiguration extends AbstractValueObject
 
         $number /= $exp;
 
-        return sprintf('%.' . $this->getPrecision() . 'F', $number);
+        if ($this->getPrecision() === null ||
+            $this->getPrecision() === 0) {
+            return strval($number);
+        }
+        else {
+            return sprintf('%.' . $this->getPrecision() . 'F', $number);
+        }
     }
 }

@@ -44,7 +44,9 @@ class MultipleChoiceEditorConfigurationFactory extends AbstractObjectFactory
                 self::STR_TRUE => $this->language->txt('asq_option_single_line'),
                 self::STR_FALSE => $this->language->txt('asq_option_multi_line')
             ]
-        );
+        )->withAdditionalOnLoadCode(function($id) {
+            return "il.ASQ.Choice.setEditorSelect($($id));";
+        });
 
         $thumb_size = $this->factory->input()->field()->numeric(
             $this->language->txt('asq_label_thumb_size'),

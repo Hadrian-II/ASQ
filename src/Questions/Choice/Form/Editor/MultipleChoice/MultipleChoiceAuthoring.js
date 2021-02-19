@@ -2,6 +2,12 @@ il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Choice = (function($) {
     let imageHeader = '';
+	let editorSelect;
+	 
+	const setEditorSelect = function(trigger) {
+		editorSelect = $(trigger);
+		editorSelect.on('change', updateEditor);
+	}
 
     const showMultilineEditor = function() {
         const tinySettings = tinymce.EditorManager.editors[0].settings;
@@ -49,16 +55,12 @@ il.ASQ.Choice = (function($) {
             return;
         }
 
-        if ($('select[name=form_input_9]').val() === 'false') {
+        if (editorSelect.val() === 'false') {
             showMultilineEditor();
         } else {
             hideMultilineEditor();
         }
     }
-
-    $(window).load(() => {
-        updateEditor();
-    });
-
-    $(document).on('change', 'select[name=form_input_9]', updateEditor);
+    
+    return { setEditorSelect };
 })($);
