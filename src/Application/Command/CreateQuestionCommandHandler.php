@@ -38,7 +38,8 @@ class CreateQuestionCommandHandler implements CommandHandlerContract
             $command->getQuestionType()
         );
 
-        QuestionRepository::getInstance()->save($question);
+        $repo = new QuestionRepository();
+        $repo->save($question);
 
         return new Ok(null);
     }

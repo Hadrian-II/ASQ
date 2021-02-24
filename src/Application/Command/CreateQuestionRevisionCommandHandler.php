@@ -29,11 +29,10 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
 {
 
     /**
-     * @param CommandContract $command
+     * @param CreateQuestionRevisionCommand $command
      */
     public function handle(CommandContract $command) : Result
     {
-        /** @var CreateQuestionRevisionCommand $command */
         $repository = new PublishedQuestionRepository();
 
         if ($repository->revisionExists($command->getQuestionId(), $command->getRevisionName())) {
@@ -47,12 +46,13 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
         }
 
 
-        $question = QuestionRepository::getInstance()->getAggregateRootById($command->getQuestionId());
+        $repo = new QuestionRepository();
+        $question = $repo->getAggregateRootById($command->getQuestionId());
         RevisionFactory::setRevisionId($question, $command->getRevisionName());
 
         $repository->saveNewQuestionRevision(QuestionDto::CreateFromQuestion($question));
 
-        QuestionRepository::getInstance()->save($question);
+        $repo->save($question);
 
         return new Ok(null);
     }

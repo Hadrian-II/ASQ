@@ -24,12 +24,13 @@ class SaveQuestionCommandHandler implements CommandHandlerContract
 {
 
     /**
-     * @param CommandContract $command
+     * @param SaveQuestionCommand $command
      */
     public function handle(CommandContract $command) : Result
     {
-        /** @var SaveQuestionCommand $command */
-        QuestionRepository::getInstance()->save($command->GetQuestion());
+        $repo = new QuestionRepository();
+
+        $repo->save($command->GetQuestion());
 
         return new Ok(null);
     }

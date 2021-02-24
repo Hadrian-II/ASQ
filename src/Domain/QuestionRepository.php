@@ -30,11 +30,11 @@ class QuestionRepository extends AbstractAggregateRepository
     /**
      * QuestionRepository constructor.
      */
-    protected function __construct()
+    public function __construct()
     {
-        global $DIC, $ASQDIC;
+        global $DIC;
         parent::__construct();
-        $this->event_store = new RelationalQuestionEventStore($DIC->database(), $ASQDIC->asq());
+        $this->event_store = new RelationalQuestionEventStore($DIC->database());
     }
 
     /**

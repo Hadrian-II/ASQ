@@ -40,33 +40,33 @@ class QuestionService extends ASQService
     private $command_bus;
 
     /**
-     * @return CommandBus
+     * @var QuestionRepository
      */
-    private function getCommandBus() : CommandBus
+    private $repo;
+
+    public function __construct()
     {
-        if (is_null($this->command_bus)) {
-            $this->command_bus = new CommandBus();
+        $this->command_bus = new CommandBus();
 
-            $this->command_bus->registerCommand(new CommandConfiguration(
-                CreateQuestionCommand::class,
-                new CreateQuestionCommandHandler(),
-                new OpenAccess()
+        $this->command_bus->registerCommand(new CommandConfiguration(
+            CreateQuestionCommand::class,
+            new CreateQuestionCommandHandler(),
+            new OpenAccess()
             ));
 
-            $this->command_bus->registerCommand(new CommandConfiguration(
-                CreateQuestionRevisionCommand::class,
-                new CreateQuestionRevisionCommandHandler(),
-                new OpenAccess()
+        $this->command_bus->registerCommand(new CommandConfiguration(
+            CreateQuestionRevisionCommand::class,
+            new CreateQuestionRevisionCommandHandler(),
+            new OpenAccess()
             ));
 
-            $this->command_bus->registerCommand(new CommandConfiguration(
-                SaveQuestionCommand::class,
-                new SaveQuestionCommandHandler(),
-                new OpenAccess()
-            ));
-        }
+        $this->command_bus->registerCommand(new CommandConfiguration(
+            SaveQuestionCommand::class,
+            new SaveQuestionCommandHandler(),
+            new OpenAccess()
+        ));
 
-        return $this->command_bus;
+        $this->repo = new QuestionRepository();
     }
 
     /**
@@ -79,7 +79,7 @@ class QuestionService extends ASQService
     public function getQuestionByQuestionId(Uuid $id) : QuestionDto
     {
         /** @var $question Question */
-        $question = QuestionRepository::getInstance()->getAggregateRootById($id);
+        $question = $this->repo->getAggregateRootById($id);
 
         $question_type = QuestionType::where(["title_key" => $question->getType()])->first();
 
@@ -123,7 +123,7 @@ class QuestionService extends ASQService
      */
     public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
-        $this->getCommandBus()->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+        $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
     }
 
     /**
@@ -140,7 +140,7 @@ class QuestionService extends ASQService
 
         $id = $uuid_factory->uuid4();
 
-        $this->getCommandBus()->handle(
+        $this->command_bus->handle(
             new CreateQuestionCommand(
                 $id,
                 $type,
@@ -159,7 +159,7 @@ class QuestionService extends ASQService
     public function saveQuestion(QuestionDto $question_dto) : void
     {
         // check changes and trigger them on question if there are any
-        $question = QuestionRepository::getInstance()->getAggregateRootById($question_dto->getId());
+        $question = $this->repo->getAggregateRootById($question_dto->getId());
 
         $question->setData($question_dto->getData(), $this->getActiveUser());
         $question->setPlayConfiguration($question_dto->getPlayConfiguration(), $this->getActiveUser());
@@ -169,7 +169,7 @@ class QuestionService extends ASQService
 
         if (count($question->getRecordedEvents()->getEvents()) > 0) {
             // save changes if there are any
-            $this->getCommandBus()->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
+            $this->command_bus->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
         }
     }
 
@@ -244,7 +244,7 @@ class QuestionService extends ASQService
 
         $dto = QuestionDto::deserialize($json);
 
-        if (QuestionRepository::getInstance()->aggregateExists($dto->getId())) {
+        if ($this->repo->aggregateExists($dto->getId())) {
             throw new AsqException(sprintf('Question with Id: "%s" already in the System', $dto->getId()->toString()));
         }
 

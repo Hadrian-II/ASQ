@@ -10,7 +10,6 @@ use ilDateTime;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\IEventStore;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
-use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
@@ -47,11 +46,6 @@ class RelationalQuestionEventStore implements IEventStore
     private $db;
 
     /**
-     * @var AsqServices
-     */
-    private $asq;
-
-    /**
      * @var Factory
      */
     private $uuid_factory;
@@ -79,10 +73,9 @@ class RelationalQuestionEventStore implements IEventStore
     /**
      * @param ilDBInterface $db
      */
-    public function __construct(ilDBInterface $db, AsqServices $asq)
+    public function __construct(ilDBInterface $db)
     {
         $this->db = $db;
-        $this->asq = $asq;
         $this->uuid_factory = new Factory();
     }
 
@@ -189,8 +182,10 @@ class RelationalQuestionEventStore implements IEventStore
      */
     private function getTypeHandlers() : array
     {
+        global $ASQDIC;
+
         if ($this->type_handlers === null) {
-            foreach ($this->asq->question()->getAvailableQuestionTypes() as $type) {
+            foreach ($ASQDIC->asq()->question()->getAvailableQuestionTypes() as $type) {
                 $storage_class =  $type->getStorageClass();
                 $storage = new $storage_class();
 
