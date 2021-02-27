@@ -37,7 +37,7 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
         $allowed_extensions = $this->factory->input()->field()->text(
             $this->language->txt('asq_label_allowed_extensions'),
             $this->language->txt('asq_description_allowed_extensions')
-        );
+            )->withMaxLength(32);;
 
 
         if ($value !== null) {

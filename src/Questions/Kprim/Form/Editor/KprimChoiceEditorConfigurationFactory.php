@@ -97,8 +97,14 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
             }
         }
 
-        $customLabelTrue = $this->factory->input()->field()->text($this->language->txt('asq_label_user_true'));
-        $customLabelFalse = $this->factory->input()->field()->text($this->language->txt('asq_label_user_false'));
+        $customLabelTrue =
+            $this->factory->input()->field()->text(
+                $this->language->txt('asq_label_user_true')
+            )->withMaxLength(32);
+
+            $customLabelFalse = $this->factory->input()->field()->text(
+                $this->language->txt('asq_label_user_false')
+            )->withMaxLength(32);
 
         if ($selected_value == self::LABEL_CUSTOM) {
             $customLabelTrue = $customLabelTrue->withValue($config->getLabelTrue());

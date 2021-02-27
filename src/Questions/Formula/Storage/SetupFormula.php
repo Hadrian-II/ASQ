@@ -27,7 +27,7 @@ class SetupFormula extends AbstractQuestionDBSetup
             [
                 'config_id' => ['type' => 'integer','length' => 4,'notnull' => true],
                 'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
-                'formula' => ['type' => 'text', 'length' => 128],
+                'formula' => ['type' => 'text', 'length' => 256],
                 'units' => ['type' => 'text', 'length' => 32],
                 'precision' => ['type' => 'integer', 'length' => 4],
                 'tolerance' => ['type' => 'float'],
