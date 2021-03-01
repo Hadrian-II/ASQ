@@ -25,6 +25,8 @@ class AsqTableInputFieldDefinition
     const TYPE_LABEL = 9;
     const TYPE_CHECKBOX = 10;
 
+    const OPTION_MAX_LENGTH = 'max_length';
+
     /**
      * @var string
      */

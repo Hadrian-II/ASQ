@@ -52,7 +52,8 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_TEXT
+            self::VAR_TEXT,
+            [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 128 ]
         );
 
         return $fields;

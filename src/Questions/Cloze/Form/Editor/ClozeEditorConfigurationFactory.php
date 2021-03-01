@@ -322,7 +322,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_header_value'),
                 AsqTableInputFieldDefinition::TYPE_TEXT,
-                ClozeGapItem::VAR_TEXT
+                ClozeGapItem::VAR_TEXT,
+                [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => "128" ]
             ),
             new AsqTableInputFieldDefinition(
                 $this->language->txt('asq_header_points'),

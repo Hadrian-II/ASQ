@@ -67,7 +67,8 @@ class ErrorTextScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_correct_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_CORRECT_TEXT
+            self::VAR_CORRECT_TEXT,
+            [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 64 ]
         );
 
         $fields[] = new AsqTableInputFieldDefinition(

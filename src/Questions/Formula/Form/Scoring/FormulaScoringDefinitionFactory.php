@@ -48,13 +48,15 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_header_formula'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_FORMULA
+            self::VAR_FORMULA,
+            [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 128 ]
         );
 
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_header_unit'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_UNIT
+            self::VAR_UNIT,
+            [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 16 ]
         );
 
         $fields[] = new AsqTableInputFieldDefinition(

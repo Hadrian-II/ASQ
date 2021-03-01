@@ -198,7 +198,7 @@ class Renderer extends AbstractComponentRenderer
 
         switch ($definition->getType()) {
             case AsqTableInputFieldDefinition::TYPE_TEXT:
-                return $this->generateTextField($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value);
+                return $this->generateTextField($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value, $definition->getOptions());
             case AsqTableInputFieldDefinition::TYPE_TEXT_AREA:
                 return $this->generateTextArea($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value);
             case AsqTableInputFieldDefinition::TYPE_IMAGE:
@@ -228,9 +228,15 @@ class Renderer extends AbstractComponentRenderer
      *
      * @return string
      */
-    private function generateTextField(string $post_var, $value) : string
+    private function generateTextField(string $post_var, $value, ?array $options) : string
     {
-        return sprintf('<input type="text" maxlength="200" id="%1$s" name="%1$s" class="form-control" value="%2$s" />', $post_var, $value);
+        return sprintf(
+            '<input type="text" id="%1$s" name="%1$s" class="form-control" value="%2$s" %3$s />',
+            $post_var,
+            $value,
+            array_key_exists(AsqTableInputFieldDefinition::OPTION_MAX_LENGTH, $options ?? []) ?
+                sprintf('maxlength="%s"', $options[AsqTableInputFieldDefinition::OPTION_MAX_LENGTH]) : ''
+        );
     }
 
     /**

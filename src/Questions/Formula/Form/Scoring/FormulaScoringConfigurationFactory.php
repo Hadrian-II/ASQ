@@ -102,7 +102,8 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_unit'),
                     AsqTableInputFieldDefinition::TYPE_TEXT,
-                    FormulaScoringVariable::VAR_UNIT
+                    FormulaScoringVariable::VAR_UNIT,
+                    [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 16 ]
                 ),
                 new AsqTableInputFieldDefinition(
                     $this->language->txt('asq_header_multiple_of'),

@@ -46,7 +46,8 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
         $fields[] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_answer_text'),
             AsqTableInputFieldDefinition::TYPE_TEXT,
-            self::VAR_TSSD_TEXT
+            self::VAR_TSSD_TEXT,
+            [ AsqTableInputFieldDefinition::OPTION_MAX_LENGTH => 32 ]
         );
 
         $fields[] = new AsqTableInputFieldDefinition(
