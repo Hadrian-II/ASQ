@@ -7,6 +7,8 @@ use ActiveRecord;
 use ilDateTimeException;
 use srag\asq\Domain\QuestionDto;
 use ilDateTime;
+use ILIAS\Data\UUID\Uuid;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class QuestionListItemAr
@@ -28,7 +30,7 @@ class QuestionListItemAr extends ActiveRecord
     {
         return self::STORAGE_NAME;
     }
-    
+
     /**
      * @var int
      *
@@ -107,7 +109,7 @@ class QuestionListItemAr extends ActiveRecord
      * @con_fieldtype timestamp
      */
     protected $created;
-    
+
     public static function createNew(QuestionDto $question) : QuestionListItemAr
     {
         $object = new QuestionListItemAr();
@@ -121,7 +123,7 @@ class QuestionListItemAr extends ActiveRecord
         $object->created = new ilDateTime(time(), IL_CAL_UNIX);
         return $object;
     }
-    
+
     /**
      * @return string
      */
@@ -161,15 +163,15 @@ class QuestionListItemAr extends ActiveRecord
     {
         return $this->working_time;
     }
-    
+
     /**
      * @return string
      */
-    public function getQuestionId() : string
+    public function getQuestionId() : Uuid
     {
         return $this->question_id;
     }
-    
+
     /**
      * @return string
      */
@@ -177,7 +179,7 @@ class QuestionListItemAr extends ActiveRecord
     {
         return $this->revision_name;
     }
-    
+
     /**
      * @return ilDateTime
      */
@@ -185,7 +187,7 @@ class QuestionListItemAr extends ActiveRecord
     {
         return $this->created;
     }
-    
+
     /**
      * @param $field_name
      * @param $field_value
@@ -201,6 +203,9 @@ class QuestionListItemAr extends ActiveRecord
             case 'id':
             case 'working_time':
                 return intval($field_value);
+            case 'question_id':
+                $factory = new Factory();
+                return $factory->fromString($field_value);
             default:
                 return null;
         }

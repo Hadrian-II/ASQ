@@ -45,7 +45,7 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function getQueryString(): string
+    public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id in (%s)';
     }
@@ -54,7 +54,7 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
      */
-    public function createEvent(array $data, array $rows): DomainEvent
+    public function createEvent(array $data, array $rows) : DomainEvent
     {
         return new QuestionDataSetEvent(
             $this->factory->fromString($data['question_id']),

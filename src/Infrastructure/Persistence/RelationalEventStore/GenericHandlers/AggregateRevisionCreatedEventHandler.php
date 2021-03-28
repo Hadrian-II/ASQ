@@ -4,15 +4,14 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
 use ilDateTime;
+use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\DomainEvent;
-use srag\asq\Domain\Event\QuestionHintsSetEvent;
-use srag\asq\Domain\Model\Hint\QuestionHint;
-use srag\asq\Domain\Model\Hint\QuestionHints;
+use srag\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
- * Class QuestionHintsSetEventHandler
+ * Class AggregateRevisionCreatedEventHandler
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -20,25 +19,24 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
+class AggregateRevisionCreatedEventHandler extends AbstractEventStorageHandler
 {
     /**
-     * @param DomainEvent $event
+     * @param AggregateRevisionCreatedEvent $event
      */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
-        $hints = $event->getHints()->getHints();
+        /** @var $revision_id RevisionId */
+        $revision_id = $event->getRevisionId();
 
-        foreach ($hints as $hint) {
-            $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT);
-            $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, [
-                'id' => ['integer', $id],
-                'event_id' => ['integer', $event_id],
-                'hint_id' => ['text', $hint->getId()],
-                'content' => ['clob', $hint->getContent()],
-                'deduction' => ['float', $hint->getPointDeduction()]
-            ]);
-        }
+        $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION);
+        $this->db->insert(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION, [
+            'id' => ['integer', $id],
+            'event_id' => ['integer', $event_id],
+            'key' => ['text', $revision_id->GetKey()],
+            'name' => ['text', $revision_id->getName()],
+            'algorithm' => ['text', $revision_id->getAlgorithm()]
+        ]);
     }
 
     /**
@@ -47,7 +45,7 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
      */
     public function getQueryString() : string
     {
-        return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT .' where event_id in(%s)';
+        return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION .' where event_id in(%s)';
     }
 
     /**
@@ -56,17 +54,14 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
      */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
-        $hints = [];
-        foreach ($rows as $row)
-        {
-            $hints[] = new QuestionHint($row['hint_id'], $row['content'], floatval($row['deduction']));
-        }
-
-        return new QuestionHintsSetEvent(
+        return new AggregateRevisionCreatedEvent(
             $this->factory->fromString($data['question_id']),
             new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
             intval($data['initiating_user_id']),
-            new QuestionHints($hints)
-        );
+            RevisionId::create(
+                $rows[0]['key'],
+                $rows[0]['algorithm'],
+                $rows[0]['name'])
+            );
     }
 }

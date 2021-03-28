@@ -6,6 +6,7 @@ use ILIAS\Data\UUID\Uuid;
 use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Model\QuestionInfo;
 use srag\asq\Infrastructure\Helpers\PathHelper;
+use ILIAS\DI\HTTPServices;
 
 /**
  * Class AsqQuestionVersionGUI
@@ -51,24 +52,51 @@ class AsqQuestionVersionGUI
     private $asq;
 
     /**
-     * @param Uuid $question_id
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ASQServices $asq
+     * @var HTTPServices
      */
+    private $http;
+
     public function __construct(
         Uuid $question_id,
         ilLanguage $language,
         UIServices $ui,
-        ASQServices $asq)
+        ASQServices $asq,
+        HTTPServices $http)
     {
         $this->question_id = $question_id;
         $this->language = $language;
         $this->ui = $ui;
         $this->asq = $asq;
+        $this->http = $http;
     }
 
     public function executeCommand() : void
+    {
+        $creation_form = $this->createCreationForm();
+
+        if ($this->http->request()->getMethod() === 'POST') {
+            $name = $creation_form->withRequest($this->http->request())->getData()[0];
+            $this->asq->question()->createQuestionRevision($name, $this->question_id);
+        }
+
+        $question_table = $this->createVersionTable();
+
+        $this->ui->mainTemplate()->setContent(
+            $this->ui->renderer()->render($creation_form) .
+            $question_table->getHTML()
+        );
+    }
+
+    private function createCreationForm()
+    {
+        $name = $this->ui->factory()->input()->field()->text('Name')
+                    ->withMaxLength(32)
+                    ->withRequired(true);
+
+        return $this->ui->factory()->input()->container()->form()->standard('', [ $name ]);
+    }
+
+    private function createVersionTable() : ilTable2GUI
     {
         $question_table = new ilTable2GUI($this);
         $question_table->setRowTemplate("tpl.versions_row.html", $this->getBasePath(__DIR__));
@@ -77,9 +105,9 @@ class AsqQuestionVersionGUI
         $question_table->addColumn($this->language->txt('asq_header_revision_creator'), self::COL_CREATOR);
         $question_table->addColumn($this->language->txt('asq_header_revision_actions'), self::COL_ACTIONS);
         $question_table->setData($this->getRevisionsAsAssocArray());
-
-        $this->ui->mainTemplate()->setContent($question_table->getHTML());
+        return $question_table;
     }
+
 
     /**
      * Gets values to display in table from Question

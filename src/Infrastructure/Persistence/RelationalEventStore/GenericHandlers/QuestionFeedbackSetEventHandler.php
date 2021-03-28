@@ -51,7 +51,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function getQueryString(): string
+    public function getQueryString() : string
     {
         return   'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' f
                   left join ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK .' af on f.id = af.feedback_id
@@ -62,7 +62,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
      */
-    public function createEvent(array $data, array $rows): DomainEvent
+    public function createEvent(array $data, array $rows) : DomainEvent
     {
         $answer_feedback = [];
 

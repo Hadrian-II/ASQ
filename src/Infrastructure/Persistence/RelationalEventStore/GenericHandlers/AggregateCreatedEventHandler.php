@@ -38,7 +38,7 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
      */
-    public function getQueryString(): string
+    public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED .' where event_id in(%s)';
     }
@@ -47,7 +47,7 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
      * {@inheritDoc}
      * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
      */
-    public function createEvent(array $data, array $rows): DomainEvent
+    public function createEvent(array $data, array $rows) : DomainEvent
     {
         return new AggregateCreatedEvent(
             $this->factory->fromString($data['question_id']),

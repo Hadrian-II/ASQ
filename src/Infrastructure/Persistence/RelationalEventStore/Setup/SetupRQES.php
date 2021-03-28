@@ -61,6 +61,7 @@ class SetupRQES
         $this->setupQuestionData();
         $this->setupHint();
         $this->setupFeedback();
+        $this->setupRevision();
 
         foreach (self::QUESTION_TYPES as $type) {
             $type_setup = new $type($this->db);
@@ -180,6 +181,24 @@ class SetupRQES
         $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_ANSWER_FEEDBACK, ['feedback_id'], 'i1');
     }
 
+    public function setupRevision() : void
+    {
+        $this->db->createTable(
+            RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION,
+            [
+                'id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'event_id' => ['type' => 'integer','length' => 4,'notnull' => true],
+                'key' => ['type' => 'text', 'length' => 256],
+                'name' => ['type' => 'text', 'length' => 32],
+                'algorithm' => ['type' => 'text', 'length' => 8]
+            ]
+            );
+        $this->db->addPrimaryKey(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION,['id']);
+        $this->db->createSequence(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION);
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION, ['id'], 'i1');
+        $this->db->addIndex(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION, ['event_id'], 'i2');
+    }
+
     public function drop() : void
     {
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME, false);
@@ -189,6 +208,7 @@ class SetupRQES
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT, false);
         $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_INDEX, false);
+        $this->db->dropTable(RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION, false);
 
         foreach (self::QUESTION_TYPES as $type) {
             $type_setup = new $type($this->db);

@@ -10,6 +10,7 @@ use ilDateTime;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\IEventStore;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
+use srag\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
@@ -17,6 +18,7 @@ use srag\asq\Domain\Event\QuestionHintsSetEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\AggregateCreatedEventHandler;
+use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\AggregateRevisionCreatedEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionDataSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionFeedbackSetEventHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers\QuestionHintsSetEventHandler;
@@ -39,6 +41,7 @@ class RelationalQuestionEventStore implements IEventStore
     const TABLE_NAME_QUESTION_HINT = 'rqes_question_hint';
     const TABLE_NAME_QUESTION_FEEDBACK = 'rqes_question_feedback';
     const TABLE_NAME_QUESTION_ANSWER_FEEDBACK = 'rqes_afeedback';
+    const TABLE_NAME_QUESTION_REVISION = 'rqes_revision';
 
     /**
      * @var ilDBInterface
@@ -55,6 +58,7 @@ class RelationalQuestionEventStore implements IEventStore
      */
     const GENERIC_HANDLERS = [
         AggregateCreatedEvent::class => AggregateCreatedEventHandler::class,
+        AggregateRevisionCreatedEvent::class => AggregateRevisionCreatedEventHandler::class,
         QuestionDataSetEvent::class => QuestionDataSetEventHandler::class,
         QuestionFeedbackSetEvent::class => QuestionFeedbackSetEventHandler::class,
         QuestionHintsSetEvent::class => QuestionHintsSetEventHandler::class
@@ -152,10 +156,7 @@ class RelationalQuestionEventStore implements IEventStore
 
     private function isGenericEvent(string $event) : bool
     {
-        return ($event === AggregateCreatedEvent::class ||
-                $event === QuestionDataSetEvent::class ||
-                $event === QuestionFeedbackSetEvent::class ||
-                $event === QuestionHintsSetEvent::class);
+        return array_key_exists($event, self::GENERIC_HANDLERS);
     }
 
     /**
