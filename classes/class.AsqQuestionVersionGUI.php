@@ -93,7 +93,8 @@ class AsqQuestionVersionGUI
                     ->withMaxLength(32)
                     ->withRequired(true);
 
-        return $this->ui->factory()->input()->container()->form()->standard('', [ $name ]);
+        return $this->ui->factory()->input()->container()->form()->standard('', [ $name ])
+                    ->withSubmitCaption("Create"); //TODO translate if accepted to core
     }
 
     private function createVersionTable() : ilTable2GUI
