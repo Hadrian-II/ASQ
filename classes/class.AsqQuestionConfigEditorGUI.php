@@ -116,7 +116,7 @@ class AsqQuestionConfigEditorGUI
 
         $this->saveQuestion($form);
 
-        ilutil::sendInfo("Question Saved", true);
+        ilutil::sendInfo($this->language->txt('asq_question_saved'), true);
 
         $form->checkInput();
         $this->showForm($form);
@@ -167,25 +167,5 @@ class AsqQuestionConfigEditorGUI
 //         $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
 
         return $form;
-    }
-
-    private function createRevision() : void
-    {
-        $form = $this->buildForm();
-
-        $rev_name = $this->getPostValue(QuestionFormGUI::VAR_REVISION_NAME);
-
-        if (empty($rev_name)) {
-            ilutil::sendInfo($this->language->txt('asq_missing_revision_name'));
-        } else {
-            try {
-                $this->asq->question()->createQuestionRevision($rev_name, $this->question->getId());
-                ilUtil::sendSuccess($this->language->txt('asq_revision_created'));
-            } catch (AsqException $e) {
-                ilutil::sendFailure($e->getMessage());
-            }
-        }
-
-        $this->showForm($form);
     }
 }

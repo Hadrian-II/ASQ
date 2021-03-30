@@ -7,6 +7,7 @@ use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Model\QuestionInfo;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use ILIAS\DI\HTTPServices;
+use srag\asq\Domain\QuestionDto;
 
 /**
  * Class AsqQuestionVersionGUI
@@ -57,6 +58,11 @@ class AsqQuestionVersionGUI
      */
     private $http;
 
+    /**
+     * @var QuestionDto;
+     */
+    private $question;
+
     public function __construct(
         Uuid $question_id,
         ilLanguage $language,
@@ -65,6 +71,7 @@ class AsqQuestionVersionGUI
         HTTPServices $http)
     {
         $this->question_id = $question_id;
+        $this->question = $asq->question()->getQuestionByQuestionId($question_id);
         $this->language = $language;
         $this->ui = $ui;
         $this->asq = $asq;
@@ -78,6 +85,10 @@ class AsqQuestionVersionGUI
         if ($this->http->request()->getMethod() === 'POST') {
             $name = $creation_form->withRequest($this->http->request())->getData()[0];
             $this->asq->question()->createQuestionRevision($name, $this->question_id);
+            ilutil::sendInfo($this->language->txt('asq_revision_created'));
+        }
+        else if ($this->question->hasUnrevisionedChanges()) {
+            ilutil::sendInfo($this->language->txt('asq_question_has_changes'));
         }
 
         $question_table = $this->createVersionTable();

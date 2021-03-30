@@ -78,6 +78,11 @@ class QuestionDto implements JsonSerializable
     private $question_hints;
 
     /**
+     * @var bool
+     */
+    private $has_unrevisioned_changes;
+
+    /**
      *
      * @param Question $question
      *
@@ -97,6 +102,7 @@ class QuestionDto implements JsonSerializable
 
         $dto->feedback = $question->getFeedback();
         $dto->question_hints = $question->getHints();
+        $dto->has_unrevisioned_changes = $question->hasUnrevisionedChanges();
 
         return $dto;
     }
@@ -285,6 +291,14 @@ class QuestionDto implements JsonSerializable
     public function setQuestionHints(?QuestionHints $question_hints) : void
     {
         $this->question_hints = $question_hints;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasUnrevisionedChanges() : bool
+    {
+        return $this->has_unrevisioned_changes;
     }
 
     /**

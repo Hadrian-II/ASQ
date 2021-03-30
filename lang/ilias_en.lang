@@ -239,3 +239,5 @@ label_scoring_type#:#Scoring Type
 you_received_a_of_b_points#:#You received %s of %s possible points
 label_formula#:#Formula
 error_too_long#:#Entered text is too long
+question_saved#:#Question saved
+question_has_changes#:#Question contains unversioned changes

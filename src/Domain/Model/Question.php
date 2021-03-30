@@ -70,6 +70,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     private $feedback;
 
     /**
+     * @var bool
+     */
+    private $has_unrevisioned_changes;
+
+    /**
      * @param Uuid $question_uuid
      * @param int $initiating_user_id
      * @param QuestionType $question_type
@@ -95,8 +100,15 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 
 
     /**
-     * @param AggregateCreatedEvent $event
+     * @param DomainEvent $event
      */
+    protected function applyEvent(DomainEvent $event)
+    {
+        $this->has_unrevisioned_changes = get_class($event) !== AggregateRevisionCreatedEvent::class;
+
+        parent::applyEvent($event);
+    }
+
     /**
      * @param AggregateCreatedEvent $event
      */
@@ -176,7 +188,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     {
         return $this->data;
     }
-
 
     /**
      * @param QuestionData $data
@@ -314,6 +325,13 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         $this->creator_id = $creator_id;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasUnrevisionedChanges() : bool
+    {
+        return $this->has_unrevisioned_changes;
+    }
 
     /**
      * @return RevisionId revision id of object
