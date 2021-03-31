@@ -71,9 +71,17 @@ class LinkService
     /**
      * @return UiStandardLink
      */
-    public function getEditLink(Uuid $question_id) : UiStandardLink
+    public function getEditLink(Uuid $question_id, ?string $revision_name = null) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);
+
+        if (!is_null($revision_name)) {
+            $this->ctrl->setParameterByClass(
+                AsqQuestionConfigEditorGUI::class,
+                AsqQuestionConfigEditorGUI::PARAM_REVISON_NAME,
+                $revision_name
+            );
+        }
 
         return $this->ui->factory()->link()->standard(
             $this->lng->txt('asq_authoring_tab_config'),

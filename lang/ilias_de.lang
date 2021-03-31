@@ -232,3 +232,5 @@ label_formula#:#Formel
 error_too_long#:#Eingegebener text ist zu lang
 question_saved#:#Frage gespeichert
 question_has_changes#:#Frage hat unversionierte Änderungen
+label_revision_rollback#:#Rollback
+revision_loaded#:#Es wurde eine Revision geladen, sie können die Daten nun editieren, änderungen werden erst beim Speichern übernommen

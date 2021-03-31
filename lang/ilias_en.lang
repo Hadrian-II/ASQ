@@ -241,3 +241,5 @@ label_formula#:#Formula
 error_too_long#:#Entered text is too long
 question_saved#:#Question saved
 question_has_changes#:#Question contains unversioned changes
+label_revision_rollback#:#Rollback
+revision_loaded#:#Revision loaded, you may now edit the data, you need to save to permanently accept changes

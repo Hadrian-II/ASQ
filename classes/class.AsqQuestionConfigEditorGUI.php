@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
-use srag\asq\Application\Exception\AsqException;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
@@ -27,6 +27,7 @@ class AsqQuestionConfigEditorGUI
     const CMD_SHOW_FORM = 'showForm';
     const CMD_SAVE_FORM = 'saveForm';
     const CMD_SAVE_AND_RETURN = 'saveAndReturn';
+    const PARAM_REVISON_NAME = 'revisionName';
 
     /**
      * @var AuthoringContextContainer
@@ -59,6 +60,11 @@ class AsqQuestionConfigEditorGUI
     private $asq;
 
     /**
+     * @var HTTPServices
+     */
+    private $http;
+
+    /**
      * @param AuthoringContextContainer $contextContainer
      * @param Uuid $questionId
      * @param ilLanguage $language
@@ -72,14 +78,27 @@ class AsqQuestionConfigEditorGUI
         ilLanguage $language,
         UIServices $ui,
         ilCtrl $ctrl,
-        ASQServices $asq
+        ASQServices $asq,
+        HTTPServices $http
     ) {
         $this->asq = $asq;
         $this->contextContainer = $contextContainer;
-        $this->question = $asq->question()->getQuestionByQuestionId($questionId);
         $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
+        $this->http = $http;
+
+        $query = $this->http->request()->getQueryParams();
+        if (isset($query[self::PARAM_REVISON_NAME])) {
+            $revision_name = $query[self::PARAM_REVISON_NAME];
+        }
+
+        if (is_null($revision_name)) {
+            $this->question = $this->asq->question()->getQuestionByQuestionId($questionId);
+        } else {
+            $this->question = $this->asq->question()->getQuestionRevision($questionId, $revision_name);
+            ilutil::sendInfo($this->language->txt('asq_revision_loaded'));
+        }
     }
 
 

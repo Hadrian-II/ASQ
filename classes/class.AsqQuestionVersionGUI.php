@@ -32,6 +32,8 @@ class AsqQuestionVersionGUI
     const COL_ACTIONS = 'REVISION_ACTIONS';
     const PREVIEW_LINK = 'PREVIEW_LINK';
     const PREVIEW_LABEL = 'PREVIEW_LABEL';
+    const ROLLBACK_LINK = 'ROLLBACK_LINK';
+    const ROLLBACK_LABEL = 'ROLLBACK_LABEL';
 
     /**
      * @var Uuid
@@ -132,9 +134,16 @@ class AsqQuestionVersionGUI
     {
         $revisions = $this->asq->question()->getAllRevisionsOfQuestion($this->question_id);
 
+        if ($revisions === []) {
+            return [];
+        }
+
+        $rollback_label = $this->language->txt('asq_label_revision_rollback');
+
         /** @var $question QuestionInfo */
-        return array_map(function ($question, $ix) {
+        return array_map(function ($question, $ix) use ($rollback_label) {
             $preview = $this->asq->link()->getPreviewLink($this->question_id, $question->getRevisionName());
+            $edit = $this->asq->link()->getEditLink($this->question_id, $question->getRevisionName());
 
             return [
                 self::COL_INDEX => $ix,
@@ -142,7 +151,9 @@ class AsqQuestionVersionGUI
                 self::COL_DATE => $question->getCreated()->get(IL_CAL_DATETIME),
                 self::COL_CREATOR => $question->getAuthor(),
                 self::PREVIEW_LINK => $preview->getAction(),
-                self::PREVIEW_LABEL => $preview->getLabel()
+                self::PREVIEW_LABEL => $preview->getLabel(),
+                self::ROLLBACK_LINK => $edit->getAction(),
+                self::ROLLBACK_LABEL => $rollback_label
             ];
         }, $revisions, range(1, count($revisions)));
     }
