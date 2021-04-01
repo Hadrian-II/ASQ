@@ -123,7 +123,11 @@ class QuestionService extends ASQService
      */
     public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
-        $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+        $result = $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+
+        if ($result->isError()) {
+            throw new AsqException($result->value());
+        }
     }
 
     /**

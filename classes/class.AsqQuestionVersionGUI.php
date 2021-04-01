@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Data\UUID\Uuid;
 use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Model\QuestionInfo;
 use srag\asq\Infrastructure\Helpers\PathHelper;
-use ILIAS\DI\HTTPServices;
-use srag\asq\Domain\QuestionDto;
+use srag\asq\Application\Exception\AsqException;
 
 /**
  * Class AsqQuestionVersionGUI
@@ -86,8 +86,16 @@ class AsqQuestionVersionGUI
 
         if ($this->http->request()->getMethod() === 'POST') {
             $name = $creation_form->withRequest($this->http->request())->getData()[0];
-            $this->asq->question()->createQuestionRevision($name, $this->question_id);
-            ilutil::sendInfo($this->language->txt('asq_revision_created'));
+
+            try {
+                $this->asq->question()->createQuestionRevision($name, $this->question_id);
+                ilutil::sendInfo($this->language->txt('asq_revision_created'));
+            }
+            catch (AsqException $ex) {
+                ilUtil::sendFailure($ex->getMessage());
+            }
+
+
         }
         else if ($this->question->hasUnrevisionedChanges()) {
             ilutil::sendInfo($this->language->txt('asq_question_has_changes'));
