@@ -226,9 +226,14 @@ class QuestionService extends ASQService
      * @param Uuid $id
      * @return string
      */
-    public function exportQuestion(Uuid $id) : string
+    public function exportQuestion(Uuid $id, ?string $revision = null) : string
     {
-        $question = $this->getQuestionByQuestionId($id);
+        if ($revision === null) {
+            $question = $this->getQuestionByQuestionId($id);
+        }
+        else {
+            $question = $this->getQuestionRevision($id, $revision);
+        }
 
         return json_encode($question);
     }
