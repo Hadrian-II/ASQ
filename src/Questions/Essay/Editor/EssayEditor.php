@@ -86,7 +86,6 @@ class EssayEditor extends AbstractEditor
             $tpl->parseCurrentBlock();
         }
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/tinymce.min.js');
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Essay/Editor/EssayEditor.js');
 
         return $tpl->get();

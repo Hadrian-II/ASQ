@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form;
 
-use srag\asq\UserInterface\Web\AsqHtmlPurifier;
 use srag\asq\UserInterface\Web\ImageUploader;
 
 /**
@@ -34,23 +33,6 @@ trait InputHandlingTrait
         }
 
         return $this->image_uploader;
-    }
-
-    /**
-     * @var AsqHtmlPurifier
-     */
-    protected $input_purifier;
-
-    /**
-     * @return AsqHtmlPurifier
-     */
-    private function getInputPurifier() : AsqHtmlPurifier
-    {
-        if (is_null($this->input_purifier)) {
-            $this->input_purifier = new AsqHtmlPurifier();
-        }
-
-        return $this->input_purifier;
     }
 
     /**
@@ -106,7 +88,7 @@ trait InputHandlingTrait
      */
     protected function readString(?string $value) : ?string
     {
-        return $this->getInputPurifier()->purify($value);
+        return strip_tags($value);
     }
 
     /**

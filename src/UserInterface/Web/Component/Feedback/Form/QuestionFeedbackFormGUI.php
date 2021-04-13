@@ -74,7 +74,6 @@ class QuestionFeedbackFormGUI
         $this->ui = $ui;
         $this->request = $request;
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/tinymce.min.js');
         $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/FeedbackAuthoring.js');
 
 
