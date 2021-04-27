@@ -242,7 +242,8 @@ class AsqQuestionAuthoringGUI
                     $this->language,
                     $this->ui,
                     $this->asq,
-                    $this->http
+                    $this->http,
+                    $this->ctrl
                 );
 
                 $this->ctrl->forwardCommand($gui);

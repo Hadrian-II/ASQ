@@ -20,6 +20,8 @@ use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
+use srag\asq\Application\Command\DeleteQuestionRevisionCommand;
+use srag\asq\Application\Command\DeleteQuestionRevisionCommandHandler;
 
 /**
  * Class QuestionService
@@ -57,6 +59,12 @@ class QuestionService extends ASQService
         $this->command_bus->registerCommand(new CommandConfiguration(
             CreateQuestionRevisionCommand::class,
             new CreateQuestionRevisionCommandHandler(),
+            new OpenAccess()
+            ));
+
+        $this->command_bus->registerCommand(new CommandConfiguration(
+            DeleteQuestionRevisionCommand::class,
+            new DeleteQuestionRevisionCommandHandler(),
             new OpenAccess()
             ));
 
@@ -116,7 +124,7 @@ class QuestionService extends ASQService
     }
 
     /**
-     * Create anew revision named $name for question with id $question_id
+     * Create a new revision named $name for question with id $question_id
      *
      * @param string $name
      * @param Uuid $question_id
@@ -124,6 +132,21 @@ class QuestionService extends ASQService
     public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
         $result = $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+
+        if ($result->isError()) {
+            throw new AsqException($result->value());
+        }
+    }
+
+    /**
+     * Delete revision named $name for question with id $question_id
+     *
+     * @param string $name
+     * @param Uuid $question_id
+     */
+    public function deleteQuestionRevision(string $name, Uuid $question_id) : void
+    {
+        $result = $this->command_bus->handle(new DeleteQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
 
         if ($result->isError()) {
             throw new AsqException($result->value());

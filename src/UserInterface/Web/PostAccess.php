@@ -34,23 +34,6 @@ trait PostAccess
     }
 
     /**
-     * @var AsqHtmlPurifier
-     */
-    private $purifier;
-
-    /**
-     * @return AsqHtmlPurifier
-     */
-    private function getPurifier() : AsqHtmlPurifier
-    {
-        if (is_null($this->purifier)) {
-            $this->purifier = new AsqHtmlPurifier();
-        }
-
-        return $this->purifier;
-    }
-
-    /**
      * @param string $variable_name
      * @return bool
      */
@@ -69,7 +52,7 @@ trait PostAccess
             return null;
         }
 
-        return $this->getPurifier()->purify($this->getPost()[$variable_name]);
+        return strip_tags($this->getPost()[$variable_name]);
     }
 
     /**

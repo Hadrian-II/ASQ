@@ -47,6 +47,16 @@ class PublishedQuestionRepository
     /**
      * @param Uuid $question_id
      * @param string $name
+     */
+    public function deleteQuestionRevision(Uuid $question_id, string $name) : void
+    {
+        QuestionAr::where(['revision_name' => $name, 'question_id' => $question_id->toString()])->first()->delete();
+        QuestionListItemAr::where(['revision_name' => $name, 'question_id' => $question_id->toString()])->first()->delete();
+    }
+
+    /**
+     * @param Uuid $question_id
+     * @param string $name
      * @return QuestionDto
      */
     public function getQuestionRevision(Uuid $question_id, string $name) : QuestionDto
@@ -59,7 +69,7 @@ class PublishedQuestionRepository
 
     /**
      * @param Uuid $question_id
-     * @return QuestionDto[]
+     * @return QuestionInfo[]
      */
     public function getAllQuestionRevisions(Uuid $question_id) : array
     {

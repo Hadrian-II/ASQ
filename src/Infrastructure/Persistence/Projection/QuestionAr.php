@@ -18,6 +18,9 @@ use srag\asq\Domain\QuestionDto;
  */
 class QuestionAr extends ActiveRecord
 {
+    const ACTIVE = 1;
+    const DELETED = 2;
+
     const STORAGE_NAME = "asq_question";
     /**
      * @var int
@@ -72,6 +75,15 @@ class QuestionAr extends ActiveRecord
      * @con_is_notnull true
      */
     protected $data;
+    /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     8
+     * @con_is_notnull true
+     */
+    protected $status;
 
     /**
      *
@@ -88,6 +100,7 @@ class QuestionAr extends ActiveRecord
         $object->question_id = $question->getId();
         $object->revision_name = $question->getRevisionId()->getName();
         $object->data = json_encode($question);
+        $object->status = self::ACTIVE;
 
         return $object;
     }
@@ -135,6 +148,17 @@ class QuestionAr extends ActiveRecord
     public function getQuestion() : QuestionDto
     {
         return QuestionDto::deserialize($this->data);
+    }
+
+    public function getStatus() : int
+    {
+        return $this->status;
+    }
+
+    public function delete() : void
+    {
+        $this->status == self::DELETED;
+        $this->update();
     }
 
     /**

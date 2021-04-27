@@ -25,6 +25,7 @@ class AsqQuestionVersionGUI
     use PathHelper;
 
     const CMD_SHOW_VERSIONS = 'showVersions';
+    const CMD_DELETE_VERSION = 'deleteVersion';
     const COL_INDEX = 'REVISION_INDEX';
     const COL_NAME = 'REVISION_NAME';
     const COL_DATE = 'REVISION_DATE';
@@ -34,6 +35,9 @@ class AsqQuestionVersionGUI
     const PREVIEW_LABEL = 'PREVIEW_LABEL';
     const ROLLBACK_LINK = 'ROLLBACK_LINK';
     const ROLLBACK_LABEL = 'ROLLBACK_LABEL';
+    const PARAM_SELECTED_VERSION = 'selVersion';
+    const DELETE_LINK = 'DELETE_LINK';
+    const DELETE_LABEL = 'DELETE_LABEL';
 
     /**
      * @var Uuid
@@ -61,6 +65,11 @@ class AsqQuestionVersionGUI
     private $http;
 
     /**
+     * @var ilCtrl
+     */
+    private $ctrl;
+
+    /**
      * @var QuestionDto;
      */
     private $question;
@@ -70,7 +79,8 @@ class AsqQuestionVersionGUI
         ilLanguage $language,
         UIServices $ui,
         ASQServices $asq,
-        HTTPServices $http)
+        HTTPServices $http,
+        ilCtrl $ctrl)
     {
         $this->question_id = $question_id;
         $this->question = $asq->question()->getQuestionByQuestionId($question_id);
@@ -78,9 +88,30 @@ class AsqQuestionVersionGUI
         $this->ui = $ui;
         $this->asq = $asq;
         $this->http = $http;
+        $this->ctrl = $ctrl;
     }
 
     public function executeCommand() : void
+    {
+        if ($this->ctrl->getCmd() === self::CMD_DELETE_VERSION) {
+            $this->deleteVersion();
+        }
+
+        $this->displayVersions();
+    }
+
+    private function deleteVersion() : void
+    {
+        $name = $_GET[self::PARAM_SELECTED_VERSION];
+
+        $this->asq->question()->deleteQuestionRevision($name, $this->question_id);
+    }
+
+    /**
+     * @param name
+     * @param ex
+     */
+    private function displayVersions()
     {
         $creation_form = $this->createCreationForm();
 
@@ -94,8 +125,6 @@ class AsqQuestionVersionGUI
             catch (AsqException $ex) {
                 ilUtil::sendFailure($ex->getMessage());
             }
-
-
         }
         else if ($this->question->hasUnrevisionedChanges()) {
             ilutil::sendInfo($this->language->txt('asq_question_has_changes'));
@@ -147,11 +176,14 @@ class AsqQuestionVersionGUI
         }
 
         $rollback_label = $this->language->txt('asq_label_revision_rollback');
+        $delete_label = $this->language->txt('asq_label_revision_delete');
 
         /** @var $question QuestionInfo */
-        return array_map(function ($question, $ix) use ($rollback_label) {
+        return array_map(function ($question, $ix) use ($rollback_label, $delete_label) {
             $preview = $this->asq->link()->getPreviewLink($this->question_id, $question->getRevisionName());
             $edit = $this->asq->link()->getEditLink($this->question_id, $question->getRevisionName());
+            $this->ctrl->setParameter($this, self::PARAM_SELECTED_VERSION, $question->getRevisionName());
+            $delete_link = $this->ctrl->getLinkTarget($this, self::CMD_DELETE_VERSION);
 
             return [
                 self::COL_INDEX => $ix,
@@ -161,7 +193,9 @@ class AsqQuestionVersionGUI
                 self::PREVIEW_LINK => $preview->getAction(),
                 self::PREVIEW_LABEL => $preview->getLabel(),
                 self::ROLLBACK_LINK => $edit->getAction(),
-                self::ROLLBACK_LABEL => $rollback_label
+                self::ROLLBACK_LABEL => $rollback_label,
+                self::DELETE_LINK => $delete_link,
+                self::DELETE_LABEL => $delete_label,
             ];
         }, $revisions, range(1, count($revisions)));
     }
