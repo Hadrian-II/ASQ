@@ -10,13 +10,6 @@ il.ASQ.Choice = (function($) {
 	}
 
     const showMultilineEditor = function() {
-        const tinySettings = tinymce.EditorManager.editors[0].settings;
-        il.ASQ.Authoring.clearTiny('input[id$=mcdd_text]');
-
-        tinySettings.mode = '';
-        tinySettings.selector = 'input[id$=mcdd_text]';
-        tinymce.init(tinySettings);
-
         $('input[id$=mcdd_image]').each((index, item) => {
             const td = $(item).parents('td');
             td.children().hide();
@@ -30,8 +23,6 @@ il.ASQ.Choice = (function($) {
     }
 
     const hideMultilineEditor = function() {
-        il.ASQ.Authoring.clearTiny('input[id$=mcdd_text]');
-
         $('input[id$=mcdd_image]').each((index, item) => {
             const td = $(item).parents('td');
             td.children().show();
@@ -45,16 +36,6 @@ il.ASQ.Choice = (function($) {
     }
 
     const updateEditor = function() {
-        if (typeof (tinymce) === 'undefined') {
-            return;
-        }
-
-        // wait for tiny to load
-        if (tinymce.EditorManager.editors.length < 1) {
-            setTimeout(updateEditor, 250);
-            return;
-        }
-
         if (editorSelect.val() === 'false') {
             showMultilineEditor();
         } else {

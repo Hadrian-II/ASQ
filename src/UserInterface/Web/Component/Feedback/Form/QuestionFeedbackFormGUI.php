@@ -74,9 +74,6 @@ class QuestionFeedbackFormGUI
         $this->ui = $ui;
         $this->request = $request;
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/FeedbackAuthoring.js');
-
-
         $this->question_dto = $question_dto;
         $this->feedback = $question_dto->getFeedback();
 

@@ -6,14 +6,7 @@ il.ASQ.Essay = (function($) {
     let hasMaxLength = false;
 
     const updateCounts = function() {
-        if (typeof (tinymce) === 'undefined') {
-            textLength = $('js_essay').val().length;
-        }
-        else {
-            const body = tinymce.editors[0].getBody();
-            const text = tinymce.trim(body.innerText || body.textContent);
-            textLength = text.length;            
-        }
+        textLength = $('js_essay').val().length;
 
 		if (textLength > maxLength) {
 			$('.js_letter_count').parent().addClass('essay_alert');
@@ -40,19 +33,6 @@ il.ASQ.Essay = (function($) {
     $(document).on('submit', 'main form', checkValues);
 
     $(document).ready(() => {
-        if (typeof (tinymce) === 'undefined') {
-            return;
-        }
-
-        tinymce.init({
-            selector: 'textarea',
-            menubar: false,
-            init_instance_callback(editor) {
-                editor.on('keyup', updateCounts);
-                updateCounts();
-            },
-        });
-
         if ($('.js_maxlength').length > 0) {
             maxLength = parseInt($('.js_maxlength').val(), 10);
             hasMaxLength = true;
