@@ -100,7 +100,7 @@ class MultipleChoiceEditor extends AbstractEditor
                     'THUMB_SIZE',
                     is_null($this->configuration->getThumbnailSize()) ?
                         '' :
-                        sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize())
+                        sprintf(' style="width: %spx;" ', $this->configuration->getThumbnailSize())
                 );
                 $tpl->parseCurrentBlock();
             }
