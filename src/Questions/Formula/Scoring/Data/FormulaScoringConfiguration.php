@@ -115,9 +115,9 @@ class FormulaScoringConfiguration extends AbstractValueObject
     /**
      * @return ?float
      */
-    public function getTolerance() : ?float
+    public function getTolerance() : float
     {
-        return $this->tolerance;
+        return $this->tolerance ?? PHP_FLOAT_EPSILON;
     }
 
     /**
