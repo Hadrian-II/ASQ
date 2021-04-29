@@ -3,19 +3,19 @@
 	
 <div class="kprim_table">
 	<div class="row">
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 optionLabel">{OPTION_LABEL_TRUE}</div>
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 optionLabel">{OPTION_LABEL_FALSE}</div>
+		<div>{OPTION_LABEL_TRUE}</div>
+		<div>{OPTION_LABEL_FALSE}</div>
 	</div>
 	<!-- END header -->
 	<!-- BEGIN answer_row -->
 	<div class="row">
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-2"><input type="radio" name="{ANSWER_ID}" value="{VALUE_TRUE}" id="{ANSWER_ID}" {CHECKED_ANSWER_TRUE} /></div>
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-2"><input type="radio" name="{ANSWER_ID}" value="{VALUE_FALSE}" id="{ANSWER_ID}" {CHECKED_ANSWER_FALSE} /></div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+		<div><input type="radio" name="{ANSWER_ID}" value="{VALUE_TRUE}" id="{ANSWER_ID}" {CHECKED_ANSWER_TRUE} /></div>
+		<div><input type="radio" name="{ANSWER_ID}" value="{VALUE_FALSE}" id="{ANSWER_ID}" {CHECKED_ANSWER_FALSE} /></div>
+		<div>
 			<!-- BEGIN answer_image -->
 		    <img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE}/>
 			<!-- END answer_image -->
-			<div>{ANSWER_TEXT}</div>
+			<span>{ANSWER_TEXT}</span>
 		</div>
 	</div>
 	<!-- BEGIN feedback -->

@@ -46,6 +46,9 @@ class KprimChoiceEditor extends AbstractEditor
      */
     public function __construct(QuestionDto $question)
     {
+        global $DIC;
+        $DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
+
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
@@ -109,7 +112,7 @@ class KprimChoiceEditor extends AbstractEditor
                     'THUMB_SIZE',
                     is_null($this->configuration->getThumbnailSize()) ?
                     '' :
-                    sprintf(' style="height: %spx;" ', $this->configuration->getThumbnailSize())
+                    sprintf(' style="width: %spx;" ', $this->configuration->getThumbnailSize())
                 );
                 $tpl->parseCurrentBlock();
             }

@@ -51,7 +51,7 @@
 	cursor: pointer;
 }
 
-   .imagemap_editor rect.selected,
+.imagemap_editor rect.selected,
 .imagemap_editor ellipse.selected,
 .imagemap_editor polygon.selected {
 	fill-opacity: 0.95;
@@ -65,7 +65,14 @@
 }
 
 /* Kprim Editor */
+.kprim_table > .row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 6px;
+}
+
 .kprim_table > .row > div:nth-child(-n + 2) {
+	width: 120px;
 	text-align: center;
 }
 
