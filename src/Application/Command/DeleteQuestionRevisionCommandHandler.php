@@ -3,17 +3,13 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Command;
 
-use srag\CQRS\Aggregate\RevisionFactory;
-use srag\CQRS\Command\CommandContract;
-use srag\CQRS\Command\CommandHandlerContract;
-use srag\asq\Domain\QuestionRepository;
-use srag\asq\Infrastructure\Persistence\QuestionType;
-use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
-use srag\asq\Application\Exception\AsqException;
-use srag\asq\Domain\QuestionDto;
 use ILIAS\Data\Result;
 use ILIAS\Data\Result\Error;
 use ILIAS\Data\Result\Ok;
+use srag\CQRS\Command\CommandContract;
+use srag\CQRS\Command\CommandHandlerContract;
+use srag\asq\Application\Exception\AsqException;
+use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 
 /**
  * Class DeleteQuestionRevisionCommandHandler

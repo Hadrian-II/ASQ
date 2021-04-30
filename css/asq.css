@@ -9,6 +9,9 @@
 	background-color: lightyellow;
 }
 
+.question_text {
+	margin-bottom: 8px;
+}
 
 /* Errortext Editor */
 .errortext_word:hover {
