@@ -46,9 +46,6 @@ class KprimChoiceEditor extends AbstractEditor
      */
     public function __construct(QuestionDto $question)
     {
-        global $DIC;
-        $DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
-
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 

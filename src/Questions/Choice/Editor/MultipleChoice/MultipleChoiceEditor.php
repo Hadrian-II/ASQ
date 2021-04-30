@@ -55,7 +55,6 @@ class MultipleChoiceEditor extends AbstractEditor
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->ui = $DIC->ui();
-        $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
 
         if ($this->configuration->isShuffleAnswers()) {
             shuffle($this->answer_options);

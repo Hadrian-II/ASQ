@@ -51,7 +51,6 @@ class EssayEditor extends AbstractEditor
 
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->ui = $DIC->ui();
-        $this->ui->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
         $this->language = $DIC->language();
 
         parent::__construct($question);

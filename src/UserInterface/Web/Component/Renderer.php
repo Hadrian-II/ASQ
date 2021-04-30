@@ -31,6 +31,9 @@ class Renderer extends AbstractComponentRenderer
      */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
+        global $DIC;
+        $DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
+
         /** @var $question QuestionDto */
         $question = $input->getQuestion();
         $editor_class = $question->getType()->getEditorClass();
