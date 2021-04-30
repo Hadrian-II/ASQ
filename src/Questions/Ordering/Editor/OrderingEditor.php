@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Editor;
 
-use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -38,23 +37,20 @@ class OrderingEditor extends AbstractEditor
     private $display_ids;
 
     /**
-     * @var UIServices
-     */
-    private $ui;
-
-    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
-        global $DIC;
-
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        $this->ui = $DIC->ui();
 
         $this->calculateDisplayIds($question);
 
         parent::__construct($question);
+    }
+
+    public function additionalJSFile() : ?string
+    {
+        return $this->getBasePath(__DIR__) . 'src/Questions/Ordering/Editor/OrderingEditor.js';
     }
 
     /**
@@ -109,10 +105,6 @@ class OrderingEditor extends AbstractEditor
         $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
         $tpl->parseCurrentBlock();
-
-        $this->ui
-            ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Ordering/Editor/OrderingEditor.js');
 
         return $tpl->get();
     }

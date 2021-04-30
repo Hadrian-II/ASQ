@@ -54,4 +54,12 @@ abstract class AbstractEditor implements IAsqQuestionEditor
     {
         $this->answer = $answer;
     }
+
+    /**
+     * Default additional JSFile (no file)
+     */
+    public function additionalJSFile() : ?string
+    {
+        return null;
+    }
 }

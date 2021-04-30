@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Editor\ImageMap;
 
-use ILIAS\DI\UIServices;
 use Exception;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
@@ -34,21 +33,18 @@ class ImageMapEditor extends AbstractEditor
     private $configuration;
 
     /**
-     * @var UIServices
-     */
-    private $ui;
-
-    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
-        global $DIC;
-
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        $this->ui = $DIC->ui();
 
         parent::__construct($question);
+    }
+
+    public function additionalJSFile() : ?string
+    {
+        return $this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/ImageMap/ImageMapEditor.js';
     }
 
     /**
@@ -74,10 +70,6 @@ class ImageMapEditor extends AbstractEditor
             $tpl->setVariable('OPTION_SHAPE', $this->generateShape($display_definition, $answer_option->getOptionId()));
             $tpl->parseCurrentBlock();
         }
-
-        $this->ui
-            ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/ImageMap/ImageMapEditor.js');
 
         return $tpl->get();
     }

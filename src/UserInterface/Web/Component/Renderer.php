@@ -53,6 +53,13 @@ class Renderer extends AbstractComponentRenderer
         $tpl->setVariable('EDITOR', $editor->generateHtml());
         $tpl->parseCurrentBlock();
 
+        $additional_js = $editor->additionalJSFile();
+        if ($additional_js !== null) {
+            $tpl->setCurrentBlock('js');
+            $tpl->setVariable('JS_PATH', $additional_js);
+            $tpl->parseCurrentBlock();
+        }
+
         if ($input->doesShowFeedback() && $question->hasFeedback()) {
             $feedback_component = new FeedbackComponent($question, $input->getAnswer());
             $tpl->setCurrentBlock('feedback');

@@ -53,4 +53,11 @@ interface IAsqQuestionEditor
      * @return bool
      */
     public function isComplete() : bool;
+
+    /**
+     * Here the editor can specify an optional editor JS file
+     *
+     * @return string|NULL
+     */
+    public function additionalJSFile() : ?string;
 }

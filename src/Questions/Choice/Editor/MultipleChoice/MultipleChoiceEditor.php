@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Editor\MultipleChoice;
 
-use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -41,26 +40,23 @@ class MultipleChoiceEditor extends AbstractEditor
     private $configuration;
 
     /**
-     * @var UIServices
-     */
-    private $ui;
-
-    /**
      * @param QuestionDto $question
      */
     public function __construct(QuestionDto $question)
     {
-        global $DIC;
-
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        $this->ui = $DIC->ui();
 
         if ($this->configuration->isShuffleAnswers()) {
             shuffle($this->answer_options);
         }
 
         parent::__construct($question);
+    }
+
+    public function additionalJSFile() : ?string
+    {
+        return $this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/MultipleChoice/MultipleChoiceEditor.js';
     }
 
     /**
@@ -127,10 +123,6 @@ class MultipleChoiceEditor extends AbstractEditor
 
             $tpl->parseCurrentBlock();
         }
-
-        $this->ui
-            ->mainTemplate()
-            ->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/MultipleChoice/MultipleChoiceEditor.js');
 
         return $tpl->get();
     }

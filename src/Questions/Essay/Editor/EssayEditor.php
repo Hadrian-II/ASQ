@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Editor;
 
-use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -33,11 +32,6 @@ class EssayEditor extends AbstractEditor
     private $configuration;
 
     /**
-     * @var UIServices
-     */
-    private $ui;
-
-    /**
      * @var ilLanguage;
      */
     private $language;
@@ -50,10 +44,14 @@ class EssayEditor extends AbstractEditor
         global $DIC;
 
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        $this->ui = $DIC->ui();
         $this->language = $DIC->language();
 
         parent::__construct($question);
+    }
+
+    public function additionalJSFile() : ?string
+    {
+        return $this->getBasePath(__DIR__) . 'src/Questions/Essay/Editor/EssayEditor.js';
     }
 
     /**
@@ -84,8 +82,6 @@ class EssayEditor extends AbstractEditor
             $tpl->setVariable('CHARACTERS', $this->language->txt('asq_char_count'));
             $tpl->parseCurrentBlock();
         }
-
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/Essay/Editor/EssayEditor.js');
 
         return $tpl->get();
     }

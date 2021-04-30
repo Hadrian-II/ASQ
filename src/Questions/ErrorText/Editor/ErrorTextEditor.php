@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\ErrorText\Editor;
 
-use ILIAS\DI\UIServices;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -32,19 +31,16 @@ class ErrorTextEditor extends AbstractEditor
      */
     private $configuration;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
-
     public function __construct(QuestionDto $question)
     {
-        global $DIC;
-
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
-        $this->ui = $DIC->ui();
 
         parent::__construct($question);
+    }
+
+    public function additionalJSFile() : ?string
+    {
+        return $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Editor/ErrorTextEditor.js';
     }
 
     /**
@@ -64,8 +60,6 @@ class ErrorTextEditor extends AbstractEditor
         $tpl->setVariable('ERRORTEXT_VALUE', is_null($this->answer) ? '' : $this->answer->getPostString());
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());
         $tpl->parseCurrentBlock();
-
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Editor/ErrorTextEditor.js');
 
         return $tpl->get();
     }
