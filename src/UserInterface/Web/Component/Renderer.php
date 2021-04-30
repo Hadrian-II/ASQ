@@ -31,9 +31,6 @@ class Renderer extends AbstractComponentRenderer
      */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
-        global $DIC;
-        $DIC->ui()->mainTemplate()->addCss($this->getBasePath(__DIR__) . 'css/asq.css');
-
         /** @var $question QuestionDto */
         $question = $input->getQuestion();
         $editor_class = $question->getType()->getEditorClass();
@@ -50,6 +47,7 @@ class Renderer extends AbstractComponentRenderer
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
+        $tpl->setVariable('CSS_PATH', $this->getBasePath(__DIR__) . 'css/asq.css');
         $tpl->setVariable('TITLE', $question->getData()->getTitle());
         $tpl->setVariable('QUESTION', $question->getData()->getQuestionText());
         $tpl->setVariable('EDITOR', $editor->generateHtml());
