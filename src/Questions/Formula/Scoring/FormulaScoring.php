@@ -101,7 +101,7 @@ class FormulaScoring extends AbstractScoring
 
             if (!is_null($result_given)) {
                 $difference = abs($result_expected - $result_given);
-                $max_allowed_difference = $result_expected / 100 * $this->configuration->getTolerance();
+                $max_allowed_difference = $result_expected / 100 * max($this->configuration->getTolerance(), PHP_FLOAT_EPSILON);
 
                 if ($difference <= $max_allowed_difference &&
                     $unit_given === $result->getUnit()) {
