@@ -61,7 +61,7 @@ class OrderingEditor extends AbstractEditor
         $this->display_ids = [];
 
         foreach ($question->getAnswerOptions() as $option) {
-            $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText());
+            $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText() .$option->getDisplayDefinition()->getImage());
         }
     }
 
