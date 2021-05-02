@@ -6,7 +6,7 @@ il.ASQ.Essay = (function($) {
     let hasMaxLength = false;
 
     const updateCounts = function() {
-        textLength = $('js_essay').val().length;
+        textLength = $('.js_essay').val().length;
 
 		if (textLength > maxLength) {
 			$('.js_letter_count').parent().addClass('essay_alert');
