@@ -78,19 +78,25 @@ class FormulaScoring extends AbstractScoring
             //get decimal value of answer if allowed
             if (($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_ALL ||
                 $this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_DECIMAL) &&
-                is_numeric($this->readFloat($raw_result))) {
+                is_numeric($this->readFloat($raw_result)))
+            {
                 $result_given = $this->readFloat($raw_result);
             }
 
             //get compound result if no value yet and it is allowed
             if (is_null($result_given) &&
                 $this->configuration->getResultType() !== FormulaScoringConfiguration::TYPE_DECIMAL &&
-                strpos($raw_result, '/')) {
-                $split = explode('/', $raw_result);
-                $numerator = floatval($split[0]);
-                $denominator = floatval($split[1]);
+                strpos($raw_result, '/'))
+            {
+                $nr = "/\d+/";
+                $numbers= [];
+                $found = preg_match_all($nr, $raw_result, $numbers);
 
-                $result_given = $numerator / $denominator;
+                $whole = $found === 3 ? floatval($numbers[0][0]) : 0;
+                $denominator = floatval(end($numbers[0]));
+                $numerator = floatval(prev($numbers[0]));
+
+                $result_given = $whole + $numerator / $denominator;
 
                 // invalidate result if not coprime and option is set
                 if ($this->configuration->getResultType() === FormulaScoringConfiguration::TYPE_COPRIME_FRACTION &&
