@@ -19,23 +19,23 @@ il.ASQ.Matching = (function($) {
 	}
     
     const setDefinitionsTable = function(table) {
-		$(table).find('.js_remove').on('click', () => {
+		$(`#${table.attr('id')}`).on('click', '.js_remove', () => {
 	        setTimeout(updateDefinitions, 1);
 	    });
 	}
     
     const setTermsTable = function(table) {
-		$(table).find('.js_remove').on('click', () => {
+		$(`#${table.attr('id')}`).on('click', '.js_remove', () => {
 	        setTimeout(updateTerms, 1);
 	    });
 	}
 	
 	const setMatchTable = function(table) {
-		$(table).find('.js_remove').on('click', () => {
+		$(`#${table.attr('id')}`).on('click', '.js_remove', () => {
 	        setTimeout(updateUsedDefinitions, 1);
 	        setTimeout(updateUsedTerms, 1);
 	    });
-		$(table).find('.js_add').on('click', () => {
+		$(`#${table.attr('id')}`).on('click', '.js_add', () => {
 	        setTimeout(cleanAddedRow, 1);
 	    });
 		matchTable = $(table);
