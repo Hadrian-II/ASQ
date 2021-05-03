@@ -3,7 +3,7 @@
 
 
 require_once(__DIR__ . "../../../../../../../../../../libs/composer/vendor/autoload.php");
-require_once(__DIR__ . "../../vendor/autoload.php");
+require_once(__DIR__ . "../../../vendor/autoload.php");
 require_once('AsqTestDIC.php');
 
 use PHPUnit\Framework\TestSuite;

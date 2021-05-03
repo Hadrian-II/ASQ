@@ -17,6 +17,7 @@ use srag\asq\UserInterface\Web\Component\Renderer;
 use Exception;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Application\Exception\AsqException;
+use ilImagePathResolver;
 
 /**
  * Class QuestionTestCase
@@ -147,7 +148,8 @@ abstract class QuestionTestCase extends TestCase
             $DIC['ui.template_factory'],
             $DIC['lng'],
             $DIC['ui.javascript_binding'],
-            $DIC['refinery']);
+            $DIC['refinery'],
+            new ilImagePathResolver());
 
         $default_renderer = new class() extends DefaultRenderer {
             public function __construct() {}

@@ -15,6 +15,7 @@ use ILIAS\GlobalScreen\Services;
 use ILIAS\DI\HTTPServices;
 use ilStyleDefinition;
 use ilLogger;
+use ilDBPdoMySQL;
 use ILIAS\UI\Implementation\Factory as UIFactory;
 use ILIAS\UI\Implementation\Render\ilTemplateWrapperFactory;
 use ILIAS\UI\Implementation\Render\ilJavaScriptBinding;
@@ -57,6 +58,12 @@ class AsqTestDIC extends \ILIAS\DI\Container
                 {
                     return 6;
                 }
+            };
+        };
+
+        $container['ilDb'] = function($c) {
+            return new class() extends ilDBPdoMySQL {
+                public function __construct() {}
             };
         };
 
@@ -261,5 +268,10 @@ class AsqTestDIC extends \ILIAS\DI\Container
     public function isDependencyAvailable($name)
     {
         false;
+    }
+
+    public function database()
+    {
+        return $this['ilDb'];
     }
 }
