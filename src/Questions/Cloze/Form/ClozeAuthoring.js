@@ -99,11 +99,11 @@ il.ASQ.Cloze = (function($) {
         let template = null;
 
         if (selected.val() === TYPE_NUMBER) {
-            template = createNewGap(id, 'number');
+            template = createNewGap(id, 'number').children();
         } else if (selected.val() === TYPE_TEXT) {
-            template = createNewGap(id, 'text');
+            template = createNewGap(id, 'text').children();
         } else if (selected.val() === TYPE_DROPDOWN) {
-            template = createNewGap(id, 'select');
+            template = createNewGap(id, 'select').children();
         }
 
         const parentItem = selected.parents('.form-group');
@@ -121,8 +121,8 @@ il.ASQ.Cloze = (function($) {
         templateForms.each((index, item) => {
             const form = $(item);
             const template = form.find('.il-section-input');
-            form.append(template.children());
-            form.children(':not(.il-section-input-header,.form-group)').remove();
+            form.append(template);
+            form.children(':not(.il-section-input)').remove();
             form.find('select:first').addClass('js_select_type');
             form.find('[name]').removeAttr('name');
         });

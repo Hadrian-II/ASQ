@@ -92,6 +92,7 @@ class ClozeScoring extends AbstractScoring
         foreach ($gap_configuration->getItems() as $gap_item) {
             if ($answer === $gap_item->getText()) {
                 $this->reached_points += $gap_item->getPoints();
+                return;
             }
         }
     }
@@ -106,6 +107,7 @@ class ClozeScoring extends AbstractScoring
         foreach ($gap_configuration->getItems() as $gap_item) {
             if ($this->text_scoring->isMatch($answer, $gap_item->getText(), $gap_configuration->getMatchingMethod())) {
                 $this->reached_points += $gap_item->getPoints();
+                return;
             }
         }
     }
