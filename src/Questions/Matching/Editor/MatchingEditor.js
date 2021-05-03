@@ -212,6 +212,7 @@ il.ASQ.Matching = (function($) {
                     start: startDrag,
                     stop: stopDrag,
                     revert: true,
+                    revertDuration: 0,
                     scroll: true,
                     containment: $(`#${droppedDraggableClone.attr('id')}`)
                         .parents('.ilc_question_standard').eq(0),
@@ -258,6 +259,7 @@ il.ASQ.Matching = (function($) {
                             start: startDrag,
                             stop: stopDrag,
                             revert: true,
+                            revertDuration: 0,
                             scroll: true,
                             containment: $(
                                 `#${droppedDraggableClone.attr('id')}`,
@@ -294,6 +296,7 @@ il.ASQ.Matching = (function($) {
                             start: startDrag,
                             stop: stopDrag,
                             revert: true,
+                            revertDuration: 0,
                             scroll: true,
                             containment: $(draggable).parents(
                                 '.ilc_question_standard',
