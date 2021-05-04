@@ -55,15 +55,15 @@ class FormulaScoring extends AbstractScoring
             /** @var $result FormulaScoringDefinition */
             $result = $option->getScoringDefinition();
 
-            $answers = $answer->getValues();
+            $variables = $answer->getVariables();
 
-            if (is_null($answers)) {
+            if (is_null($variables)) {
                 return 0.0;
             }
 
             $formula = $result->getFormula();
 
-            foreach ($answers as $key => $value) {
+            foreach ($variables as $key => $value) {
                 $formula = str_replace($key, $value, $formula);
             }
 
@@ -71,6 +71,7 @@ class FormulaScoring extends AbstractScoring
 
             $result_expected = $math->evaluate($formula);
 
+            $answers = $answer->getResults();
             $result_given = null;
             $raw_result = $answers['$r' . $option->getOptionId()];
             $unit_given = $answers['$r' . $option->getOptionId() . FormulaEditor::VAR_UNIT] ?? '';

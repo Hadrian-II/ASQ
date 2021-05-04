@@ -19,21 +19,35 @@ class FormulaAnswer extends AbstractValueObject
     /**
      * @var ?array
      */
-    protected $values;
+    protected $variables;
+
+    /**
+     * @var ?array
+     */
+    protected $results;
 
     /**
      * @param array $values
      */
-    public function __construct(?array $values = null)
+    public function __construct(?array $variables = null, ?array $results = null)
     {
-        $this->values = $values;
+        $this->variables = $variables;
+        $this->results = $results;
     }
 
     /**
      * @return ?array
      */
-    public function getValues() : ?array
+    public function getVariables() : ?array
     {
-        return $this->values;
+        return $this->variables;
+    }
+
+    /**
+     * @return ?array
+     */
+    public function getResults() : ?array
+    {
+        return $this->results;
     }
 }

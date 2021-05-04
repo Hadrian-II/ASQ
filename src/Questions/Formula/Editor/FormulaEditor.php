@@ -47,18 +47,19 @@ class FormulaEditor extends AbstractEditor
      */
     public function readAnswer() : AbstractValueObject
     {
-        $answers = [];
+        $results = [];
+        $variables = [];
         $index = 1;
         $continue = true;
         while ($continue) {
             $continue = false;
 
-            $continue |= $this->processVar('$v' . $index, $answers);
-            $continue |= $this->processVar('$r' . $index, $answers);
+            $continue |= $this->processVar('$v' . $index, $variables);
+            $continue |= $this->processVar('$r' . $index, $results);
             $index += 1;
         }
 
-        return new FormulaAnswer($answers);
+        return new FormulaAnswer($variables, $results);
     }
 
     /**
@@ -116,7 +117,7 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$r' . $index;
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), $this->getAnswerValue($name) ?? '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
+        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), $this->getResultValue($name) ?? '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
 
         return str_replace($name, $html, $output);
     }
@@ -125,16 +126,32 @@ class FormulaEditor extends AbstractEditor
      * @param string $name
      * @return string|NULL
      */
-    private function getAnswerValue(string $name) : ?string
+    private function getResultValue(string $name) : ?string
     {
         if (is_null($this->answer) ||
-            is_null($this->answer->getValues()) ||
-            !array_key_exists($name, $this->answer->getValues()))
+            is_null($this->answer->getResults()) ||
+            !array_key_exists($name, $this->answer->getResults()))
         {
             return null;
         }
 
-        return $this->answer->getValues()[$name];
+        return $this->answer->getResults()[$name];
+    }
+
+    /**
+     * @param string $name
+     * @return string|NULL
+     */
+    private function getVariableValue(string $name) : ?string
+    {
+        if (is_null($this->answer) ||
+            is_null($this->answer->getVariables()) ||
+            !array_key_exists($name, $this->answer->getVariables()))
+        {
+            return null;
+        }
+
+        return $this->answer->getVariables()[$name];
     }
 
     /**
@@ -151,7 +168,7 @@ class FormulaEditor extends AbstractEditor
                 return sprintf(
                     '<option value="%1$s" %2$s>%1$s</option>',
                     $unit,
-                    $this->getAnswerValue($name . self::VAR_UNIT) === $unit ? 'selected="selected"' : ''
+                    $this->getResultValue($name . self::VAR_UNIT) === $unit ? 'selected="selected"' : ''
                 );
             }, $units))
         );
@@ -170,7 +187,7 @@ class FormulaEditor extends AbstractEditor
         $html = sprintf(
             '<input type="hidden" name="%1$s" value="%2$s" />%2$s %3$s',
             $this->getPostVariableName($name),
-            $this->getAnswerValue($name) ?? $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
+            $this->getVariableValue($name) ?? $this->question->getPlayConfiguration()->getScoringConfiguration()->generateVariableValue($def),
             $def->getUnit()
         );
 
