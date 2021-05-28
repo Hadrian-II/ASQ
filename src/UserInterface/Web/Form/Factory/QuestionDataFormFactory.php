@@ -5,6 +5,7 @@ namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionData;
+use ILIAS\UI\Implementation\Component\Input\Field\RealTextInputImageProcessor;
 
 /**
  * Class AbstractQuestionFormFactory
@@ -92,9 +93,12 @@ class QuestionDataFormFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
+        $processor = new RealTextInputImageProcessor($postdata[self::VAR_QUESTION]);
+        $processor->process();
+
         return new QuestionData(
             $this->readString($postdata[self::VAR_TITLE]),
-            $this->readString($postdata[self::VAR_QUESTION]),
+            $this->readString($processor->getProcessedMarkup()),
             $this->readString($postdata[self::VAR_AUTHOR]),
             $this->readString($postdata[self::VAR_DESCRIPTION]),
             $postdata[self::VAR_WORKING_TIME],
