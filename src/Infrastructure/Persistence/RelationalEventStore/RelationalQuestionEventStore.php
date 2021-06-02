@@ -296,17 +296,15 @@ class RelationalQuestionEventStore implements IEventStore
      */
     public function aggregateExists(Uuid $id): bool
     {
-        global $DIC;
-
         $sql = sprintf(
             'SELECT Count(*) as count FROM %s where aggregate_id = %s',
             self::TABLE_NAME,
-            $DIC->database()->quote($id->toString(), 'string')
+            $this->db->quote($id->toString(), 'string')
             );
 
-        $res = $DIC->database()->query($sql);
+        $res = $this->db->query($sql);
 
-        return $DIC->database()->fetchAssoc($res)['count'] > 0;
+        return $this->db->fetchAssoc($res)['count'] > 0;
     }
 
     /**
