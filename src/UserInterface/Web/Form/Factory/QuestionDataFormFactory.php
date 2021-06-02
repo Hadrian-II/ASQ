@@ -59,7 +59,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             ]
         );
 
-        $question_text = $this->factory->input()->field()->realtext($this->language->txt('asq_label_question'));
+        $question_text = $this->factory->input()->field()->realText($this->language->txt('asq_label_question'));
 
         $working_time = $this->asq_ui->getDurationInput($this->language->txt('asq_label_working_time'));
 
