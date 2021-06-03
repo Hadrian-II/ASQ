@@ -24,6 +24,7 @@ class AsqTableInputFieldDefinition
     const TYPE_HIDDEN = 8;
     const TYPE_LABEL = 9;
     const TYPE_CHECKBOX = 10;
+    const TYPE_REALTEXT = 11;
 
     const OPTION_MAX_LENGTH = 'max_length';
 

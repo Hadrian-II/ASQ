@@ -12,6 +12,7 @@ use ilRadioOption;
 use ilSelectInputGUI;
 use ilTemplate;
 use srag\asq\Infrastructure\Helpers\PathHelper;
+use ILIAS\UI\Implementation\Render\ResourceRegistry;
 
 /**
  * Class Renderer
@@ -217,6 +218,8 @@ class Renderer extends AbstractComponentRenderer
                 return $this->generateLabel($value, $definition->getPostVar());
             case AsqTableInputFieldDefinition::TYPE_CHECKBOX:
                 return $this->generateCheckbox($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value);
+            case AsqTableInputFieldDefinition::TYPE_REALTEXT:
+                return $this->generateRealTextField($this->getTableItemPostVar($row_id, $name, $definition->getPostVar()), $value);
             default:
                 throw new Exception('Please implement all fieldtypes you define');
         }
@@ -247,6 +250,14 @@ class Renderer extends AbstractComponentRenderer
     private function generateTextArea(string $post_var, $value) : string
     {
         return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm">%2$s</textarea>', $post_var, $value);
+    }
+
+    private function generateRealTextField(string $post_var, $value) : string
+    {
+        return sprintf('<div id="%1$s_editor" class="rte_field"></div>
+                        <input type="hidden" id="%1$s" name="%1$s" value="%2$s" />',
+                        $post_var,
+                        $value);
     }
 
     /**
@@ -374,6 +385,23 @@ class Renderer extends AbstractComponentRenderer
     private function generateLabel($text, $name) : string
     {
         return sprintf('<span class="%s">%s</span>', $name, $text);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function registerResources(ResourceRegistry $registry)
+    {
+        parent::registerResources($registry);
+        $registry->register($this->getBasePath(__DIR__) . 'js/table.js');
+
+        $registry->register('./src/UI/templates/js/Input/Field/realtext.js');
+
+        $registry->register('./node_modules/codemirror/lib/codemirror.css');
+        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.css');
+        $registry->register('./node_modules/codemirror/lib/codemirror.js');
+        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.js');
+
     }
 
     protected function getComponentInterfaceName()

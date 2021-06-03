@@ -110,8 +110,6 @@ class QuestionFormGUI
         $factory_class = $question->getType()->getFactoryClass();
         $this->form_factory = new $factory_class($this->language, $this->ui, $this->asq_ui);
 
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
-
         foreach ($this->form_factory->getScripts() as $script) {
             $this->ui->mainTemplate()->addJavaScript($script);
         }

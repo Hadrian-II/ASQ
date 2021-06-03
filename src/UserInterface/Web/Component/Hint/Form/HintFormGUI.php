@@ -105,8 +105,6 @@ class HintFormGUI
                 ->withOptions([AsqTableInput::OPTION_ORDER => true])
                 ->withValue($this->getHintData())
         ]);
-
-        $this->ui->mainTemplate()->addJavaScript($this->getBasePath(__DIR__) . 'js/AssessmentQuestionAuthoring.js');
     }
 
     /**

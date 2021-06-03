@@ -22,6 +22,16 @@ il.ASQ.Authoring = (function($) {
                 span.html('');
             }
         });
+        
+        row.find('.image_preview').each((index, item) => {
+            $(item).parent().siblings('.checkbox').remove();
+        	$(item).parent().remove();
+        })
+        
+        row.find('.rte_field').each((index, item) => {
+        	$(item).children().remove();
+        	$(item).attr('style', '');
+        });
 
         return row;
     }
@@ -31,12 +41,17 @@ il.ASQ.Authoring = (function($) {
     }
 
     const processItem = function(input, currentRow) {
-        input.attr('name', updateInputName(input.attr('name'), currentRow));
-        input.prop('id', updateInputName(input.prop('id'), currentRow));
+    	if (input.is('[name]')) {
+        	input.attr('name', updateInputName(input.attr('name'), currentRow));
+        }
+        
+        if (input.is('[id]')) {
+        	input.prop('id', updateInputName(input.prop('id'), currentRow));
+       	}
     }
 
     const processRow = function(row, currentRow) {
-        row.find('input[name],textarea[name],select').each((index, item) => {
+        row.find('input[name],textarea[name],select,.rte_field').each((index, item) => {
             processItem($(item), currentRow);
         });
     }
@@ -61,6 +76,10 @@ il.ASQ.Authoring = (function($) {
         const row = $(this).parents('.aot_row').eq(0);
         const table = $(this).parents('.aot_table').children('tbody');
 
+        table.find('.rte_field').each((index, item) => {
+            il.UI.input.realtext.storeInputOfId($(item).attr('id'));
+        });
+
         let newRow = row.clone();
 
         newRow = clearRow(newRow);
@@ -69,6 +88,10 @@ il.ASQ.Authoring = (function($) {
         row.after(newRow);
         setInputIds(table);
 
+        table.find('.rte_field').each((index, item) => {
+            il.UI.input.realtext.initiateEditor(item);
+        });
+
         return false;
     }
 
@@ -76,12 +99,20 @@ il.ASQ.Authoring = (function($) {
         const row = $(this).parents('.aot_row');
         const table = $(this).parents('.aot_table').children('tbody');
 
+        table.find('.rte_field').each((index, item) => {
+            il.UI.input.realtext.storeInputOfId($(item).attr('id'));
+        });
+
         if (table.children().length > 1) {
             row.remove();
             setInputIds(table);
         } else {
             clearRow(row);
         }
+        
+        table.find('.rte_field').each((index, item) => {
+            il.UI.input.realtext.initiateEditor(item);
+        });
     }
 
     const upRow = function() {
@@ -100,6 +131,12 @@ il.ASQ.Authoring = (function($) {
     $(document).on('click', '.js_remove', removeRow);
     $(document).on('click', '.js_up', upRow);
     $(document).on('click', '.js_down', downRow);
+
+	$(document).ready(() => {
+		$('.rte_field').each((index, item) => {
+			il.UI.input.realtext.initiateEditor(item);
+		});
+	});
 
     return {
         clearRow, setInputIds, processItem, processRow,
