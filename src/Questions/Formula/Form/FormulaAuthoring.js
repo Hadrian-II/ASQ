@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Formula = (function($, asqAuthoring) {
     const varRegex = /\$(v|r)\d+/g;

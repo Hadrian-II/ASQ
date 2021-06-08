@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Authoring = (function($) {
     //number used to create newlines and swap lines to prevent radiogroup clashes
@@ -126,7 +126,7 @@ il.ASQ.Authoring = (function($) {
         row.next('.aot_row').after(row);
         setInputIds(row.parents('.aot_table').children('tbody'));
     }
-
+    
     $(document).on('click', '.js_add', addRow);
     $(document).on('click', '.js_remove', removeRow);
     $(document).on('click', '.js_up', upRow);

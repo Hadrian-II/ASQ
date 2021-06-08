@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Matching = (function($) {
     const MATCHING_ONE_TO_ONE = 0;

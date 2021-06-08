@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Cloze = (function($) {
     const TYPE_NUMBER = 'clz_number';

@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.Choice = (function($) {
     let imageHeader = '';
@@ -7,6 +7,7 @@ il.ASQ.Choice = (function($) {
 	const setEditorSelect = function(trigger) {
 		editorSelect = $(trigger);
 		editorSelect.on('change', updateEditor);
+		updateEditor();
 	}
 
     const showMultilineEditor = function() {
@@ -20,6 +21,16 @@ il.ASQ.Choice = (function($) {
                 th.innerHTML = '';
             }
         });
+        
+        $('input[id$=mcdd_text]').each((index, item) => {
+        	const input = $(item);
+        
+            input.before(`<div id="${input.attr('id')}_editor" class="rte_field"></div>`);
+            
+            input.hide();
+            
+            il.UI.input.realtext.initiateEditor(input.prev()[0]);
+        });
     }
 
     const hideMultilineEditor = function() {
@@ -32,6 +43,16 @@ il.ASQ.Choice = (function($) {
                 th.innerHTML = imageHeader;
                 imageHeader = '';
             }
+        });
+        
+        $('input[id$=mcdd_text]').each((index, item) => {
+        	const input = $(item);
+        	
+        	il.UI.input.realtext.storeInputOfId(input.attr('id') + '_editor');
+        
+        	input.siblings().remove();
+        
+			input.show();
         });
     }
 

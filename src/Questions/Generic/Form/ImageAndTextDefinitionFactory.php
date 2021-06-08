@@ -33,7 +33,7 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
 
         $columns[self::VAR_MCDD_TEXT] = new AsqTableInputFieldDefinition(
             $this->language->txt('asq_label_answer_text'),
-            AsqTableInputFieldDefinition::TYPE_REALTEXT,
+            AsqTableInputFieldDefinition::TYPE_TEXT,
             self::VAR_MCDD_TEXT
         );
 

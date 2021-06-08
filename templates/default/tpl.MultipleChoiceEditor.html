@@ -10,10 +10,16 @@
 		</div>
 		<div>
 			<label for="answer_{ANSWER_ID}" class="answer_text">
+			    <!-- BEGIN image_text -->
 				<!-- BEGIN answer_image -->
-			    <img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE} />
+				<img src="{ANSWER_IMAGE_URL}" alt="{ANSWER_IMAGE_ALT}" title="{ANSWER_IMAGE_TITLE}" {THUMB_SIZE} />
 				<!-- END answer_image -->
 				<span>{ANSWER_TEXT}</span>
+				<!-- END image_text -->
+				
+				<!--  BEGIN markup -->
+				<div class="question_markup" />{ANSWER_TEXT}</div>
+				<!-- END markup -->
 			</label>
 		</div>
 	</div>

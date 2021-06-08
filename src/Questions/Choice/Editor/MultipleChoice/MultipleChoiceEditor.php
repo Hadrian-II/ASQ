@@ -86,17 +86,30 @@ class MultipleChoiceEditor extends AbstractEditor
             /** @var ImageAndTextDisplayDefinition $display_definition */
             $display_definition = $answer_option->getDisplayDefinition();
 
-            if (!empty($display_definition->getImage())) {
-                $tpl->setCurrentBlock('answer_image');
-                $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
-                $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
-                $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
-                $tpl->setVariable(
-                    'THUMB_SIZE',
-                    is_null($this->configuration->getThumbnailSize()) ?
+            if ($this->configuration->isSingleLine()) {
+                if (!empty($display_definition->getImage()))
+                {
+                    $tpl->setCurrentBlock('answer_image');
+                    $tpl->setVariable('ANSWER_IMAGE_URL', $display_definition->getImage());
+                    $tpl->setVariable('ANSWER_IMAGE_ALT', $display_definition->getText());
+                    $tpl->setVariable('ANSWER_IMAGE_TITLE', $display_definition->getText());
+                    $tpl->setVariable(
+                        'THUMB_SIZE',
+                        is_null($this->configuration->getThumbnailSize()) ?
                         '' :
                         sprintf(' style="width: %spx;" ', $this->configuration->getThumbnailSize())
-                );
+                        );
+                    $tpl->parseCurrentBlock();
+                }
+
+                $tpl->setCurrentBlock('image_text');
+                $tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
+                $tpl->parseCurrentBlock();
+            }
+            else
+            {
+                $tpl->setCurrentBlock('markup');
+                $tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
                 $tpl->parseCurrentBlock();
             }
 
@@ -104,7 +117,8 @@ class MultipleChoiceEditor extends AbstractEditor
                 !is_null($this->answer) &&
                 !is_null($this->question->getFeedback()) &&
                 !is_null($this->question->getFeedback()->getFeedbackForAnswerOption($answer_option->getOptionId())) &&
-                $this->showFeedbackForAnswerOption($answer_option)) {
+                $this->showFeedbackForAnswerOption($answer_option))
+            {
                 $tpl->setCurrentBlock('feedback');
                 $tpl->setVariable('FEEDBACK', $this->question->getFeedback()
                     ->getFeedbackForAnswerOption($answer_option->getOptionId()));
@@ -112,7 +126,6 @@ class MultipleChoiceEditor extends AbstractEditor
             }
 
             $tpl->setCurrentBlock('answer_row');
-            $tpl->setVariable('ANSWER_TEXT', $display_definition->getText());
             $tpl->setVariable('TYPE', $this->isMultipleChoice() ? "checkbox" : "radio");
             $tpl->setVariable('ANSWER_ID', $answer_option->getOptionId());
             $tpl->setVariable('POST_NAME', $this->getPostName($answer_option->getOptionId()));

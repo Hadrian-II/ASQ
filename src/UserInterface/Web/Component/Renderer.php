@@ -6,6 +6,7 @@ namespace srag\asq\UserInterface\Web\Component;
 use ILIAS\UI\Renderer as RendererInterface;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
+use ILIAS\UI\Implementation\Render\ResourceRegistry;
 use ilTemplate;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
@@ -24,7 +25,11 @@ class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
 
-    //TODO stole method from Input/Field/Renderer, see to integrate this into input field renderer
+    /**
+     * @var ResourceRegistry
+     */
+    private $registry;
+
     /**
      * {@inheritDoc}
      * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
@@ -47,7 +52,6 @@ class Renderer extends AbstractComponentRenderer
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
-        $tpl->setVariable('CSS_PATH', $this->getBasePath(__DIR__) . 'css/asq.css');
         $tpl->setVariable('TITLE', $question->getData()->getTitle());
         $tpl->setVariable('QUESTION', $question->getData()->getQuestionText());
         $tpl->setVariable('EDITOR', $editor->generateHtml());
@@ -55,10 +59,9 @@ class Renderer extends AbstractComponentRenderer
 
         $additional_js = $editor->additionalJSFile();
         if ($additional_js !== null) {
-            $tpl->setCurrentBlock('js');
-            $tpl->setVariable('JS_PATH', $additional_js);
-            $tpl->parseCurrentBlock();
+            $this->registry->register($additional_js);
         }
+
 
         if ($input->doesShowFeedback() && $question->hasFeedback()) {
             $feedback_component = new FeedbackComponent($question, $input->getAnswer());
@@ -68,6 +71,25 @@ class Renderer extends AbstractComponentRenderer
         }
 
         return $tpl->get();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function registerResources(ResourceRegistry $registry)
+    {
+        parent::registerResources($registry);
+
+        $registry->register($this->getBasePath(__DIR__) . 'js/question.js');
+
+        $registry->register('./node_modules/codemirror/lib/codemirror.css');
+        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.css');
+        $registry->register('./node_modules/codemirror/lib/codemirror.js');
+        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.js');
+
+        $registry->register($this->getBasePath(__DIR__) . 'css/asq.css');
+
+        $this->registry = $registry;
     }
 
     protected function getComponentInterfaceName()

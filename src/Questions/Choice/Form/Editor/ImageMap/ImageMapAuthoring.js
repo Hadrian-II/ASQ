@@ -1,4 +1,4 @@
-il = il || {};
+var il = il || {};
 il.ASQ = il.ASQ || {};
 il.ASQ.ImageMap = (function($) {
     // consts track definitions in ImageMapEditorDisplayDefinition.php
