@@ -395,13 +395,10 @@ class Renderer extends AbstractComponentRenderer
         parent::registerResources($registry);
         $registry->register($this->getBasePath(__DIR__) . 'js/table.js');
 
-        $registry->register('./src/UI/templates/js/Input/Field/realtext.js');
+        $registry->register('./src/UI/templates/js/Input/Field/markdown.js');
 
-        $registry->register('./node_modules/codemirror/lib/codemirror.css');
-        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.css');
-        $registry->register('./node_modules/codemirror/lib/codemirror.js');
-        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.js');
-
+        $registry->register('src/UI/templates/default/Markdown/toastui-editor.css');
+        $registry->register('src/UI/templates/js/Markdown/toastui-editor-all.js');
     }
 
     protected function getComponentInterfaceName()

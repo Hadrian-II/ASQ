@@ -3,6 +3,7 @@ il.ASQ = il.ASQ || {};
 il.ASQ.Choice = (function($) {
     let imageHeader = '';
 	let editorSelect;
+	let editors = {};
 	 
 	const setEditorSelect = function(trigger) {
 		editorSelect = $(trigger);
@@ -29,7 +30,7 @@ il.ASQ.Choice = (function($) {
             
             input.hide();
             
-            il.UI.input.realtext.initiateEditor(input.prev()[0]);
+            editors[index] = il.UI.Input.Markdown.initiateEditor(input.prev()[0]);
         });
     }
 
@@ -48,7 +49,7 @@ il.ASQ.Choice = (function($) {
         $('input[id$=mcdd_text]').each((index, item) => {
         	const input = $(item);
         	
-        	il.UI.input.realtext.storeInputOfId(input.attr('id') + '_editor');
+        	input.val(editors[index].getMarkdown());
         
         	input.siblings().remove();
         

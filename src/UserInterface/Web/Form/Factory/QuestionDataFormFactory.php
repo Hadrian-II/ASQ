@@ -5,7 +5,7 @@ namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionData;
-use ILIAS\UI\Implementation\Component\Input\Field\RealTextInputImageProcessor;
+use ILIAS\UI\Implementation\Component\Input\Field\MarkDownInputImageProcessor;
 
 /**
  * Class AbstractQuestionFormFactory
@@ -59,7 +59,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
             ]
         );
 
-        $question_text = $this->factory->input()->field()->realText($this->language->txt('asq_label_question'));
+        $question_text = $this->factory->input()->field()->markdown($this->language->txt('asq_label_question'));
 
         $working_time = $this->asq_ui->getDurationInput($this->language->txt('asq_label_working_time'));
 
@@ -93,7 +93,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
-        $processor = new RealTextInputImageProcessor($postdata[self::VAR_QUESTION]);
+        $processor = new MarkDownInputImageProcessor($postdata[self::VAR_QUESTION]);
         $processor->process();
 
         return new QuestionData(

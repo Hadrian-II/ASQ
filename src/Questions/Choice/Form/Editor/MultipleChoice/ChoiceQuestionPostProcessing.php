@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
-use ILIAS\UI\Implementation\Component\Input\Field\RealTextInputImageProcessor;
+use ILIAS\UI\Implementation\Component\Input\Field\MarkDownInputImageProcessor;
 
 /**
  * Trait ChoiceQuestionPostProcessing
@@ -30,7 +30,7 @@ trait ChoiceQuestionPostProcessing
             // remove from question
             $stripped_options = array_map(
                 function ($option) {
-                    $processor = new RealTextInputImageProcessor($option->getDisplayDefinition()->getText());
+                    $processor = new MarkDownInputImageProcessor($option->getDisplayDefinition()->getText());
                     $processor->process();
 
                     return new AnswerOption(

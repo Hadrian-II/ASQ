@@ -82,10 +82,8 @@ class Renderer extends AbstractComponentRenderer
 
         $registry->register($this->getBasePath(__DIR__) . 'js/question.js');
 
-        $registry->register('./node_modules/codemirror/lib/codemirror.css');
-        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.css');
-        $registry->register('./node_modules/codemirror/lib/codemirror.js');
-        $registry->register('./node_modules/@toast-ui/editor/dist/toastui-editor.js');
+        $registry->register('src/UI/templates/default/Markdown/toastui-editor.css');
+        $registry->register('src/UI/templates/js/Markdown/toastui-editor-all.js');
 
         $registry->register($this->getBasePath(__DIR__) . 'css/asq.css');
 
