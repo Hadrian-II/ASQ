@@ -111,6 +111,6 @@ class QuestionDataFormFactory extends AbstractObjectFactory
      */
     public function getDefaultValue() : AbstractValueObject
     {
-        return null;
+        return new QuestionData();
     }
 }
