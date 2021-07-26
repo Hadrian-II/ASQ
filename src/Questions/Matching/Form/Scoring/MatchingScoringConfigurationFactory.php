@@ -20,10 +20,6 @@ class MatchingScoringConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_WRONG_DEDUCTION = 'ms_wrong_deduction';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

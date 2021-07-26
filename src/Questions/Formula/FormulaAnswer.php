@@ -16,36 +16,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class FormulaAnswer extends AbstractValueObject
 {
-    /**
-     * @var ?array
-     */
-    protected $variables;
+    protected ?array $variables;
 
-    /**
-     * @var ?array
-     */
-    protected $results;
+    protected ?array $results;
 
-    /**
-     * @param array $values
-     */
     public function __construct(?array $variables = null, ?array $results = null)
     {
         $this->variables = $variables;
         $this->results = $results;
     }
 
-    /**
-     * @return ?array
-     */
     public function getVariables() : ?array
     {
         return $this->variables;
     }
 
-    /**
-     * @return ?array
-     */
     public function getResults() : ?array
     {
         return $this->results;

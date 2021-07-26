@@ -22,9 +22,6 @@ use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
  */
 class ImageMapConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $image_config ImageMapEditorConfiguration */
@@ -40,19 +37,11 @@ class ImageMapConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupImageMap::TABLENAME_IMAGEMAP_CONFIGURATION .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         return new QuestionPlayConfigurationSetEvent(

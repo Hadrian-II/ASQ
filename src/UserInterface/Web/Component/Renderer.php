@@ -25,15 +25,8 @@ class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
 
-    /**
-     * @var ResourceRegistry
-     */
-    private $registry;
+    private ResourceRegistry $registry;
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
         /** @var $question QuestionDto */
@@ -73,10 +66,7 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function registerResources(ResourceRegistry $registry)
+    public function registerResources(ResourceRegistry $registry) : void
     {
         parent::registerResources($registry);
 
@@ -90,7 +80,7 @@ class Renderer extends AbstractComponentRenderer
         $this->registry = $registry;
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [QuestionComponent::class];
     }

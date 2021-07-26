@@ -20,11 +20,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class KprimChoiceScoring extends AbstractScoring
 {
-
-    /**
-     * @param KprimChoiceAnswer $answer
-     * @return float
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $count = 0;
@@ -53,19 +48,11 @@ class KprimChoiceScoring extends AbstractScoring
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -84,9 +71,6 @@ class KprimChoiceScoring extends AbstractScoring
         return new KprimChoiceAnswer($answers);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (is_null($this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints())) {

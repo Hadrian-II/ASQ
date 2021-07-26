@@ -33,64 +33,26 @@ class AsqQuestionPreviewGUI
     const CMD_SHOW_SCORE = 'showScore';
     const PARAM_REVISON_NAME = 'revisionName';
 
-    /**
-     * @var Uuid
-     */
-    protected $question_id;
+    protected Uuid $question_id;
 
-    /**
-     * @var ?string
-     */
-    private $revision_name;
+    private ?string $revision_name;
 
-    /**
-     * @var bool
-     */
-    private $show_feedback;
+    private bool $show_feedback;
 
-    /**
-     * @var bool
-     */
-    private $show_hints;
+    private bool $show_hints;
 
-    /**
-     * @var bool
-     */
-    private $show_score;
+    private bool $show_score;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var HTTPServices
-     */
-    private $http;
+    private HTTPServices $http;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
+    private ASQServices $asq;
 
-    /**
-     * @param Uuid $question_id
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param HTTPServices $http
-     * @param ASQServices $asq
-     */
     public function __construct(
         Uuid $question_id,
         ilLanguage $language,
@@ -155,10 +117,7 @@ class AsqQuestionPreviewGUI
         $this->renderQuestion($question_dto);
     }
 
-    /**
-     * @param QuestionDto $question_dto
-     */
-    private function renderQuestion(QuestionDto $question_dto)
+    private function renderQuestion(QuestionDto $question_dto) : void
     {
         $question_component = $this->asq->ui()->getQuestionComponent($question_dto);
 
@@ -180,7 +139,7 @@ class AsqQuestionPreviewGUI
         }
 
         if ($this->show_score) {
-            $score_component = new ScoringComponent($question_dto, $question_component->getAnswer(), $this->language);
+            $score_component = new ScoringComponent($question_dto, $question_component->getAnswer());
             $question_tpl->setVariable('SCORE', $this->ui->renderer()->render($score_component));
         }
 

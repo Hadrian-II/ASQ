@@ -22,14 +22,8 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
  */
 class QuestionRepository extends AbstractAggregateRepository
 {
-    /**
-     * @var IEventStore
-     */
-    private $event_store;
+    private IEventStore $event_store;
 
-    /**
-     * QuestionRepository constructor.
-     */
     public function __construct()
     {
         global $DIC;
@@ -37,19 +31,11 @@ class QuestionRepository extends AbstractAggregateRepository
         $this->event_store = new RelationalQuestionEventStore($DIC->database());
     }
 
-    /**
-     * @return EventStore
-     */
     protected function getEventStore() : IEventStore
     {
         return $this->event_store;
     }
 
-    /**
-     * @param DomainEvents $event_history
-     *
-     * @return AbstractAggregateRoot
-     */
     protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot
     {
         return Question::reconstitute($event_history);

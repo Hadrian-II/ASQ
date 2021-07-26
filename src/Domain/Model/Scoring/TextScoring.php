@@ -26,24 +26,13 @@ class TextScoring
     const TM_LEVENSHTEIN_4 = 6;
     const TM_LEVENSHTEIN_5 = 7;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @param ilLanguage $language
-     */
     public function __construct(ilLanguage $language)
     {
         $this->language = $language;
     }
 
-    /**
-     *
-     * @param Factory $factory
-     * @return Select
-     */
     public function getScoringTypeSelectionField(Factory $factory) : Select
     {
         return $factory->input()->field()->select(
@@ -58,12 +47,6 @@ class TextScoring
         );
     }
 
-    /**
-     * @param string $a
-     * @param string $b
-     * @param int $matching_type
-     * @return bool
-     */
     public function isMatch(string $a, string $b, int $matching_type) : bool
     {
         switch ($matching_type) {

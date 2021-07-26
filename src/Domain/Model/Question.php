@@ -36,50 +36,26 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 {
     const VAR_TYPE = 'question_type';
 
-    /**
-     * @var string
-     */
-    private $question_type;
-    /**
-     * @var RevisionId
-     */
-    private $revision_id;
-    /**
-     * @var int
-     */
-    private $creator_id;
-    /**
-     * @var QuestionData
-     */
-    private $data;
-    /**
-     * @var QuestionPlayConfiguration
-     */
-    private $play_configuration;
-    /**
-     * @var AnswerOption[]
-     */
-    private $answer_options;
-    /**
-     * @var QuestionHints
-     */
-    private $hints;
-    /**
-     * @var Feedback
-     */
-    private $feedback;
+    private ?string $question_type;
 
-    /**
-     * @var bool
-     */
-    private $has_unrevisioned_changes;
+    private ?RevisionId $revision_id;
 
+    private ?int $creator_id;
+
+    private ?QuestionData $data;
+
+    private ?QuestionPlayConfiguration $play_configuration;
     /**
-     * @param Uuid $question_uuid
-     * @param int $initiating_user_id
-     * @param QuestionType $question_type
-     * @return Question
+     * @var ?AnswerOption[]
      */
+    private ?array $answer_options;
+
+    private ?QuestionHints $hints;
+
+    private ?Feedback $feedback;
+
+    private ?bool $has_unrevised_changes;
+
     public static function createNewQuestion(
         Uuid $question_uuid,
         int $initiating_user_id,
@@ -98,123 +74,73 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $question;
     }
 
-
-    /**
-     * @param DomainEvent $event
-     */
-    protected function applyEvent(DomainEvent $event)
+    protected function applyEvent(DomainEvent $event) : void
     {
-        $this->has_unrevisioned_changes = get_class($event) !== AggregateRevisionCreatedEvent::class;
+        $this->has_unrevised_changes = get_class($event) !== AggregateRevisionCreatedEvent::class;
 
         parent::applyEvent($event);
     }
 
-    /**
-     * @param AggregateCreatedEvent $event
-     */
-    protected function applyAggregateCreatedEvent(DomainEvent $event)
+    protected function applyAggregateCreatedEvent(DomainEvent $event) : void
     {
         parent::applyAggregateCreatedEvent($event);
         $this->creator_id = $event->getInitiatingUserId();
         $this->question_type = $event->getAdditionalData()[self::VAR_TYPE];
     }
 
-
-    /**
-     * @param QuestionDataSetEvent $event
-     */
-    protected function applyQuestionDataSetEvent(QuestionDataSetEvent $event)
+    protected function applyQuestionDataSetEvent(QuestionDataSetEvent $event) : void
     {
         $this->data = $event->getData();
     }
 
-
-    /**
-     * @param QuestionPlayConfigurationSetEvent $event
-     */
-    protected function applyQuestionPlayConfigurationSetEvent(QuestionPlayConfigurationSetEvent $event)
+    protected function applyQuestionPlayConfigurationSetEvent(QuestionPlayConfigurationSetEvent $event) : void
     {
         $this->play_configuration = $event->getPlayConfiguration();
     }
 
-
-    /**
-     * @param AggregateRevisionCreatedEvent $event
-     */
-    protected function applyAggregateRevisionCreatedEvent(AggregateRevisionCreatedEvent $event)
+    protected function applyAggregateRevisionCreatedEvent(AggregateRevisionCreatedEvent $event) : void
     {
         $this->revision_id = $event->getRevisionId();
     }
 
-
-    /**
-     * @param QuestionAnswerOptionsSetEvent $event
-     */
-    protected function applyQuestionAnswerOptionsSetEvent(QuestionAnswerOptionsSetEvent $event)
+    protected function applyQuestionAnswerOptionsSetEvent(QuestionAnswerOptionsSetEvent $event) : void
     {
         $this->answer_options = $event->getAnswerOptions();
     }
 
-
-    /**
-     * @param QuestionHintsSetEvent $event
-     */
-    protected function applyQuestionHintsSetEvent(QuestionHintsSetEvent $event)
+    protected function applyQuestionHintsSetEvent(QuestionHintsSetEvent $event) : void
     {
         $this->hints = $event->getHints();
     }
 
-    /**
-     * @param QuestionFeedbackSetEvent $event
-     */
-    protected function applyQuestionFeedbackSetEvent(QuestionFeedbackSetEvent $event)
+    protected function applyQuestionFeedbackSetEvent(QuestionFeedbackSetEvent $event) : void
     {
         $feedback = $event->getFeedback();
         $this->feedback = $feedback;
     }
 
-    /**
-     * @return string
-     */
-    public function getType() : string
+    public function getType() : ?string
     {
         return $this->question_type;
     }
 
-    /**
-     * @return QuestionData
-     */
     public function getData() : ?QuestionData
     {
         return $this->data;
     }
 
-    /**
-     * @param QuestionData $data
-     * @param int          $container_obj_id
-     * @param int          $creator_id
-     */
-    public function setData(?QuestionData $data, int $creator_id)
+    public function setData(?QuestionData $data, int $creator_id) : void
     {
         if (!QuestionData::isNullableEqual($data, $this->getData())) {
             $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
         }
     }
 
-    /**
-     *
-     * @return QuestionPlayConfiguration
-     */
     public function getPlayConfiguration() : ?QuestionPlayConfiguration
     {
         return $this->play_configuration;
     }
 
-
-    /**
-     * @param QuestionPlayConfiguration $play_configuration
-     * @param int                       $creator_id
-     */
     public function setPlayConfiguration(
         ?QuestionPlayConfiguration $play_configuration,
         int $creator_id
@@ -238,9 +164,9 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     }
 
     /**
-     *
      * @param AnswerOption[] $options
      * @param int $creator_id
+     * @throws \ilDateTimeException
      */
     public function setAnswerOptions(?array $options, int $creator_id)
     {
@@ -256,21 +182,12 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         ));
     }
 
-
-    /**
-     * @return QuestionHints
-     */
     public function getHints() : ?QuestionHints
     {
         return $this->hints;
     }
 
-
-    /**
-     * @param QuestionHints $hints
-     * @param int           $creator_id
-     */
-    public function setHints(?QuestionHints $hints, int $creator_id = self::SYSTEM_USER_ID)
+    public function setHints(?QuestionHints $hints, int $creator_id) : void
     {
         if (!QuestionHints::isNullableEqual($hints, $this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
@@ -282,19 +199,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         }
     }
 
-    /**
-     * @return Feedback
-     */
     public function getFeedback() : ?Feedback
     {
         return $this->feedback;
     }
 
-
-    /**
-     * @param Feedback $feedback
-     * @param int $creator_id
-     */
     public function setFeedback(
         ?Feedback $feedback,
         int $creator_id
@@ -309,43 +218,26 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         }
     }
 
-    /**
-     * @return int
-     */
     public function getCreatorId() : int
     {
         return $this->creator_id;
     }
 
-    /**
-     * @param int $creator_id
-     */
     public function setCreatorId(int $creator_id) : void
     {
         $this->creator_id = $creator_id;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasUnrevisionedChanges() : bool
+    public function hasUnrevisedChanges() : bool
     {
-        return $this->has_unrevisioned_changes;
+        return $this->has_unrevised_changes;
     }
 
-    /**
-     * @return RevisionId revision id of object
-     */
     public function getRevisionId() : ?RevisionId
     {
         return $this->revision_id;
     }
 
-    /**
-     * @param RevisionId $id
-     *
-     * @return mixed|void
-     */
     public function setRevisionId(RevisionId $id, int $user_id)
     {
         $this->ExecuteEvent(new AggregateRevisionCreatedEvent(

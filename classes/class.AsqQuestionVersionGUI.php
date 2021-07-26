@@ -4,8 +4,10 @@ declare(strict_types=1);
 use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Data\UUID\Uuid;
+use ILIAS\UI\Component\Input\Container\Form\Standard;
 use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\Model\QuestionInfo;
+use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Application\Exception\AsqException;
 
@@ -24,7 +26,6 @@ class AsqQuestionVersionGUI
 {
     use PathHelper;
 
-    const CMD_SHOW_VERSIONS = 'showVersions';
     const CMD_DELETE_VERSION = 'deleteVersion';
     const COL_INDEX = 'REVISION_INDEX';
     const COL_NAME = 'REVISION_NAME';
@@ -39,40 +40,19 @@ class AsqQuestionVersionGUI
     const DELETE_LINK = 'DELETE_LINK';
     const DELETE_LABEL = 'DELETE_LABEL';
 
-    /**
-     * @var Uuid
-     */
-    protected $question_id;
+    protected Uuid $question_id;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
+    private ASQServices $asq;
 
-    /**
-     * @var HTTPServices
-     */
-    private $http;
+    private HTTPServices $http;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var QuestionDto;
-     */
-    private $question;
+    private QuestionDto $question;
 
     public function __construct(
         Uuid $question_id,
@@ -107,11 +87,7 @@ class AsqQuestionVersionGUI
         $this->asq->question()->deleteQuestionRevision($name, $this->question_id);
     }
 
-    /**
-     * @param name
-     * @param ex
-     */
-    private function displayVersions()
+    private function displayVersions() : void
     {
         $creation_form = $this->createCreationForm();
 
@@ -126,7 +102,7 @@ class AsqQuestionVersionGUI
                 ilUtil::sendFailure($ex->getMessage());
             }
         }
-        else if ($this->question->hasUnrevisionedChanges()) {
+        else if ($this->question->hasUnrevisedChanges()) {
             ilutil::sendInfo($this->language->txt('asq_question_has_changes'));
         }
 
@@ -138,7 +114,7 @@ class AsqQuestionVersionGUI
         );
     }
 
-    private function createCreationForm()
+    private function createCreationForm() : Standard
     {
         $name = $this->ui->factory()->input()->field()->text('Name')
                     ->withMaxLength(32)

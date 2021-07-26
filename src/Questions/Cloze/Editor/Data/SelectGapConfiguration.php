@@ -17,28 +17,18 @@ class SelectGapConfiguration extends ClozeGapConfiguration
     /**
      * @var ?ClozeGapItem[]
      */
-    protected $items;
+    protected ?array $items;
 
-    /**
-     * @param array $items
-     * @return SelectGapConfiguration
-     */
     public function __construct(?array $items = [])
     {
         $this->items = $items;
     }
 
-    /**
-     * @return ?array
-     */
     public function getItems() : ?array
     {
         return $this->items;
     }
 
-    /**
-     * @return array
-     */
     public function getItemsArray() : array
     {
         $var_array = [];
@@ -52,9 +42,6 @@ class SelectGapConfiguration extends ClozeGapConfiguration
         return $var_array;
     }
 
-    /**
-     * @return float
-     */
     public function getMaxPoints() : float
     {
         $gap_max = 0;
@@ -69,9 +56,6 @@ class SelectGapConfiguration extends ClozeGapConfiguration
         return $gap_max;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (count($this->getItems()) < 2) {

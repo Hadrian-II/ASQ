@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
-use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Application\Service\ASQServices;
 
@@ -23,56 +22,26 @@ class AsqQuestionHintEditorGUI
 {
     const CMD_SAVE = 'save_hint';
 
-    /**
-     * @var QuestionDto
-     */
-    protected $question_dto;
+    protected QuestionDto $question_dto;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private UIServices $ui;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ASQServices $asq;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
-
-    /**
-     * @param QuestionDto $question_dto
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param ASQServices $asq
-     */
     public function __construct(
         QuestionDto $question_dto,
-        ilLanguage $language,
         UIServices $ui,
         ilCtrl $ctrl,
         ASQServices $asq)
     {
-        $this->language = $language;
         $this->ui = $ui;
         $this->question_dto = $question_dto;
         $this->ctrl = $ctrl;
         $this->asq = $asq;
     }
 
-
-    /**
-     * @throws AsqException
-     */
     public function executeCommand() : void
     {
         $this->showHints();

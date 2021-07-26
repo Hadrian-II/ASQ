@@ -27,14 +27,8 @@ class ImageMapEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @var ImageMapEditorConfiguration
-     */
-    private $configuration;
+    private ImageMapEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -47,9 +41,6 @@ class ImageMapEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/ImageMap/ImageMapEditor.js';
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditor.html', true, true);
@@ -74,19 +65,11 @@ class ImageMapEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @return string
-     */
     private function getPostName() : string
     {
         return $this->question->getId()->toString();
     }
 
-    /**
-     * @param ImageMapEditorDefinition $display_definition
-     * @param int $id
-     * @return string
-     */
     private function generateShape(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         switch ($display_definition->getType()) {
@@ -101,11 +84,6 @@ class ImageMapEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @param ImageMapEditorDefinition $display_definition
-     * @param int $id
-     * @return string
-     */
     private function generateCircle(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
@@ -120,11 +98,6 @@ class ImageMapEditor extends AbstractEditor
                 </ellipse>';
     }
 
-    /**
-     * @param ImageMapEditorDefinition $display_definition
-     * @param int $id
-     * @return string
-     */
     private function generatePolygon(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
@@ -134,11 +107,6 @@ class ImageMapEditor extends AbstractEditor
                 </polygon>';
     }
 
-    /**
-     * @param ImageMapEditorDefinition $display_definition
-     * @param int $id
-     * @return string
-     */
     private function generateRectangle(ImageMapEditorDefinition $display_definition, string $id) : string
     {
         $values = $this->decodeCoordinates($display_definition->getCoordinates());
@@ -160,8 +128,6 @@ class ImageMapEditor extends AbstractEditor
      * 'a' => '1',
      * 'b' => '2'
      * ]
-     * @param string $coordinates
-     * @return array
      */
     private function decodeCoordinates(string $coordinates) : array
     {
@@ -177,10 +143,6 @@ class ImageMapEditor extends AbstractEditor
         return $values;
     }
 
-    /**
-     * @param int $id
-     * @return string
-     */
     private function getClass(string $id) : string
     {
         $class = '';
@@ -196,10 +158,6 @@ class ImageMapEditor extends AbstractEditor
         return $class;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
-     */
     public function readAnswer() : ?AbstractValueObject
     {
         $post_name = $this->getPostName();
@@ -211,9 +169,6 @@ class ImageMapEditor extends AbstractEditor
         return new MultipleChoiceAnswer(explode(',', $this->getPostValue($post_name)));
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getImage())) {

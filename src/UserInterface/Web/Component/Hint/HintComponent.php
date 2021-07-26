@@ -21,10 +21,7 @@ class HintComponent
 {
     use PathHelper;
 
-    /**
-     * @var QuestionHints
-     */
-    private $hints;
+    private QuestionHints $hints;
 
     public function __construct(QuestionHints $hints)
     {

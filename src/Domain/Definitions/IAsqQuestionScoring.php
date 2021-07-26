@@ -21,7 +21,7 @@ interface IAsqQuestionScoring
 {
     const ANSWER_CORRECT = 1;
     const ANSWER_INCORRECT = 2;
-    const ANSWER_CORRECTNESS_NOT_DETERMINABLLE = 3;
+    const ANSWER_CORRECTNESS_NOT_DETERMINABLE = 3;
 
     /**
      * Checks if the given question contains all necessary data to perform automatic scoring

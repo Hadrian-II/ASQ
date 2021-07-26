@@ -83,15 +83,9 @@ class SetupDatabase
     const FILE_UPLOAD = 'asq_question_file_upload';
     const ORDERING_TEXT = 'asq_question_ordering_text';
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
+    private ASQServices $asq;
 
-    /**
-     * @var ilDBInterface
-     */
-    private $db;
+    private ilDBInterface $db;
 
     private function __construct()
     {
@@ -102,12 +96,10 @@ class SetupDatabase
         $this->db = $DIC->database();
     }
 
-
     public static function new() : SetupDatabase
     {
         return new self();
     }
-
 
     public function run() : void
     {

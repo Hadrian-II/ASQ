@@ -22,49 +22,27 @@ class ScoringComponent implements Component
 {
     use PathHelper;
 
-    /**
-     * @var AbstractValueObject
-     */
-    private $answer;
+    private AbstractValueObject $answer;
 
-    /**
-     * @var QuestionDto
-     */
-    private $question;
+    private QuestionDto $question;
 
-
-    /**
-     * @param QuestionDto $question_dto
-     * @param AbstractValueObject $answer
-     * @param ilLanguage $language
-     */
     public function __construct(QuestionDto $question_dto, AbstractValueObject $answer)
     {
         $this->question = $question_dto;
         $this->answer = $answer;
     }
 
-    /**
-     * @return QuestionDto
-     */
     public function getQuestion() : QuestionDto
     {
         return $this->question;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getAnswer() : AbstractValueObject
     {
         return $this->answer;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Component::getCanonicalName()
-     */
-    public function getCanonicalName()
+    public function getCanonicalName() : string
     {
         return ScoringComponent::class;
     }

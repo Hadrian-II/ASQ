@@ -20,10 +20,6 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_MAX_LENGTH = "ee_max_length";
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -43,17 +39,13 @@ class EssayEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
+     * @return EssayEditorConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return new EssayEditorConfiguration($postdata[self::VAR_MAX_LENGTH]);
     }
 
-    /**
-     * @return EssayEditorConfiguration
-     */
     public function getDefaultValue() : AbstractValueObject
     {
         return new EssayEditorConfiguration();

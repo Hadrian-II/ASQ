@@ -16,32 +16,14 @@ namespace srag\asq\Application\Service;
  */
 class AsqServices
 {
-    /**
-     * @var QuestionService
-     */
-    private $question_service;
+    private QuestionService $question_service;
 
-    /**
-     * @var AnswerService
-     */
-    private $answer_service;
+    private AnswerService $answer_service;
 
-    /**
-     * @var UIService
-     */
-    private $ui_service;
+    private UIService $ui_service;
 
-    /**
-     * @var LinkService
-     */
-    private $link_service;
+    private LinkService $link_service;
 
-    /**
-     * @param QuestionService $question_service
-     * @param AnswerService $answer_service
-     * @param UIService $ui_service
-     * @param LinkService $link_service
-     */
     public function __construct(
         QuestionService $question_service,
         AnswerService $answer_service,
@@ -54,33 +36,21 @@ class AsqServices
         $this->link_service = $link_service;
     }
 
-    /**
-     * @return QuestionService
-     */
     public function question() : QuestionService
     {
         return $this->question_service;
     }
 
-    /**
-     * @return AnswerService
-     */
     public function answer() : AnswerService
     {
         return $this->answer_service;
     }
 
-    /**
-     * @return UIService
-     */
     public function ui(): UIService
     {
         return $this->ui_service;
     }
 
-    /**
-     * @return LinkService
-     */
     public function link() : LinkService
     {
         return $this->link_service;

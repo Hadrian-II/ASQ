@@ -28,32 +28,14 @@ class AsqTableInputFieldDefinition
 
     const OPTION_MAX_LENGTH = 'max_length';
 
-    /**
-     * @var string
-     */
-    private $header;
-    /**
-     * @var int
-     */
-    private $type;
-    /**
-     * @var string
-     */
-    private $post_var;
-    /**
-     * @var ?array
-     */
-    private $options;
+    private string $header;
 
+    private int $type;
 
-    /**
-     * AnswerOptionFormFieldDefinition constructor.
-     *
-     * @param string     $header
-     * @param int     $type
-     * @param string     $post_var
-     * @param array|null $options
-     */
+    private string $post_var;
+
+    private ?array $options;
+
     public function __construct(string $header, int $type, string $post_var, array $options = null)
     {
         $this->header = $header;
@@ -62,33 +44,21 @@ class AsqTableInputFieldDefinition
         $this->options = $options;
     }
 
-    /**
-     * @return string
-     */
     public function getHeader() : string
     {
         return $this->header;
     }
 
-    /**
-     * @return string
-     */
     public function getType() : int
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
     public function getPostVar() : string
     {
         return $this->post_var;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions() : ?array
     {
         return $this->options;

@@ -34,43 +34,18 @@ class HintFormGUI
     const HINT_CONTENT_POSTVAR = 'hint_content';
     const HINT_POINTS_POSTVAR = 'hint_points';
 
-    /**
-     * @var QuestionDto
-     */
-    private $question_dto;
+    private QuestionDto $question_dto;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var RequestInterface
-     */
-    private $request;
+    private RequestInterface $request;
 
-    /**
-     * @var Standard
-     */
-    private $form;
+    private Standard $form;
 
-    /**
-     * @var UIService
-     */
-    private $asq_ui;
+    private UIService $asq_ui;
 
-    /**
-     * @param QuestionDto $question_dto
-     * @param string $action
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param RequestInterface $request
-     */
     public function __construct(
         QuestionDto $question_dto,
         string $action,
@@ -107,9 +82,6 @@ class HintFormGUI
         ]);
     }
 
-    /**
-     * @return array
-     */
     private function getHintData() : array
     {
         if (!$this->question_dto->hasHints()) {
@@ -123,9 +95,6 @@ class HintFormGUI
         }, $this->question_dto->getQuestionHints()->getHints());
     }
 
-    /**
-     * @return string
-     */
     public function getHTML() : string
     {
         $panel = $this->ui->factory()->panel()->standard(
@@ -138,9 +107,6 @@ class HintFormGUI
         return $this->ui->renderer()->render($panel);
     }
 
-    /**
-     * @return QuestionHints
-     */
     public function getHintsFromPost() : QuestionHints
     {
         $this->form = $this->form->withRequest($this->request);

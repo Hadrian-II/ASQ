@@ -36,9 +36,6 @@ class MultipleChoiceFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Choice/Form/Editor/MultipleChoice/MultipleChoiceAuthoring.js' ];

@@ -26,52 +26,22 @@ class AsqQuestionConfigEditorGUI
 {
     const CMD_SHOW_FORM = 'showForm';
     const CMD_SAVE_FORM = 'saveForm';
-    const CMD_SAVE_AND_RETURN = 'saveAndReturn';
     const PARAM_REVISON_NAME = 'revisionName';
 
-    /**
-     * @var AuthoringContextContainer
-     */
-    protected $contextContainer;
+    protected AuthoringContextContainer $contextContainer;
 
-    /**
-     * @var QuestionDto
-     */
-    private $question;
+    private QuestionDto $question;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
+    private ASQServices $asq;
 
-    /**
-     * @var HTTPServices
-     */
-    private $http;
+    private HTTPServices $http;
 
-    /**
-     * @param AuthoringContextContainer $contextContainer
-     * @param Uuid $questionId
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param ASQServices $asq
-     */
     public function __construct(
         AuthoringContextContainer $contextContainer,
         Uuid $questionId,
@@ -89,15 +59,14 @@ class AsqQuestionConfigEditorGUI
         $this->http = $http;
 
         $query = $this->http->request()->getQueryParams();
+
         if (isset($query[self::PARAM_REVISON_NAME])) {
             $revision_name = $query[self::PARAM_REVISON_NAME];
-        }
-
-        if (is_null($revision_name)) {
-            $this->question = $this->asq->question()->getQuestionByQuestionId($questionId);
-        } else {
             $this->question = $this->asq->question()->getQuestionRevision($questionId, $revision_name);
             ilutil::sendInfo($this->language->txt('asq_revision_loaded'));
+        }
+        else {
+            $this->question = $this->asq->question()->getQuestionByQuestionId($questionId);
         }
     }
 
@@ -113,9 +82,6 @@ class AsqQuestionConfigEditorGUI
         }
     }
 
-    /**
-     * @param ?QuestionFormGUI $form
-     */
     protected function showForm(?QuestionFormGUI $form = null) : void
     {
         if ($form === null) {
@@ -125,10 +91,6 @@ class AsqQuestionConfigEditorGUI
         $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
-
-    /**
-     * @throws Exception
-     */
     protected function saveForm() : void
     {
         $form = $this->buildForm();
@@ -141,9 +103,6 @@ class AsqQuestionConfigEditorGUI
         $this->showForm($form);
     }
 
-    /**
-     * @throws Exception
-     */
     protected function saveAndReturn() : void
     {
         $form = $this->buildForm();
@@ -171,20 +130,11 @@ class AsqQuestionConfigEditorGUI
         $this->asq->question()->saveQuestion($this->question);
     }
 
-    /**
-     * @return QuestionFormGUI
-     * @throws Exception
-     */
     private function buildForm() : QuestionFormGUI
     {
-        $form = $this->asq->ui()->getQuestionEditForm(
+        return $this->asq->ui()->getQuestionEditForm(
             $this->question,
             $this->ctrl->getFormAction($this, self::CMD_SAVE_FORM)
         );
-
-//         $form->addCommandButton(self::CMD_SAVE_AND_RETURN, $this->language->txt('save_return'));
-//         $form->addCommandButton(self::CMD_SAVE_FORM, $this->language->txt('save'));
-
-        return $form;
     }
 }

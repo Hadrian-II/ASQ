@@ -27,9 +27,6 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
     const TYPE_DEFINITION = 0;
     const TYPE_TERM = 1;
 
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $editor_config MatchingEditorConfiguration */
@@ -88,10 +85,6 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupMatching::TABLENAME_MATCHING_CONFIGURATION .' c
@@ -99,10 +92,6 @@ class MatchingConfigurationSetEventHandler extends AbstractEventStorageHandler
                 where c.event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $terms = [];

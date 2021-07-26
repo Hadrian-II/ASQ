@@ -21,9 +21,6 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
  */
 class QuestionDataSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var QuestionData $question_data */
@@ -41,19 +38,12 @@ class QuestionDataSetEventHandler extends AbstractEventStorageHandler
             'lifecycle' => ['integer', $question_data->getLifecycle()]
         ]);
     }
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
+
     public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_DATA .' where event_id in (%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
         return new QuestionDataSetEvent(

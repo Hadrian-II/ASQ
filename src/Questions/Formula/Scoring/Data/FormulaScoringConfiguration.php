@@ -16,48 +16,26 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class FormulaScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $formula;
+    protected ?string $formula;
 
-    /**
-     * @var ?string
-     */
-    protected $units;
+    protected ?string $units;
 
-    /**
-     * @var ?int
-     */
-    protected $precision;
+    protected ?int $precision;
 
-    /**
-     * @var ?float
-     */
-    protected $tolerance;
+    protected ?float $tolerance;
 
-    /**
-     * @var ?int
-     */
-    protected $result_type;
+    protected ?int $result_type;
 
     /**
      * @var FormulaScoringVariable[]
      */
-    protected $variables = [];
+    protected ?array $variables = [];
 
     const TYPE_ALL = 1;
     const TYPE_DECIMAL = 2;
     const TYPE_FRACTION = 3;
     const TYPE_COPRIME_FRACTION = 4;
 
-    /**
-     * @param string $units
-     * @param int $precision
-     * @param float $tolerance
-     * @param int $result_type
-     * @param array $variables
-     */
     public function __construct(
         ?string $formula = null,
         ?string $units = null,
@@ -74,17 +52,11 @@ class FormulaScoringConfiguration extends AbstractValueObject
         $this->variables = $variables;
     }
 
-    /**
-     * @return ?string
-     */
     public function getFormula() : ?string
     {
         return $this->formula;
     }
 
-    /**
-     * @return array
-     */
     public function getUnits() : ?array
     {
         if (is_null($this->units) || empty($this->units)) {
@@ -96,33 +68,21 @@ class FormulaScoringConfiguration extends AbstractValueObject
         }, explode(',', $this->units));
     }
 
-    /**
-     * @return ?string
-     */
     public function getUnitString() : ?string
     {
         return $this->units;
     }
 
-    /**
-     * @return ?int
-     */
     public function getPrecision() : ?int
     {
         return $this->precision;
     }
 
-    /**
-     * @return ?float
-     */
     public function getTolerance() : ?float
     {
         return $this->tolerance;
     }
 
-    /**
-     * @return ?int
-     */
     public function getResultType() : ?int
     {
         return $this->result_type;
@@ -136,9 +96,6 @@ class FormulaScoringConfiguration extends AbstractValueObject
         return $this->variables;
     }
 
-    /**
-     * @return array
-     */
     public function getVariablesArray() : array
     {
         $var_array = [];
@@ -150,10 +107,6 @@ class FormulaScoringConfiguration extends AbstractValueObject
         return $var_array;
     }
 
-    /**
-     * @param FormulaScoringVariable $def
-     * @return string
-     */
     public function generateVariableValue(FormulaScoringVariable $def) : string
     {
         $exp = 10 ** $this->getPrecision();

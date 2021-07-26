@@ -16,21 +16,10 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class QuestionPlayConfiguration extends AbstractValueObject
 {
-    /**
-     * @var AbstractValueObject
-     */
-    protected $editor_configuration;
+    protected ?AbstractValueObject $editor_configuration;
 
-    /**
-     * @var AbstractValueObject
-     */
-    protected $scoring_configuration;
+    protected ?AbstractValueObject $scoring_configuration;
 
-    /**
-     * @param AbstractValueObject $editor_configuration
-     * @param AbstractValueObject $scoring_configuration
-     * @return QuestionPlayConfiguration
-     */
     public function __construct(
         AbstractValueObject $editor_configuration = null,
         AbstractValueObject $scoring_configuration = null
@@ -39,17 +28,11 @@ class QuestionPlayConfiguration extends AbstractValueObject
         $this->scoring_configuration = $scoring_configuration;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getEditorConfiguration() : ?AbstractValueObject
     {
         return $this->editor_configuration;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getScoringConfiguration() : ?AbstractValueObject
     {
         return $this->scoring_configuration;

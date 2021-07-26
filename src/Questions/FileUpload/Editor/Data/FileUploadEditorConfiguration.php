@@ -16,39 +16,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class FileUploadEditorConfiguration extends AbstractValueObject
 {
+    protected ?int $maximum_size;
 
-    /**
-     * @var ?int
-     */
-    protected $maximum_size;
+    protected ?string $allowed_extensions;
 
-    /**
-     * @var ?string
-     */
-    protected $allowed_extensions;
-
-    /**
-     * @param int $maximum_size
-     * @param string $allowed_extensions
-     * @param int $upload_type
-     */
     public function __construct(?int $maximum_size = null, ?string $allowed_extensions = null)
     {
         $this->maximum_size = $maximum_size;
         $this->allowed_extensions = $allowed_extensions;
     }
 
-    /**
-     * @return int|NULL
-     */
     public function getMaximumSize() : ?int
     {
         return $this->maximum_size;
     }
 
-    /**
-     * @return string|NULL
-     */
     public function getAllowedExtensions() : ?string
     {
         return $this->allowed_extensions;

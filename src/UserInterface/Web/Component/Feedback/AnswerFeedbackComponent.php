@@ -21,46 +21,27 @@ class AnswerFeedbackComponent implements Component
 {
     use PathHelper;
 
-    /**
-     * @var QuestionDto
-     */
-    private $question;
-    /**
-     * @var AbstractValueObject
-     */
-    private $answer;
+    private QuestionDto $question;
 
-    /**
-     * @param QuestionDto $question
-     * @param AbstractValueObject $answer
-     */
+    private AbstractValueObject $answer;
+
     public function __construct(QuestionDto $question, AbstractValueObject $answer)
     {
         $this->question = $question;
         $this->answer = $answer;
     }
 
-    /**
-     * @return QuestionDto
-     */
     public function getQuestion() : QuestionDto
     {
         return $this->question;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getAnswer() : AbstractValueObject
     {
         return $this->answer;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Component::getCanonicalName()
-     */
-    public function getCanonicalName()
+    public function getCanonicalName() : string
     {
         return AnswerFeedbackComponent::class;
     }

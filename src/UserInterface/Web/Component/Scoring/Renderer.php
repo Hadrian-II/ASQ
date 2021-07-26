@@ -22,10 +22,6 @@ class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $component, RendererInterface $default_renderer) : string
     {
         $scoring_class = $component->getQuestion()->getType()->getScoringClass();
@@ -47,7 +43,7 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [
             ScoringComponent::class,

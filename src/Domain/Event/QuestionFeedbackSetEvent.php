@@ -19,19 +19,8 @@ use srag\asq\Domain\Model\Feedback\Feedback;
  */
 class QuestionFeedbackSetEvent extends AbstractDomainEvent
 {
-    /**
-     * @var ?Feedback
-     */
-    protected $feedback;
+    protected ?Feedback $feedback;
 
-
-    /**
-     * @param Uuid $aggregate_id
-     * @param int $container_obj_id
-     * @param int $initiating_user_id
-     * @param int $question_int_id
-     * @param Feedback $feedback
-     */
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occured_on,
@@ -43,33 +32,21 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent
         $this->feedback = $feedback;
     }
 
-    /**
-     * @return Feedback
-     */
     public function getFeedback() : ?Feedback
     {
         return $this->feedback;
     }
 
-    /**
-     * @return string
-     */
     public function getEventBody() : string
     {
         return json_encode($this->feedback);
     }
 
-    /**
-     * @param string $json_data
-     */
     public function restoreEventBody(string $json_data) : void
     {
         $this->feedback = Feedback::deserialize($json_data);
     }
 
-    /**
-     * @return int
-     */
     public static function getEventVersion() : int
     {
         // initial version 1

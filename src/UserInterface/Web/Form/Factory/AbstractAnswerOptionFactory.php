@@ -23,19 +23,10 @@ abstract class AbstractAnswerOptionFactory implements IAnswerOptionFactory
 {
     use InputHandlingTrait;
 
-    /**
-     * @var ilLanguage
-     */
-    protected $language;
+    protected ilLanguage $language;
 
-    /**
-     * @var Factory
-     */
-    protected $factory;
+    protected Factory $factory;
 
-    /**
-     * @param ilLanguage $language
-     */
     public function __construct(ilLanguage $language, UIServices $ui)
     {
         $this->language = $language;
@@ -43,7 +34,6 @@ abstract class AbstractAnswerOptionFactory implements IAnswerOptionFactory
     }
 
     /**
-     *
      * Creates POST key for index and key name
      *
      * @param string $index

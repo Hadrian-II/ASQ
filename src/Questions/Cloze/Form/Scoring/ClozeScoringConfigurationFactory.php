@@ -18,27 +18,16 @@ use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
  */
 class ClozeScoringConfigurationFactory extends AbstractObjectFactory
 {
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
-     */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return new ClozeScoringConfiguration();
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getDefaultValue() : AbstractValueObject
     {
         return new ClozeScoringConfiguration();

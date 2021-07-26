@@ -16,36 +16,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class OrderingEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?bool
-     */
-    protected $vertical;
+    protected ?bool $vertical;
 
-    /**
-     * @var ?string
-     */
-    protected $text;
+    protected ?string $text;
 
-    /**
-     * @param bool $vertical
-     */
     public function __construct(?bool $vertical = null, ?string $text = null)
     {
         $this->vertical = $vertical;
         $this->text = $text;
     }
 
-    /**
-     * @return ?bool
-     */
     public function isVertical() : ?bool
     {
         return $this->vertical;
     }
 
-    /**
-     * @return ?string
-     */
     public function getText() : ?string
     {
         return $this->text;

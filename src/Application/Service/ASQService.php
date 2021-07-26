@@ -16,10 +16,7 @@ namespace srag\asq\Application\Service;
  */
 abstract class ASQService
 {
-    /**
-     * @var ?int
-     */
-    private $user_id;
+    private ?int $user_id;
 
     protected function getActiveUser() : int
     {
@@ -28,7 +25,7 @@ abstract class ASQService
         return $this->user_id ?? intval($DIC->user()->getId());
     }
 
-    public function setActiveUser(int $id)
+    public function setActiveUser(int $id) : void
     {
         $this->user_id = $id;
     }

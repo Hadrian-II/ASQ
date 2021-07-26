@@ -21,10 +21,6 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
     const VAR_MAX_UPLOAD = 'fue_max_upload';
     const VAR_ALLOWED_EXTENSIONS = 'fue_extensions';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -52,7 +48,6 @@ class FileUploadEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @param $postdata array
      * @return FileUploadEditorConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject

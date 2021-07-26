@@ -23,15 +23,8 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
     /**
      * @var ?AnswerOption[]
      */
-    protected $answer_options;
+    protected ?array $answer_options;
 
-    /**
-     * @param Uuid $aggregate_id
-     * @param ilDateTime $occured_on
-     * @param int $initiating_user_id
-     * @param int $question_int_id
-     * @param AnswerOption[] $options
-     */
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occured_on,
@@ -51,25 +44,16 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
         return $this->answer_options;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getEventBody() : string
     {
         return json_encode($this->answer_options);
     }
 
-    /**
-     * @param string $json_data
-     */
     public function restoreEventBody(string $json_data) : void
     {
         $this->answer_options = AbstractValueObject::deserialize($json_data);
     }
 
-    /**
-     * @return int
-     */
     public static function getEventVersion() : int
     {
         // initial version 1

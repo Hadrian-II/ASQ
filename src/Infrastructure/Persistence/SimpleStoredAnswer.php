@@ -59,8 +59,7 @@ class SimpleStoredAnswer extends ActiveRecord
      */
     protected $answer;
 
-
-    public static function createNew(AbstractValueObject $answer, ?string $uuid = null)
+    public static function createNew(AbstractValueObject $answer, ?string $uuid = null) : SimpleStoredAnswer
     {
         $object = new SimpleStoredAnswer();
 
@@ -86,34 +85,22 @@ class SimpleStoredAnswer extends ActiveRecord
         return $object;
     }
 
-    /**
-     * @return string
-     */
-    public function getUuid()
+    public function getUuid() : string
     {
         return $this->uuid;
     }
 
-    /**
-     * @return int
-     */
-    public function getVersion()
+    public function getVersion() : int
     {
         return $this->version;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getAnswer() : AbstractValueObject
     {
         return AbstractValueObject::deserialize($this->answer);
     }
 
-    /**
-     * @return string
-     */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::STORAGE_NAME;
     }

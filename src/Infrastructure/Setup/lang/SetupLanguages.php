@@ -22,13 +22,11 @@ abstract class SetupLanguages
     public static function new() : SetupLanguages
     {
         $classname = get_called_class();
-        $obj = new $classname();
-
-        return $obj;
+        return new $classname();
     }
 
 
-    public function run()
+    public function run() : void
     {
         ilGlobalCache::flushAll();
 
@@ -75,10 +73,6 @@ abstract class SetupLanguages
         }
     }
 
-
-    /**
-     * Get array of all language files
-     */
     public function getAvailableLangFiles(string $a_lang_directory) : array
     {
         $langs = array();
@@ -109,7 +103,6 @@ abstract class SetupLanguages
 
         return $langs;
     }
-
 
     public function getLanguageDirectory() : string
     {

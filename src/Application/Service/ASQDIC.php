@@ -5,6 +5,7 @@ namespace srag\asq\Application\Service;
 
 use ILIAS\Data\Factory as DataFactory;
 use ILIAS\Refinery\Factory;
+use Pimple\Container;
 
 /**
  * Class ASQDIC
@@ -17,7 +18,7 @@ use ILIAS\Refinery\Factory;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class ASQDIC extends \Pimple\Container
+class ASQDIC extends Container
 {
     const ASQ = 'ASQ';
     const QUESTION_SERVICE = 'QuestionService';
@@ -25,7 +26,7 @@ class ASQDIC extends \Pimple\Container
     const UI_SERVICE = 'UIService';
     const LINK_SERVICE = 'LinkService';
 
-    public static function initiateASQ(\Pimple\Container $c)
+    public static function initiateASQ(Container $c)
     {
         $object = new ASQDIC();
 

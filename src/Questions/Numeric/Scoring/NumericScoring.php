@@ -19,10 +19,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class NumericScoring extends AbstractScoring
 {
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
@@ -41,19 +37,11 @@ class NumericScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         /** @var NumericScoringConfiguration $conf */
@@ -62,9 +50,6 @@ class NumericScoring extends AbstractScoring
         return new NumericAnswer(($conf->getUpperBound() + $conf->getLowerBound()) / 2);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         /** @var NumericScoringConfiguration $config */

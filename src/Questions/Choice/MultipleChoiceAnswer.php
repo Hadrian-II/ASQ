@@ -19,19 +19,13 @@ class MultipleChoiceAnswer extends AbstractValueObject
     /**
      * @var string[]
      */
-    protected $selected_ids;
+    protected array $selected_ids;
 
-    /**
-     * @param array $selected_ids
-     */
     public function __construct(array $selected_ids = [])
     {
         $this->selected_ids = $selected_ids;
     }
 
-    /**
-     * @return array
-     */
     public function getSelectedIds() : array
     {
         return $this->selected_ids;

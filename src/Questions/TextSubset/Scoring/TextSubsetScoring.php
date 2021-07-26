@@ -23,16 +23,8 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
  */
 class TextSubsetScoring extends AbstractScoring
 {
+    protected AbstractValueObject $answer;
 
-    /**
-     * @var AbstractValueObject
-     */
-    protected $answer;
-
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $this->answer = $answer;
@@ -71,10 +63,6 @@ class TextSubsetScoring extends AbstractScoring
         throw new AsqException("Unknown Test Subset Scoring Method found");
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -105,10 +93,6 @@ class TextSubsetScoring extends AbstractScoring
         return new TextSubsetAnswer($answers);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         $amount = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();
@@ -126,10 +110,6 @@ class TextSubsetScoring extends AbstractScoring
         return array_sum(array_slice($points, 0, $amount));
     }
 
-    /**
-     * @param array $answer_arr
-     * @return int
-     */
     private function caseInsensitiveScoring() : float
     {
         $reached_points = 0;
@@ -146,10 +126,6 @@ class TextSubsetScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * @param array $answer_arr
-     * @return int
-     */
     private function caseSensitiveScoring() : float
     {
         $reached_points = 0;
@@ -166,11 +142,6 @@ class TextSubsetScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * @param array $answer_arr
-     * @param int $distance
-     * @return int
-     */
     private function levenshteinScoring(int $distance) : float
     {
         $reached_points = 0;
@@ -187,18 +158,12 @@ class TextSubsetScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * @return array
-     */
     private function getAnswers() : array
     {
         return array_unique($this->answer->getAnswers());
     }
 
-    /**
-     * @return bool
-     */
-    public function isComplete() : bool
+    function isComplete() : bool
     {
         /** @var TextSubsetScoringConfiguration $config */
         $config = $this->question->getPlayConfiguration()->getScoringConfiguration();

@@ -16,11 +16,7 @@ use ilDBInterface;
  */
 abstract class AbstractQuestionDBSetup implements IQuestionDBSetup
 {
-    /**
-     * @var ilDBInterface
-     */
-    protected $db;
-
+    protected ilDBInterface $db;
 
     public function __construct(ilDBInterface $db)
     {

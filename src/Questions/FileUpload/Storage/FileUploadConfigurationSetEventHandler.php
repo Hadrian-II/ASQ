@@ -22,9 +22,6 @@ use srag\asq\Questions\FileUpload\Scoring\Data\FileUploadScoringConfiguration;
  */
 class FileUploadConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $editor_config FileUploadEditorConfiguration */
@@ -43,19 +40,11 @@ class FileUploadConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupFileUpload::TABLENAME_FILEUPLOAD_CONFIGURATION .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         return new QuestionPlayConfigurationSetEvent(

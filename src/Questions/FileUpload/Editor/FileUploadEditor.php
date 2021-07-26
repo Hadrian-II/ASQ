@@ -7,6 +7,7 @@ use ILIAS\Data\UUID\Factory;
 use ILIAS\FileUpload\FileUpload;
 use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
+use ilLanguage;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -35,24 +36,12 @@ class FileUploadEditor extends AbstractEditor
 
     const UPLOADPATH = 'asq/answers/';
 
-    /**
-     * @var FileUpload
-     */
-    private $upload;
+    private FileUpload $upload;
 
-    /**
-     * @var ilLanguage;
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var FileUploadEditorConfiguration
-     */
-    private $configuration;
+    private FileUploadEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         global $DIC;
@@ -65,10 +54,6 @@ class FileUploadEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
-     */
     public function readAnswer() : ?AbstractValueObject
     {
         $postkey = $this->getPostVar() . self::VAR_CURRENT_ANSWER;
@@ -131,20 +116,12 @@ class FileUploadEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @param string $extension
-     * @return bool
-     */
     private function checkAllowedExtension(string $extension) : bool
     {
         return empty($this->configuration->getAllowedExtensions()) ||
                in_array($extension, explode(',', $this->configuration->getAllowedExtensions()));
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::generateHtml()
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.FileUploadEditor.html', true, true);
@@ -197,27 +174,16 @@ class FileUploadEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @return string
-     */
     private function getPostVar() : string
     {
         return $this->question->getId()->toString();
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     private function getFileKey(string $filename) : string
     {
         return $this->getPostVar() . str_replace('.', '', $filename);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::isComplete()
-     */
     public function isComplete() : bool
     {
         return true;

@@ -29,19 +29,10 @@ class MultipleChoiceEditor extends AbstractEditor
 
     const VAR_MC_POSTNAME = 'multiple_choice_post_';
 
-    /**
-     * @var array
-     */
-    private $answer_options;
+    private array $answer_options;
 
-    /**
-     * @var MultipleChoiceEditorConfiguration
-     */
-    private $configuration;
+    private MultipleChoiceEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->answer_options = $question->getAnswerOptions();
@@ -59,9 +50,6 @@ class MultipleChoiceEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/Choice/Editor/MultipleChoice/MultipleChoiceEditor.js';
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.MultipleChoiceEditor.html', true, true);
@@ -140,10 +128,6 @@ class MultipleChoiceEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @param AnswerOption $option
-     * @return bool
-     */
     private function showFeedBackForAnswerOption(AnswerOption $option) : bool
     {
         $is_selected = in_array($option->getOptionId(), $this->answer->getSelectedIds());
@@ -162,18 +146,11 @@ class MultipleChoiceEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @return bool
-     */
     private function isMultipleChoice() : bool
     {
         return $this->configuration->getMaxAnswers() > 1;
     }
 
-    /**
-     * @param string $answer_id
-     * @return string
-     */
     private function getPostName(string $answer_id = null) : string
     {
         return $this->isMultipleChoice() ?
@@ -202,9 +179,6 @@ class MultipleChoiceEditor extends AbstractEditor
         return $this->answer;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (is_null($this->question->getPlayConfiguration()

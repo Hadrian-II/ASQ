@@ -19,10 +19,6 @@ use srag\asq\Application\Exception\AsqException;
  */
 class MatchingScoring extends AbstractScoring
 {
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $matches = [];
@@ -54,10 +50,6 @@ class MatchingScoring extends AbstractScoring
         return $score;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $matches = [];
@@ -69,10 +61,6 @@ class MatchingScoring extends AbstractScoring
         return new MatchingAnswer($matches);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         $max_score = 0;
@@ -84,9 +72,6 @@ class MatchingScoring extends AbstractScoring
         return $max_score;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return true;

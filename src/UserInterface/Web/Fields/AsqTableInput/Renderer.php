@@ -28,16 +28,8 @@ class Renderer extends AbstractComponentRenderer
     use PathHelper;
     use AsqTablePostTrait;
 
-    /**
-     * @var AsqTableInput
-     */
-    private $component;
+    private AsqTableInput $component;
 
-    //TODO stole method from Input/Field/Renderer, see to integrate this into input field renderer
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
         $this->component = $input;
@@ -79,12 +71,6 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @param string $a_mode
-     *
-     * @return string
-     * @throws \ilTemplateException
-     */
     private function renderInputField() : string
     {
         $values = $this->component->getValue() ?? [];
@@ -164,9 +150,6 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @return int
-     */
     public function getMinRows() : int
     {
         if (array_key_exists(AsqTableInput::OPTION_MIN_ROWS, $this->component->getOptions())) {
@@ -176,23 +159,12 @@ class Renderer extends AbstractComponentRenderer
         return AsqTableInput::DEFAULT_MIN_ROWS;
     }
 
-    /**
-     * @return bool
-     */
     private function hasActions() : bool
     {
         return array_key_exists(AsqTableInput::OPTION_ORDER, $this->component->getOptions()) ||
         !array_key_exists(AsqTableInput::OPTION_HIDE_ADD_REMOVE, $this->component->getOptions());
     }
 
-    /**
-     * @param AsqTableInputFieldDefinition $definition
-     * @param int                             $row_id
-     * @param                                 $value
-     *
-     * @return string
-     * @throws Exception
-     */
     private function generateField(AsqTableInputFieldDefinition $definition, int $row_id, $value) : string
     {
         $name = $this->component->getName() ?? '';
@@ -225,12 +197,6 @@ class Renderer extends AbstractComponentRenderer
         }
     }
 
-    /**
-     * @param string $post_var
-     * @param        $value
-     *
-     * @return string
-     */
     private function generateTextField(string $post_var, $value, ?array $options) : string
     {
         return sprintf(
@@ -242,11 +208,6 @@ class Renderer extends AbstractComponentRenderer
         );
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @return string
-     */
     private function generateTextArea(string $post_var, $value) : string
     {
         return sprintf('<textarea maxlength="200" id="%1$s" name="%1$s" class="form-control form-control-sm">%2$s</textarea>', $post_var, $value);
@@ -260,11 +221,6 @@ class Renderer extends AbstractComponentRenderer
                         $value);
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @return string
-     */
     private function generateCheckbox(string $post_var, $value) : string
     {
         return sprintf(
@@ -274,12 +230,6 @@ class Renderer extends AbstractComponentRenderer
         );
     }
 
-    /**
-     * @param string $post_var
-     * @param        $value
-     *
-     * @return string
-     */
     private function generateImageField(string $post_var, $value) : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.image_upload.html", true, true);
@@ -300,23 +250,11 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @param string $post_var
-     * @param        $value
-     *
-     * @return string
-     */
     private function generateNumberField(string $post_var, $value) : string
     {
         return sprintf('<input type="text" size="2" style="text-align: right;" maxlength="200" id="%1$s" name="%1$s" class="form-control" value="%2$s" />', $post_var, $value);
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @param $options
-     * @return string
-     */
     private function generateRadioField(string $post_var, $value, $options) : string
     {
         $field = new ilRadioGroupInputGUI('', $post_var);
@@ -330,12 +268,6 @@ class Renderer extends AbstractComponentRenderer
         return $field->render();
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @param $options
-     * @return string
-     */
     private function generateDropDownField(string $post_var, $value, $options) : string
     {
         $field = new ilSelectInputGUI('', $post_var);
@@ -347,11 +279,6 @@ class Renderer extends AbstractComponentRenderer
         return $field->render();
     }
 
-    /**
-     * @param string $id
-     * @param $options
-     * @return string
-     */
     private function generateButton(string $id, $options) : string
     {
         $css = 'btn btn-default';
@@ -367,30 +294,17 @@ class Renderer extends AbstractComponentRenderer
         return sprintf('<input type="Button" id="%s" class="%s" value="%s" />', $id, $css, $title);
     }
 
-    /**
-     * @param string $post_var
-     * @param $value
-     * @return string
-     */
     private function generateHiddenField(string $post_var, $value) : string
     {
         return sprintf('<input type="hidden" id="%1$s" name="%1$s" value="%2$s" />', $post_var, $value);
     }
 
-    /**
-     * @param $text
-     * @param $name
-     * @return string
-     */
     private function generateLabel($text, $name) : string
     {
         return sprintf('<span class="%s">%s</span>', $name, $text);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function registerResources(ResourceRegistry $registry)
+    public function registerResources(ResourceRegistry $registry) : void
     {
         parent::registerResources($registry);
         $registry->register($this->getBasePath(__DIR__) . 'js/table.js');
@@ -401,7 +315,7 @@ class Renderer extends AbstractComponentRenderer
         $registry->register('src/UI/templates/js/Markdown/toastui-editor-all.js');
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [AsqTableInput::class];
     }

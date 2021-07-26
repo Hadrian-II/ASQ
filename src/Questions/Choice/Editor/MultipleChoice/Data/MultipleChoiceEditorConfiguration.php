@@ -14,33 +14,14 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MultipleChoiceEditorConfiguration extends AbstractValueObject
 {
+    protected ?bool $shuffle_answers;
 
-    /**
-     * @var ?bool
-     */
-    protected $shuffle_answers;
+    protected ?int $max_answers;
 
-    /**
-     * @var ?int
-     */
-    protected $max_answers;
+    protected ?int $thumbnail_size;
 
-    /**
-     * @var ?int
-     */
-    protected $thumbnail_size;
+    protected ?bool $single_line;
 
-    /**
-     * @var ?bool
-     */
-    protected $single_line;
-
-    /**
-     * @param bool $shuffle_answers
-     * @param int $max_answers
-     * @param int $thumbnail_size
-     * @param bool $single_line
-     */
     public function __construct(
         ?bool $shuffle_answers = false,
         ?int $max_answers = 1,
@@ -53,33 +34,21 @@ class MultipleChoiceEditorConfiguration extends AbstractValueObject
         $this->single_line = $single_line;
     }
 
-    /**
-     * @return bool
-     */
     public function isShuffleAnswers() : ?bool
     {
         return $this->shuffle_answers;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxAnswers() : ?int
     {
         return $this->max_answers;
     }
 
-    /**
-     * @return int
-     */
     public function getThumbnailSize() : ?int
     {
         return $this->thumbnail_size;
     }
 
-    /**
-     * @return boolean
-     */
     public function isSingleLine() : ?bool
     {
         return $this->single_line;

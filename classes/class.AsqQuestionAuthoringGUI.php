@@ -33,76 +33,35 @@ use srag\asq\Application\Service\ASQServices;
 class AsqQuestionAuthoringGUI
 {
     const TAB_ID_PREVIEW = 'qst_preview_tab';
-    const TAB_ID_PAGEVIEW = 'qst_pageview_tab';
     const TAB_ID_CONFIG = 'qst_config_tab';
     const TAB_ID_FEEDBACK = 'qst_feedback_tab';
     const TAB_ID_HINTS = 'qst_hints_tab';
-    const TAB_ID_RECAPITULATION = 'qst_recapitulation_tab';
-    const TAB_ID_STATISTIC = 'qst_statistic_tab';
     const TAB_ID_VERSIONS = 'qst_versions_tab';
 
     const VAR_QUESTION_ID = "question_id";
 
     const CMD_REDRAW_HEADER_ACTION_ASYNC = '';
 
-    /**
-     * @var AuthoringContextContainer
-     */
-    protected $authoring_context_container;
-    /**
-     * @var Uuid
-     */
-    protected $question_id;
-    /**
-     * @var string
-     */
-    protected $lng_key;
+    protected AuthoringContextContainer $authoring_context_container;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    protected Uuid $question_id;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    protected string $lng_key;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ilLanguage $language;
 
-    /**
-     * @var ilTabsGUI
-     */
-    private $tabs;
+    private UIServices $ui;
 
-    /**
-     * @var ilAccessHandler
-     */
-    private $access;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var HTTPServices
-     */
-    private $http;
+    private ilTabsGUI $tabs;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
+    private ilAccessHandler $access;
 
-    /**
-     * @param AuthoringContextContainer $authoring_context_container
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param ilTabsGUI $tabs
-     * @param ilAccessHandler $access
-     * @param HTTPServices $http
-     * @param ASQServices $asq
-     */
+    private HTTPServices $http;
+
+    private ASQServices $asq;
+
     public function __construct(
         AuthoringContextContainer $authoring_context_container,
         ilLanguage $language,
@@ -133,9 +92,6 @@ class AsqQuestionAuthoringGUI
         }
     }
 
-    /**
-     * @throws ilCtrlException
-     */
     public function executeCommand() : void
     {
         if (! is_null($this->question_id)) {
@@ -204,7 +160,6 @@ class AsqQuestionAuthoringGUI
 
                 $gui = new AsqQuestionFeedbackEditorGUI(
                     $this->asq->question()->getQuestionByQuestionId($this->question_id),
-                    $this->language,
                     $this->ui,
                     $this->ctrl,
                     $this->asq
@@ -221,7 +176,6 @@ class AsqQuestionAuthoringGUI
 
                 $gui = new AsqQuestionHintEditorGUI(
                     $this->asq->question()->getQuestionByQuestionId($this->question_id),
-                    $this->language,
                     $this->ui,
                     $this->ctrl,
                     $this->asq
@@ -284,8 +238,7 @@ class AsqQuestionAuthoringGUI
             array('ilCommonActionDispatcherGUI', 'ilNoteGUI'),
             '',
             '',
-            true,
-            false
+            true
         );
 
         ilNoteGUI::initJavascript($notesUrl, IL_NOTE_PUBLIC, $this->ui->mainTemplate());

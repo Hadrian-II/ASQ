@@ -18,17 +18,12 @@ use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
  */
 class FormulaEditorConfigurationFactory extends AbstractObjectFactory
 {
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         return [];
     }
 
     /**
-     * @param array $postdata
      * @return FormulaEditorConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject

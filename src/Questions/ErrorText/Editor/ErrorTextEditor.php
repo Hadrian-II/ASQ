@@ -26,10 +26,7 @@ class ErrorTextEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @var ErrorTextEditorConfiguration
-     */
-    private $configuration;
+    private ErrorTextEditorConfiguration $configuration;
 
     public function __construct(QuestionDto $question)
     {
@@ -43,9 +40,6 @@ class ErrorTextEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Editor/ErrorTextEditor.js';
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ErrorTextEditor.html', true, true);
@@ -64,17 +58,11 @@ class ErrorTextEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @return string
-     */
     private function getPostKey() : string
     {
         return $this->question->getId()->toString();
     }
 
-    /**
-     * @return string
-     */
     private function generateErrorText() : string
     {
         $matches = [];
@@ -100,10 +88,6 @@ class ErrorTextEditor extends AbstractEditor
         return $text;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         $answers = $this->getPostValue($this->getPostKey());
@@ -121,9 +105,6 @@ class ErrorTextEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getErrorText())) {

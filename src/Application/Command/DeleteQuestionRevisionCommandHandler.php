@@ -24,7 +24,6 @@ use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
  */
 class DeleteQuestionRevisionCommandHandler implements CommandHandlerContract
 {
-
     /**
      * @param CreateQuestionRevisionCommand $command
      */

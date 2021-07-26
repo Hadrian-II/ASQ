@@ -18,14 +18,8 @@ use srag\asq\UserInterface\Web\ImageUploader;
  */
 trait InputHandlingTrait
 {
-    /**
-     * @var ImageUploader
-     */
-    protected $image_uploader;
+    protected ImageUploader $image_uploader;
 
-    /**
-     * @return ImageUploader
-     */
     private function getUploader() : ImageUploader
     {
         if (is_null($this->image_uploader)) {
@@ -35,12 +29,6 @@ trait InputHandlingTrait
         return $this->image_uploader;
     }
 
-    /**
-     * Reads bool value from string
-     *
-     * @param string $value
-     * @return ?bool
-     */
     protected function readBool(?string $value) : ?bool
     {
         if (!(is_bool($value) || is_numeric($value))) {
@@ -50,12 +38,6 @@ trait InputHandlingTrait
         return boolval($value);
     }
 
-    /**
-     * Reads float value from string
-     *
-     * @param string $value
-     * @return ?float
-     */
     protected function readFloat(?string $value) : ?float
     {
         $value = str_replace(',', '.', $value);
@@ -67,12 +49,6 @@ trait InputHandlingTrait
         return floatval($value);
     }
 
-    /**
-     * Reads int value from string
-     *
-     * @param string $value
-     * @return ?int
-     */
     protected function readInt(?string $value) : ?int
     {
         if (!is_numeric($value)) {
@@ -82,19 +58,11 @@ trait InputHandlingTrait
         return intval($value);
     }
 
-    /**
-     * @param string $postvar
-     * @return ?string
-     */
     protected function readString(?string $value) : ?string
     {
         return strip_tags($value);
     }
 
-    /**
-     * @param string $postvar
-     * @return ?string
-     */
     protected function readImage(string $postvar) : ?string
     {
         return $this->getUploader()->processImage($postvar);

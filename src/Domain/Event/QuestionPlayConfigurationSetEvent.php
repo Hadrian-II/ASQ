@@ -20,18 +20,8 @@ use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
  */
 class QuestionPlayConfigurationSetEvent extends AbstractDomainEvent
 {
-    /**
-     * @var QuestionPlayConfiguration
-     */
-    protected $play_configuration;
+    protected QuestionPlayConfiguration $play_configuration;
 
-    /**
-     *
-     * @param Uuid $aggregate_id
-     * @param ilDateTime $occured_on
-     * @param int $initiating_user_id
-     * @param QuestionPlayConfiguration $play_configuration
-     */
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occured_on,
@@ -43,33 +33,21 @@ class QuestionPlayConfigurationSetEvent extends AbstractDomainEvent
         $this->play_configuration = $play_configuration;
     }
 
-    /**
-     * @return QuestionPlayConfiguration
-     */
     public function getPlayConfiguration() : QuestionPlayConfiguration
     {
         return $this->play_configuration;
     }
 
-    /**
-     * @return string
-     */
     public function getEventBody() : string
     {
         return json_encode($this->play_configuration);
     }
 
-    /**
-     * @param string $json_data
-     */
     public function restoreEventBody(string $json_data) : void
     {
         $this->play_configuration = AbstractValueObject::deserialize($json_data);
     }
 
-    /**
-     * @return int
-     */
     public static function getEventVersion() : int
     {
         // initial version 1

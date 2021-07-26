@@ -10,7 +10,7 @@ use srag\asq\Infrastructure\Persistence\QuestionType;
 /**
  * Class CreateQuestionCommand
  *
- * Command to initiate Createion of new Question
+ * Command to initiate Creation of new Question
  *
  * @license Extended GPL, see docs/LICENSE
  * @copyright 1998-2020 ILIAS open source
@@ -19,23 +19,10 @@ use srag\asq\Infrastructure\Persistence\QuestionType;
  */
 class CreateQuestionCommand extends AbstractCommand
 {
+    protected Uuid $question_uuid;
 
-    /**
-     * @var Uuid
-     */
-    protected $question_uuid;
+    protected QuestionType $question_type;
 
-    /**
-     * @var QuestionType
-     */
-    protected $question_type;
-
-    /**
-     * @param Uuid $question_uuid
-     * @param QuestionType $question_type
-     * @param int $initiating_user_id
-     * @param int $container_id
-     */
     public function __construct(
         Uuid $question_uuid,
         QuestionType $question_type,
@@ -46,17 +33,11 @@ class CreateQuestionCommand extends AbstractCommand
         $this->question_type = $question_type;
     }
 
-    /**
-     * @return Uuid
-     */
     public function getQuestionUuid() : Uuid
     {
         return $this->question_uuid;
     }
 
-    /**
-     * @return QuestionType
-     */
     public function getQuestionType() : QuestionType
     {
         return $this->question_type;

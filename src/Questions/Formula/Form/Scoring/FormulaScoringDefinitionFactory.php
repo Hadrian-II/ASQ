@@ -24,10 +24,6 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_UNIT = 'fsd_unit';
     const VAR_POINTS = 'fsd_points';
 
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [
@@ -37,10 +33,6 @@ class FormulaScoringDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

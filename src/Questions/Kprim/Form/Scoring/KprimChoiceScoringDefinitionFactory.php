@@ -24,18 +24,11 @@ class KprimChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
 {
     const VAR_KPSD_CORRECT = 'kpsd_correct';
 
-    /**
-     * @param $definition KprimChoiceScoringDefinition
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [ self::VAR_KPSD_CORRECT => $definition->isCorrectValue() ? KprimChoiceEditor::STR_TRUE : KprimChoiceEditor::STR_FALSE ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         /** @var $conf KprimChoiceEditorConfiguration */

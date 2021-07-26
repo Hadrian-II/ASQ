@@ -35,9 +35,6 @@ class MatchingFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Matching/Form/MatchingAuthoring.js' ];

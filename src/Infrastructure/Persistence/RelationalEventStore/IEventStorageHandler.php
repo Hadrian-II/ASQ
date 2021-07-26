@@ -16,14 +16,7 @@ use srag\CQRS\Event\DomainEvent;
  */
 interface IEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void;
 
-    /**
-     * @param array $data
-     * @return DomainEvent[]
-     */
     public function loadEvents(array $data) : array;
 }

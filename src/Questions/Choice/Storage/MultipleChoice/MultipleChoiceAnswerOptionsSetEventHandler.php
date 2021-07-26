@@ -22,9 +22,6 @@ use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
  */
 class MultipleChoiceAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $answer_options AnswerOption[] */
@@ -43,19 +40,11 @@ class MultipleChoiceAnswerOptionsSetEventHandler extends AbstractEventStorageHan
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupMultipleChoice::TABLENAME_MULTIPLE_CHOICE_ANSWER . ' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $id = 1;

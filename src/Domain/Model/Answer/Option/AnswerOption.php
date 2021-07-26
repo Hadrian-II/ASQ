@@ -16,24 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class AnswerOption extends AbstractValueObject
 {
-    /**
-     * @var string
-     */
-    protected $option_id;
-    /**
-     * @var ?AnswerDefinition
-     */
-    protected $display_definition;
-    /**
-     * @var ?AnswerDefinition
-     */
-    protected $scoring_definition;
+    protected ?string $option_id;
 
-    /**
-     * @param string $id
-     * @param AbstractValueObject $display_definition
-     * @param AbstractValueObject $scoring_definition
-     */
+    protected ?AbstractValueObject $display_definition;
+
+    protected ?AbstractValueObject $scoring_definition;
+
     public function __construct(
         string $id = null,
         ?AbstractValueObject $display_definition = null,
@@ -44,26 +32,17 @@ class AnswerOption extends AbstractValueObject
         $this->scoring_definition = $scoring_definition;
     }
 
-    /**
-     * @return string
-     */
-    public function getOptionId() : string
+    public function getOptionId() : ?string
     {
         return $this->option_id;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
-    public function getDisplayDefinition() : AbstractValueObject
+    public function getDisplayDefinition() : ?AbstractValueObject
     {
         return $this->display_definition;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
-    public function getScoringDefinition() : AbstractValueObject
+    public function getScoringDefinition() : ?AbstractValueObject
     {
         return $this->scoring_definition;
     }

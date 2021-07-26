@@ -25,19 +25,12 @@ use srag\asq\Questions\Cloze\Editor\Data\TextGapConfiguration;
  */
 class ClozeScoring extends AbstractScoring
 {
-    /**
-     * @var ClozeEditorConfiguration
-     */
-    protected $configuration;
+    protected ClozeEditorConfiguration $configuration;
 
-    /**
-     * @var TextScoring
-     */
-    private $text_scoring;
+    private TextScoring $text_scoring;
 
-    /**
-     * @param QuestionDto $question
-     */
+    private float $reached_points;
+
     public function __construct($question)
     {
         global $DIC;
@@ -48,15 +41,6 @@ class ClozeScoring extends AbstractScoring
         $this->text_scoring = new TextScoring($DIC->language());
     }
 
-    /**
-     * @var float
-     */
-    private $reached_points;
-
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $given_answer = $answer->getAnswers();
@@ -82,10 +66,6 @@ class ClozeScoring extends AbstractScoring
         return $this->reached_points;
     }
 
-    /**
-     * @param string $answer
-     * @param SelectGapConfiguration $gap_configuration
-     */
     private function scoreSelectGap(string $answer, SelectGapConfiguration $gap_configuration) : void
     {
         /** @var $gap ClozeGapItem */
@@ -97,10 +77,6 @@ class ClozeScoring extends AbstractScoring
         }
     }
 
-    /**
-     * @param string $answer
-     * @param TextGapConfiguration $gap_configuration
-     */
     private function scoreTextGap(string $answer, TextGapConfiguration $gap_configuration) : void
     {
         /** @var $gap ClozeGapItem */
@@ -112,10 +88,6 @@ class ClozeScoring extends AbstractScoring
         }
     }
 
-    /**
-     * @param float $answer
-     * @param NumericGapConfiguration $gap_configuration
-     */
     private function scoreNumericGap(float $answer, NumericGapConfiguration $gap_configuration) : void
     {
         if ($gap_configuration->getUpper() >= $answer &&
@@ -124,10 +96,6 @@ class ClozeScoring extends AbstractScoring
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         $max_score = 0.0;
@@ -139,10 +107,6 @@ class ClozeScoring extends AbstractScoring
         return $max_score;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -162,10 +126,6 @@ class ClozeScoring extends AbstractScoring
         return new ClozeAnswer($answers);
     }
 
-    /**
-     * @param ClozeGapItem[] $items
-     * @return string
-     */
     private function getBestClozeItemAnswer(array $items) : string
     {
         $best_points = 0;
@@ -181,9 +141,6 @@ class ClozeScoring extends AbstractScoring
         return $best_text;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return true;

@@ -19,22 +19,10 @@ use srag\CQRS\Command\AbstractCommand;
  */
 class DeleteQuestionRevisionCommand extends AbstractCommand
 {
+    private Uuid $question_id;
 
-    /**
-     * @var Uuid
-     */
-    private $question_id;
+    private string $revision_name;
 
-    /**
-     * @var string
-     */
-    private $revision_name;
-
-    /**
-     * @param Uuid $question_id
-     * @param string $revision_name
-     * @param int $issuer_id
-     */
     public function __construct(Uuid $question_id, string $revision_name, int $issuer_id)
     {
         parent::__construct($issuer_id);
@@ -42,18 +30,11 @@ class DeleteQuestionRevisionCommand extends AbstractCommand
         $this->revision_name = $revision_name;
     }
 
-
-    /**
-     * @return Uuid
-     */
     public function getQuestionId() : Uuid
     {
         return $this->question_id;
     }
 
-    /**
-     * @return string
-     */
     public function getRevisionName() : string
     {
         return $this->revision_name;

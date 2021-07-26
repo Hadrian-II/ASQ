@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class NumericEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $max_num_of_chars;
+    protected ?int $max_num_of_chars;
 
-    /**
-     * @param int $max_num_of_chars
-     */
     public function __construct(?int $max_num_of_chars = null)
     {
         $this->max_num_of_chars = $max_num_of_chars;
     }
 
-    /**
-     * @return int|NULL
-     */
     public function getMaxNumOfChars() : ?int
     {
         return $this->max_num_of_chars;

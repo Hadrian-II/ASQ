@@ -21,10 +21,6 @@ use srag\asq\Application\Exception\AsqException;
  */
 class MultipleChoiceScoring extends AbstractScoring
 {
-    /**
-     * @param AbstractValueObject $answer
-     * @return float
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
@@ -51,18 +47,11 @@ class MultipleChoiceScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         return $this->score($this->getBestAnswer());
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -87,10 +76,6 @@ class MultipleChoiceScoring extends AbstractScoring
         return new MultipleChoiceAnswer(array_keys($answers));
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMinScore()
-     */
     protected function calculateMinScore() : float
     {
         $min = 0.0;
@@ -105,9 +90,6 @@ class MultipleChoiceScoring extends AbstractScoring
         return $this->calculateMaxHintDeduction() + $min;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (count($this->question->getAnswerOptions()) < 2) {

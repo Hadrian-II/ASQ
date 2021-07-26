@@ -25,13 +25,10 @@ class CreateQuestionCommandHandler implements CommandHandlerContract
 {
 
     /**
-     * @param CommandContract $command
+     * @param CreateQuestionCommand $command
      */
     public function handle(CommandContract $command) : Result
     {
-        /** @var CreateQuestionCommand $command */
-
-        /** @var Question $question */
         $question = Question::createNewQuestion(
             $command->getQuestionUuid(),
             $command->getIssuingUserId(),

@@ -22,9 +22,6 @@ use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;
  */
 class ErrorTextConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $error_editor_config ErrorTextEditorConfiguration */
@@ -42,19 +39,11 @@ class ErrorTextConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupErrorText::TABLENAME_ERRORTEXT_CONFIGURATION .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         return new QuestionPlayConfigurationSetEvent(

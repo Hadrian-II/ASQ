@@ -35,18 +35,11 @@ class ImageMapFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Choice/Form/Editor/ImageMap/ImageMapAuthoring.js' ];
     }
 
-    /**
-     * @param QuestionDto $question
-     * @return QuestionDto
-     */
     public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
     {
         //delete answer options if image is removed

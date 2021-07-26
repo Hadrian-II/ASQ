@@ -37,11 +37,6 @@ class EssayFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * Returns AsqTableInput Options array
-     *
-     * @return array
-     */
     public function getAnswerOptionConfiguration() : array
     {
         return [
@@ -52,9 +47,6 @@ class EssayFormFactory extends QuestionFormFactory
         ];
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Essay/Form/EssayAuthoring.js' ];

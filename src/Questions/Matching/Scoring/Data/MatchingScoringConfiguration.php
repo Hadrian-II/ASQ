@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MatchingScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $wrong_deduction;
+    protected ?float $wrong_deduction;
 
-    /**
-     * @param float $wrong_deduction
-     */
     public function __construct(?float $wrong_deduction = null)
     {
         $this->wrong_deduction = $wrong_deduction;
     }
 
-    /**
-     * @return float
-     */
     public function getWrongDeduction() : float
     {
         return $this->wrong_deduction ?? 0.0;

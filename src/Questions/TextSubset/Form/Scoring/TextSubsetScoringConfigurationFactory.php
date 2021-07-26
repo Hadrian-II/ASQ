@@ -21,10 +21,6 @@ class TextSubsetScoringConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_TEXT_MATCHING = 'tss_text_matching';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

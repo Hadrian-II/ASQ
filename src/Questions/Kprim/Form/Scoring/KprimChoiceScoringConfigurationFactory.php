@@ -23,10 +23,6 @@ class KprimChoiceScoringConfigurationFactory extends AbstractObjectFactory
 
     const HALFPOINTS_AT = 3;
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

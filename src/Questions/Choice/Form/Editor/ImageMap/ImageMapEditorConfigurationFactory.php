@@ -29,10 +29,6 @@ class ImageMapEditorConfigurationFactory extends AbstractObjectFactory
     const STR_MULTICHOICE = 'Multichoice';
     const STR_SINGLECHOICE = 'Singlechoice';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

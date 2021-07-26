@@ -70,6 +70,7 @@ interface IQuestionFormFactory
     /**
      * Gets the raw values from the answer option objects to display in form
      *
+     * @param ?array $options
      * @return array
      */
     public function getAnswerOptionValues(?array $options) : array;
@@ -77,6 +78,7 @@ interface IQuestionFormFactory
     /**
      * Reads answer option objects from raw data entered in form
      *
+     * @param array $values
      * @return array
      */
     public function readAnswerOptions(array $values) : array;

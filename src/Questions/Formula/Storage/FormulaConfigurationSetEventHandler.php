@@ -23,9 +23,6 @@ use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringVariable;
  */
 class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $scoring_config FormulaScoringConfiguration */
@@ -47,10 +44,6 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * @param int $id
-     * @param FormulaScoringVariable $var
-     */
     private function saveVariable(int $id, FormulaScoringVariable $var) : void
     {
         $this->db->insert(SetupFormula::TABLENAME_FORMULA_VARIABLE, [
@@ -62,10 +55,6 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupFormula::TABLENAME_FORMULA_CONFIGURATION .' c
@@ -73,10 +62,6 @@ class FormulaConfigurationSetEventHandler extends AbstractEventStorageHandler
                 where c.event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $variables = [];

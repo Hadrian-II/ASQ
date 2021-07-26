@@ -97,83 +97,58 @@ class QuestionType extends ActiveRecord
         return $object;
     }
 
-    /**
-     * @return string
-     */
     public function getTitleKey() : string
     {
         return $this->title_key;
     }
 
-    /**
-     * @return string
-     */
     public function getFactoryClass() : string
     {
         return $this->factory_class;
     }
 
-    /**
-     * @return string
-     */
     public function getEditorClass() : string
     {
         return $this->editor_class;
     }
 
-    /**
-     * @return string
-     */
     public function getScoringClass() : string
     {
         return $this->scoring_class;
     }
 
-    /**
-     * @return string
-     */
     public function getStorageClass() : string
     {
         return $this->storage_class;
     }
 
-    /**
-     * @return string
-     */
     public static function returnDbTableName()
     {
         return self::STORAGE_NAME;
     }
 
     const KEY = 'key';
-    const FORM_FACOTRY = 'form_factory';
+    const FORM_FACTORY = 'form_factory';
     const EDITOR = 'editor';
     const SCORING = 'scoring';
     const STORAGE = 'storage';
 
-    /**
-     * @return array
-     */
     public function serialize() : array
     {
         $data = [];
         $data[self::KEY] = $this->getTitleKey();
-        $data[self::FORM_FACOTRY] = $this->getFactoryClass();
+        $data[self::FORM_FACTORY] = $this->getFactoryClass();
         $data[self::EDITOR] = $this->getEditorClass();
         $data[self::SCORING] = $this->getScoringClass();
         $data[self::STORAGE] = $this->getStorageClass();
         return $data;
     }
 
-    /**
-     * @param array $data
-     * @return QuestionType
-     */
     public static function deserialize(array $data) : QuestionType
     {
         return self::createNew(
             $data[self::KEY],
-            $data[self::FORM_FACOTRY],
+            $data[self::FORM_FACTORY],
             $data[self::EDITOR],
             $data[self::SCORING],
             $data[self::STORAGE]

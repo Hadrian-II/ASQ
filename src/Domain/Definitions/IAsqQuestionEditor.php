@@ -42,7 +42,7 @@ interface IAsqQuestionEditor
     /**
      * Sets an answer to display to the Control
      *
-     * @param AbstractValueObject $answer
+     * @param ?AbstractValueObject $answer
      */
     public function setAnswer(?AbstractValueObject $answer) : void;
 
@@ -57,7 +57,7 @@ interface IAsqQuestionEditor
     /**
      * Here the editor can specify an optional editor JS file
      *
-     * @return string|NULL
+     * @return ?string
      */
     public function additionalJSFile() : ?string;
 }

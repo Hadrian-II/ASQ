@@ -23,10 +23,7 @@ class QuestionListItemAr extends ActiveRecord
 {
     const STORAGE_NAME = "asq_question_list_item";
 
-    /**
-     * @return string
-     */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::STORAGE_NAME;
     }
@@ -124,77 +121,46 @@ class QuestionListItemAr extends ActiveRecord
         return $object;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle() : string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription() : string
     {
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestion() : string
     {
         return $this->question;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthor() : string
     {
         return $this->author;
     }
 
-    /**
-     * @return int
-     */
     public function getWorkingTime() : int
     {
         return $this->working_time;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestionId() : Uuid
     {
         return $this->question_id;
     }
 
-    /**
-     * @return string
-     */
     public function getRevisionName() : string
     {
         return $this->revision_name;
     }
 
-    /**
-     * @return ilDateTime
-     */
     public function getCreated() : ilDateTime
     {
         return $this->created;
     }
 
-    /**
-     * @param $field_name
-     * @param $field_value
-     *
-     * @return ilDateTime|mixed|null
-     * @throws ilDateTimeException
-     */
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {

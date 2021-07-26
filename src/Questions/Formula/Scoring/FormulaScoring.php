@@ -28,14 +28,8 @@ class FormulaScoring extends AbstractScoring
 {
     use InputHandlingTrait;
 
-    /**
-     * @var FormulaScoringConfiguration
-     */
-    protected $configuration;
+    protected FormulaScoringConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct($question)
     {
         parent::__construct($question);
@@ -43,10 +37,6 @@ class FormulaScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0.0;
@@ -132,10 +122,6 @@ class FormulaScoring extends AbstractScoring
         return ($a % $b) ? $this->greatest_common_divisor($b, $a % $b) : $b;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $values = [];
@@ -153,11 +139,6 @@ class FormulaScoring extends AbstractScoring
         return new FormulaAnswer($values);
     }
 
-    /**
-     * @param array $values
-     * @param FormulaScoringDefinition $def
-     * @param string $ix
-     */
     private function generateResult(array &$values, FormulaScoringDefinition $def, string $ix) : void
     {
         $values['$r' . $ix . FormulaEditor::VAR_UNIT] = $def->getUnit();
@@ -191,10 +172,6 @@ class FormulaScoring extends AbstractScoring
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         $max_score = 0.0;
@@ -206,9 +183,6 @@ class FormulaScoring extends AbstractScoring
         return $max_score;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (is_null($this->configuration->getResultType())) {
@@ -241,10 +215,6 @@ class FormulaScoring extends AbstractScoring
         return true;
     }
 
-    /**
-     * @param FormulaScoringVariable $var
-     * @return bool
-     */
     private function isVarValid(FormulaScoringVariable $var) : bool
     {
         if (!$this->inPrecision($var->getMax(), $this->configuration->getPrecision()) ||
@@ -262,11 +232,6 @@ class FormulaScoring extends AbstractScoring
         return true;
     }
 
-    /**
-     * @param int $precision
-     * @param float $number
-     * @return bool
-     */
     private function inPrecision(float $number, ?int $precision) : bool
     {
         $mult = $number * (10 ** $precision ?? 0);
@@ -274,11 +239,6 @@ class FormulaScoring extends AbstractScoring
         return ceil($mult) === floor($mult);
     }
 
-    /**
-     * @param FormulaScoringDefinition $var
-     * @param FormulaScoringConfiguration $config
-     * @return bool
-     */
     private function isResultValid(FormulaScoringDefinition $result) : bool
     {
         if (!empty($result->getUnit()) &&

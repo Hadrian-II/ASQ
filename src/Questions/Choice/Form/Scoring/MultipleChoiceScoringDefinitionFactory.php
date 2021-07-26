@@ -23,10 +23,6 @@ class MultipleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_MCSD_SELECTED = 'mcsd_selected';
     const VAR_MCSD_UNSELECTED = 'mcsd_unselected';
 
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [
@@ -35,10 +31,6 @@ class MultipleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

@@ -21,33 +21,17 @@ class QuestionComponent implements Component
 {
     use PathHelper;
 
-    /**
-     * @var QuestionDto
-     */
-    private $question_dto;
+    private QuestionDto $question_dto;
 
-    /**
-     * @var AbstractValueObject
-     */
-    private $answer;
+    private AbstractValueObject $answer;
 
-    /**
-     * @var bool
-     */
-    private $show_feedback = false;
+    private bool $show_feedback = false;
 
-    /**
-     * @param QuestionDto $question_dto
-     */
     public function __construct(QuestionDto $question_dto)
     {
         $this->question_dto = $question_dto;
     }
 
-    /**
-     * @param AbstractValueObject $answer
-     * @return QuestionComponent
-     */
     public function withAnswer(AbstractValueObject $answer) : QuestionComponent
     {
         $clone = clone $this;
@@ -56,10 +40,6 @@ class QuestionComponent implements Component
         return $clone;
     }
 
-    /**
-     * @param bool $show_feedback
-     * @return QuestionComponent
-     */
     public function withShowFeedback(bool $show_feedback) : QuestionComponent
     {
         $clone = clone $this;
@@ -68,33 +48,21 @@ class QuestionComponent implements Component
         return $clone;
     }
 
-    /**
-     * @return QuestionDto
-     */
-    public function getQuestion()
+    public function getQuestion() : QuestionDto
     {
         return $this->question_dto;
     }
 
-    /**
-     * @return AbstractValueObject
-     */
-    public function getAnswer()
+    public function getAnswer() : AbstractValueObject
     {
         return $this->answer;
     }
 
-    /**
-     * @return boolean
-     */
-    public function doesShowFeedback()
+    public function doesShowFeedback() : bool
     {
         return $this->show_feedback;
     }
 
-    /**
-     * @return QuestionComponent
-     */
     public function withAnswerFromPost() : QuestionComponent
     {
         $editor_class = $this->question_dto->getType()->getEditorClass();
@@ -106,11 +74,7 @@ class QuestionComponent implements Component
         return $clone;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Component::getCanonicalName()
-     */
-    public function getCanonicalName()
+    public function getCanonicalName() : string
     {
         return QuestionComponent::class;
     }

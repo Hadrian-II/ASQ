@@ -22,11 +22,6 @@ class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
 
-    //TODO stole method from Input/Field/Renderer, see to integrate this into input field renderer
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
         $this->component = $input;
@@ -68,10 +63,6 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @param Component $input
-     * @return string
-     */
     private function renderInputField(Component $input) : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . "templates/default/tpl.image_upload.html", true, true);
@@ -92,7 +83,7 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [AsqImageUpload::class];
     }

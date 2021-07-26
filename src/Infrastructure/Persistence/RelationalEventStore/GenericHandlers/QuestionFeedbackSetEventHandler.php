@@ -21,9 +21,6 @@ use ilDateTime;
  */
 class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $feedback Feedback */
@@ -47,10 +44,6 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString() : string
     {
         return   'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_FEEDBACK .' f
@@ -58,10 +51,6 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
                   where f.event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
         $answer_feedback = [];

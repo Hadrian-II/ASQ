@@ -20,10 +20,6 @@ class NumericEditorConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_MAX_NR_OF_CHARS = 'ne_max_nr_of_chars';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

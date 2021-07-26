@@ -32,14 +32,9 @@ class KprimChoiceEditor extends AbstractEditor
     const STR_TRUE = "True";
     const STR_FALSE = "False";
 
-    /**
-     * @var array
-     */
-    private $answer_options;
-    /**
-     * @var KprimChoiceEditorConfiguration
-     */
-    private $configuration;
+    private ?array $answer_options;
+
+    private KprimChoiceEditorConfiguration $configuration;
 
     /**
      * @param QuestionDto $question
@@ -56,10 +51,6 @@ class KprimChoiceEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -82,9 +73,6 @@ class KprimChoiceEditor extends AbstractEditor
         return new KprimChoiceAnswer($answers);
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.KprimChoiceEditor.html', true, true);
@@ -145,10 +133,6 @@ class KprimChoiceEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @param AnswerOption $option
-     * @return bool
-     */
     private function showFeedBackForAnswerOption(AnswerOption $option) : bool
     {
         switch ($this->question->getFeedback()->getAnswerOptionFeedbackMode()) {
@@ -163,18 +147,11 @@ class KprimChoiceEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
     private function getPostName(string $id) : string
     {
         return $this->question->getId()->toString() . $id;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getLabelFalse()) ||

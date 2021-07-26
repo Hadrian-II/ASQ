@@ -14,22 +14,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class KprimChoiceScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?bool
-     */
-    protected $correct_value;
+    protected ?bool $correct_value;
 
-    /**
-     * @param bool $correct_value
-     */
     public function __construct(?bool $correct_value = null)
     {
         $this->correct_value = $correct_value;
     }
 
-    /**
-     * @return boolean
-     */
     public function isCorrectValue() : ?bool
     {
         return $this->correct_value;

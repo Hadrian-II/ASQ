@@ -16,29 +16,14 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ErrorTextScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $wrong_word_index;
-    /**
-     * @var ?int
-     */
-    protected $wrong_word_length;
-    /**
-     * @var ?string
-     */
-    protected $correct_text;
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?int $wrong_word_index;
 
-    /**
-     * @param int $wrong_word_index
-     * @param int $wrong_word_length
-     * @param string $correct_text
-     * @param float $points
-     */
+    protected ?int $wrong_word_length;
+
+    protected ?string $correct_text;
+
+    protected ?float $points;
+
     public function __construct(
         ?int $wrong_word_index = null,
         ?int $wrong_word_length = null,
@@ -51,33 +36,21 @@ class ErrorTextScoringDefinition extends AbstractValueObject
         $this->points = $points;
     }
 
-    /**
-     * @return int
-     */
     public function getWrongWordIndex() : ?int
     {
         return $this->wrong_word_index;
     }
 
-    /**
-     * @return int
-     */
     public function getWrongWordLength() : ?int
     {
         return $this->wrong_word_length;
     }
 
-    /**
-     * @return string
-     */
     public function getCorrectText() : ?string
     {
         return $this->correct_text;
     }
 
-    /**
-     * @return number
-     */
     public function getPoints() : ?float
     {
         return $this->points;

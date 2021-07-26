@@ -35,10 +35,6 @@ class EssayScoringDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

@@ -24,25 +24,12 @@ abstract class AbstractObjectFactory implements IObjectFactory
 {
     use InputHandlingTrait;
 
-    /**
-     * @var ilLanguage
-     */
-    protected $language;
+    protected ilLanguage $language;
 
-    /**
-     * @var Factory
-     */
-    protected $factory;
+    protected Factory $factory;
 
-    /**
-     * @var UIService
-     */
-    protected $asq_ui;
+    protected UIService $asq_ui;
 
-    /**
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     */
     public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         $this->language = $language;

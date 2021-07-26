@@ -16,17 +16,9 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup\IQuestionDBSe
  */
 interface IQuestionStorage
 {
-    /**
-     * @return IEventStorageHandler
-     */
     public function getPlayConfigurationHandler() : string;
-    /**
-     * @return IEventStorageHandler
-     */
+
     public function getAnswerOptionHandler() : string;
 
-    /**
-     * @return IQuestionDBSetup
-     */
     public function getSetup() : string;
 }

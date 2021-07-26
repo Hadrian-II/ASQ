@@ -29,24 +29,18 @@ class EssayScoring extends AbstractScoring
     const SCORING_AUTOMATIC_ALL = 3;
     const SCORING_AUTOMATIC_ONE = 4;
 
-    /**
-     * @var EssayScoringConfiguration
-     */
-    protected $configuration;
+    protected EssayScoringConfiguration $configuration;
 
     /**
      * @var string[]
      */
-    private $words;
+    private array $words;
 
     /**
      * @var EssayScoringProcessedAnswerOption[]
      */
-    private $answer_options;
+    private array $answer_options;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct($question)
     {
         parent::__construct($question);
@@ -54,10 +48,6 @@ class EssayScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         if ($this->configuration->getScoringMode() === self::SCORING_MANUAL) {
@@ -69,10 +59,6 @@ class EssayScoring extends AbstractScoring
         }
     }
 
-    /**
-     * @param string $text
-     * @return float
-     */
     private function generateScore(string $text) : float
     {
         $text = strip_tags($text);
@@ -121,10 +107,6 @@ class EssayScoring extends AbstractScoring
         }
     }
 
-    /**
-     * @param EssayScoringProcessedAnswerOption $answer_option
-     * @return bool
-     */
     private function textContainsOption(EssayScoringProcessedAnswerOption $answer_option) : bool
     {
         $answer_words = $answer_option->getWords();
@@ -169,10 +151,6 @@ class EssayScoring extends AbstractScoring
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         if ($this->configuration->getScoringMode() === self::SCORING_AUTOMATIC_ANY) {
@@ -189,10 +167,6 @@ class EssayScoring extends AbstractScoring
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         if ($this->configuration->getScoringMode() == self::SCORING_MANUAL) {
@@ -206,9 +180,6 @@ class EssayScoring extends AbstractScoring
         return new EssayAnswer($text);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getScoringMode())) {

@@ -19,27 +19,18 @@ use srag\asq\UserInterface\Web\Form\Factory\AbstractAnswerOptionFactory;
  */
 class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
 {
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         return [];
     }
 
     /**
-     * @param array $values
-     * @return AbstractValueObject
+     * @return EmptyDefinition
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
@@ -47,7 +38,7 @@ class EmptyDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * @return AbstractValueObject
+     * @return EmptyDefinition
      */
     public function getDefaultValue() : AbstractValueObject
     {

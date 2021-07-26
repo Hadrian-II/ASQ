@@ -23,39 +23,18 @@ class QuestionData extends AbstractValueObject
     const LIFECYCLE_SHARABLE = 5;
     const LIFECYCLE_OUTDATED = 6;
 
-    /**
-    * @var ?string
-    */
-    protected $title;
-    /**
-     * @var ?string
-     */
-    protected $description;
-    /**
-     * @var ?int
-     */
-    protected $lifecycle = self::LIFECYCLE_DRAFT;
-    /**
-     * @var ?string
-     */
-    protected $question_text;
-    /**
-     * @var ?string
-     */
-    protected $author;
-    /**
-     * @var ?int
-     */
-    protected $working_time = 0;
+    protected ?string $title;
 
-    /**
-     * @param string $title
-     * @param string $text
-     * @param string $author
-     * @param string $description
-     * @param int $working_time
-     * @param int $lifecycle
-     */
+    protected ?string $description;
+
+    protected ?int $lifecycle = self::LIFECYCLE_DRAFT;
+
+    protected ?string $question_text;
+
+    protected ?string $author;
+
+    protected ?int $working_time = 0;
+
     public function __construct(
         ?string $title = null,
         ?string $text = null,
@@ -72,49 +51,31 @@ class QuestionData extends AbstractValueObject
         $this->lifecycle = $lifecycle;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle() : ?string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription() : ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return int
-     */
     public function getLifecycle() : ?int
     {
         return $this->lifecycle;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestionText() : ?string
     {
         return $this->question_text;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthor() : ?string
     {
         return $this->author;
     }
 
-    /**
-     * @return int
-     */
     public function getWorkingTime() : ?int
     {
         return $this->working_time;
@@ -129,11 +90,6 @@ class QuestionData extends AbstractValueObject
                !empty($this->lifecycle);
     }
 
-    /**
-     * @param AbstractValueObject $other
-     *
-     * @return bool
-     */
     public function equals(AbstractValueObject $other) : bool
     {
         /** @var QuestionData $other */

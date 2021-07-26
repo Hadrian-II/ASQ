@@ -22,7 +22,6 @@ use ILIAS\Data\Result\Ok;
  */
 class SaveQuestionCommandHandler implements CommandHandlerContract
 {
-
     /**
      * @param SaveQuestionCommand $command
      */

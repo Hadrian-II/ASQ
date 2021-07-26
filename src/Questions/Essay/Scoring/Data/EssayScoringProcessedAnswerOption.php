@@ -17,12 +17,9 @@ class EssayScoringProcessedAnswerOption
     /**
      * @var string[]
      */
-    private $words;
+    private array $words;
 
-    /**
-     * @var float
-     */
-    private $points;
+    private float $points;
 
     public function __construct(EssayScoringDefinition $def, bool $is_case_insensitive)
     {
@@ -37,6 +34,7 @@ class EssayScoringProcessedAnswerOption
         // ignore punctuation
         $this->words = explode(' ', preg_replace("#[[:punct:]]#", "", $text));
     }
+
     /**
      * @return string[]
      */
@@ -45,9 +43,6 @@ class EssayScoringProcessedAnswerOption
         return $this->words;
     }
 
-    /**
-     * @return number
-     */
     public function getPoints() : float
     {
         return $this->points;

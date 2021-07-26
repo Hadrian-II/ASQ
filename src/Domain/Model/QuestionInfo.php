@@ -17,42 +17,22 @@ use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
  */
 class QuestionInfo
 {
-    /**
-     * @var string
-     */
-    protected $revision_name;
-    /**
-     * @var string
-     */
-    protected $question_id;
-    /**
-     * @var string
-     */
-    protected $title;
-    /**
-     * @var string
-     */
-    protected $description;
-    /**
-     * @var string
-     */
-    protected $question;
-    /**
-     * @var string
-     */
-    protected $author;
-    /**
-     * @var int
-     */
-    protected $working_time;
-    /**
-     * @var ilDateTime
-     */
-    protected $created;
+    protected string $revision_name;
 
-    /**
-     * @param QuestionListItemAr $question
-     */
+    protected string $question_id;
+
+    protected string $title;
+
+    protected string $description;
+
+    protected string $question;
+
+    protected string $author;
+
+    protected int $working_time;
+
+    protected ilDateTime $created;
+
     public function __construct(QuestionListItemAr $question)
     {
         $this->author = $question->getAuthor();
@@ -65,65 +45,41 @@ class QuestionInfo
         $this->working_time = $question->getWorkingTime();
     }
 
-    /**
-     * @return string
-     */
     public function getTitle() : string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription() : string
     {
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestion() : string
     {
         return $this->question;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthor() : string
     {
         return $this->author;
     }
 
-    /**
-     * @return int
-     */
     public function getWorkingTime() : int
     {
         return $this->working_time;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestionId() : string
     {
         return $this->question_id;
     }
 
-    /**
-     * @return string
-     */
     public function getRevisionName() : string
     {
         return $this->revision_name;
     }
 
-    /**
-     * @return ilDateTime
-     */
     public function getCreated() : ilDateTime
     {
         return $this->created;

@@ -28,14 +28,8 @@ class NumericEditor extends AbstractEditor
     use PostAccess;
     use InputHandlingTrait;
 
-    /**
-     * @var NumericEditorConfiguration
-     */
-    private $configuration;
+    private NumericEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -43,9 +37,6 @@ class NumericEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.NumericEditor.html', true, true);
@@ -63,18 +54,11 @@ class NumericEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         return new NumericAnswer($this->readFloat($this->getPostValue($this->question->getId()->toString())));
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         //numeric editor always works

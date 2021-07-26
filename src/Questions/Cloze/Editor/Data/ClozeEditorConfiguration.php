@@ -16,37 +16,24 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ClozeEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $cloze_text;
+    protected ?string $cloze_text;
 
     /**
      * @var ?ClozeGapConfiguration[]
      */
-    protected $gaps = [];
+    protected ?array $gaps = [];
 
-    /**
-     * @param string $cloze_text
-     * @param array $gaps
-     */
     public function __construct(?string $cloze_text = null, ?array $gaps = null)
     {
         $this->cloze_text = $cloze_text;
         $this->gaps = $gaps;
     }
 
-    /**
-     * @return string
-     */
     public function getClozeText() : ?string
     {
         return $this->cloze_text;
     }
 
-    /**
-     * @return ClozeGapConfiguration[]
-     */
     public function getGaps() : ?array
     {
         return $this->gaps;

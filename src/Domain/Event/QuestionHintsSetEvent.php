@@ -19,18 +19,8 @@ use ilDateTime;
  */
 class QuestionHintsSetEvent extends AbstractDomainEvent
 {
-    /**
-     * @var ?QuestionHints
-     */
-    protected $hints;
+    protected ?QuestionHints $hints;
 
-
-    /**
-     * @param Uuid $aggregate_id
-     * @param ilDateTime $occured_on
-     * @param int $initiating_user_id
-     * @param QuestionHints $hints
-     */
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occured_on,
@@ -42,9 +32,6 @@ class QuestionHintsSetEvent extends AbstractDomainEvent
         $this->hints = $hints;
     }
 
-    /**
-     * @return QuestionHints
-     */
     public function getHints() : ?QuestionHints
     {
         return $this->hints;
@@ -55,17 +42,11 @@ class QuestionHintsSetEvent extends AbstractDomainEvent
         return json_encode($this->hints);
     }
 
-    /**
-     * @param string $json_data
-     */
     public function restoreEventBody(string $json_data) : void
     {
         $this->hints = QuestionHints::deserialize($json_data);
     }
 
-    /**
-     * @return int
-     */
     public static function getEventVersion() : int
     {
         // initial version 1

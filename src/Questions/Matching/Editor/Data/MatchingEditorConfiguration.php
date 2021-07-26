@@ -21,39 +21,30 @@ class MatchingEditorConfiguration extends AbstractValueObject
     const SHUFFLE_TERMS = 2;
     const SHUFFLE_BOTH = 3;
 
-    /**
-     * @var ?int
-     */
-    protected $shuffle;
+    protected ?int $shuffle;
 
-    /**
-     * @var ?int
-     */
-    protected $thumbnail_size;
+    protected ?int $thumbnail_size;
 
     const MATCHING_ONE_TO_ONE = 0;
     const MATCHING_MANY_TO_ONE = 1;
     const MATCHING_MANY_TO_MANY = 2;
 
-    /**
-     * @var ?int
-     */
-    protected $matching_mode;
+    protected ?int $matching_mode;
 
     /**
      * @var ?MatchingItem[]
      */
-    protected $definitions;
+    protected ?array $definitions;
 
     /**
      * @var ?MatchingItem[]
      */
-    protected $terms;
+    protected ?array $terms;
 
     /**
      * @var ?MatchingMapping[]
      */
-    protected $matches;
+    protected ?array $matches;
 
     /**
      * @param ?int $shuffle
@@ -79,32 +70,23 @@ class MatchingEditorConfiguration extends AbstractValueObject
         $this->matches = $matches;
     }
 
-    /**
-     * @return ?int
-     */
     public function getShuffle() : ?int
     {
         return $this->shuffle;
     }
 
-    /**
-     * @return ?int
-     */
     public function getThumbnailSize() : ?int
     {
         return $this->thumbnail_size;
     }
 
-    /**
-     * @return ?int
-     */
     public function getMatchingMode() : ?int
     {
         return $this->matching_mode;
     }
 
     /**
-     * @return ?array
+     * @return ?MatchingItem[]
      */
     public function getDefinitions() : ?array
     {
@@ -115,9 +97,6 @@ class MatchingEditorConfiguration extends AbstractValueObject
         return $this->definitions;
     }
 
-    /**
-     * @return bool
-     */
     private function isShuffleDefinitions() : bool
     {
         return $this->shuffle === self::SHUFFLE_DEFINITIONS ||
@@ -125,7 +104,7 @@ class MatchingEditorConfiguration extends AbstractValueObject
     }
 
     /**
-     * @return ?array
+     * @return ?MatchingItem[]
      */
     public function getTerms() : ?array
     {
@@ -136,9 +115,6 @@ class MatchingEditorConfiguration extends AbstractValueObject
         return $this->terms;
     }
 
-    /**
-     * @return bool
-     */
     private function isShuffleTerms() : bool
     {
         return $this->shuffle === self::SHUFFLE_TERMS ||
@@ -146,7 +122,7 @@ class MatchingEditorConfiguration extends AbstractValueObject
     }
 
     /**
-     * @return ?array
+     * @return ?MatchingMapping
      */
     public function getMatches() : ?array
     {

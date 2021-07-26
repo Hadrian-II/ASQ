@@ -34,41 +34,24 @@ class QuestionFeedbackFormGUI
     const VAR_ANSWER_OPTION_FEEDBACK_MODE = 'answer_option_feedback_mode';
     const VAR_FEEDBACK_FOR_ANSWER = "feedback_for_answer";
 
-    /**
-     * @var QuestionDto
-     */
-    private $question_dto;
+    private QuestionDto $question_dto;
 
-    /**
-     * @var Feedback
-     */
-    private $feedback;
+    private ?Feedback $feedback;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var RequestInterface
-     */
-    private $request;
+    private RequestInterface $request;
 
-    /**
-     * @var Standard
-     */
-    private $form;
+    private Standard $form;
 
-    /**
-     * @param QuestionDto $question_dto
-     * @param ilLanguage $language
-     */
-    public function __construct(QuestionDto $question_dto, string $action, ilLanguage $language, UIServices $ui, RequestInterface $request)
+    public function __construct(
+        QuestionDto $question_dto,
+        string $action,
+        ilLanguage $language,
+        UIServices $ui,
+        RequestInterface $request)
     {
         $this->language = $language;
         $this->ui = $ui;
@@ -80,9 +63,6 @@ class QuestionFeedbackFormGUI
         $this->form = $this->ui->factory()->input()->container()->form()->standard($action, $this->generateFormFields());
     }
 
-    /**
-     * @return array
-     */
     protected function generateFormFields() : array
     {
         $fields = [];
@@ -156,9 +136,6 @@ class QuestionFeedbackFormGUI
         return $this->ui->renderer()->render($panel);
     }
 
-    /**
-     * @return Feedback
-     */
     public function getFeedbackFromPost() : Feedback
     {
         $this->form = $this->form->withRequest($this->request);
@@ -188,10 +165,6 @@ class QuestionFeedbackFormGUI
             $answer_option_feedbacks);
     }
 
-    /**
-     * @param AnswerOption $answer_option
-     * @return string
-     */
     private function getPostKey(AnswerOption $answer_option) : string
     {
         return self::VAR_FEEDBACK_FOR_ANSWER . $answer_option->getOptionId();

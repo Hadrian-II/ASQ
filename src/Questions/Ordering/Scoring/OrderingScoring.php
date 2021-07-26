@@ -19,10 +19,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class OrderingScoring extends AbstractScoring
 {
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0.0;
@@ -53,19 +49,11 @@ class OrderingScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         return $this->question->getPlayConfiguration()->getScoringConfiguration()->getPoints();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -77,9 +65,6 @@ class OrderingScoring extends AbstractScoring
         return new OrderingAnswer($answers);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         /** @var OrderingScoringConfiguration $config */

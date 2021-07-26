@@ -19,23 +19,12 @@ class TextGapConfiguration extends ClozeGapConfiguration
     /**
      * @var ?ClozeGapItem[]
      */
-    protected $items;
+    protected ?array $items;
 
-    /**
-     * @var ?int
-     */
-    protected $field_length;
+    protected ?int $field_length;
 
-    /**
-     * @var ?int
-     */
-    protected $matching_method;
+    protected ?int $matching_method;
 
-    /**
-     * @param array $items
-     * @param int $field_length
-     * @param int $matching_method
-     */
     public function __construct(
         ?array $items = [],
         ?int $field_length = self::DEFAULT_FIELD_LENGTH,
@@ -46,33 +35,21 @@ class TextGapConfiguration extends ClozeGapConfiguration
         $this->matching_method = $matching_method;
     }
 
-    /**
-     * @return ?array
-     */
     public function getItems() : ?array
     {
         return $this->items;
     }
 
-    /**
-     * @return ?int
-     */
     public function getFieldLength() : int
     {
         return $this->field_length ?? self::DEFAULT_FIELD_LENGTH;
     }
 
-    /**
-     * @return ?int
-     */
     public function getMatchingMethod() : ?int
     {
         return $this->matching_method;
     }
 
-    /**
-     * @return array
-     */
     public function getItemsArray() : array
     {
         $var_array = [];
@@ -86,9 +63,6 @@ class TextGapConfiguration extends ClozeGapConfiguration
         return $var_array;
     }
 
-    /**
-     * @return float
-     */
     public function getMaxPoints() : float
     {
         $gap_max = 0;
@@ -103,9 +77,6 @@ class TextGapConfiguration extends ClozeGapConfiguration
         return $gap_max;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (count($this->getItems()) < 1) {

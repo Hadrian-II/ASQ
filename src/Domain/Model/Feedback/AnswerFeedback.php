@@ -16,18 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 abstract class AnswerFeedback extends AbstractValueObject
 {
-    const VAR_ANSWER_FEEDBACK_CORRECT = 'answer_feedback_correct';
-    const VAR_ANSWER_FEEDBACK_WRONG = 'answer_feedback_wrong';
-    const VAR_ANSWER_FEEDBACK_CORRECT_PAGE_ID = 1;
-    const VAR_ANSWER_FEEDBACK_WRONG_PAGE_ID = 2;
     const VAR_FEEDBACK_TYPE_INT_ID = 'feedback_type_int_id';
-    /**
-     * @var string
-     */
-    protected $answer_feedback;
+
+    protected ?string $answer_feedback;
 
 
-    public function __construct(?string $answer_feedback = "")
+    public function __construct(?string $answer_feedback = '')
     {
         $this->answer_feedback = $answer_feedback;
     }

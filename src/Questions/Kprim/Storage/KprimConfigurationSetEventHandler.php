@@ -22,9 +22,6 @@ use srag\asq\Questions\Kprim\Scoring\Data\KprimChoiceScoringConfiguration;
  */
 class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $editor_config KprimChoiceEditorConfiguration */
@@ -45,19 +42,11 @@ class KprimConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupKprim::TABLENAME_KPRIM_CONFIGURATION .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $row = $rows[0];

@@ -32,64 +32,26 @@ class QuestionFormGUI
 
     const VAR_LEGACY = 'legacy';
 
-    const FORM_PART_LINK = 'form_part_link';
+    protected ilLanguage $language;
 
-    const CMD_CREATE_REVISON = 'createRevision';
+    protected UIServices $ui;
 
-    /**
-     * @var ilLanguage
-     */
-    protected $language;
+    protected QuestionDto $initial_question;
 
-    /**
-     * @var UIServices
-     */
-    protected $ui;
+    protected QuestionDto $post_question;
 
-    /**
-     * @var QuestionDto
-     */
-    protected $initial_question;
+    protected IQuestionFormFactory $form_factory;
 
-    /**
-     * @var QuestionDto
-     */
-    protected $post_question;
+    protected QuestionDataFormFactory $question_data_factory;
 
-    /**
-     * @var IQuestionFormFactory
-     */
-    protected $form_factory;
+    protected array $inputs;
 
-    /**
-     * @var QuestionDataFormFactory
-     */
-    protected $question_data_factory;
+    protected RequestInterface $request;
 
-    /**
-     * @var array
-     */
-    protected $inputs;
+    protected Standard $form;
 
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
+    protected UIService $asq_ui;
 
-    /**
-     * @var Standard
-     */
-    protected $form;
-
-    /**
-     * @var UIService     */
-    protected $asq_ui;
-
-    /**
-     * QuestionFormGUI constructor.
-     *
-     * @param QuestionDto $question
-     */
     public function __construct(
         QuestionDto $question,
         string $action,
@@ -129,9 +91,6 @@ class QuestionFormGUI
         }
     }
 
-    /**
-     * @return string
-     */
     public function getHTML() : string
     {
         $panel = $this->ui->factory()->panel()->standard(
@@ -142,9 +101,6 @@ class QuestionFormGUI
         return $this->ui->renderer()->render($panel);
     }
 
-    /**
-     * @param QuestionDto $question
-     */
     private function initInputs(QuestionDto $question) : void
     {
         $this->inputs = $this->question_data_factory->getFormfields($question->getData());
@@ -172,9 +128,6 @@ class QuestionFormGUI
         }
     }
 
-    /**
-     * @param QuestionDto $question
-     */
     private function showQuestionState(QuestionDto $question) : void
     {
         global $ASQDIC;
@@ -197,17 +150,11 @@ class QuestionFormGUI
         $this->inputs[] = $state;
     }
 
-    /**
-     * @return QuestionDto
-     */
     public function getQuestion() : QuestionDto
     {
         return $this->post_question ?? $this->initial_question;
     }
 
-    /**
-     * @return QuestionDto
-     */
     private function readQuestionFromPost(QuestionDto $original_question) : QuestionDto
     {
         $this->form = $this->form->withRequest($this->request);

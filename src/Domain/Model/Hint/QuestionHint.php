@@ -16,24 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class QuestionHint extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $id;
-    /**
-     * @var ?string
-     */
-    protected $content;
-    /**
-     * @var ?float
-     */
-    protected $point_deduction;
+    protected ?string $id;
 
-    /**
-     * @param ?string $id
-     * @param ?string $content
-     * @param ?float $point_deduction
-     */
+    protected ?string $content;
+
+    protected ?float $point_deduction;
+
     public function __construct(?string $id = null, ?string $content = null, ?float $point_deduction = null)
     {
         $this->id = $id;
@@ -41,27 +29,16 @@ class QuestionHint extends AbstractValueObject
         $this->point_deduction = $point_deduction;
     }
 
-    /**
-     * @return ?string
-     */
     public function getId() : ?string
     {
         return $this->id;
     }
 
-
-    /**
-     * @return ?string
-     */
     public function getContent() : ?string
     {
         return $this->content;
     }
 
-
-    /**
-     * @return ?float
-     */
     public function getPointDeduction() : ?float
     {
         return $this->point_deduction;

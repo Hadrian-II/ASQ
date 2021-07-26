@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class TextSubsetScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $text_matching;
+    protected ?int $text_matching;
 
-    /**
-     * @param ?int $text_matching
-     */
     public function __construct(?int $text_matching = null)
     {
         $this->text_matching = $text_matching;
     }
 
-    /**
-     * @return ?int
-     */
     public function getTextMatching() : ?int
     {
         return $this->text_matching;

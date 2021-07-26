@@ -17,30 +17,18 @@ use Closure;
  */
 class ImageFormPopup extends Input
 {
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
-     */
     protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::getConstraintForRequirement()
-     */
     protected function getConstraintForRequirement()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
-     */
     public function getUpdateOnLoadCode() : Closure
     {
-        return null;
+        return function() {};
     }
 }

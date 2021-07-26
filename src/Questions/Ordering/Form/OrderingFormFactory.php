@@ -34,9 +34,6 @@ class OrderingFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getAnswerOptionConfiguration() : array
     {
         return [ AsqTableInput::OPTION_ORDER => true ];

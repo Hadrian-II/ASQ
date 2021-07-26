@@ -23,6 +23,7 @@ interface IObjectFactory
     /**
      * Gets field definition to display in QuestionFormGUI
      *
+     * @param ?AbstractValueObject $value
      * @return array
      */
     public function getFormfields(?AbstractValueObject $value) : array;
@@ -30,6 +31,7 @@ interface IObjectFactory
     /**
      * Reads configuration object from postdata
      *
+     * @param array $postdata
      * @return AbstractValueObject
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject;

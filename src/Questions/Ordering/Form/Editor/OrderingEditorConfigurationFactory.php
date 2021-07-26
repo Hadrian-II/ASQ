@@ -23,10 +23,6 @@ class OrderingEditorConfigurationFactory extends AbstractObjectFactory
     const VERTICAL = "vertical";
     const HORICONTAL = "horicontal";
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

@@ -24,7 +24,7 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
     const VAR_TEXT_SIZE = 'ete_text_size';
 
     /**
-     * @param $value ErrorTextEditorConfiguration
+     * @param $value ?ErrorTextEditorConfiguration
      * @return array
      */
     public function getFormfields(?AbstractValueObject $value) : array
@@ -51,9 +51,6 @@ class ErrorTextEditorConfigurationFactory extends AbstractObjectFactory
         return $fields;
     }
 
-    /**
-     * @return string
-     */
     private function createErrorTextInfo() : string
     {
         return sprintf(

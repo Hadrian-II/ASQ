@@ -19,19 +19,13 @@ class FileUploadAnswer extends AbstractValueObject
     /**
      * @var ?string[]
      */
-    protected $files;
+    protected array $files;
 
-    /**
-     * @param array $files
-     */
     public function __construct(?array $files = [])
     {
         $this->files = $files;
     }
 
-    /**
-     * @return array|NULL
-     */
     public function getFiles() : ?array
     {
         return $this->files;

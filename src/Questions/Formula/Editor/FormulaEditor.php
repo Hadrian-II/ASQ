@@ -26,14 +26,8 @@ class FormulaEditor extends AbstractEditor
 
     const VAR_UNIT = 'fe_unit';
 
-    /**
-     * @var FormulaScoringConfiguration
-     */
-    private $configuration;
+    private FormulaScoringConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
@@ -41,10 +35,6 @@ class FormulaEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         $results = [];
@@ -62,11 +52,6 @@ class FormulaEditor extends AbstractEditor
         return new FormulaAnswer($variables, $results);
     }
 
-    /**
-     * @param string $name
-     * @param array $answers
-     * @return bool
-     */
     private function processVar(string $name, array &$answers) : bool
     {
         $postvar = $this->getPostVariableName($name);
@@ -86,10 +71,6 @@ class FormulaEditor extends AbstractEditor
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
-     */
     public function generateHtml() : string
     {
         $output = $this->configuration->getFormula();
@@ -107,12 +88,6 @@ class FormulaEditor extends AbstractEditor
         return $output;
     }
 
-    /**
-     * @param int $index
-     * @param string $output
-     * @param string $units
-     * @return string
-     */
     private function createResult(int $index, string $output, ?array $units) : string
     {
         $name = '$r' . $index;
@@ -122,10 +97,6 @@ class FormulaEditor extends AbstractEditor
         return str_replace($name, $html, $output);
     }
 
-    /**
-     * @param string $name
-     * @return string|NULL
-     */
     private function getResultValue(string $name) : ?string
     {
         if (is_null($this->answer) ||
@@ -138,10 +109,6 @@ class FormulaEditor extends AbstractEditor
         return $this->answer->getResults()[$name];
     }
 
-    /**
-     * @param string $name
-     * @return string|NULL
-     */
     private function getVariableValue(string $name) : ?string
     {
         if (is_null($this->answer) ||
@@ -154,11 +121,6 @@ class FormulaEditor extends AbstractEditor
         return $this->answer->getVariables()[$name];
     }
 
-    /**
-     * @param string $units
-     * @param string $name
-     * @return string
-     */
     private function createUnitSelection(array $units, string $name) : string
     {
         return sprintf(
@@ -174,12 +136,6 @@ class FormulaEditor extends AbstractEditor
         );
     }
 
-    /**
-     * @param int $index
-     * @param string $output
-     * @param FormulaScoringVariable $def
-     * @return string
-     */
     private function createVariable(int $index, string $output, FormulaScoringVariable $def) : string
     {
         $name = '$v' . $index;
@@ -194,27 +150,16 @@ class FormulaEditor extends AbstractEditor
         return str_replace($name, $html, $output);
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
     private function getPostVariableName(string $name) : string
     {
         return $name . $this->question->getId()->toString();
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
     private function getUnitPostVariableName(string $name) : string
     {
         return $name . $this->question->getId()->toString() . self::VAR_UNIT;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return true;

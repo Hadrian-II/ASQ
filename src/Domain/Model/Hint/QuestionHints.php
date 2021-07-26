@@ -20,7 +20,7 @@ class QuestionHints extends AbstractValueObject
     /**
      * @var ?QuestionHint[]
      */
-    protected $hints;
+    protected ?array $hints;
 
     /**
      * @param ?QuestionHint[] $hints
@@ -38,12 +38,6 @@ class QuestionHints extends AbstractValueObject
         return $this->hints;
     }
 
-    /**
-     * @param int $order_number
-     *
-     * @return QuestionHint
-     * @throws AsqException
-     */
     public function getHintById(string $id) : QuestionHint
     {
         foreach ($this->hints as $hint) {

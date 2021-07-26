@@ -85,11 +85,7 @@ class QuestionAr extends ActiveRecord
      */
     protected $status;
 
-    /**
-     *
-     * @param QuestionDto $question
-     */
-    public static function createNew(QuestionDto $question)
+    public static function createNew(QuestionDto $question) : QuestionAr
     {
         global $DIC;
         $object = new QuestionAr();
@@ -105,41 +101,26 @@ class QuestionAr extends ActiveRecord
         return $object;
     }
 
-    /**
-     * @return int
-     */
     public function getId() : int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCreated()
     {
         return $this->created;
     }
 
-    /**
-     * @return int
-     */
     public function getCreator() : int
     {
         return $this->creator;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestionId() : string
     {
         return $this->question_id;
     }
 
-    /**
-     * @return string
-     */
     public function getRevisionName() : string
     {
         return $this->revision_name;
@@ -157,14 +138,11 @@ class QuestionAr extends ActiveRecord
 
     public function delete() : void
     {
-        $this->status == self::DELETED;
+        $this->status = self::DELETED;
         $this->update();
     }
 
-    /**
-     * @return string
-     */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::STORAGE_NAME;
     }

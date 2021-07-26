@@ -28,14 +28,8 @@ class ClozeEditor extends AbstractEditor
 {
     use PostAccess;
 
-    /**
-     * @var ClozeEditorConfiguration
-     */
-    private $configuration;
+    private ClozeEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -43,10 +37,6 @@ class ClozeEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         $answers = [];
@@ -60,10 +50,6 @@ class ClozeEditor extends AbstractEditor
         return $this->answer;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
-     */
     public function generateHtml() : string
     {
         $output = $this->configuration->getClozeText();
@@ -83,12 +69,6 @@ class ClozeEditor extends AbstractEditor
         return $output;
     }
 
-    /**
-     * @param int $index
-     * @param ClozeGapConfiguration $gap_config
-     * @param string $output
-     * @return string
-     */
     private function createDropdown(int $index, ClozeGapConfiguration $gap_config, string $output) : string
     {
         $name = '├' . $index . '┤';
@@ -103,7 +83,8 @@ class ClozeEditor extends AbstractEditor
     }
 
     /**
-     * @param ClozeGapItem[] $gapItems
+     * @param ClozeGapItem[] $gap_items
+     * @param int $index
      * @return string
      */
     private function createOptions(array $gap_items, int $index) : string
@@ -120,12 +101,6 @@ class ClozeEditor extends AbstractEditor
         ));
     }
 
-    /**
-     * @param int $index
-     * @param ClozeGapConfiguration $gap_config
-     * @param string $output
-     * @return string
-     */
     private function createText(int $index, ClozeGapConfiguration $gap_config, string $output) : string
     {
         $name = '├' . $index . '┤';
@@ -142,9 +117,9 @@ class ClozeEditor extends AbstractEditor
 
     /**
      * @param int $key
-     * @return NULL|ClozeAnswer
+     * @return ?ClozeAnswer
      */
-    private function getAnswer(int $key)
+    private function getAnswer(int $key) : ?AbstractValueObject
     {
         if (is_null($this->answer) || ! array_key_exists($key, $this->answer->getAnswers())) {
             return null;
@@ -153,18 +128,11 @@ class ClozeEditor extends AbstractEditor
         return $this->answer->getAnswers()[$key];
     }
 
-    /**
-     * @param int $index
-     * @return string
-     */
     private function getPostVariable(int $index) : string
     {
         return $index . $this->question->getId()->toString();
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getClozeText())) {

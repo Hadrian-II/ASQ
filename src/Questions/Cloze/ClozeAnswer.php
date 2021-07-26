@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ClozeAnswer extends AbstractValueObject
 {
-    /**
-     * @var ?array
-     */
-    protected $answers;
+    protected ?array $answers;
 
-    /**
-     * @param array $answers
-     */
     public function __construct(?array $answers = [])
     {
         $this->answers = $answers;
     }
 
-    /**
-     * @return array|NULL
-     */
     public function getAnswers() : ?array
     {
         return $this->answers;

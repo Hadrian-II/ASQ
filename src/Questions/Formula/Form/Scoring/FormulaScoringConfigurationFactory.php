@@ -28,15 +28,6 @@ class FormulaScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_RESULT_TYPE = 'fs_type';
     const VAR_VARIABLES = 'fs_variables';
 
-    /**
-     * @var AsqTableInput
-     */
-    private $variables_table;
-
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

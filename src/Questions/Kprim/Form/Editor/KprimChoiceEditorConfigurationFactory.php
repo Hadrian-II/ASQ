@@ -44,9 +44,6 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
     const STR_ADEQUATE = 'adequate';
     const STR_NOT_ADEQUATE = 'not adequate';
 
-    /**
-     * @var $value KprimChoiceEditorConfiguration
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -73,10 +70,6 @@ class KprimChoiceEditorConfigurationFactory extends AbstractObjectFactory
         return $fields;
     }
 
-    /**
-     * @param KprimChoiceEditorConfiguration $config
-     * @return SwitchableGroup
-     */
     private function GenerateOptionLabelField(?KprimChoiceEditorConfiguration $config) : SwitchableGroup
     {
         $selected_value = self::LABEL_RIGHT_WRONG;

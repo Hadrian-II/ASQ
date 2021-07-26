@@ -27,56 +27,26 @@ class AsqQuestionFeedbackEditorGUI
     const CMD_SHOW_FEEDBACK_FORM = 'showFeedbackForm';
     const CMD_SAVE_FEEDBACK = 'saveFeedback';
 
-    /**
-     * @var QuestionDto
-     */
-    protected $question_dto;
+    protected QuestionDto $question_dto;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private UIServices $ui;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ASQServices $asq;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
-
-    /**
-     * @param QuestionDto $question_dto
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param ASQServices $asq
-     */
     public function __construct(
         QuestionDto $question_dto,
-        ilLanguage $language,
         UIServices $ui,
         ilCtrl $ctrl,
         ASQServices $asq)
     {
         $this->question_dto = $question_dto;
-        $this->language = $language;
         $this->ui = $ui;
         $this->ctrl = $ctrl;
         $this->asq = $asq;
     }
 
-
-    /**
-     * @throws ilCtrlException
-     */
     public function executeCommand() : void
     {
         $cmd = $this->ctrl->getCmd(self::CMD_SHOW_FEEDBACK_FORM);
@@ -104,9 +74,6 @@ class AsqQuestionFeedbackEditorGUI
         $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
-    /**
-     * @return QuestionFeedbackFormGUI
-     */
     private function createForm() : QuestionFeedbackFormGUI
     {
         return $this->asq->ui()->getQuestionFeedbackForm(

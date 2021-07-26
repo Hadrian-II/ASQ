@@ -26,15 +26,9 @@ class OrderingEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @var OrderingEditorConfiguration
-     */
-    private $configuration;
+    private OrderingEditorConfiguration $configuration;
 
-    /**
-     * @var array
-     */
-    private $display_ids;
+    private array $display_ids;
 
     /**
      * @param QuestionDto $question
@@ -53,9 +47,6 @@ class OrderingEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/Ordering/Editor/OrderingEditor.js';
     }
 
-    /**
-     * @param QuestionDto $question
-     */
     private function calculateDisplayIds(QuestionDto $question)
     {
         $this->display_ids = [];
@@ -65,9 +56,6 @@ class OrderingEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.OrderingEditor.html', true, true);
@@ -120,9 +108,6 @@ class OrderingEditor extends AbstractEditor
         }, $items));
     }
 
-    /**
-     * @return array
-     */
     private function orderItemsByAnswer() : array
     {
         $answers = $this->question->getAnswerOptions();
@@ -136,10 +121,6 @@ class OrderingEditor extends AbstractEditor
         return $items;
     }
 
-    /**
-     * {@inheritdoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
-     */
     public function readAnswer() : ?AbstractValueObject
     {
         if (!$this->isPostVarSet($this->question->getId()->toString())) {
@@ -151,9 +132,6 @@ class OrderingEditor extends AbstractEditor
         }, explode(',', $this->getPostValue($this->question->getId()->toString()))));
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         $options = $this->question->getAnswerOptions();

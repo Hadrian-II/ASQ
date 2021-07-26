@@ -18,46 +18,28 @@ use srag\asq\Domain\Definitions\IAsqQuestionEditor;
  */
 abstract class AbstractEditor implements IAsqQuestionEditor
 {
-    /**
-     * @var QuestionDto
-     */
-    protected $question;
-    /**
-     * @var ?AbstractValueObject
-     */
-    protected $answer;
-    /**
-     * @var bool
-     */
-    protected $render_feedback;
+    protected QuestionDto $question;
 
-    /**
-     * AbstractEditor constructor.
-     *
-     * @param QuestionDto   $question
-     * @param array|null $configuration
-     */
+    protected ?AbstractValueObject $answer;
+
+    protected bool $render_feedback;
+
+
     public function __construct(QuestionDto $question)
     {
         $this->question = $question;
     }
 
-    public function setRenderFeedback(bool $render_feedback)
+    public function setRenderFeedback(bool $render_feedback) : void
     {
         $this->render_feedback = $render_feedback;
     }
 
-    /**
-     * @param AbstractValueObject $answer
-     */
     public function setAnswer(?AbstractValueObject $answer) : void
     {
         $this->answer = $answer;
     }
 
-    /**
-     * Default additional JSFile (no file)
-     */
     public function additionalJSFile() : ?string
     {
         return null;

@@ -17,27 +17,18 @@ class MatchingAnswer extends AbstractValueObject
     /**
      * @var string[]
      */
-    protected $matches;
+    protected array $matches;
 
-    /**
-     * @param array $matches
-     */
     public function __construct(?array $matches = [])
     {
         $this->matches = $matches;
     }
 
-    /**
-     * @return ?array
-     */
     public function getMatches() : ?array
     {
         return $this->matches;
     }
 
-    /**
-     * @return string
-     */
     public function getAnswerString() : string
     {
         return is_null($this->matches) ? '' : implode(';', $this->matches);

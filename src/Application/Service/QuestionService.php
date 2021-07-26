@@ -36,15 +36,9 @@ use srag\asq\Application\Command\DeleteQuestionRevisionCommandHandler;
  */
 class QuestionService extends ASQService
 {
-    /**
-     * @var CommandBus
-     */
-    private $command_bus;
+    private CommandBus $command_bus;
 
-    /**
-     * @var QuestionRepository
-     */
-    private $repo;
+    private QuestionRepository $repo;
 
     public function __construct()
     {
@@ -128,6 +122,7 @@ class QuestionService extends ASQService
      *
      * @param string $name
      * @param Uuid $question_id
+     * @throws AsqException
      */
     public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
@@ -143,6 +138,7 @@ class QuestionService extends ASQService
      *
      * @param string $name
      * @param Uuid $question_id
+     * @throws AsqException
      */
     public function deleteQuestionRevision(string $name, Uuid $question_id) : void
     {
@@ -156,10 +152,9 @@ class QuestionService extends ASQService
     /**
      * Creates a new question with given type
      *
-     * @param int $type
-     * @param ?int $container_id
-     *
+     * @param QuestionType $type
      * @return QuestionDto
+     * @throws AsqException
      */
     public function createQuestion(QuestionType $type) : QuestionDto
     {
@@ -217,6 +212,8 @@ class QuestionService extends ASQService
      * @param string $factory_class
      * @param string $editor_class
      * @param string $scoring_class
+     * @param string $storage_class
+     * @throws AsqException
      */
     public function addQuestionType(
         string $title_key,
@@ -247,7 +244,9 @@ class QuestionService extends ASQService
      * Exports a Question as JSON
      *
      * @param Uuid $id
+     * @param string|null $revision
      * @return string
+     * @throws AsqException
      */
     public function exportQuestion(Uuid $id, ?string $revision = null) : string
     {
@@ -262,6 +261,8 @@ class QuestionService extends ASQService
     }
 
     /**
+     * Imports a question from JSON
+     *
      * @param string $json
      * @throws AsqException
      * @return QuestionDto
@@ -280,7 +281,7 @@ class QuestionService extends ASQService
             throw new AsqException(sprintf('Question with Id: "%s" already in the System', $dto->getId()->toString()));
         }
 
-        $this->getCommandBus()->handle(
+        $this->command_bus->handle(
             new CreateQuestionCommand(
                 $dto->getId(),
                 $dto->getType(),

@@ -25,39 +25,16 @@ class AsqQuestionCreationGUI
     const CMD_CREATE_QUESTION = 'createQuestion';
     const CMD_CANCEL_CREATION = 'cancelCreation';
 
+    protected AuthoringContextContainer $contextContainer;
 
-    /**
-     * @var AuthoringContextContainer
-     */
-    protected $contextContainer;
+    private ilLanguage $language;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private UIServices $ui;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private ilCtrl $ctrl;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ASQServices $asq;
 
-    /**
-     * @var ASQServices
-     */
-    private $asq;
-
-    /**
-     * @param AuthoringContextContainer $contextContainer
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     * @param ilCtrl $ctrl
-     * @param ASQServices $asq
-     */
     public function __construct(
         AuthoringContextContainer $contextContainer,
         ilLanguage $language,
@@ -72,10 +49,6 @@ class AsqQuestionCreationGUI
         $this->asq = $asq;
     }
 
-
-    /**
-     * Execute Command
-     */
     public function executeCommand() : void
     {
         switch ($this->ctrl->getNextClass()) {
@@ -87,10 +60,6 @@ class AsqQuestionCreationGUI
         }
     }
 
-
-    /**
-     * @return QuestionTypeSelectForm
-     */
     protected function buildCreationForm() : QuestionTypeSelectForm
     {
         $form = new QuestionTypeSelectForm($this->language);
@@ -101,9 +70,6 @@ class AsqQuestionCreationGUI
         return $form;
     }
 
-    /**
-     * @param QuestionTypeSelectForm $form
-     */
     protected function showCreationForm(QuestionTypeSelectForm $form = null) : void
     {
         if ($form === null) {
@@ -113,10 +79,6 @@ class AsqQuestionCreationGUI
         $this->ui->mainTemplate()->setContent($form->getHTML());
     }
 
-
-    /**
-     * @throws Exception
-     */
     protected function createQuestion() : void
     {
         $form = $this->buildCreationForm();

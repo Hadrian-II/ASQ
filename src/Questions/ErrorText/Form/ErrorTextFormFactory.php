@@ -37,17 +37,11 @@ class ErrorTextFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/ErrorText/Form/ErrorTextAuthoring.js' ];
     }
 
-    /**
-     * @return array
-     */
     public function getAnswerOptionConfiguration() : array
     {
         return [ AsqTableInput::OPTION_HIDE_ADD_REMOVE => true ];

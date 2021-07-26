@@ -36,10 +36,6 @@ class OrderingTextFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @param QuestionDto $question
-     * @return QuestionDto
-     */
     public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
     {
         $text_input = $question->getPlayConfiguration()->getEditorConfiguration()->getText();

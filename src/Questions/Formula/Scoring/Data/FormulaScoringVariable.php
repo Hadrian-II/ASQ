@@ -21,32 +21,14 @@ class FormulaScoringVariable extends AbstractValueObject
     const VAR_UNIT = 'fsv_unit';
     const VAR_MULTIPLE_OF = 'fsv_multiple_of';
 
-    /**
-     * @var ?float
-     */
-    protected $min;
+    protected ?float $min;
 
-    /**
-     * @var ?float
-     */
-    protected $max;
+    protected ?float $max;
 
-    /**
-     * @var ?string
-     */
-    protected $unit;
+    protected ?string $unit;
 
-    /**
-     * @var ?float
-     */
-    protected $multiple_of;
+    protected ?float $multiple_of;
 
-    /**
-     * @param ?float $min
-     * @param ?float $max
-     * @param ?string $unit
-     * @param ?float $divisor
-     */
     public function __construct(
         ?float $min,
         ?float $max,
@@ -59,41 +41,26 @@ class FormulaScoringVariable extends AbstractValueObject
         $this->multiple_of = $multiple_of;
     }
 
-    /**
-     * @return ?float
-     */
     public function getMin() : ?float
     {
         return $this->min;
     }
 
-    /**
-     * @return ?float
-     */
     public function getMax() : ?float
     {
         return $this->max;
     }
 
-    /**
-     * @return ?string
-     */
     public function getUnit() : ?string
     {
         return $this->unit;
     }
 
-    /**
-     * @return ?float
-     */
     public function getMultipleOf() : ?float
     {
         return $this->multiple_of;
     }
 
-    /**
-     * @return array
-     */
     public function getAsArray() : array
     {
         return [
@@ -104,10 +71,6 @@ class FormulaScoringVariable extends AbstractValueObject
         ];
     }
 
-    /**
-     * @param array $units
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return !is_null($this->getMax()) &&

@@ -21,7 +21,7 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_POINTS_WRONG = 'ets_points_wrong';
 
     /**
-     * @param $value ErrorTextScoringConfiguration
+     * @param $value ?ErrorTextScoringConfiguration
      * @return array
      */
     public function getFormfields(?AbstractValueObject $value) : array
@@ -43,8 +43,7 @@ class ErrorTextScoringConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
+     * @return ErrorTextScoringConfiguration
      */
     public function readObjectFromPost(array $postvalue) : AbstractValueObject
     {

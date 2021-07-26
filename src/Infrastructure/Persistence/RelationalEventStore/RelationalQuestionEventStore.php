@@ -43,19 +43,10 @@ class RelationalQuestionEventStore implements IEventStore
     const TABLE_NAME_QUESTION_ANSWER_FEEDBACK = 'rqes_afeedback';
     const TABLE_NAME_QUESTION_REVISION = 'rqes_revision';
 
-    /**
-     * @var ilDBInterface
-     */
-    private $db;
+    private ilDBInterface $db;
 
-    /**
-     * @var Factory
-     */
-    private $uuid_factory;
+    private Factory $uuid_factory;
 
-    /**
-     * @var array
-     */
     const GENERIC_HANDLERS = [
         AggregateCreatedEvent::class => AggregateCreatedEventHandler::class,
         AggregateRevisionCreatedEvent::class => AggregateRevisionCreatedEventHandler::class,
@@ -64,29 +55,16 @@ class RelationalQuestionEventStore implements IEventStore
         QuestionHintsSetEvent::class => QuestionHintsSetEventHandler::class
     ];
 
-    /**
-     * @var array
-     */
-    private $handlers = [];
+    private array $handlers = [];
 
-    /**
-     * @var array
-     */
-    private $type_handlers;
+    private array $type_handlers;
 
-    /**
-     * @param ilDBInterface $db
-     */
     public function __construct(ilDBInterface $db)
     {
         $this->db = $db;
         $this->uuid_factory = new Factory();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\CQRS\Event\IEventStore::commit()
-     */
     public function commit(DomainEvents $events): void
     {
         /** @var $event \srag\CQRS\Event\AbstractDomainEvent */
@@ -126,10 +104,6 @@ class RelationalQuestionEventStore implements IEventStore
         }
     }
 
-    /**
-     * @param Uuid $id
-     * @return string
-     */
     private function getQuestionType(Uuid $id) : string
     {
         $res = $this->db->query(
@@ -142,10 +116,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $this->db->fetchAssoc($res)['question_type'];
     }
 
-    /**
-     * @param Uuid $id
-     * @param string $type
-     */
     private function storeQuestionType(Uuid $id, string $type) : void
     {
         $this->db->insert(self::TABLE_NAME_QUESTION_INDEX, [
@@ -159,11 +129,6 @@ class RelationalQuestionEventStore implements IEventStore
         return array_key_exists($event, self::GENERIC_HANDLERS);
     }
 
-    /**
-     * @param string $type
-     * @param string $event_type
-     * @return IEventStorageHandler
-     */
     private function getTypeSpecificHandler(string $type, string $event_type) : IEventStorageHandler
     {
         if (! array_key_exists($type, $this->handlers)) {
@@ -178,9 +143,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $this->handlers[$type][$event_type];
     }
 
-    /**
-     * @return array
-     */
     private function getTypeHandlers() : array
     {
         global $ASQDIC;
@@ -201,10 +163,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $this->type_handlers;
     }
 
-    /**
-     * @param string $type
-     * @return IEventStorageHandler
-     */
     private function getGenericHandler(string $type) : IEventStorageHandler
     {
         if (! array_key_exists($type, $this->handlers)) {
@@ -215,10 +173,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $this->handlers[$type];
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\CQRS\Event\IEventStore::getAggregateHistoryFor()
-     */
     public function getAggregateHistoryFor(Uuid $id): DomainEvents
     {
         $type = $this->getQuestionType($id);
@@ -290,10 +244,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $domain_events;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\CQRS\Event\IEventStore::aggregateExists()
-     */
     public function aggregateExists(Uuid $id): bool
     {
         $sql = sprintf(
@@ -307,10 +257,6 @@ class RelationalQuestionEventStore implements IEventStore
         return $this->db->fetchAssoc($res)['count'] > 0;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\CQRS\Event\IEventStore::getEventStream()
-     */
     public function getEventStream(?string $from_id = null): DomainEvents
     {
 

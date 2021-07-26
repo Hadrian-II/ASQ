@@ -13,23 +13,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class NumericAnswer extends AbstractValueObject
 {
+    protected ?float $value;
 
-    /**
-     * @var ?float
-     */
-    protected $value;
-
-    /**
-     * @param float $value
-     */
     public function __construct(?float $value = null)
     {
         $this->value = $value;
     }
 
-    /**
-     * @return float|NULL
-     */
     public function getValue() : ?float
     {
         return $this->value;

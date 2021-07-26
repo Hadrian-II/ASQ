@@ -54,15 +54,8 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     const SELECT_GAP_FIELD_COUNT = 3;
     const NUMBER_GAP_FIELD_COUNT = 7;
 
-    /**
-     * @var Renderer
-     */
-    private $renderer;
+    private Renderer $renderer;
 
-    /**
-     * @param ilLanguage $language
-     * @param UIServices $ui
-     */
     public function __construct(ilLanguage $language, UIServices $ui, UIService $asq_ui)
     {
         $this->renderer = $ui->renderer();
@@ -70,10 +63,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         parent::__construct($language, $ui, $asq_ui);
     }
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -112,6 +101,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
      *
      * if the old values are changed, reading the generated form from post will insert the correct values
      *
+     * @param array $existing_config
      * @return array
      */
     private function createGapConfigs(array $existing_config) : array
@@ -147,10 +137,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         return $existing_config;
     }
 
-    /**
-     * @param ClozeGapConfiguration $config
-     * @return string
-     */
     private function getGapType(ClozeGapConfiguration $config) : string
     {
         switch (get_class($config)) {
@@ -163,11 +149,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         }
     }
 
-    /**
-     * @param string $type
-     * @param ClozeGapConfiguration $gap
-     * @return Section
-     */
     private function createGapFields(string $type, ?ClozeGapConfiguration $gap = null) : Section
     {
         $gap_type = $this->factory->input()->field()->select(
@@ -255,7 +236,7 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @param NumericGapConfiguration $gap
+     * @param ?NumericGapConfiguration $gap
      * @return Input[]
      */
     private function createNumberGapFields(?NumericGapConfiguration $gap = null) : array
@@ -285,9 +266,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         return $fields;
     }
 
-    /**
-     * @return string
-     */
     private function createTemplates() : string
     {
         return sprintf(
@@ -302,10 +280,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @param string $type
-     * @return Form
-     */
     private function createTemplate(string $type) : string
     {
         $section = $this->createGapFields($type);
@@ -313,9 +287,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         return str_replace('</form', '</div', str_replace('<form', '<div', $this->renderer->render($form)));
     }
 
-    /**
-     * @return array
-     */
     private function getClozeGapItemFieldDefinitions() : array
     {
         return [
@@ -333,10 +304,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         ];
     }
 
-    /**
-     * @param array $postdata
-     * @return ClozeEditorConfiguration
-     */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         return new ClozeEditorConfiguration(
@@ -345,11 +312,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     *
-     * @param array $postdata
-     * @return array
-     */
     private function readGapConfigs(array $postdata) : array
     {
         $i = 1;
@@ -380,10 +342,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         return $gap_configs;
     }
 
-    /**
-     * @param array $postdata
-     * @return NumericGapConfiguration
-     */
     private function readNumericGapConfiguration(array $postdata) : NumericGapConfiguration
     {
         return new NumericGapConfiguration(
@@ -395,10 +353,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @param array $postdata
-     * @return SelectGapConfiguration
-     */
     private function readSelectGapConfiguration(array $postdata) : SelectGapConfiguration
     {
         return new SelectGapConfiguration(
@@ -414,10 +368,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @param array $postdata
-     * @return TextGapConfiguration
-     */
     private function readTextGapConfiguration(array $postdata) : TextGapConfiguration
     {
         return new TextGapConfiguration(
@@ -435,9 +385,6 @@ class ClozeEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @return ClozeEditorConfiguration
-     */
     public function getDefaultValue() : AbstractValueObject
     {
         return new ClozeEditorConfiguration('', []);

@@ -22,9 +22,6 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
  */
 class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         $hints = $event->getHints()->getHints();
@@ -41,19 +38,11 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_HINT .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
         $hints = [];

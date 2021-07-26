@@ -23,10 +23,6 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_TSSD_POINTS = 'tssd_points';
     const VAR_TSSD_TEXT = 'tsdd_text';
 
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [
@@ -35,10 +31,6 @@ class TextSubsetScoringDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

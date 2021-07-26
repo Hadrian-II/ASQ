@@ -23,20 +23,11 @@ class ImageUploader
 
     const BASE_PATH = 'asq/images/%d/%d/';
 
-    /**
-     * @var array
-     */
-    private $request_uploads;
+    private array $request_uploads;
 
-    /**
-     * @var Factory
-     */
-    private $guid_factory;
+    private Factory $guid_factory;
 
-    /**
-     * @var FileUpload
-     */
-    private $upload;
+    private FileUpload $upload;
 
     public function __construct()
     {
@@ -47,9 +38,6 @@ class ImageUploader
         $this->guid_factory = new Factory();
     }
 
-    /**
-     * @return string
-     */
     public function processImage(string $image_key) : ?string
     {
         $target_file = "";
@@ -96,19 +84,11 @@ class ImageUploader
         return null;
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     private function getImagePath(string $filename) : string
     {
         return ILIAS_HTTP_PATH . '/' . ILIAS_WEB_DIR . '/' . CLIENT_ID . '/' . self::processBasePath($filename) . $filename;
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     private function processBasePath(string $filename) : string
     {
         if (strlen($filename) < 2) {

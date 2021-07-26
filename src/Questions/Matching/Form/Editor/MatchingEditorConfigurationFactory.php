@@ -39,10 +39,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     const VAR_MATCH_TERM = 'me_match_term';
     const VAR_MATCH_POINTS = 'me_match_points';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -103,9 +99,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         return $fields;
     }
 
-    /**
-     * @param MatchingEditorConfiguration $config
-     */
     private function createDefinitionsTable(?MatchingEditorConfiguration $config) : AsqTableInput
     {
         $columns = [];
@@ -143,9 +136,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         return $table;
     }
 
-    /**
-     * @param MatchingEditorConfiguration $config
-     */
     private function createTermsTable(?MatchingEditorConfiguration $config) : AsqTableInput
     {
         $columns = [];
@@ -183,10 +173,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         return $table;
     }
 
-    /**
-     * @param MatchingItem[] $items
-     * @return array
-     */
     private function getItemValues(array $items, string $text_name, string $image_name) : array
     {
         return array_map(
@@ -200,9 +186,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @param MatchingEditorConfiguration $config
-     */
     private function createMatchTable(?MatchingEditorConfiguration $config) : AsqTableInput
     {
         $columns = [];
@@ -254,10 +237,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
         return $table;
     }
 
-    /**
-     * @param MatchingEditorConfiguration $config
-     * @return array
-     */
     private function getMatchesValues(MatchingEditorConfiguration $config) : array
     {
         return array_map(
@@ -273,7 +252,6 @@ class MatchingEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @param $postdata array
      * @return MatchingEditorConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject

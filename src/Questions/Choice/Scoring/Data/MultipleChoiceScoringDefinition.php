@@ -14,20 +14,10 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MultipleChoiceScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points_selected;
+    protected ?float $points_selected;
 
-    /**
-     * @var ?float
-     */
-    protected $points_unselected;
+    protected ?float $points_unselected;
 
-    /**
-     * @param float $points_selected
-     * @param float $points_unselected
-     */
     public function __construct(
         ?float $points_selected = null,
         ?float $points_unselected = null)
@@ -36,17 +26,11 @@ class MultipleChoiceScoringDefinition extends AbstractValueObject
         $this->points_unselected = $points_unselected;
     }
 
-    /**
-     * @return int
-     */
     public function getPointsSelected() : ?float
     {
         return $this->points_selected;
     }
 
-    /**
-     * @return int
-     */
     public function getPointsUnselected() : ?float
     {
         return $this->points_unselected;

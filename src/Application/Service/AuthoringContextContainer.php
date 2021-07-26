@@ -18,46 +18,18 @@ use ILIAS\UI\Component\Link\Standard as UiStandardLink;
  */
 class AuthoringContextContainer
 {
-    /**
-     * @var UiStandardLink
-     */
-    private $backLink;
+    private UiStandardLink $backLink;
 
-    /**
-     * @var int
-     */
-    private $refId;
+    private int $refId;
 
-    /**
-     * @var int
-     */
-    private $objId;
+    private int $objId;
 
-    /**
-     * @var string
-     */
-    private $objType;
+    private string $objType;
 
-    /**
-     * @var int
-     */
-    private $actorId;
+    private int $actorId;
 
-    /**
-     * @var ?IAuthoringCaller
-     */
-    private $caller;
+    private ?IAuthoringCaller $caller;
 
-    /**
-     * AuthoringContextContainer constructor.
-     *
-     * @param UiStandardLink $backLink
-     * @param int            $refId
-     * @param int            $objId
-     * @param string         $objType
-     * @param int            $actorId
-     * @param bool           $writeAccess
-     */
     public function __construct(
         UiStandardLink $backLink,
         int $refId,
@@ -74,54 +46,31 @@ class AuthoringContextContainer
         $this->caller = $caller;
     }
 
-
-    /**
-     * @return UiStandardLink
-     */
     public function getBackLink() : UiStandardLink
     {
         return $this->backLink;
     }
 
-
-    /**
-     * @return int
-     */
     public function getRefId() : int
     {
         return $this->refId;
     }
 
-
-    /**
-     * @return int
-     */
     public function getObjId() : int
     {
         return $this->objId;
     }
 
-
-    /**
-     * @return string
-     */
     public function getObjType() : string
     {
         return $this->objType;
     }
 
-
-    /**
-     * @return int
-     */
     public function getActorId() : int
     {
         return $this->actorId;
     }
 
-    /**
-     * @return ?IAuthoringCaller
-     */
     public function getCaller() : ?IAuthoringCaller
     {
         return $this->caller;

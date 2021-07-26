@@ -34,9 +34,6 @@ class KprimChoiceFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getAnswerOptionConfiguration() : array
     {
         return [

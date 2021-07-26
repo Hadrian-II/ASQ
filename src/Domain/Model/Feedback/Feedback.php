@@ -21,23 +21,16 @@ class Feedback extends AbstractValueObject
     const OPT_ANSWER_OPTION_FEEDBACK_MODE_CHECKED = 2;
     const OPT_ANSWER_OPTION_FEEDBACK_MODE_CORRECT = 3;
 
-    /**
-     * @var ?string
-     */
-    protected $answer_correct_feedback;
-    /**
-     * @var ?string
-     */
-    protected $answer_wrong_feedback;
-    /**
-     * @var ?int
-     */
-    protected $answer_option_feedback_mode;
+    protected ?string $answer_correct_feedback;
+
+    protected ?string $answer_wrong_feedback;
+
+    protected ?int $answer_option_feedback_mode;
 
     /**
      * @var string[]
      */
-    protected $answer_option_feedbacks;
+    protected array $answer_option_feedbacks;
 
     public function __construct(
         ?string $answer_correct_feedback = null,
@@ -51,51 +44,31 @@ class Feedback extends AbstractValueObject
         $this->answer_option_feedbacks = $answer_option_feedbacks;
     }
 
-    /**
-     * @return string
-     */
     public function getAnswerCorrectFeedback() : ?string
     {
         return $this->answer_correct_feedback;
     }
 
-    /**
-     * @return string
-     */
     public function getAnswerWrongFeedback() : ?string
     {
         return $this->answer_wrong_feedback;
     }
 
-    /**
-     * @return int
-     */
     public function getAnswerOptionFeedbackMode() : ?int
     {
         return $this->answer_option_feedback_mode;
     }
 
-    /**
-     * @return array
-     */
     public function getAnswerOptionFeedbacks() : array
     {
         return $this->answer_option_feedbacks;
     }
 
-    /**
-     * @param int $option_id
-     * @return bool
-     */
     public function hasAnswerOptionFeedback(string $option_id) : bool
     {
         return array_key_exists($option_id, $this->answer_option_feedbacks);
     }
 
-    /**
-     * @param string $option_id
-     * @return string
-     */
     public function getFeedbackForAnswerOption(string $option_id) : ?string
     {
         return $this->answer_option_feedbacks[$option_id];

@@ -14,12 +14,6 @@ namespace srag\asq\UserInterface\Web\Fields\AsqTableInput;
  */
 trait AsqTablePostTrait
 {
-    /**
-     * @param int $id
-     * @param string $postvar
-     * @param string $definition_postvar
-     * @return string
-     */
     private function getTableItemPostVar(int $id, string $name, string $definition_postvar) : string
     {
         return sprintf('%s_%s_%s', $id, $name, $definition_postvar);

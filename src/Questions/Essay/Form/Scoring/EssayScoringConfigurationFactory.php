@@ -24,10 +24,6 @@ class EssayScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_SCORING_MODE = 'es_scoring_mode';
     const VAR_POINTS = 'es_points';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

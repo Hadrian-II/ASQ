@@ -16,37 +16,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class EssayScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @var ?string;
-     */
-    protected $text;
+    protected ?string $text;
 
-    /**
-     * @param string $text
-     * @param float $points
-     */
     public function __construct(?string $text = null, ?float $points = null)
     {
         $this->points = $points;
         $this->text = $text;
     }
 
-    /**
-     * @return float|NULL
-     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return string|NULL
-     */
     public function getText() : ?string
     {
         return $this->text;

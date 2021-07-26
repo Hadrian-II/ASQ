@@ -24,14 +24,8 @@ class TextSubsetEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @var TextSubsetEditorConfiguration
-     */
-    private $configuration;
+    private TextSubsetEditorConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -39,9 +33,6 @@ class TextSubsetEditor extends AbstractEditor
         parent::__construct($question);
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.TextSubsetEditor.html', true, true);
@@ -62,18 +53,11 @@ class TextSubsetEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @param int $i
-     * @return string
-     */
     private function getPostName(int $i) : string
     {
         return $i . $this->question->getId()->toString();
     }
 
-    /**
-     * @return int
-     */
     private function calculateSize() : int
     {
         $max = 1;
@@ -84,9 +68,6 @@ class TextSubsetEditor extends AbstractEditor
         return $max += 10 - ($max % 10);
     }
 
-    /**
-     * @return ?AbstractValueObject
-     */
     public function readAnswer() : ?AbstractValueObject
     {
         if (!$this->isPostVarSet($this->getPostName(1))) {
@@ -102,9 +83,6 @@ class TextSubsetEditor extends AbstractEditor
         return new TextSubsetAnswer($answer);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (empty($this->configuration->getNumberOfRequestedAnswers())) {

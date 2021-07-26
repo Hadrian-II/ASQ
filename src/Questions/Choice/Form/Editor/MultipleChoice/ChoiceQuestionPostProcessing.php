@@ -19,10 +19,6 @@ use ILIAS\UI\Implementation\Component\Input\Field\MarkDownInputImageProcessor;
  */
 trait ChoiceQuestionPostProcessing
 {
-    /**
-     * @param QuestionDto $question
-     * @return QuestionDto
-     */
     public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
     {
         // strip image when multiline is selected

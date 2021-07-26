@@ -44,10 +44,7 @@ class SetupRQES
         SetupTextSubset::class
     ];
 
-    /**
-     * @var ilDBInterface
-     */
-    private $db;
+    private ilDBInterface $db;
 
     public function __construct(ilDBInterface $db)
     {

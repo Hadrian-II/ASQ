@@ -24,10 +24,6 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
 
     const ZERO_BY_DEFAULT = 0;
 
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [
@@ -35,10 +31,6 @@ class SingleChoiceScoringDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

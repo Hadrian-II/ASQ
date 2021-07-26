@@ -27,10 +27,6 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
     const STR_TRUE = "true";
     const STR_FALSE = "false";
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -66,8 +62,8 @@ class SingleChoiceEditorConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
+     * @param array $postvalue
+     * @return MultipleChoiceEditorConfiguration
      */
     public function readObjectFromPost(array $postvalue) : AbstractValueObject
     {

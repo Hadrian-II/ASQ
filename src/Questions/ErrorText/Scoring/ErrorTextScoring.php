@@ -18,10 +18,6 @@ use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringDefinition;
  */
 class ErrorTextScoring extends AbstractScoring
 {
-    /**
-     * {@inheritdoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::score()
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0.0;
@@ -67,10 +63,6 @@ class ErrorTextScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * {@inheritdoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         $max_score = 0.0;
@@ -84,10 +76,6 @@ class ErrorTextScoring extends AbstractScoring
         return $max_score;
     }
 
-    /**
-     * {@inheritdoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::getBestAnswer()
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         $selected_word_indexes = [];
@@ -104,9 +92,6 @@ class ErrorTextScoring extends AbstractScoring
         return new ErrorTextAnswer($selected_word_indexes);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         /** @var ErrorTextScoringConfiguration $config */

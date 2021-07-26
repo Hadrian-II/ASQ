@@ -20,10 +20,6 @@ class OrderingTextEditorConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_ORDERING_TEXT = "ote_text";
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

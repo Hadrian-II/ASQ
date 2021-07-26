@@ -26,9 +26,6 @@ class MatchingEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         parent::__construct($question);
@@ -39,10 +36,6 @@ class MatchingEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/Matching/Editor/MatchingEditor.js';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::readAnswer()
-     */
     public function readAnswer() : ?AbstractValueObject
     {
         if (!$this->isPostVarSet($this->question->getId()->toString())) {
@@ -58,10 +51,6 @@ class MatchingEditor extends AbstractEditor
         return new MatchingAnswer($matches);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Component\Editor\AbstractEditor::generateHtml()
-     */
     public function generateHtml() : string
     {
         /** @var MatchingEditorConfiguration $config */
@@ -79,10 +68,6 @@ class MatchingEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * @param config
-     * @param tpl
-     */
     private function renderTerms($config, $tpl)
     {
         foreach ($config->getTerms() as $term) {
@@ -103,10 +88,6 @@ class MatchingEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @param config
-     * @param tpl
-     */
     private function renderDefinitions($config, $tpl)
     {
         foreach ($config->getDefinitions() as $definition) {
@@ -127,9 +108,6 @@ class MatchingEditor extends AbstractEditor
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         /** @var MatchingEditorConfiguration $config */

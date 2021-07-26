@@ -23,10 +23,6 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
 
     const CHECKED = 'checked';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -52,7 +48,6 @@ class FileUploadScoringConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @param $postdata array
      * @return FileUploadScoringConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject

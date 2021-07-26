@@ -30,7 +30,7 @@ class QuestionDataFormFactory extends AbstractObjectFactory
     /**
      * Gets field definition to display in QuestionFormGUI
      *
-     * @param $values QuestionData
+     * @param $value ?QuestionData
      * @return array
      */
     public function getFormfields(?AbstractValueObject $value) : array
@@ -87,10 +87,6 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         return $fields;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\UserInterface\Web\Form\Factory\IObjectFactory::readObjectFromPost()
-     */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
         $processor = new MarkDownInputImageProcessor($postdata[self::VAR_QUESTION]);
@@ -106,9 +102,6 @@ class QuestionDataFormFactory extends AbstractObjectFactory
         );
     }
 
-    /**
-     * @return AbstractValueObject
-     */
     public function getDefaultValue() : AbstractValueObject
     {
         return new QuestionData();

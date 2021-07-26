@@ -17,19 +17,13 @@ class TextSubsetAnswer extends AbstractValueObject
     /**
      * @var ?int[]
      */
-    protected $answers;
+    protected ?array $answers;
 
-    /**
-     * @param array $answers
-     */
     public function __construct(?array $answers = [])
     {
         $this->answers = $answers;
     }
 
-    /**
-     * @return ?array
-     */
     public function getAnswers() : ?array
     {
         return $this->answers;

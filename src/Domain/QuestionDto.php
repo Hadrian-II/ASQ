@@ -29,65 +29,28 @@ class QuestionDto implements JsonSerializable
 {
     const IL_COMPONENT_ID = 'asq';
 
-    /**
-     *
-     * @var Uuid
-     */
-    private $id;
+    private Uuid $id;
 
-    /**
-     *
-     * @var QuestionType
-     */
-    private $type;
+    private QuestionType $type;
 
-    /**
-     *
-     * @var ?RevisionId
-     */
-    private $revision_id;
+    private ?RevisionId $revision_id;
 
-    /**
-     *
-     * @var ?QuestionData
-     */
-    private $data;
+    private ?QuestionData $data;
 
-    /**
-     *
-     * @var ?QuestionPlayConfiguration
-     */
-    private $play_configuration;
+    private ?QuestionPlayConfiguration $play_configuration;
 
     /**
      *
      * @var ?AnswerOption[]
      */
-    private $answer_options;
+    private ?array $answer_options;
 
-    /**
-     *
-     * @var ?Feedback
-     */
-    private $feedback;
+    private ?Feedback $feedback;
 
-    /**
-     *
-     * @var ?QuestionHints
-     */
-    private $question_hints;
+    private ?QuestionHints $question_hints;
 
-    /**
-     * @var bool
-     */
-    private $has_unrevisioned_changes;
+    private bool $has_unrevisioned_changes;
 
-    /**
-     *
-     * @param Question $question
-     *
-     * @return QuestionDto
-     */
     public static function CreateFromQuestion(Question $question, QuestionType $type) : QuestionDto
     {
         $dto = new QuestionDto();
@@ -102,57 +65,31 @@ class QuestionDto implements JsonSerializable
 
         $dto->feedback = $question->getFeedback();
         $dto->question_hints = $question->getHints();
-        $dto->has_unrevisioned_changes = $question->hasUnrevisionedChanges();
+        $dto->has_unrevisioned_changes = $question->hasUnrevisedChanges();
 
         return $dto;
     }
 
-    /**
-     *
-     * @return Uuid
-     */
     public function getId() : Uuid
     {
         return $this->id;
     }
 
-    /**
-     * @param Uuid $id
-     */
     public function setId(Uuid $id) : void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return int
-     */
     public function getType() : QuestionType
     {
         return $this->type;
     }
 
-    /**
-     * @param QuestionType $type
-     */
     public function setType(QuestionType $type) : void
     {
         $this->type = $type;
     }
 
-    /**
-     *
-     * @param bool $complete
-     */
-    public function setComplete(bool $complete) : void
-    {
-        $this->complete = $complete;
-    }
-
-    /**
-     *
-     * @return bool
-     */
     public function isComplete() : bool
     {
         if (is_null($this->data) ||
@@ -173,46 +110,26 @@ class QuestionDto implements JsonSerializable
                $scoring->isComplete();
     }
 
-    /**
-     *
-     * @return string
-     */
     public function getRevisionId() : ?RevisionId
     {
         return $this->revision_id;
     }
 
-    /**
-     *
-     * @return QuestionData
-     */
     public function getData() : ?QuestionData
     {
         return $this->data;
     }
 
-    /**
-     *
-     * @param QuestionData $data
-     */
     public function setData(?QuestionData $data) : void
     {
         $this->data = $data;
     }
 
-    /**
-     *
-     * @return QuestionPlayConfiguration
-     */
     public function getPlayConfiguration() : ?QuestionPlayConfiguration
     {
         return $this->play_configuration;
     }
 
-    /**
-     *
-     * @param QuestionPlayConfiguration $play_configuration
-     */
     public function setPlayConfiguration(?QuestionPlayConfiguration $play_configuration) : void
     {
         $this->play_configuration = $play_configuration;
@@ -223,89 +140,52 @@ class QuestionDto implements JsonSerializable
         return !is_null($this->answer_options) && count($this->answer_options) > 0;
     }
 
-    /**
-     *
-     * @return AnswerOption[]
-     */
     public function getAnswerOptions() : ?array
     {
         return $this->answer_options;
     }
 
-    /**
-     *
-     * @param ?AnswerOption[] $answer_options
-     */
     public function setAnswerOptions(?array $answer_options) : void
     {
         $this->answer_options = $answer_options;
     }
 
-    /**
-     * @return bool
-     */
     public function hasFeedback() : bool
     {
         return !is_null($this->feedback);
     }
 
-    /**
-     *
-     * @return Feedback
-     */
     public function getFeedback() : ?Feedback
     {
         return $this->feedback;
     }
 
-    /**
-     *
-     * @param Feedback $feedback
-     */
     public function setFeedback(?Feedback $feedback) : void
     {
         $this->feedback = $feedback;
     }
 
-    /**
-     * @return bool
-     */
     public function hasHints() : bool
     {
         return !is_null($this->question_hints) && count($this->question_hints->getHints()) > 0;
     }
 
-    /**
-     *
-     * @return QuestionHints
-     */
     public function getQuestionHints() : ?QuestionHints
     {
         return $this->question_hints;
     }
 
-    /**
-     *
-     * @param QuestionHints $question_hints
-     */
     public function setQuestionHints(?QuestionHints $question_hints) : void
     {
         $this->question_hints = $question_hints;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasUnrevisionedChanges() : bool
+    public function hasUnrevisedChanges() : bool
     {
         return $this->has_unrevisioned_changes;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see JsonSerializable::jsonSerialize()
-     */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         $vars = get_object_vars($this);
         $vars['type'] = $this->getType()->serialize();
@@ -313,17 +193,13 @@ class QuestionDto implements JsonSerializable
         return $vars;
     }
 
-    /**
-     * @param string $json_data
-     * @return QuestionDto
-     */
     public static function deserialize(string $json_data) : QuestionDto
     {
         $data = json_decode($json_data, true);
-        $facory = new Factory();
+        $factory = new Factory();
 
         $object = new QuestionDto();
-        $object->id = $facory->fromString($data['id']);
+        $object->id = $factory->fromString($data['id']);
         $object->type = QuestionType::deserialize($data['type']);
         $object->answer_options = AbstractValueObject::createFromArray($data['answer_options']);
         $object->data = QuestionData::createFromArray($data['data']);

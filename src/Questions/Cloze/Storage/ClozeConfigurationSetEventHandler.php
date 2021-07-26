@@ -33,9 +33,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
     const DEFAULT_GAP = -1;
 
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $cloze_config ClozeEditorConfiguration */
@@ -53,10 +50,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * @param ClozeGapConfiguration $gap
-     * @param int $cloze_id
-     */
     private function storeGap(ClozeGapConfiguration $gap, int $cloze_id) : void
     {
         switch (get_class($gap)) {
@@ -72,10 +65,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * @param TextGapConfiguration $gap
-     * @param int $cloze_id
-     */
     private function storeTextGap(TextGapConfiguration $gap, int $cloze_id) : void
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
@@ -90,10 +79,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         $this->storeGapItems($gap->getItems(), $gap_id);
     }
 
-    /**
-     * @param SelectGapConfiguration $gap
-     * @param int $cloze_id
-     */
     private function storeSelectGap(SelectGapConfiguration $gap, int $cloze_id) : void
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
@@ -121,10 +106,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * @param NumericGapConfiguration $gap
-     * @param int $cloze_id
-     */
     private function storeNumericGap(NumericGapConfiguration $gap, int $cloze_id) : void
     {
         $gap_id = intval($this->db->nextId(SetupCloze::TABLENAME_CLOZE_GAP));
@@ -140,10 +121,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupCloze::TABLENAME_CLOZE_CONFIGURATION .' c
@@ -152,10 +129,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
                  where c.event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $items = [];
@@ -200,19 +173,11 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         );
     }
 
-    /**
-     * @param array $gap
-     * @return SelectGapConfiguration
-     */
     private function createSelectGap(array $gap) : SelectGapConfiguration
     {
         return new SelectGapConfiguration($this->createGapItems($gap));
     }
 
-    /**
-     * @param array $gap
-     * @return TextGapConfiguration
-     */
     private function createTextGap(array $gap) : TextGapConfiguration
     {
         $data = reset($gap);
@@ -223,10 +188,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
             $this->readInt($data['text_match_method']));
     }
 
-    /**
-     * @param array $gap_items
-     * @return array
-     */
     private function createGapItems(array $gap_items) : array
     {
         return array_map(function($item) {
@@ -234,10 +195,6 @@ class ClozeConfigurationSetEventHandler extends AbstractEventStorageHandler
         }, $gap_items);
     }
 
-    /**
-     * @param array $gap
-     * @return NumericGapConfiguration
-     */
     private function createNumericGap(array $gap) : NumericGapConfiguration
     {
         $data = reset($gap);

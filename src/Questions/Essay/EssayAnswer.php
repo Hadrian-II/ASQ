@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class EssayAnswer extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $text;
+    protected ?string $text;
 
-    /**
-     * @param string $text
-     */
     public function __construct(?string $text = null)
     {
         $this->text = $text;
     }
 
-    /**
-     * @return ?string
-     */
     public function getText() : ?string
     {
         return $this->text;

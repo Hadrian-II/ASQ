@@ -20,35 +20,17 @@ abstract class AbstractScoring implements IAsqQuestionScoring
 {
     const BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR = 'Best Answer generation impossible for this Question';
 
-    /**
-     * @var QuestionDto
-     */
-    protected $question;
+    protected QuestionDto $question;
 
-    /**
-     * @var float
-     */
-    protected $max_score;
+    protected float $max_score;
 
-    /**
-     * @var float
-     */
-    protected $min_score;
+    protected float $min_score;
 
-    /**
-     * AbstractScoring constructor.
-     *
-     * @param QuestionDto $question
-     * @param array       $configuration
-     */
     public function __construct(QuestionDto $question)
     {
         $this->question = $question;
     }
 
-    /**
-     * @return float
-     */
     public function getMaxScore() : float
     {
         if (is_null($this->max_score)) {
@@ -58,14 +40,8 @@ abstract class AbstractScoring implements IAsqQuestionScoring
         return $this->max_score;
     }
 
-    /**
-     * @return float
-     */
     abstract protected function calculateMaxScore() : float;
 
-    /**
-     * @return float
-     */
     public function getMinScore() : float
     {
         if (is_null($this->max_score)) {
@@ -75,17 +51,11 @@ abstract class AbstractScoring implements IAsqQuestionScoring
         return $this->max_score;
     }
 
-    /**
-     * @return float
-     */
     protected function calculateMinScore() : float
     {
         return $this->calculateMaxHintDeduction();
     }
 
-    /**
-     * @return float
-     */
     protected function calculateMaxHintDeduction() : float
     {
         if ($this->question->hasHints()) {
@@ -97,14 +67,10 @@ abstract class AbstractScoring implements IAsqQuestionScoring
         }
     }
 
-    /**
-     * @param AbstractValueObject $answer
-     * @return int
-     */
     public function getAnswerFeedbackType(AbstractValueObject $answer) : int
     {
         if ($this->getMaxScore() < PHP_FLOAT_EPSILON) {
-            return self::ANSWER_CORRECTNESS_NOT_DETERMINABLLE;
+            return self::ANSWER_CORRECTNESS_NOT_DETERMINABLE;
         } elseif (abs($this->score($answer) - $this->getMaxScore()) < PHP_FLOAT_EPSILON) {
             return self::ANSWER_CORRECT;
         } else {

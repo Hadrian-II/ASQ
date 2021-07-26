@@ -22,10 +22,6 @@ class Renderer extends AbstractComponentRenderer
 {
     use PathHelper;
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.ImageMapEditorFormPopUp.html', true, true);
@@ -36,7 +32,7 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [ImageFormPopup::class];
     }

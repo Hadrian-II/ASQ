@@ -16,24 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class NumericScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points;
-    /**
-     * @var ?float
-     */
-    protected $lower_bound;
-    /**
-     * @var ?float
-     */
-    protected $upper_bound;
+    protected ?float $points;
 
-    /**
-     * @param float $points
-     * @param float $lower_bound
-     * @param float $upper_bound
-     */
+    protected ?float $lower_bound;
+
+    protected ?float $upper_bound;
+
     public function __construct(
         ?float $points = null,
         ?float $lower_bound = null,
@@ -44,25 +32,16 @@ class NumericScoringConfiguration extends AbstractValueObject
         $this->upper_bound = $upper_bound;
     }
 
-    /**
-     * @return float|NULL
-     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return float|NULL
-     */
     public function getLowerBound() : ?float
     {
         return $this->lower_bound;
     }
 
-    /**
-     * @return float|NULL
-     */
     public function getUpperBound() : ?float
     {
         return $this->upper_bound;

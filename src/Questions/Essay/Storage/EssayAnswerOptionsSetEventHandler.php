@@ -22,9 +22,6 @@ use srag\asq\Questions\Essay\Scoring\Data\EssayScoringDefinition;
  */
 class EssayAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $answer_options AnswerOption[] */
@@ -43,20 +40,11 @@ class EssayAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupEssay::TABLENAME_ESSAY_ANSWER . ' where event_id in(%s)';
     }
 
-    /**
-     *
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $id = 1;

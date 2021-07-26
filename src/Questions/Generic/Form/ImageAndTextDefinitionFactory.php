@@ -23,10 +23,6 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_MCDD_TEXT = 'mcdd_text';
     const VAR_MCDD_IMAGE = 'mcdd_image';
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $columns = [];
@@ -47,8 +43,7 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
     }
 
     /**
-     * @param array $values
-     * @return AbstractValueObject
+     * @return ImageAndTextDisplayDefinition
      */
     public function readObjectFromValues(array $values) : AbstractValueObject
     {
@@ -58,6 +53,9 @@ class ImageAndTextDefinitionFactory extends AbstractAnswerOptionFactory
         );
     }
 
+    /**
+     * @return ImageAndTextDisplayDefinition
+     */
     public function getDefaultValue() : AbstractValueObject
     {
         return new ImageAndTextDisplayDefinition();

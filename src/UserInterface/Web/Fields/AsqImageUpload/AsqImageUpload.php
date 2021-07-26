@@ -19,41 +19,22 @@ use srag\asq\UserInterface\Web\ImageUploader;
  */
 class AsqImageUpload extends Input
 {
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
-     */
     protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::getConstraintForRequirement()
-     */
     protected function getConstraintForRequirement()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
-     */
     public function getUpdateOnLoadCode() : Closure
     {
-        return null;
+        return function() {};
     }
 
-    //TODO stole from base Input
-    /**
-     * Collects the input, applies trafos on the input and returns
-     * a new input reflecting the data that was putted in.
-     *
-     * @inheritdoc
-     */
-    public function withInput(InputData $input)
+    public function withInput(InputData $input) : AsqImageUpload
     {
         if ($this->getName() === null) {
             throw new \LogicException("Can only collect if input has a name.");
@@ -81,9 +62,6 @@ class AsqImageUpload extends Input
         return $clone;
     }
 
-    /**
-     * @return string
-     */
     public function readValue(InputData $input) : ?string
     {
         $image_uploader = new ImageUploader();

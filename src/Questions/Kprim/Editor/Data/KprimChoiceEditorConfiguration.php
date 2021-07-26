@@ -16,29 +16,14 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class KprimChoiceEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?bool
-     */
-    protected $shuffle_answers;
-    /**
-     * @var ?int
-     */
-    protected $thumbnail_size;
-    /**
-     * @var ?string
-     */
-    protected $label_true;
-    /**
-     * @var ?string
-     */
-    protected $label_false;
+    protected ?bool $shuffle_answers;
 
-    /**
-     * @param bool $shuffle_answers
-     * @param int $thumbnail_size
-     * @param string $label_true
-     * @param string $label_false
-     */
+    protected ?int $thumbnail_size;
+
+    protected ?string $label_true;
+
+    protected ?string $label_false;
+
     public function __construct(
         ?bool $shuffle_answers = null,
         ?int $thumbnail_size = null,
@@ -51,33 +36,21 @@ class KprimChoiceEditorConfiguration extends AbstractValueObject
         $this->label_false = $label_false;
     }
 
-    /**
-     * @return boolean
-     */
     public function isShuffleAnswers() : ?bool
     {
         return $this->shuffle_answers;
     }
 
-    /**
-     * @return number
-     */
     public function getThumbnailSize() : ?int
     {
         return $this->thumbnail_size;
     }
 
-    /**
-     * @return string
-     */
     public function getLabelTrue() : ?string
     {
         return $this->label_true;
     }
 
-    /**
-     * @return string
-     */
     public function getLabelFalse() : ?string
     {
         return $this->label_false;

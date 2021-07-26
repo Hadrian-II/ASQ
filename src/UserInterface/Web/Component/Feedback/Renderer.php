@@ -27,12 +27,6 @@ class Renderer extends AbstractComponentRenderer
     const CSS_CLASS_FEEDBACK_TYPE_CORRECT = 'ilc_qfeedr_FeedbackRight';
     const CSS_CLASS_FEEDBACK_TYPE_WRONG = 'ilc_qfeedw_FeedbackWrong';
 
-    const FEEDBACK_FOCUS_ANCHOR = 'focus';
-
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Render\ComponentRenderer::render()
-     */
     public function render(Component $component, RendererInterface $default_renderer) : string
     {
         switch (get_class($component)) {
@@ -43,10 +37,6 @@ class Renderer extends AbstractComponentRenderer
         }
     }
 
-    /**
-     * @param FeedbackComponent $component
-     * @return string
-     */
     private function renderFeedback(FeedbackComponent $component, RendererInterface $default_renderer) : string
     {
         $scoring_component = new ScoringComponent($component->getQuestion(), $component->getAnswer());
@@ -69,10 +59,6 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    /**
-     * @param AnswerFeedbackComponent $component
-     * @return string
-     */
     private function renderAnswerFeedback(AnswerFeedbackComponent $component) : string
     {
         $scoring_class = $component->getQuestion()->getType()->getScoringClass();
@@ -102,7 +88,7 @@ class Renderer extends AbstractComponentRenderer
         return $tpl->get();
     }
 
-    protected function getComponentInterfaceName()
+    protected function getComponentInterfaceName() : array
     {
         return [
             FeedbackComponent::class,

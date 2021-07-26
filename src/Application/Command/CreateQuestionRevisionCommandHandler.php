@@ -28,7 +28,6 @@ use ILIAS\Data\Result\Ok;
  */
 class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
 {
-
     /**
      * @param CreateQuestionRevisionCommand $command
      */
@@ -45,7 +44,6 @@ class CreateQuestionRevisionCommandHandler implements CommandHandlerContract
                )
             ));
         }
-
 
         $repo = new QuestionRepository();
         $question = $repo->getAggregateRootById($command->getQuestionId());

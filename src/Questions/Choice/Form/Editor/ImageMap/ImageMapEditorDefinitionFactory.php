@@ -24,10 +24,6 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
     const VAR_TYPE = 'imedd_type';
     const VAR_COORDINATES = 'imedd_coordinates';
 
-    /**
-     * @param AbstractValueObject $definition
-     * @return array
-     */
     public function getValues(AbstractValueObject $definition) : array
     {
         return [
@@ -37,10 +33,6 @@ class ImageMapEditorDefinitionFactory extends AbstractAnswerOptionFactory
         ];
     }
 
-    /**
-     * @param QuestionPlayConfiguration $play
-     * @return array
-     */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array
     {
         $fields = [];

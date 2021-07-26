@@ -19,19 +19,13 @@ class OrderingAnswer extends AbstractValueObject
     /**
      * @var ?int[]
      */
-    protected $selected_order;
+    protected ?array $selected_order;
 
-    /**
-     * @param array $selected_order
-     */
     public function __construct(?array $selected_order = [])
     {
         $this->selected_order = $selected_order;
     }
 
-    /**
-     * @return \srag\asq\Questions\Ordering\?int[]
-     */
     public function getSelectedOrder() : ?array
     {
         return $this->selected_order;

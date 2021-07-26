@@ -22,10 +22,6 @@ class NumericScoringConfigurationFactory extends AbstractObjectFactory
     const VAR_LOWER_BOUND = 'ns_lower_bound';
     const VAR_UPPER_BOUND = 'ns_upper_bound';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

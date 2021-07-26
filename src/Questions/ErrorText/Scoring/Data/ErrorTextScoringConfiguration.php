@@ -16,19 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ErrorTextScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points_wrong;
+    protected ?float $points_wrong;
 
     public function __construct(?float $points_wrong = null)
     {
         $this->points_wrong = $points_wrong;
     }
 
-    /**
-     * @return int
-     */
     public function getPointsWrong() : ?float
     {
         return $this->points_wrong;

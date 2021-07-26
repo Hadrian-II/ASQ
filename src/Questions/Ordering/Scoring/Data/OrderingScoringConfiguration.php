@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class OrderingScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @param float $points
-     */
     public function __construct(?float $points = null)
     {
         $this->points = $points;
     }
 
-    /**
-     * @return ?float
-     */
     public function getPoints() : ?float
     {
         return $this->points;

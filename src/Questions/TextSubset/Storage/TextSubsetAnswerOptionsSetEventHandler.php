@@ -22,9 +22,6 @@ use srag\asq\Questions\TextSubset\Scoring\Data\TextSubsetScoringDefinition;
  */
 class TextSubsetAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $answer_options AnswerOption[] */
@@ -41,19 +38,11 @@ class TextSubsetAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupTextSubset::TABLENAME_TEXT_SUBSET_ANSWER . ' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows): DomainEvent
     {
         $id = 1;

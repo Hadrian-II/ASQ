@@ -20,10 +20,6 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_POINTS = 'os_points';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];
@@ -42,7 +38,7 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
 
     /**
      * @param $postdata array
-     * @return OrderingScoringConfigurationFactory
+     * @return OrderingScoringConfiguration
      */
     public function readObjectFromPost(array $postdata) : AbstractValueObject
     {
@@ -50,7 +46,7 @@ class OrderingScoringConfigurationFactory extends AbstractObjectFactory
     }
 
     /**
-     * @return OrderingScoringConfigurationFactory
+     * @return OrderingScoringConfiguration
      */
     public function getDefaultValue() : AbstractValueObject
     {

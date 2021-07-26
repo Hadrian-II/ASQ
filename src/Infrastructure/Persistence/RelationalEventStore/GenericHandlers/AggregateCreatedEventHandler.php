@@ -21,9 +21,6 @@ use srag\asq\Domain\Model\Question;
  */
 class AggregateCreatedEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         $id = $this->db->nextId(RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED);
@@ -34,19 +31,11 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_CREATED .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
         return new AggregateCreatedEvent(

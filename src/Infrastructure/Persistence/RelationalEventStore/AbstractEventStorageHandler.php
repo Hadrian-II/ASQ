@@ -21,15 +21,9 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
 {
     use InputHandlingTrait;
 
-    /**
-     * @var ilDBInterface
-     */
-    protected $db;
+    protected ilDBInterface $db;
 
-    /**
-     * @var Factory
-     */
-    protected $factory;
+    protected Factory $factory;
 
     public function __construct(ilDBInterface $db)
     {
@@ -38,10 +32,6 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
         $this->factory = new Factory();
     }
 
-    /**
-     * @param array $data
-     * @return DomainEvent[]
-     */
     public function loadEvents(array $data) : array
     {
         $res = $this->db->query(
@@ -58,15 +48,8 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
             $rows);
     }
 
-    /**
-     * @return string
-     */
     abstract function getQueryString() : string;
 
-    /**
-     * @param array $data
-     * @return string
-     */
     protected function getEventIds(array $data) : string
     {
         return implode(
@@ -81,11 +64,6 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
         );
     }
 
-    /**
-     * @param array $data
-     * @param array $rows
-     * @return array
-     */
     protected function mapDataAndRows(array $data, array $rows) : array
     {
         return array_map(
@@ -103,10 +81,5 @@ abstract class AbstractEventStorageHandler implements IEventStorageHandler
         );
     }
 
-    /**
-     * @param array $data
-     * @param array $rows
-     * @return DomainEvent
-     */
     abstract function createEvent(array $data, array $rows) : DomainEvent;
 }

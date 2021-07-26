@@ -27,16 +27,10 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
     /**
      * @var QuestionType[]
      */
-    private $question_types;
+    private array $question_types;
 
-    /**
-     * @var ilLanguage
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * QuestionTypeSelectForm constructor.
-     */
     public function __construct(ilLanguage $language)
     {
         $this->language = $language;
@@ -74,9 +68,6 @@ class QuestionTypeSelectForm extends ilPropertyFormGUI
         $this->addItem($select);
     }
 
-    /**
-     * @return QuestionType
-     */
     public function getQuestionType() : QuestionType
     {
         return $this->question_types[intval($this->getPostValue(self::VAR_QUESTION_TYPE))];

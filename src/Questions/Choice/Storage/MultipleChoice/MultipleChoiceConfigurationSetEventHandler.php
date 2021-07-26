@@ -22,9 +22,6 @@ use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringConfiguration;
  */
 class MultipleChoiceConfigurationSetEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param DomainEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $choice_config MultipleChoiceEditorConfiguration */
@@ -41,10 +38,6 @@ class MultipleChoiceConfigurationSetEventHandler extends AbstractEventStorageHan
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString(): string
     {
         return 'select * from ' . SetupMultipleChoice::TABLENAME_MULTIPLE_CHOICE_CONFIGURATION .' where event_id in(%s)';

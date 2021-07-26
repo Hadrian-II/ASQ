@@ -14,37 +14,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class TextSubsetScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @var ?string
-     */
-    protected $text;
+    protected ?string $text;
 
-    /**
-     * @param float $points
-     * @param string $text
-     */
     public function __construct(?float $points = null, ?string $text = null)
     {
         $this->points = $points;
         $this->text = $text;
     }
 
-    /**
-     * @return int
-     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return string
-     */
     public function getText() : ?string
     {
         return $this->text;

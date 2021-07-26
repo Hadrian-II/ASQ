@@ -18,26 +18,12 @@ use srag\asq\Questions\Essay\Scoring\EssayScoring;
  */
 class EssayScoringConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $matching_mode;
+    protected ?int $matching_mode;
 
-    /**
-     * @var ?int
-     */
-    protected $scoring_mode;
+    protected ?int $scoring_mode;
 
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @param int $matching_mode
-     * @param int $scoring_mode
-     * @param float $points
-     */
     public function __construct(
         ?int $matching_mode = TextScoring::TM_CASE_INSENSITIVE,
         ?int $scoring_mode = EssayScoring::SCORING_MANUAL,
@@ -48,25 +34,16 @@ class EssayScoringConfiguration extends AbstractValueObject
         $this->points = $points;
     }
 
-    /**
-     * @return ?int
-     */
     public function getMatchingMode() : ?int
     {
         return $this->matching_mode;
     }
 
-    /**
-     * @return ?int
-     */
     public function getScoringMode() : ?int
     {
         return $this->scoring_mode;
     }
 
-    /**
-     * @return ?float
-     */
     public function getPoints() : ?float
     {
         return $this->points;

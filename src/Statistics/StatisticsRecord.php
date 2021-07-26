@@ -84,14 +84,6 @@ class StatisticsRecord extends ActiveRecord
      */
     protected $timestamp;
 
-    /**
-     * @param string $question_id
-     * @param string $question_version
-     * @param string $context
-     * @param int $user
-     * @param float $points
-     * @param int $timestamp
-     */
     public function __construct(
         string $question_id,
         string $question_version,
@@ -110,58 +102,37 @@ class StatisticsRecord extends ActiveRecord
         $this->timestamp = $timestamp->getUnixTime();
     }
 
-    /**
-     * @return int
-     */
     public function getId() : int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getQuestionId() : string
     {
         return $this->question_id;
     }
 
-    /**
-     * @return string
-     */
     public function getContext() : string
     {
         return $this->context;
     }
 
-    /**
-     * @return int
-     */
     public function getUserId() : int
     {
         return $this->user_id;
     }
 
-    /**
-     * @return float
-     */
     public function getPoints() : float
     {
         return $this->points;
     }
 
-    /**
-     * @return ilDateTime
-     */
     public function getTimestamp() : ilDateTime
     {
         return new ilDateTime($this->timestamp, IL_CAL_UNIX);
     }
 
-    /**
-     * @return string
-     */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::STORAGE_NAME;
     }

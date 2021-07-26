@@ -34,23 +34,12 @@ class AsqTableInput extends Input
     /**
      * @var AsqTableInputFieldDefinition[]
      */
-    private $definitions;
+    private array $definitions;
 
-    /**
-     * @var array
-     */
-    private $options;
+    private array $options;
 
-    /**
-     * @var ImageUploader
-     */
-    private $uploader;
+    private ImageUploader $uploader;
 
-    /**
-     * @param string $label
-     * @param array $definitions
-     * @param string $byline
-     */
     public function __construct(
         string $label,
         array $definitions,
@@ -73,10 +62,6 @@ class AsqTableInput extends Input
         parent::__construct($data_factory, $factory, $label, $byline);
     }
 
-    /**
-     * @param array $options
-     * @return AsqTableInput
-     */
     public function withOptions(array $options) : AsqTableInput
     {
         $clone = clone $this;
@@ -89,9 +74,6 @@ class AsqTableInput extends Input
         return $clone;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions() : array
     {
         return $this->options;
@@ -105,41 +87,22 @@ class AsqTableInput extends Input
         return $this->definitions;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::isClientSideValueOk()
-     */
     protected function isClientSideValueOk($value) : bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Implementation\Component\Input\Field\Input::getConstraintForRequirement()
-     */
     protected function getConstraintForRequirement()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \ILIAS\UI\Component\Input\Field\FormInput::getUpdateOnLoadCode()
-     */
     public function getUpdateOnLoadCode() : Closure
     {
-        return null;
+        return function() {};
     }
 
-    //TODO stole from base Input
-    /**
-     * Collects the input, applies trafos on the input and returns
-     * a new input reflecting the data that was putted in.
-     *
-     * @inheritdoc
-     */
-    public function withInput(InputData $input)
+    public function withInput(InputData $input) : AsqTableInput
     {
         if ($this->getName() === null) {
             throw new \LogicException("Can only collect if input has a name.");
@@ -167,9 +130,6 @@ class AsqTableInput extends Input
         return $clone;
     }
 
-    /**
-     * @return array
-     */
     public function readValues(InputData $input) : array
     {
         $values = [];
@@ -205,9 +165,6 @@ class AsqTableInput extends Input
         return $values;
     }
 
-    /**
-     * @return ImageUploader
-     */
     private function getUploader() : ImageUploader
     {
         if (is_null($this->uploader)) {

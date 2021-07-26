@@ -14,14 +14,8 @@ namespace srag\asq\UserInterface\Web;
  */
 trait PostAccess
 {
-    /**
-     * @var array
-     */
-    private $post;
+    private array $post;
 
-    /**
-     * @return array
-     */
     private function getPost() : array
     {
         if (is_null($this->post)) {
@@ -33,19 +27,11 @@ trait PostAccess
         return $this->post;
     }
 
-    /**
-     * @param string $variable_name
-     * @return bool
-     */
     public function isPostVarSet(string $variable_name) : bool
     {
         return array_key_exists($variable_name, $this->getPost());
     }
 
-    /**
-     * @param string $variable_name
-     * @return ?string
-     */
     public function getPostValue(string $variable_name) : ?string
     {
         if (!$this->isPostVarSet($variable_name)) {
@@ -55,10 +41,6 @@ trait PostAccess
         return strip_tags($this->getPost()[$variable_name]);
     }
 
-    /**
-     * @param string $variable_name
-     * @return ?array
-     */
     public function getPostArray(string $variable_name) : ?array
     {
         if (!$this->isPostVarSet($variable_name) ||

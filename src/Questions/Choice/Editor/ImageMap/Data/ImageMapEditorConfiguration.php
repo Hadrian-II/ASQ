@@ -13,26 +13,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ImageMapEditorConfiguration extends AbstractValueObject
 {
+    protected ?string $image;
 
-    /**
-     * @var ?string
-     */
-    protected $image;
+    protected ?bool $multiple_choice;
 
-    /**
-     * @var ?bool
-     */
-    protected $multiple_choice;
+    protected ?int $max_answers;
 
-    /**
-     * @var ?int
-     */
-    protected $max_answers;
-
-    /**
-     * @param string $image
-     * @return ImageMapEditorConfiguration
-     */
     public function __construct(
         ?string $image = null,
         ?bool $multiple_choice = true,
@@ -43,25 +29,16 @@ class ImageMapEditorConfiguration extends AbstractValueObject
         $this->max_answers = $max_answers;
     }
 
-    /**
-     * @return string|NULL
-     */
     public function getImage() : ?string
     {
         return $this->image;
     }
 
-    /**
-     * @return bool|NULL
-     */
     public function isMultipleChoice() : ?bool
     {
         return $this->multiple_choice;
     }
 
-    /**
-     * @return int|NULL
-     */
     public function getMaxAnswers() : ?int
     {
         return $this->max_answers;

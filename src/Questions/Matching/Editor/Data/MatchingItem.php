@@ -16,26 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MatchingItem extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $id;
+    protected ?string $id;
 
-    /**
-     * @var ?string
-     */
-    protected $text;
+    protected ?string $text;
 
-    /**
-     * @var ?string
-     */
-    protected $image;
+    protected ?string $image;
 
-    /**
-     * @param ?string $id
-     * @param ?string $text
-     * @param ?string $image
-     */
     public function __construct(?string $id = null, ?string $text = null, ?string $image = null)
     {
         $this->id = $id;
@@ -43,25 +29,16 @@ class MatchingItem extends AbstractValueObject
         $this->image = $image;
     }
 
-    /**
-     * @return ?string
-     */
     public function getId() : ?string
     {
         return $this->id;
     }
 
-    /**
-     * @return ?string
-     */
     public function getText() : ?string
     {
         return $this->text;
     }
 
-    /**
-     * @return ?string
-     */
     public function getImage() : ?string
     {
         return $this->image;

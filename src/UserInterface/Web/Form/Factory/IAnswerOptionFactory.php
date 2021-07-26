@@ -25,7 +25,7 @@ interface IAnswerOptionFactory
     /**
      * Gets field definition to display in QuestionFormGUI
      *
-     * @param $play QuestionPlayConfiguration
+     * @param $play ?QuestionPlayConfiguration
      * @return AsqTableInputFieldDefinition[]
      */
     public function getTableColumns(?QuestionPlayConfiguration $play) : array;
@@ -33,6 +33,7 @@ interface IAnswerOptionFactory
     /**
      * Reads configuration object from values entered in UI Table
      *
+     * @param array $values
      * @return AbstractValueObject
      */
     public function readObjectFromValues(array $values) : AbstractValueObject;

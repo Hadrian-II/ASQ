@@ -29,26 +29,12 @@ use ilLanguage;
  */
 class LinkService
 {
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var ilLanguage
-     */
-    private $lng;
+    private ilLanguage $lng;
 
-    /**
-     * @var ilCtrl
-     */
-    private $ctrl;
+    private ilCtrl $ctrl;
 
-    /**
-     * @param UIServices $ui
-     * @param ilLanguage $lng
-     * @param ilCtrl $ctrl
-     */
     public function __construct(UIServices $ui, ilLanguage $lng, ilCtrl $ctrl)
     {
         $this->ui = $ui;
@@ -56,9 +42,6 @@ class LinkService
         $this->ctrl = $ctrl;
     }
 
-    /**
-     * @return UiStandardLink
-     */
     public function getCreationLink() : UiStandardLink
     {
         $this->lng->loadLanguageModule('asq');
@@ -68,9 +51,6 @@ class LinkService
         );
     }
 
-    /**
-     * @return UiStandardLink
-     */
     public function getEditLink(Uuid $question_id, ?string $revision_name = null) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);
@@ -89,10 +69,6 @@ class LinkService
         );
     }
 
-
-    /**
-     * @return UiStandardLink
-     */
     public function getPreviewLink(Uuid $question_id, ?string $revision_name = null) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);
@@ -111,9 +87,6 @@ class LinkService
         );
     }
 
-    /**
-     * @return UiStandardLink
-     */
     public function getEditFeedbacksLink(Uuid $question_id) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);
@@ -126,10 +99,6 @@ class LinkService
         );
     }
 
-
-    /**
-     * @return UiStandardLink
-     */
     public function getEditHintsLink(Uuid $question_id) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);
@@ -142,9 +111,6 @@ class LinkService
         );
     }
 
-    /**
-     * @return UiStandardLink
-     */
     public function getRevisionsLink(Uuid $question_id) : UiStandardLink
     {
         self::setQuestionUidParameter($question_id);

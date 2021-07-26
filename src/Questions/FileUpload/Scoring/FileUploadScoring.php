@@ -20,14 +20,8 @@ use srag\asq\Questions\FileUpload\Scoring\Data\FileUploadScoringConfiguration;
  */
 class FileUploadScoring extends AbstractScoring
 {
-    /**
-     * @var FileUploadScoringConfiguration
-     */
-    protected $configuration;
+    protected FileUploadScoringConfiguration $configuration;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct($question)
     {
         parent::__construct($question);
@@ -35,10 +29,6 @@ class FileUploadScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    /**
-     * @param AbstractValueObject $answer
-     * @return float
-     */
     public function score(AbstractValueObject $answer) : float
     {
         $reached_points = 0;
@@ -54,27 +44,16 @@ class FileUploadScoring extends AbstractScoring
         return $reached_points;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Model\Scoring\AbstractScoring::calculateMaxScore()
-     */
     protected function calculateMaxScore() : float
     {
         return $this->configuration->getPoints();
     }
 
-    /**
-     * @throws AsqException
-     * @return AbstractValueObject
-     */
     public function getBestAnswer() : AbstractValueObject
     {
         throw new AsqException(self::BEST_ANSWER_CREATION_IMPOSSIBLE_ERROR);
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return ! is_null($this->configuration->getPoints());

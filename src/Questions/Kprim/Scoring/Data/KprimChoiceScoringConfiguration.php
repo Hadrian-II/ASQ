@@ -14,38 +14,21 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class KprimChoiceScoringConfiguration extends AbstractValueObject
 {
+    protected ?float $points;
 
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?int $half_points_at;
 
-    /**
-     * @var ?int
-     */
-    protected $half_points_at;
-
-    /**
-     * @param ?float $points
-     * @param ?int $half_points_at
-     */
     public function __construct(?float $points = null, ?int $half_points_at = null)
     {
         $this->points = $points;
         $this->half_points_at = $half_points_at;
     }
 
-    /**
-     * @return ?int
-     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return ?int
-     */
     public function getHalfPointsAt() : ?int
     {
         return $this->half_points_at;

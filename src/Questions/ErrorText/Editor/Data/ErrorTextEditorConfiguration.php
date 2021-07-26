@@ -16,44 +16,26 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ErrorTextEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $text_size;
-    /**
-     * @var ?string
-     */
-    protected $error_text;
+    protected ?int $text_size;
 
-    /**
-     * @param string $error_text
-     * @param int $text_size
-     */
+    protected ?string $error_text;
+
     public function __construct(?string $error_text = null, ?int $text_size = null)
     {
         $this->error_text = $error_text;
         $this->text_size = $text_size;
     }
 
-    /**
-     * @return ?int
-     */
     public function getTextSize() : ?int
     {
         return $this->text_size;
     }
 
-    /**
-     * @return ?string
-     */
     public function getErrorText() : ?string
     {
         return $this->error_text;
     }
 
-    /**
-     * @return string
-     */
     public function getSanitizedErrorText() : string
     {
         if ($this->error_text === null) {

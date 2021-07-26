@@ -20,10 +20,6 @@ class TextSubsetEditorConfigurationFactory extends AbstractObjectFactory
 {
     const VAR_REQUESTED_ANSWERS = 'tse_requested_answers';
 
-    /**
-     * @param AbstractValueObject $value
-     * @return array
-     */
     public function getFormfields(?AbstractValueObject $value) : array
     {
         $fields = [];

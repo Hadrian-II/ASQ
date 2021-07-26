@@ -21,32 +21,14 @@ use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition
  */
 class QuestionFormFactory implements IQuestionFormFactory
 {
-    /**
-     * @var IObjectFactory
-     */
-    protected $editor_config_factory;
+    protected IObjectFactory $editor_config_factory;
 
-    /**
-     * @var IObjectFactory
-     */
-    protected $scoring_config_factory;
+    protected IObjectFactory $scoring_config_factory;
 
-    /**
-     * @var IAnswerOptionFactory
-     */
-    protected $editor_definition_factory;
+    protected IAnswerOptionFactory $editor_definition_factory;
 
-    /**
-     * @var IAnswerOptionFactory
-     */
-    protected $scoring_definition_factory;
+    protected IAnswerOptionFactory $scoring_definition_factory;
 
-    /**
-     * @param IObjectFactory $editor_config_factory
-     * @param IObjectFactory $scoring_config_factory
-     * @param IAnswerOptionFactory $editor_definition_factory
-     * @param IAnswerOptionFactory $scoring_definition_factory
-     */
     public function __construct(
         IObjectFactory $editor_config_factory,
         IObjectFactory $scoring_config_factory,
@@ -59,10 +41,6 @@ class QuestionFormFactory implements IQuestionFormFactory
         $this->scoring_definition_factory = $scoring_definition_factory;
     }
 
-    /**
-     * @param QuestionPlayConfiguration $config
-     * @return array
-     */
     public function getFormFields(QuestionPlayConfiguration $config) : array
     {
         return array_merge(
@@ -71,10 +49,6 @@ class QuestionFormFactory implements IQuestionFormFactory
         );
     }
 
-    /**
-     * @param array $postdata
-     * @return QuestionPlayConfiguration
-     */
     public function readQuestionPlayConfiguration(array $postdata) : QuestionPlayConfiguration
     {
         return new QuestionPlayConfiguration(
@@ -83,9 +57,6 @@ class QuestionFormFactory implements IQuestionFormFactory
         );
     }
 
-    /**
-     * @return QuestionPlayConfiguration
-     */
     public function getDefaultPlayConfiguration() : QuestionPlayConfiguration
     {
         return new QuestionPlayConfiguration(
@@ -105,27 +76,16 @@ class QuestionFormFactory implements IQuestionFormFactory
         );
     }
 
-    /**
-     * @return bool
-     */
     public function hasAnswerOptions() : bool
     {
         return count($this->getAnswerOptionDefinitions(null)) > 0;
     }
 
-    /**
-     * Returns AsqTableInput Options array
-     *
-     * @return array
-     */
     public function getAnswerOptionConfiguration() : array
     {
         return [];
     }
 
-    /**
-     * @return array
-     */
     public function getAnswerOptionValues(?array $options) : array
     {
         if (is_null($options)) {
@@ -141,9 +101,6 @@ class QuestionFormFactory implements IQuestionFormFactory
         }, $options);
     }
 
-    /**
-     * @return array
-     */
     public function readAnswerOptions(array $values) : array
     {
         $options = [];
@@ -161,18 +118,11 @@ class QuestionFormFactory implements IQuestionFormFactory
         return $options;
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return[];
     }
 
-    /**
-     * @param QuestionDto $question
-     * @return QuestionDto
-     */
     public function performQuestionPostProcessing(QuestionDto $question) : QuestionDto
     {
         // virtual method

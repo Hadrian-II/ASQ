@@ -16,22 +16,13 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class EssayEditorConfiguration extends AbstractValueObject
 {
-    /**
-     * @var ?int
-     */
-    protected $max_length;
+    protected ?int $max_length;
 
-    /**
-     * @param int $max_length
-     */
     public function __construct(?int $max_length = null)
     {
         $this->max_length = $max_length;
     }
 
-    /**
-     * @return ?int
-     */
     public function getMaxLength() : ?int
     {
         return $this->max_length;

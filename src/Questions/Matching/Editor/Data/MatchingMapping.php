@@ -16,26 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class MatchingMapping extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $definition_id;
+    protected ?string $definition_id;
 
-    /**
-     * @var ?string
-     */
-    protected $term_id;
+    protected ?string $term_id;
 
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @param string $definition_id
-     * @param string $term_id
-     * @param float $points
-     */
     public function __construct(
         ?string $definition_id = null,
         ?string $term_id = null,
@@ -46,25 +32,16 @@ class MatchingMapping extends AbstractValueObject
         $this->points = $points;
     }
 
-    /**
-     * @return ?string
-     */
     public function getDefinitionId() : ?string
     {
         return $this->definition_id;
     }
 
-    /**
-     * @return ?string
-     */
     public function getTermId() : ?string
     {
         return $this->term_id;
     }
 
-    /**
-     * @return ?float
-     */
     public function getPoints() : ?float
     {
         return $this->points;

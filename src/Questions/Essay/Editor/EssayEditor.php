@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Editor;
 
+use ilLanguage;
 use ilTemplate;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
@@ -26,19 +27,10 @@ class EssayEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    /**
-     * @var EssayEditorConfiguration
-     */
-    private $configuration;
+    private EssayEditorConfiguration $configuration;
 
-    /**
-     * @var ilLanguage;
-     */
-    private $language;
+    private ilLanguage $language;
 
-    /**
-     * @param QuestionDto $question
-     */
     public function __construct(QuestionDto $question)
     {
         global $DIC;
@@ -54,9 +46,6 @@ class EssayEditor extends AbstractEditor
         return $this->getBasePath(__DIR__) . 'src/Questions/Essay/Editor/EssayEditor.js';
     }
 
-    /**
-     * @return string
-     */
     public function generateHtml() : string
     {
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.EssayEditor.html', true, true);
@@ -86,18 +75,11 @@ class EssayEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Domain\Definitions\IAsqQuestionEditor::readAnswer()
-     */
     public function readAnswer() : AbstractValueObject
     {
         return new EssayAnswer($this->getPostValue($this->question->getId()->toString()));
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         // no necessary values

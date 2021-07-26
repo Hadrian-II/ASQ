@@ -16,26 +16,12 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class FormulaScoringDefinition extends AbstractValueObject
 {
-    /**
-     * @var ?string
-     */
-    protected $formula;
+    protected ?string $formula;
 
-    /**
-     * @var ?string
-     */
-    protected $unit;
+    protected ?string $unit;
 
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @param ?string $formula
-     * @param ?string $unit
-     * @param ?float $points
-     */
     public function __construct(
         ?string $formula = null,
         ?string $unit = null,
@@ -46,25 +32,16 @@ class FormulaScoringDefinition extends AbstractValueObject
         $this->points = $points;
     }
 
-    /**
-     * @return ?string
-     */
     public function getFormula() : ?string
     {
         return $this->formula;
     }
 
-    /**
-     * @return ?string
-     */
     public function getUnit() : ?string
     {
         return $this->unit ?? '';
     }
 
-    /**
-     * @return ?float
-     */
     public function getPoints() : ?float
     {
         return $this->points;

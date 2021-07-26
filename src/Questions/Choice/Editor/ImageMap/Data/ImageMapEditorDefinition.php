@@ -20,27 +20,12 @@ class ImageMapEditorDefinition extends AbstractValueObject
     const TYPE_CIRCLE = 2;
     const TYPE_POLYGON = 3;
 
-    /**
-     * @var ?string
-     */
-    protected $tooltip;
+    protected ?string $tooltip;
 
-    /**
-     * @var ?int
-     */
-    protected $type;
+    protected ?int $type;
 
-    /**
-     * @var ?string
-     */
-    protected $coordinates;
+    protected ?string $coordinates;
 
-    /**
-     *
-     * @param string $tooltip
-     * @param int $type
-     * @param string $coordinates
-     */
     public function __construct(?string $tooltip = null, ?int $type = null, ?string $coordinates = null)
     {
         $this->tooltip = $tooltip;
@@ -48,25 +33,16 @@ class ImageMapEditorDefinition extends AbstractValueObject
         $this->coordinates = $coordinates;
     }
 
-    /**
-     * @return string
-     */
     public function getTooltip() : ?string
     {
         return $this->tooltip;
     }
 
-    /**
-     * @return int
-     */
     public function getType() : ?int
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
     public function getCoordinates() : ?string
     {
         return $this->coordinates;

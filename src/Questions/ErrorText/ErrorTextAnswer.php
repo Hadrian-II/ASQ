@@ -19,27 +19,21 @@ class ErrorTextAnswer extends AbstractValueObject
     /**
      * @var int[]
      */
-    protected $selected_word_indexes;
+    protected array $selected_word_indexes;
 
-    /**
-     * @param array $selected_word_indexes
-     */
     public function __construct(array $selected_word_indexes = [])
     {
         $this->selected_word_indexes = $selected_word_indexes;
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getSelectedWordIndexes() : array
     {
         return $this->selected_word_indexes;
     }
 
-    /**
-     * @return string
-     */
     public function getPostString() : string
     {
         return implode(',', $this->selected_word_indexes);

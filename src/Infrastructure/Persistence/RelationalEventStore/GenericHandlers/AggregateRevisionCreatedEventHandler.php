@@ -21,9 +21,6 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionE
  */
 class AggregateRevisionCreatedEventHandler extends AbstractEventStorageHandler
 {
-    /**
-     * @param AggregateRevisionCreatedEvent $event
-     */
     public function handleEvent(DomainEvent $event, int $event_id) : void
     {
         /** @var $revision_id RevisionId */
@@ -39,19 +36,11 @@ class AggregateRevisionCreatedEventHandler extends AbstractEventStorageHandler
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::getQueryString()
-     */
     public function getQueryString() : string
     {
         return 'select * from ' . RelationalQuestionEventStore::TABLE_NAME_QUESTION_REVISION .' where event_id in(%s)';
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler::createEvent()
-     */
     public function createEvent(array $data, array $rows) : DomainEvent
     {
         return new AggregateRevisionCreatedEvent(

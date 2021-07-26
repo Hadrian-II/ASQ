@@ -35,9 +35,6 @@ class ClozeFormFactory extends QuestionFormFactory
         );
     }
 
-    /**
-     * @return array
-     */
     public function getScripts() : array
     {
         return [ $this->getBasePath(__DIR__) . 'src/Questions/Cloze/Form/ClozeAuthoring.js' ];

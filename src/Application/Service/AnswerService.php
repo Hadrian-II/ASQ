@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
+use arException;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
@@ -30,6 +31,7 @@ class AnswerService extends ASQService
      * @param QuestionDto $question
      * @param AbstractValueObject $answer
      * @return float
+     * @throws AsqException
      */
     public function getScore(QuestionDto $question, AbstractValueObject $answer) : float
     {
@@ -72,6 +74,7 @@ class AnswerService extends ASQService
      *
      * @param QuestionDto $question
      * @return AbstractValueObject
+     * @throws AsqException
      */
     public function getBestAnswer(QuestionDto $question) : AbstractValueObject
     {
@@ -85,7 +88,7 @@ class AnswerService extends ASQService
      * Stores an answer to the database
      *
      * @param AbstractValueObject $answer
-     * @param string $uuid
+     * @param ?string $uuid
      * @return string
      */
     public function storeAnswer(AbstractValueObject $answer, ?string $uuid = null) : string
@@ -99,8 +102,9 @@ class AnswerService extends ASQService
      * Read answer from the database
      *
      * @param string $uuid
-     * @param int $version
+     * @param ?int $version
      * @return AbstractValueObject
+     * @throws AsqException|arException
      */
     public function getAnswer(string $uuid, ?int $version = null) : AbstractValueObject
     {

@@ -14,38 +14,16 @@ namespace srag\asq\Questions\Cloze\Editor\Data;
  */
 class NumericGapConfiguration extends ClozeGapConfiguration
 {
-    /**
-     * @var ?float
-     */
-    protected $value;
+    protected ?float $value;
 
-    /**
-     * @var ?float
-     */
-    protected $upper;
+    protected ?float $upper;
 
-    /**
-     * @var ?float
-     */
-    protected $lower;
+    protected ?float $lower;
 
-    /**
-     * @var ?float
-     */
-    protected $points;
+    protected ?float $points;
 
-    /**
-     * @var ?int
-     */
-    protected $field_length;
+    protected ?int $field_length;
 
-    /**
-     * @param float $value
-     * @param float $upper
-     * @param float $lower
-     * @param float $points
-     * @param int $field_length
-     */
     public function __construct(
         ?float $value = null,
         ?float $upper = null,
@@ -60,57 +38,36 @@ class NumericGapConfiguration extends ClozeGapConfiguration
         $this->field_length = $field_length;
     }
 
-    /**
-     * @return ?float
-     */
     public function getValue() : ?float
     {
         return $this->value;
     }
 
-    /**
-     * @return ?float
-     */
     public function getUpper() : ?float
     {
         return $this->upper;
     }
 
-    /**
-     * @return ?float
-     */
     public function getLower() : ?float
     {
         return $this->lower;
     }
 
-    /**
-     * @return ?int
-     */
     public function getPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return ?int
-     */
     public function getFieldLength() : int
     {
         return $this->field_length ?? self::DEFAULT_FIELD_LENGTH;
     }
 
-    /**
-     * @return ?float
-     */
     public function getMaxPoints() : ?float
     {
         return $this->points;
     }
 
-    /**
-     * @return bool
-     */
     public function isComplete() : bool
     {
         return !is_null($this->getPoints()) &&

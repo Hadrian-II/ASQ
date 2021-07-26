@@ -33,30 +33,15 @@ use ILIAS\DI\HTTPServices;
  */
 class UIService
 {
-    /**
-     * @var ilLanguage
-     */
-    private $lng;
+    private ilLanguage $lng;
 
-    /**
-     * @var UIServices
-     */
-    private $ui;
+    private UIServices $ui;
 
-    /**
-     * @var HTTPServices
-     */
-    private $http;
+    private HTTPServices $http;
 
-    /**
-     * @var DataFactory
-     */
-    private $data_factory;
+    private DataFactory $data_factory;
 
-    /**
-     * @var Factory
-     */
-    private $refinery;
+    private Factory $refinery;
 
     public function __construct(
         ilLanguage $lng,
@@ -82,7 +67,7 @@ class UIService
     {
         $this->lng->loadLanguageModule('asq');
 
-        return new QuestionComponent($question, $this->ui, $this->lng);
+        return new QuestionComponent($question);
     }
 
     /**
@@ -141,12 +126,6 @@ class UIService
         );
     }
 
-    /**
-     * @param string $label
-     * @param AsqTableInputFieldDefinition $columns
-     * @param string $byline
-     * @return AsqTableInput
-     */
     public function getAsqTableInput(string $label, array $columns, string $byline = null) : AsqTableInput
     {
         return new AsqTableInput(
@@ -158,12 +137,6 @@ class UIService
         );
     }
 
-    /**
-     * @param string $label
-     * @param AsqTableInputFieldDefinition $columns
-     * @param string $byline
-     * @return DurationInput
-     */
     public function getDurationInput(string $label, string $byline = null) : DurationInput
     {
         return new DurationInput(
@@ -174,9 +147,6 @@ class UIService
         );
     }
 
-    /**
-     * @return AsqImageUpload
-     */
     public function getImageUpload(string $label) : AsqImageUpload
     {
         return new AsqImageUpload(
@@ -187,9 +157,6 @@ class UIService
         );
     }
 
-    /**
-     * @return ImageFormPopup
-     */
     public function getImageFormPopup() : ImageFormPopup
     {
         return new ImageFormPopup(
