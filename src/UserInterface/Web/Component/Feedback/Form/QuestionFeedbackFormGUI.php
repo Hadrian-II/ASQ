@@ -18,10 +18,9 @@ use srag\asq\Infrastructure\Helpers\PathHelper;
  * Class QuestionFeedbackFormGUI
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Martin Studer <ms@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 class QuestionFeedbackFormGUI
 {

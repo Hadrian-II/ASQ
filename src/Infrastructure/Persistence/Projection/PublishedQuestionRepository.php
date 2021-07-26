@@ -8,6 +8,14 @@ use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Domain\Model\QuestionInfo;
 
+/**
+ * Class PublishedQuestionRepository
+ *
+ * @license Extended GPL, see docs/LICENSE
+ *
+ * @package srag/asq
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
+ */
 class PublishedQuestionRepository
 {
     public function saveNewQuestionRevision(QuestionDto $question) : void

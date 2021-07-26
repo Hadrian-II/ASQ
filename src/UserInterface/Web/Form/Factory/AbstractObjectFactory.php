@@ -15,10 +15,9 @@ use srag\asq\Application\Service\UIService;
  * Contains Methods that are needed for a FormFactory to Work
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 abstract class AbstractObjectFactory implements IObjectFactory
 {

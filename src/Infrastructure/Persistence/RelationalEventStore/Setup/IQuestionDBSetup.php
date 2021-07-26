@@ -7,10 +7,9 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\Setup;
  * Interface IQuestionDBSetup
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 interface IQuestionDBSetup
 {

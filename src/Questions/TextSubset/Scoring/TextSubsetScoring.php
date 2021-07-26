@@ -16,10 +16,9 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
  * Class TextSubsetScoring
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 class TextSubsetScoring extends AbstractScoring
 {

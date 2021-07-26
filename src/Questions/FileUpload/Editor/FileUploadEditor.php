@@ -20,12 +20,10 @@ use srag\asq\UserInterface\Web\Component\Editor\AbstractEditor;
 /**
  * Class FileUploadEditor
  *
- * @package ILIAS\AssessmentQuestion\Authoring\DomainModel\Question\Answer\Option;
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
- * @author  Adrian Lüthi <al@studer-raimann.ch>
- * @author  Björn Heyser <bh@bjoernheyser.de>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @author  Theodor Truffer <tt@studer-raimann.ch>
+ * @license Extended GPL, see docs/LICENSE
+ *
+ * @package srag/asq
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 class FileUploadEditor extends AbstractEditor
 {

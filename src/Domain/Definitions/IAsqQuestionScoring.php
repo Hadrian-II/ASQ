@@ -12,10 +12,9 @@ use srag\asq\Application\Exception\AsqException;
  * Defines an Asq Scoring element and is able to score given answers to a specific question
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 interface IAsqQuestionScoring
 {

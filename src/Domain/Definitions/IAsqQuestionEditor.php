@@ -10,10 +10,9 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  * and used to display an Editor (The Question UI where the user can input his answers).
  *
  * @license Extended GPL, see docs/LICENSE
- * @copyright 1998-2020 ILIAS open source
  *
  * @package srag/asq
- * @author  Adrian Lüthi <al@studer-raimann.ch>
+ * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
 interface IAsqQuestionEditor
 {
