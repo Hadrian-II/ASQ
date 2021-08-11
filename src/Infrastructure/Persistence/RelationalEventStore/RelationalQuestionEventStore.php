@@ -56,7 +56,7 @@ class RelationalQuestionEventStore implements IEventStore
 
     private array $handlers = [];
 
-    private array $type_handlers;
+    private array $type_handlers = [];
 
     public function __construct(ilDBInterface $db)
     {
@@ -146,7 +146,7 @@ class RelationalQuestionEventStore implements IEventStore
     {
         global $ASQDIC;
 
-        if ($this->type_handlers === null) {
+        if (count($this->type_handlers) === 0) {
             foreach ($ASQDIC->asq()->question()->getAvailableQuestionTypes() as $type) {
                 $storage_class =  $type->getStorageClass();
                 $storage = new $storage_class();

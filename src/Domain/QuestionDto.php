@@ -32,21 +32,21 @@ class QuestionDto implements JsonSerializable
 
     private QuestionType $type;
 
-    private ?RevisionId $revision_id;
+    private ?RevisionId $revision_id = null;
 
-    private ?QuestionData $data;
+    private ?QuestionData $data = null;
 
-    private ?QuestionPlayConfiguration $play_configuration;
+    private ?QuestionPlayConfiguration $play_configuration = null;
 
     /**
      *
      * @var ?AnswerOption[]
      */
-    private ?array $answer_options;
+    private ?array $answer_options = null;
 
-    private ?Feedback $feedback;
+    private ?Feedback $feedback = null;
 
-    private ?QuestionHints $question_hints;
+    private ?QuestionHints $question_hints = null;
 
     private bool $has_unrevisioned_changes;
 

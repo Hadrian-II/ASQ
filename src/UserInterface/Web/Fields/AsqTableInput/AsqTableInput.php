@@ -37,7 +37,7 @@ class AsqTableInput extends Input
 
     private array $options;
 
-    private ImageUploader $uploader;
+    private ?ImageUploader $uploader = null;
 
     public function __construct(
         string $label,

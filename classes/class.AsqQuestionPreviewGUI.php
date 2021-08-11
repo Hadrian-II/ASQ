@@ -35,13 +35,13 @@ class AsqQuestionPreviewGUI
 
     protected Uuid $question_id;
 
-    private ?string $revision_name;
+    private ?string $revision_name = null;
 
-    private bool $show_feedback;
+    private bool $show_feedback = false;
 
-    private bool $show_hints;
+    private bool $show_hints = false;
 
-    private bool $show_score;
+    private bool $show_score = false;
 
     private ilLanguage $language;
 

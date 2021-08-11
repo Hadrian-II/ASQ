@@ -44,7 +44,7 @@ class AsqQuestionAuthoringGUI
 
     protected AuthoringContextContainer $authoring_context_container;
 
-    protected Uuid $question_id;
+    protected ?Uuid $question_id = null;
 
     protected string $lng_key;
 

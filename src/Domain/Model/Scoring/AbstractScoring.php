@@ -21,9 +21,9 @@ abstract class AbstractScoring implements IAsqQuestionScoring
 
     protected QuestionDto $question;
 
-    protected float $max_score;
+    protected ?float $max_score = null;
 
-    protected float $min_score;
+    protected ?float $min_score = null;
 
     public function __construct(QuestionDto $question)
     {

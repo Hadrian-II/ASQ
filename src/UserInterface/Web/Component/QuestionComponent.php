@@ -22,7 +22,7 @@ class QuestionComponent implements Component
 
     private QuestionDto $question_dto;
 
-    private AbstractValueObject $answer;
+    private ?AbstractValueObject $answer = null;
 
     private bool $show_feedback = false;
 
@@ -52,7 +52,7 @@ class QuestionComponent implements Component
         return $this->question_dto;
     }
 
-    public function getAnswer() : AbstractValueObject
+    public function getAnswer() : ?AbstractValueObject
     {
         return $this->answer;
     }

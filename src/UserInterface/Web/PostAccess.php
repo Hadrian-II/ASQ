@@ -13,7 +13,7 @@ namespace srag\asq\UserInterface\Web;
  */
 trait PostAccess
 {
-    private array $post;
+    private ?array $post = null;
 
     private function getPost() : array
     {

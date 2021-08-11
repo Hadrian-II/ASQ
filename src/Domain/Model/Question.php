@@ -35,25 +35,25 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 {
     const VAR_TYPE = 'question_type';
 
-    private ?string $question_type;
+    private ?string $question_type = null;
 
-    private ?RevisionId $revision_id;
+    private ?RevisionId $revision_id = null;
 
-    private ?int $creator_id;
+    private ?int $creator_id = null;
 
-    private ?QuestionData $data;
+    private ?QuestionData $data = null;
 
-    private ?QuestionPlayConfiguration $play_configuration;
+    private ?QuestionPlayConfiguration $play_configuration = null;
     /**
      * @var ?AnswerOption[]
      */
-    private ?array $answer_options;
+    private ?array $answer_options = null;
 
-    private ?QuestionHints $hints;
+    private ?QuestionHints $hints = null;
 
-    private ?Feedback $feedback;
+    private ?Feedback $feedback = null;
 
-    private ?bool $has_unrevised_changes;
+    private ?bool $has_unrevised_changes = null;
 
     public static function createNewQuestion(
         Uuid $question_uuid,
@@ -237,7 +237,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->revision_id;
     }
 
-    public function setRevisionId(RevisionId $id, int $user_id)
+    public function setRevisionId(RevisionId $id, int $user_id) : void
     {
         $this->ExecuteEvent(new AggregateRevisionCreatedEvent(
             $this->getAggregateId(),

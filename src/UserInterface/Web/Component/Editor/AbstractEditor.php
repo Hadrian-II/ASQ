@@ -19,9 +19,9 @@ abstract class AbstractEditor implements IAsqQuestionEditor
 {
     protected QuestionDto $question;
 
-    protected ?AbstractValueObject $answer;
+    protected ?AbstractValueObject $answer = null;
 
-    protected bool $render_feedback;
+    protected bool $render_feedback = false;
 
 
     public function __construct(QuestionDto $question)
