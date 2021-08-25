@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 use ILIAS\DI\UIServices;
+use ILIAS\HTTP\Services;
 use srag\asq\Application\Service\AuthoringContextContainer;
-use ILIAS\DI\HTTPServices;
 use ILIAS\Data\UUID\Uuid;
 use ILIAS\Data\UUID\Factory;
 use srag\asq\Application\Service\ASQServices;
@@ -58,7 +58,7 @@ class AsqQuestionAuthoringGUI
 
     private ilAccessHandler $access;
 
-    private HTTPServices $http;
+    private Services $http;
 
     private ASQServices $asq;
 
@@ -69,7 +69,7 @@ class AsqQuestionAuthoringGUI
         ilCtrl $ctrl,
         ilTabsGUI $tabs,
         ilAccessHandler $access,
-        HTTPServices $http,
+        Services $http,
         ASQServices $asq
     ) {
         $this->authoring_context_container = $authoring_context_container;

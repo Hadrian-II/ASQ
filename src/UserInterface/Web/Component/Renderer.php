@@ -71,8 +71,8 @@ class Renderer extends AbstractComponentRenderer
 
         $registry->register($this->getBasePath(__DIR__) . 'js/question.js');
 
-        $registry->register('src/UI/templates/default/Markdown/toastui-editor.css');
-        $registry->register('src/UI/templates/js/Markdown/toastui-editor-all.js');
+        $registry->register($this->getBasePath(__DIR__) . 'css/toastui-editor.css');
+        $registry->register($this->getBasePath(__DIR__) . 'js/toastui-editor-all.min.js');
 
         $registry->register($this->getBasePath(__DIR__) . 'css/asq.css');
 

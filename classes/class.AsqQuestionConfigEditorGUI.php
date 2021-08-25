@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
+use ILIAS\HTTP\Services;
 use srag\asq\Application\Service\AuthoringContextContainer;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
@@ -40,7 +40,7 @@ class AsqQuestionConfigEditorGUI
 
     private ASQServices $asq;
 
-    private HTTPServices $http;
+    private Services $http;
 
     public function __construct(
         AuthoringContextContainer $contextContainer,
@@ -49,7 +49,7 @@ class AsqQuestionConfigEditorGUI
         UIServices $ui,
         ilCtrl $ctrl,
         ASQServices $asq,
-        HTTPServices $http
+        Services $http
     ) {
         $this->asq = $asq;
         $this->contextContainer = $contextContainer;

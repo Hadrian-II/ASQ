@@ -121,7 +121,7 @@ class QuestionType extends ActiveRecord
         return $this->storage_class;
     }
 
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return self::STORAGE_NAME;
     }

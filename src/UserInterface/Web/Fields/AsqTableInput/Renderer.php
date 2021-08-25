@@ -13,6 +13,7 @@ use ilSelectInputGUI;
 use ilTemplate;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use ILIAS\UI\Implementation\Render\ResourceRegistry;
+use srag\asq\UserInterface\Web\Fields\AsqFieldRenderer;
 
 /**
  * Class Renderer
@@ -22,55 +23,11 @@ use ILIAS\UI\Implementation\Render\ResourceRegistry;
  * @package srag/asq
  * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
-class Renderer extends AbstractComponentRenderer
+class Renderer extends AsqFieldRenderer
 {
-    use PathHelper;
     use AsqTablePostTrait;
 
-    private AsqTableInput $component;
-
-    public function render(Component $input, RendererInterface $default_renderer) : string
-    {
-        $this->component = $input;
-
-        $tpl = new ilTemplate("src/UI/templates/default/Input/tpl.context_form.html", true, true);
-        /**
-         * TODO: should we throw an error in case for no name or render without name?
-         *
-         * if(!$input->getName()){
-         * throw new \LogicException("Cannot render '".get_class($input)."' no input name given.
-         * Is there a name source attached (is this input packed into a container attaching
-         * a name source)?");
-         * } */
-        if ($input->getName()) {
-            $tpl->setVariable("NAME", $input->getName());
-        } else {
-            $tpl->setVariable("NAME", "");
-        }
-
-        $tpl->setVariable("LABEL", $input->getLabel());
-        $tpl->setVariable("INPUT", $this->renderInputField());
-
-        if ($input->getByline() !== null) {
-            $tpl->setCurrentBlock("byline");
-            $tpl->setVariable("BYLINE", $input->getByline());
-            $tpl->parseCurrentBlock();
-        }
-
-        if ($input->isRequired()) {
-            $tpl->touchBlock("required");
-        }
-
-        if ($input->getError() !== null) {
-            $tpl->setCurrentBlock("error");
-            $tpl->setVariable("ERROR", $input->getError());
-            $tpl->parseCurrentBlock();
-        }
-
-        return $tpl->get();
-    }
-
-    private function renderInputField() : string
+    protected function renderInputField() : string
     {
         $values = $this->component->getValue() ?? [];
 
@@ -308,10 +265,10 @@ class Renderer extends AbstractComponentRenderer
         parent::registerResources($registry);
         $registry->register($this->getBasePath(__DIR__) . 'js/table.js');
 
-        $registry->register('./src/UI/templates/js/Input/Field/markdown.js');
+        $registry->register($this->getBasePath(__DIR__) . 'js/markdown_field.js');
 
-        $registry->register('src/UI/templates/default/Markdown/toastui-editor.css');
-        $registry->register('src/UI/templates/js/Markdown/toastui-editor-all.js');
+        $registry->register($this->getBasePath(__DIR__) . 'css/toastui-editor.css');
+        $registry->register($this->getBasePath(__DIR__) . 'js/toastui-editor-all.min.js');
     }
 
     protected function getComponentInterfaceName() : array

@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
+use ILIAS\HTTP\Services;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
+use srag\asq\UserInterface\Web\Fields\Markdown\Markdown;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
@@ -17,7 +19,6 @@ use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
 use ilLanguage;
 use ILIAS\DI\UIServices;
-use ILIAS\DI\HTTPServices;
 
 /**
  * Class UIService
@@ -35,7 +36,7 @@ class UIService
 
     private UIServices $ui;
 
-    private HTTPServices $http;
+    private Services $http;
 
     private DataFactory $data_factory;
 
@@ -44,7 +45,7 @@ class UIService
     public function __construct(
         ilLanguage $lng,
         UIServices $ui,
-        HTTPServices $http,
+        Services $http,
         DataFactory $data_factory,
         Factory $refinery)
     {
@@ -138,6 +139,16 @@ class UIService
     public function getDurationInput(string $label, string $byline = null) : DurationInput
     {
         return new DurationInput(
+            $this->data_factory,
+            $this->refinery,
+            $label,
+            $byline
+        );
+    }
+
+    public function getMarkdownInput(string $label, string $byline = null) : Markdown
+    {
+        return new Markdown(
             $this->data_factory,
             $this->refinery,
             $label,
