@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
-use ILIAS\UI\Implementation\Component\Input\Field\MarkDownInputImageProcessor;
+use srag\asq\UserInterface\Web\Fields\Markdown\MarkDownInputImageProcessor;
 
 /**
  * Trait ChoiceQuestionPostProcessing

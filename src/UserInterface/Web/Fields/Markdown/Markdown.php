@@ -28,10 +28,6 @@ class Markdown extends Input
             $this->setAdditionalTransformation(
                 $refinery->string()->stripTags()
             );
-
-            $this->on_load_code_binder = function($id) {
-                return "il.UI.Input.Markdown.initiateEditor($id);";
-            };
     }
 
     protected function isClientSideValueOk($value) : bool
@@ -50,9 +46,7 @@ class Markdown extends Input
 
     public function getUpdateOnLoadCode() : \Closure
     {
-        // TODO whatever this is
         return function ($id) {
-            return "";
             $code = "$('#$id').on('input', function(event) {
 				il.UI.input.onFieldUpdate(event, '$id', $('#$id').val());
 			});

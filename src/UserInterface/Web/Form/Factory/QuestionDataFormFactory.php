@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace srag\asq\UserInterface\Web\Form\Factory;
 
+use srag\asq\UserInterface\Web\Fields\Markdown\MarkDownInputImageProcessor;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionData;
-use ILIAS\UI\Implementation\Component\Input\Field\MarkDownInputImageProcessor;
 
 /**
  * Class AbstractQuestionFormFactory

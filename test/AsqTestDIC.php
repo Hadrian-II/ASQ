@@ -5,14 +5,11 @@ namespace ILIAS\AssessmentQuestion\Test;
 
 use ILIAS\DI\UIServices;
 use ilCtrl;
-use ilIniFile;
 use ilLanguage;
-use ilObjUser;
 use ilBenchmark;
 use ilSetting;
 use ilGlobalPageTemplate;
 use ILIAS\GlobalScreen\Services;
-use ILIAS\DI\HTTPServices;
 use ilStyleDefinition;
 use ilLogger;
 use ilDBPdoMySQL;
@@ -148,7 +145,7 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
 
         $container['http'] = function ($c) {
-            return new class() extends HTTPServices {
+            return new class() extends \ILIAS\HTTP\Services {
                 public function __construct() {}
             };
         };

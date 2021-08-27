@@ -19,7 +19,9 @@ il.UI.Input.Markdown = (function () {
 		{
             el: text,
             initialValue: initialvalue,
-            initialEditType: 'wysiwyg'
+            initialEditType: 'wysiwyg',
+			height: 'auto',
+            minHeight: '300px'
         });
         
         if (Object.keys(editors).length === 0) {

@@ -148,12 +148,16 @@ class UIService
 
     public function getMarkdownInput(string $label, string $byline = null) : Markdown
     {
-        return new Markdown(
+        $markdown = new Markdown(
             $this->data_factory,
             $this->refinery,
             $label,
             $byline
         );
+
+        return $markdown->withAdditionalOnLoadCode(function($id) {
+            return "il.UI.Input.Markdown.initiateEditor($id);";
+        });
     }
 
     public function getImageUpload(string $label) : AsqImageUpload
