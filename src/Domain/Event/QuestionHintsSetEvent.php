@@ -22,11 +22,11 @@ class QuestionHintsSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occured_on,
+        ilDateTime $occurred_on,
         int $initiating_user_id,
         ?QuestionHints $hints = null
     ) {
-        parent::__construct($aggregate_id, $occured_on, $initiating_user_id);
+        parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
 
         $this->hints = $hints;
     }

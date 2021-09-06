@@ -5,6 +5,7 @@ namespace srag\asq\Domain\Model;
 
 use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
+use srag\asq\Domain\Event\QuestionMetadataSetEvent;
 use srag\CQRS\Aggregate\AbstractAggregateRoot;
 use srag\CQRS\Aggregate\IsRevisable;
 use srag\CQRS\Aggregate\RevisionId;
@@ -54,6 +55,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     private ?Feedback $feedback = null;
 
     private ?bool $has_unrevised_changes = null;
+
+    /**
+     * @var ?AbstractValueObject
+     */
+    private ?array $metadata = [];
 
     public static function createNewQuestion(
         Uuid $question_uuid,
@@ -245,5 +251,36 @@ class Question extends AbstractAggregateRoot implements IsRevisable
             $user_id,
             $id
         ));
+    }
+
+    public function setMetadata(array $metadata, int $user_id) : void
+    {
+        foreach ($metadata as $meta_for => $meta) {
+            if (!array_key_exists($meta_for, $this->metadata) ||
+                !AbstractValueObject::isNullableEqual($meta, $this->metadata[$meta_for])) {
+                $this->ExecuteEvent(new QuestionMetadataSetEvent(
+                    $this->getAggregateId(),
+                    new ilDateTime(time(), IL_CAL_UNIX),
+                    $user_id,
+                    $meta,
+                    $meta_for
+                ));
+            }
+        }
+    }
+
+    protected function applyQuestionMetadataSetEvent(QuestionMetadataSetEvent $event) : void
+    {
+        if ($event->getMeta() === null) {
+            unset($this->metadata[$event->getMetaFor()]);
+        }
+        else {
+            $this->metadata[$event->getMetaFor()] = $event->getMeta();
+        }
+    }
+
+    public function getMetadata() : ?array
+    {
+        return $this->metadata;
     }
 }

@@ -187,6 +187,7 @@ class QuestionService extends ASQService
         $question->setAnswerOptions($question_dto->getAnswerOptions(), $this->getActiveUser());
         $question->setFeedback($question_dto->getFeedback(), $this->getActiveUser());
         $question->setHints($question_dto->getQuestionHints(), $this->getActiveUser());
+        $question->setMetadata($question_dto->getMetadata(), $this->getActiveUser());
 
         if (count($question->getRecordedEvents()->getEvents()) > 0) {
             // save changes if there are any

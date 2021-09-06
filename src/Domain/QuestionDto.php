@@ -50,6 +50,11 @@ class QuestionDto implements JsonSerializable
 
     private bool $has_unrevisioned_changes;
 
+    /**
+     * @var ?AbstractValueObject
+     */
+    private ?array $metadata;
+
     public static function CreateFromQuestion(Question $question, QuestionType $type) : QuestionDto
     {
         $dto = new QuestionDto();
@@ -65,6 +70,7 @@ class QuestionDto implements JsonSerializable
         $dto->feedback = $question->getFeedback();
         $dto->question_hints = $question->getHints();
         $dto->has_unrevisioned_changes = $question->hasUnrevisedChanges();
+        $dto->metadata = $question->getMetadata();
 
         return $dto;
     }
@@ -182,6 +188,11 @@ class QuestionDto implements JsonSerializable
     public function hasUnrevisedChanges() : bool
     {
         return $this->has_unrevisioned_changes;
+    }
+
+    public function getMetadata() : array
+    {
+        return $this->metadata;
     }
 
     public function jsonSerialize() : array
