@@ -115,7 +115,6 @@ class AsqQuestionAuthoringGUI
 
             case strtolower(AsqQuestionPreviewGUI::class):
 
-                $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_PREVIEW);
 
@@ -134,7 +133,6 @@ class AsqQuestionAuthoringGUI
 
             case strtolower(AsqQuestionConfigEditorGUI::class):
 
-                $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_CONFIG);
 
@@ -154,7 +152,6 @@ class AsqQuestionAuthoringGUI
 
             case strtolower(AsqQuestionFeedbackEditorGUI::class):
 
-                $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_FEEDBACK);
 
@@ -170,7 +167,6 @@ class AsqQuestionAuthoringGUI
 
             case strtolower(AsqQuestionHintEditorGUI::class):
 
-                $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_HINTS);
 
@@ -187,7 +183,6 @@ class AsqQuestionAuthoringGUI
 
             case strtolower(AsqQuestionVersionGUI::class):
 
-                $this->initHeaderAction();
                 $this->initAuthoringTabs();
                 $this->tabs->activateTab(self::TAB_ID_VERSIONS);
 
@@ -252,24 +247,6 @@ class AsqQuestionAuthoringGUI
 
         $this->ui->mainTemplate()->addOnLoadCode("il.Object.setRedrawAHUrl('$redrawActionsUrl');");
     }
-
-
-    protected function getHeaderAction() : string
-    {
-        $dispatcher = new ilCommonActionDispatcherGUI(
-            ilCommonActionDispatcherGUI::TYPE_REPOSITORY,
-            $this->access,
-            $this->authoring_context_container->getObjType(),
-            $this->authoring_context_container->getRefId(),
-            $this->authoring_context_container->getObjId()
-        );
-
-        $ha = $dispatcher->initHeaderAction();
-        $ha->enableComments(true, false);
-
-        return $ha->getHeaderAction($this->ui->mainTemplate());
-    }
-
 
     protected function initAuthoringTabs() : void
     {
