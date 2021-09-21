@@ -196,7 +196,8 @@ class MultipleChoiceEditor extends AbstractEditor
             /** @var ImageAndTextDisplayDefinition $option_config */
             $option_config = $option->getDisplayDefinition();
 
-            if (empty($option_config->getText())) {
+            if ($option_config->getText() === null ||
+                strlen($option_config->getText()) === 0) {
                 return false;
             }
         }
