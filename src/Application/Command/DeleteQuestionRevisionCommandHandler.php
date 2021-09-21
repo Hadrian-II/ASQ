@@ -6,8 +6,8 @@ namespace srag\asq\Application\Command;
 use ILIAS\Data\Result;
 use ILIAS\Data\Result\Error;
 use ILIAS\Data\Result\Ok;
-use srag\CQRS\Command\CommandContract;
-use srag\CQRS\Command\CommandHandlerContract;
+use Fluxlabs\CQRS\Command\CommandContract;
+use Fluxlabs\CQRS\Command\CommandHandlerContract;
 use srag\asq\Application\Exception\AsqException;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 

@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Ordering\Scoring;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Ordering\OrderingAnswer;
 use srag\asq\Questions\Ordering\Scoring\Data\OrderingScoringConfiguration;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class OrderingScoring

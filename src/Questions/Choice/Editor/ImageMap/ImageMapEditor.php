@@ -5,7 +5,7 @@ namespace srag\asq\Questions\Choice\Editor\ImageMap;
 
 use Exception;
 use ilTemplate;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Infrastructure\Helpers\PathHelper;

@@ -5,9 +5,9 @@ namespace srag\asq\Application\Service;
 
 use ILIAS\Data\UUID\Factory;
 use ILIAS\Data\UUID\Uuid;
-use srag\CQRS\Command\CommandBus;
-use srag\CQRS\Command\CommandConfiguration;
-use srag\CQRS\Command\Access\OpenAccess;
+use Fluxlabs\CQRS\Command\CommandBus;
+use Fluxlabs\CQRS\Command\CommandConfiguration;
+use Fluxlabs\CQRS\Command\Access\OpenAccess;
 use srag\asq\Application\Command\CreateQuestionCommand;
 use srag\asq\Application\Command\CreateQuestionCommandHandler;
 use srag\asq\Application\Command\CreateQuestionRevisionCommand;

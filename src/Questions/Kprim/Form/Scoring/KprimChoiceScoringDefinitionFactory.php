@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Kprim\Form\Scoring;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Questions\Kprim\Editor\KprimChoiceEditor;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;

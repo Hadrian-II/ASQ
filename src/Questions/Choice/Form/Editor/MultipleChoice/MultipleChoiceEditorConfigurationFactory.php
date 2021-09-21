@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\MultipleChoice;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Choice\Editor\MultipleChoice\Data\MultipleChoiceEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 

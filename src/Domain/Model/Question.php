@@ -6,12 +6,12 @@ namespace srag\asq\Domain\Model;
 use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 use srag\asq\Domain\Event\QuestionMetadataSetEvent;
-use srag\CQRS\Aggregate\AbstractAggregateRoot;
-use srag\CQRS\Aggregate\IsRevisable;
-use srag\CQRS\Aggregate\RevisionId;
-use srag\CQRS\Event\DomainEvent;
-use srag\CQRS\Event\Standard\AggregateCreatedEvent;
-use srag\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
+use Fluxlabs\CQRS\Aggregate\AbstractAggregateRoot;
+use Fluxlabs\CQRS\Aggregate\IsRevisable;
+use Fluxlabs\CQRS\Aggregate\RevisionId;
+use Fluxlabs\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\Standard\AggregateCreatedEvent;
+use Fluxlabs\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
@@ -22,7 +22,7 @@ use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class Question

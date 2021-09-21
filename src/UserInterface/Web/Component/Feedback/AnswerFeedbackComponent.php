@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\UserInterface\Web\Component\Feedback;
 
 use ILIAS\UI\Component\Component;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 

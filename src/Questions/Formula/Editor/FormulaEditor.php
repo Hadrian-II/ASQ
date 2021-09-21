@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Formula\Editor;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Questions\Formula\FormulaAnswer;
 use srag\asq\Questions\Formula\Scoring\Data\FormulaScoringConfiguration;

@@ -8,7 +8,7 @@ use srag\asq\Application\Exception\AsqException;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Infrastructure\Persistence\SimpleStoredAnswer;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class AnswerService

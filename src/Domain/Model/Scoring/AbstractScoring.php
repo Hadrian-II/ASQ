@@ -5,7 +5,7 @@ namespace srag\asq\Domain\Model\Scoring;
 
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Definitions\IAsqQuestionScoring;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Abstract Class AbstractScoring

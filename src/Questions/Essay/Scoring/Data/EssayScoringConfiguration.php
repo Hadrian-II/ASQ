@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Scoring\Data;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Essay\Scoring\EssayScoring;
 

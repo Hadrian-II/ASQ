@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\ErrorText\Scoring;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\ErrorText\ErrorTextAnswer;
 use srag\asq\Questions\ErrorText\Scoring\Data\ErrorTextScoringConfiguration;

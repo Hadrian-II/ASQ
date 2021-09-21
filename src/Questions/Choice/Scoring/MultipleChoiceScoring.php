@@ -7,7 +7,7 @@ use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Choice\MultipleChoiceAnswer;
 use srag\asq\Questions\Choice\Scoring\Data\MultipleChoiceScoringDefinition;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Application\Exception\AsqException;
 
 /**

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Command;
 
-use srag\CQRS\Command\AbstractCommand;
+use Fluxlabs\CQRS\Command\AbstractCommand;
 use srag\asq\Domain\Model\Question;
 
 /**

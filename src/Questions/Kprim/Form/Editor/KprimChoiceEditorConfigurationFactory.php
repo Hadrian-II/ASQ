@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace srag\asq\Questions\Kprim\Form\Editor;
 
 use ILIAS\UI\Component\Input\Field\SwitchableGroup;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Kprim\Editor\Data\KprimChoiceEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 

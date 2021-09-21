@@ -1,7 +1,7 @@
 <?php
 namespace srag\asq\Domain\Definitions;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Interface IAsqQuestionEditor

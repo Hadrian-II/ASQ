@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace srag\asq\UserInterface\Web\Form\Factory;
 
 use srag\asq\UserInterface\Web\Fields\Markdown\MarkDownInputImageProcessor;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\QuestionData;
 
 /**

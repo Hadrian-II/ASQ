@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\FileUpload\Form\Scoring;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\FileUpload\Scoring\Data\FileUploadScoringConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 

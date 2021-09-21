@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Ordering\Form\Editor;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Ordering\Editor\Data\OrderingEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 

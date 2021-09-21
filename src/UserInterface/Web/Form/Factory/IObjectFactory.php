@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\UserInterface\Web\Form\Factory;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Interface ObjectFactory

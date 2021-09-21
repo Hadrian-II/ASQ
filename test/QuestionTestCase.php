@@ -6,7 +6,7 @@ namespace ILIAS\AssessmentQuestion\Test;
 use ILIAS\Data\UUID\Factory;
 use ILIAS\UI\Implementation\DefaultRenderer;
 use PHPUnit\Framework\TestCase;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;

@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace srag\asq\Questions\Matching;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class MatchingAnswer

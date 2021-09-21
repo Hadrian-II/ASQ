@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model\Hint;
 
 use srag\asq\Application\Exception\AsqException;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class Hints

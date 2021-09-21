@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Definitions;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Application\Exception\AsqException;
 
 /**

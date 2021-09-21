@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Cloze\Editor;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Questions\Cloze\ClozeAnswer;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;

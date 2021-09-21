@@ -5,7 +5,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
 use ILIAS\Data\UUID\Factory;
 use ilDBInterface;
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 
 /**

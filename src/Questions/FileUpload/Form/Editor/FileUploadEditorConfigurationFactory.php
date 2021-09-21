@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\FileUpload\Form\Editor;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\FileUpload\Editor\Data\FileUploadEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;
 

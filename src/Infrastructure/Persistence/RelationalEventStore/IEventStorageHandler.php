@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 
 /**
  * Interface IEventStorageHandler

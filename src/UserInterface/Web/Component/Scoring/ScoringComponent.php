@@ -5,7 +5,7 @@ namespace srag\asq\UserInterface\Web\Component\Scoring;
 
 use ILIAS\UI\Component\Component;
 use ilLanguage;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 

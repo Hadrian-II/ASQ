@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\EventStore;
 
-use srag\CQRS\Event\EventStore;
+use Fluxlabs\CQRS\Event\EventStore;
 
 /**
  * Class QuestionEventStore

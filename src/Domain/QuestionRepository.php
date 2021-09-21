@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain;
 
-use srag\CQRS\Aggregate\AbstractAggregateRepository;
-use srag\CQRS\Aggregate\AbstractAggregateRoot;
-use srag\CQRS\Event\DomainEvents;
-use srag\CQRS\Event\EventStore;
-use srag\CQRS\Event\IEventStore;
+use Fluxlabs\CQRS\Aggregate\AbstractAggregateRepository;
+use Fluxlabs\CQRS\Aggregate\AbstractAggregateRoot;
+use Fluxlabs\CQRS\Event\DomainEvents;
+use Fluxlabs\CQRS\Event\EventStore;
+use Fluxlabs\CQRS\Event\IEventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 

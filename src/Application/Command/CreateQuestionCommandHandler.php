@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Command;
 
-use srag\CQRS\Command\CommandContract;
-use srag\CQRS\Command\CommandHandlerContract;
+use Fluxlabs\CQRS\Command\CommandContract;
+use Fluxlabs\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Domain\Model\Question;
 use ILIAS\Data\Result;

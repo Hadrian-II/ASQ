@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Cloze\Editor\Data;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class ClozeGapItem

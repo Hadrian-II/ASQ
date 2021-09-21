@@ -5,7 +5,7 @@ namespace srag\asq\Questions\Matching\Scoring;
 
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Matching\MatchingAnswer;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Application\Exception\AsqException;
 
 /**

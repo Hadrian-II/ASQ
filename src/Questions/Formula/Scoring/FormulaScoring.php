@@ -5,7 +5,7 @@ namespace srag\asq\Questions\Formula\Scoring;
 
 use EvalMath;
 use Exception;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Formula\FormulaAnswer;

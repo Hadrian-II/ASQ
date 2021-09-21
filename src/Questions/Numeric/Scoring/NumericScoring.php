@@ -6,7 +6,7 @@ namespace srag\asq\Questions\Numeric\Scoring;
 use srag\asq\Domain\Model\Scoring\AbstractScoring;
 use srag\asq\Questions\Numeric\NumericAnswer;
 use srag\asq\Questions\Numeric\Scoring\Data\NumericScoringConfiguration;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class NumericScoring

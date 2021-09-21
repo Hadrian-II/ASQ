@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Kprim\Editor;
 
 use ilTemplate;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Domain\Model\Feedback\Feedback;

@@ -9,7 +9,7 @@ use ILIAS\UI\Component\Input\Container\Form\Form;
 use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\UI\Component\Input\Field\Section;
 use ilLanguage;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Application\Service\UIService;
 use srag\asq\Domain\Model\Scoring\TextScoring;
 use srag\asq\Questions\Cloze\Editor\Data\ClozeEditorConfiguration;

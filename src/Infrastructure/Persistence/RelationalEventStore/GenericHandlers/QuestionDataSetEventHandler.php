@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
 use ilDateTime;
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionDataSetEvent;
 use srag\asq\Domain\Model\QuestionData;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;

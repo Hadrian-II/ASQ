@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Generic\Form;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Questions\Generic\Data\ImageAndTextDisplayDefinition;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;

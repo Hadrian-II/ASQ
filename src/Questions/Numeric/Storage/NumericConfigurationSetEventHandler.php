@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Numeric\Storage;
 
 use ilDateTime;
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;

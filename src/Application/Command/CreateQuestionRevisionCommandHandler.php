@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Command;
 
-use srag\CQRS\Aggregate\RevisionFactory;
-use srag\CQRS\Command\CommandContract;
-use srag\CQRS\Command\CommandHandlerContract;
+use Fluxlabs\CQRS\Aggregate\RevisionFactory;
+use Fluxlabs\CQRS\Command\CommandContract;
+use Fluxlabs\CQRS\Command\CommandHandlerContract;
 use srag\asq\Domain\QuestionRepository;
 use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;

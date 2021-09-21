@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence;
 
 use ActiveRecord;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use ILIAS\Data\UUID\Factory;
 
 /**

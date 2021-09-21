@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Choice\Form\Editor\ImageMap;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Choice\Editor\ImageMap\Data\ImageMapEditorConfiguration;
 use srag\asq\UserInterface\Web\Form\InputHandlingTrait;
 use srag\asq\UserInterface\Web\Form\Factory\AbstractObjectFactory;

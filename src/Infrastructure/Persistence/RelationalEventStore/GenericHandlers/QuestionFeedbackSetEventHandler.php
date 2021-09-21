@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 use srag\asq\Domain\Model\Feedback\Feedback;

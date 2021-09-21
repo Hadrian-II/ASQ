@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Questions\Kprim\Storage;
 
 use ilDateTime;
-use srag\CQRS\Event\DomainEvent;
+use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;

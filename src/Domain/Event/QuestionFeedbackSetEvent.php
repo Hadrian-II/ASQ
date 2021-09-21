@@ -5,7 +5,7 @@ namespace srag\asq\Domain\Event;
 
 use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
-use srag\CQRS\Event\AbstractDomainEvent;
+use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Feedback\Feedback;
 
 /**

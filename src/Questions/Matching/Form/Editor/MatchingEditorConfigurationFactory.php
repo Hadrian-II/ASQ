@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace srag\asq\Questions\Matching\Form\Editor;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Questions\Matching\Editor\Data\MatchingEditorConfiguration;
 use srag\asq\Questions\Matching\Editor\Data\MatchingItem;
 use srag\asq\Questions\Matching\Editor\Data\MatchingMapping;

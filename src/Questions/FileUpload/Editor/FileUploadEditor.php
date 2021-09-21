@@ -9,7 +9,7 @@ use ILIAS\FileUpload\Location;
 use ILIAS\FileUpload\DTO\ProcessingStatus;
 use ilLanguage;
 use ilTemplate;
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
 use srag\asq\Questions\FileUpload\FileUploadAnswer;

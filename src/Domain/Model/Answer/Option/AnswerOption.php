@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model\Answer\Option;
 
-use srag\CQRS\Aggregate\AbstractValueObject;
+use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class AnswerOption
