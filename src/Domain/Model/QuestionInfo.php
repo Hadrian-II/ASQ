@@ -38,7 +38,7 @@ class QuestionInfo
         $this->created = $question->getCreated();
         $this->description = $question->getDescription();
         $this->question = $question->getQuestion();
-        $this->question_id = $question->getQuestionId();
+        $this->question_id = $question->getQuestionId()->toString();
         $this->revision_name = $question->getRevisionName();
         $this->title = $question->getTitle();
         $this->working_time = $question->getWorkingTime();
