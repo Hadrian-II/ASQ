@@ -103,6 +103,7 @@ class SetupDatabase
 
     public function run() : void
     {
+        QuestionEventStoreAr::updateDB();
         QuestionListItemAr::updateDB();
         QuestionAr::updateDB();
         SimpleStoredAnswer::updateDB();
@@ -110,9 +111,6 @@ class SetupDatabase
         QuestionType::truncateDB();
 
         $this->addQuestionTypes();
-
-        $rqes_setup = new SetupRQES($this->db);
-        $rqes_setup->setup();
     }
 
     private function addQuestionTypes() : void
@@ -237,8 +235,5 @@ class SetupDatabase
         $this->db->dropTable(QuestionAr::STORAGE_NAME, false);
         $this->db->dropTable(SimpleStoredAnswer::STORAGE_NAME, false);
         $this->db->dropTable(QuestionType::STORAGE_NAME, false);
-
-        $rqes_setup = new SetupRQES($this->db);
-        $rqes_setup->drop();
     }
 }

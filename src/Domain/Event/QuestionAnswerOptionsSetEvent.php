@@ -27,10 +27,9 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occurred_on,
-        int $initiating_user_id,
         ?array $options = null
     ) {
-        parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
+        parent::__construct($aggregate_id, $occurred_on);
 
         $this->answer_options = $options;
     }

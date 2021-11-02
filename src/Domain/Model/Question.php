@@ -63,7 +63,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 
     public static function createNewQuestion(
         Uuid $question_uuid,
-        int $initiating_user_id,
         QuestionType $question_type
     ) : Question {
         $question = new Question();
@@ -71,7 +70,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
             new AggregateCreatedEvent(
                 $question_uuid,
                 new ilDateTime(time(), IL_CAL_UNIX),
-                $initiating_user_id,
                 [self::VAR_TYPE => $question_type->getTitleKey()]
             )
         );
@@ -134,10 +132,10 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->data;
     }
 
-    public function setData(?QuestionData $data, int $creator_id) : void
+    public function setData(?QuestionData $data) : void
     {
         if (!QuestionData::isNullableEqual($data, $this->getData())) {
-            $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $creator_id, $data));
+            $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $data));
         }
     }
 
@@ -146,15 +144,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->play_configuration;
     }
 
-    public function setPlayConfiguration(
-        ?QuestionPlayConfiguration $play_configuration,
-        int $creator_id
-    ) : void {
+    public function setPlayConfiguration(?QuestionPlayConfiguration $play_configuration) : void {
         if (!QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
             $this->ExecuteEvent(new QuestionPlayConfigurationSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
-                $creator_id,
                 $play_configuration
             ));
         }
@@ -173,7 +167,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
      * @param int $creator_id
      * @throws \ilDateTimeException
      */
-    public function setAnswerOptions(?array $options, int $creator_id)
+    public function setAnswerOptions(?array $options)
     {
         if (AbstractValueObject::isNullableArrayEqual($options, $this->answer_options)) {
             return;
@@ -182,7 +176,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         $this->ExecuteEvent(new QuestionAnswerOptionsSetEvent(
             $this->getAggregateId(),
             new ilDateTime(time(), IL_CAL_UNIX),
-            $creator_id,
             $options
         ));
     }
@@ -192,13 +185,12 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->hints;
     }
 
-    public function setHints(?QuestionHints $hints, int $creator_id) : void
+    public function setHints(?QuestionHints $hints) : void
     {
         if (!QuestionHints::isNullableEqual($hints, $this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
-                $creator_id,
                 $hints
             ));
         }
@@ -209,15 +201,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->feedback;
     }
 
-    public function setFeedback(
-        ?Feedback $feedback,
-        int $creator_id
-    ) : void {
+    public function setFeedback(?Feedback $feedback) : void {
         if (!Feedback::isNullableEqual($feedback, $this->getFeedback())) {
             $this->ExecuteEvent(new QuestionFeedbackSetEvent(
                 $this->getAggregateId(),
                 new ilDateTime(time(), IL_CAL_UNIX),
-                $creator_id,
                 $feedback
             ));
         }
@@ -243,17 +231,16 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         return $this->revision_id;
     }
 
-    public function setRevisionId(RevisionId $id, int $user_id) : void
+    public function setRevisionId(RevisionId $id) : void
     {
         $this->ExecuteEvent(new AggregateRevisionCreatedEvent(
             $this->getAggregateId(),
             new ilDateTime(time(), IL_CAL_UNIX),
-            $user_id,
             $id
         ));
     }
 
-    public function setMetadata(array $metadata, int $user_id) : void
+    public function setMetadata(array $metadata) : void
     {
         foreach ($metadata as $meta_for => $meta) {
             if (!array_key_exists($meta_for, $this->metadata) ||
@@ -261,7 +248,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
                 $this->ExecuteEvent(new QuestionMetadataSetEvent(
                     $this->getAggregateId(),
                     new ilDateTime(time(), IL_CAL_UNIX),
-                    $user_id,
                     $meta,
                     $meta_for
                 ));

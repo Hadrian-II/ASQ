@@ -30,7 +30,6 @@ class CreateQuestionCommandHandler implements CommandHandlerContract
     {
         $question = Question::createNewQuestion(
             $command->getQuestionUuid(),
-            $command->getIssuingUserId(),
             $command->getQuestionType()
         );
 

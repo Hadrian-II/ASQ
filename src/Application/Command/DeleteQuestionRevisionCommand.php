@@ -23,9 +23,9 @@ class DeleteQuestionRevisionCommand extends AbstractCommand
 
     private string $revision_name;
 
-    public function __construct(Uuid $question_id, string $revision_name, int $issuer_id)
+    public function __construct(Uuid $question_id, string $revision_name)
     {
-        parent::__construct($issuer_id);
+        parent::__construct();
         $this->question_id = $question_id;
         $this->revision_name = $revision_name;
     }

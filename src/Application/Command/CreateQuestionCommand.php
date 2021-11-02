@@ -25,10 +25,9 @@ class CreateQuestionCommand extends AbstractCommand
 
     public function __construct(
         Uuid $question_uuid,
-        QuestionType $question_type,
-        int $initiating_user_id
+        QuestionType $question_type
     ) {
-        parent::__construct($initiating_user_id);
+        parent::__construct();
         $this->question_uuid = $question_uuid;
         $this->question_type = $question_type;
     }

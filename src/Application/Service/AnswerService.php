@@ -22,7 +22,7 @@ use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
  * @package srag/asq
  * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
-class AnswerService extends ASQService
+class AnswerService
 {
     /**
      * Gets the score of an answer to a question

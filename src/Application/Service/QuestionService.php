@@ -33,7 +33,7 @@ use srag\asq\Application\Command\DeleteQuestionRevisionCommandHandler;
  * @package srag/asq
  * @author Adrian Lüthi - Fluxlabs AG <adi@fluxlabs.ch>
  */
-class QuestionService extends ASQService
+class QuestionService
 {
     private CommandBus $command_bus;
 
@@ -125,7 +125,7 @@ class QuestionService extends ASQService
      */
     public function createQuestionRevision(string $name, Uuid $question_id) : void
     {
-        $result = $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+        $result = $this->command_bus->handle(new CreateQuestionRevisionCommand($question_id, $name));
 
         if ($result->isError()) {
             throw new AsqException($result->value());
@@ -141,7 +141,7 @@ class QuestionService extends ASQService
      */
     public function deleteQuestionRevision(string $name, Uuid $question_id) : void
     {
-        $result = $this->command_bus->handle(new DeleteQuestionRevisionCommand($question_id, $name, $this->getActiveUser()));
+        $result = $this->command_bus->handle(new DeleteQuestionRevisionCommand($question_id, $name));
 
         if ($result->isError()) {
             throw new AsqException($result->value());
@@ -164,8 +164,7 @@ class QuestionService extends ASQService
         $this->command_bus->handle(
             new CreateQuestionCommand(
                 $id,
-                $type,
-                $this->getActiveUser()
+                $type
             )
         );
 
@@ -182,16 +181,16 @@ class QuestionService extends ASQService
         // check changes and trigger them on question if there are any
         $question = $this->repo->getAggregateRootById($question_dto->getId());
 
-        $question->setData($question_dto->getData(), $this->getActiveUser());
-        $question->setPlayConfiguration($question_dto->getPlayConfiguration(), $this->getActiveUser());
-        $question->setAnswerOptions($question_dto->getAnswerOptions(), $this->getActiveUser());
-        $question->setFeedback($question_dto->getFeedback(), $this->getActiveUser());
-        $question->setHints($question_dto->getQuestionHints(), $this->getActiveUser());
-        $question->setMetadata($question_dto->getMetadata(), $this->getActiveUser());
+        $question->setData($question_dto->getData());
+        $question->setPlayConfiguration($question_dto->getPlayConfiguration());
+        $question->setAnswerOptions($question_dto->getAnswerOptions());
+        $question->setFeedback($question_dto->getFeedback());
+        $question->setHints($question_dto->getQuestionHints());
+        $question->setMetadata($question_dto->getMetadata());
 
         if (count($question->getRecordedEvents()->getEvents()) > 0) {
             // save changes if there are any
-            $this->command_bus->handle(new SaveQuestionCommand($question, $this->getActiveUser()));
+            $this->command_bus->handle(new SaveQuestionCommand($question));
         }
     }
 

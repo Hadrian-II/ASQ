@@ -20,9 +20,9 @@ class SaveQuestionCommand extends AbstractCommand
 {
     private Question $question;
 
-    public function __construct(Question $question, int $issuing_user_id)
+    public function __construct(Question $question)
     {
-        parent::__construct($issuing_user_id);
+        parent::__construct();
         $this->question = $question;
     }
 

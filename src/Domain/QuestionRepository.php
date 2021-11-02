@@ -9,6 +9,7 @@ use Fluxlabs\CQRS\Event\DomainEvents;
 use Fluxlabs\CQRS\Event\EventStore;
 use Fluxlabs\CQRS\Event\IEventStore;
 use srag\asq\Domain\Model\Question;
+use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
@@ -25,9 +26,8 @@ class QuestionRepository extends AbstractAggregateRepository
 
     public function __construct()
     {
-        global $DIC;
         parent::__construct();
-        $this->event_store = new RelationalQuestionEventStore($DIC->database());
+        $this->event_store = new QuestionEventStore();
     }
 
     protected function getEventStore() : IEventStore

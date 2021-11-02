@@ -19,15 +19,14 @@ use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
  */
 class QuestionPlayConfigurationSetEvent extends AbstractDomainEvent
 {
-    protected QuestionPlayConfiguration $play_configuration;
+    protected ?QuestionPlayConfiguration $play_configuration;
 
     public function __construct(
         Uuid $aggregate_id,
         ilDateTime $occurred_on,
-        int $initiating_user_id,
         QuestionPlayConfiguration $play_configuration = null
     ) {
-        parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
+        parent::__construct($aggregate_id, $occurred_on);
 
         $this->play_configuration = $play_configuration;
     }
