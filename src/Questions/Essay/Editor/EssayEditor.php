@@ -30,14 +30,14 @@ class EssayEditor extends AbstractEditor
 
     private ilLanguage $language;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         global $DIC;
 
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
         $this->language = $DIC->language();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function additionalJSFile() : ?string
@@ -51,6 +51,7 @@ class EssayEditor extends AbstractEditor
 
         $tpl->setVariable('ESSAY', is_null($this->answer) ? '' : $this->answer->getText());
         $tpl->setVariable('POST_VAR', $this->question->getId()->toString());
+        $tpl->setVariable('DISABLED', $this->is_disabled ? 'disabled="disabled"' : '');
 
         if (!empty($this->configuration->getMaxLength())) {
             $tpl->setCurrentBlock('maximum_char_hint');

@@ -27,11 +27,11 @@ class ErrorTextEditor extends AbstractEditor
 
     private ErrorTextEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function additionalJSFile() : ?string
@@ -49,6 +49,8 @@ class ErrorTextEditor extends AbstractEditor
         if ($this->configuration->getTextSize() !== 100) {
             $tpl->setVariable('STYLE', sprintf('style="font-size: %fem"', $this->configuration->getTextSize() / 100));
         }
+
+        $tpl->setVariable('ENABLED', $this->is_disabled ? 'false' : 'true');
 
         $tpl->setVariable('ERRORTEXT_VALUE', is_null($this->answer) ? '' : $this->answer->getPostString());
         $tpl->setVariable('ERRORTEXT', $this->generateErrorText());

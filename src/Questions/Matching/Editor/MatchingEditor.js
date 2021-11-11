@@ -308,6 +308,13 @@ il.ASQ.Matching = (function($) {
 
             matchingMode = parseInt($('.js_matching_type').val(), 10);
             restoreMatches();
+
+            $('[data-enabled="false"] .js_term').each(
+                (i, disabled) => {
+                    $(disabled).draggable('disable');
+                    $(disabled).addClass('draggableDisabled');
+                }
+            );
         },
     );
 })($);

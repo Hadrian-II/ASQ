@@ -29,10 +29,10 @@ class FormulaScoringVariable extends AbstractValueObject
     protected ?float $multiple_of;
 
     public function __construct(
-        ?float $min,
-        ?float $max,
-        ?string $unit,
-        ?float $multiple_of
+        ?float $min = null,
+        ?float $max = null,
+        ?string $unit = null,
+        ?float $multiple_of = null
     ) {
         $this->min = $min;
         $this->max = $max;

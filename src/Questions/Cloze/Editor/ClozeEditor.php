@@ -29,11 +29,11 @@ class ClozeEditor extends AbstractEditor
 
     private ClozeEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function readAnswer() : AbstractValueObject
@@ -73,8 +73,9 @@ class ClozeEditor extends AbstractEditor
         $name = '├' . $index . '┤';
 
         $html = sprintf(
-            '<select length="20" name="%s">%s</select>',
+            '<select length="20" name="%s" %s>%s</select>',
             $this->getPostVariable($index),
+            $this->is_disabled ? 'disabled="disabled"' : '',
             $this->createOptions($gap_config->getItems(), $index)
         );
 
@@ -105,10 +106,11 @@ class ClozeEditor extends AbstractEditor
         $name = '├' . $index . '┤';
 
         $html = sprintf(
-            '<input type="text" length="20" name="%s" value="%s" style="width: %spx;" />',
+            '<input type="text" length="20" name="%s" value="%s" style="width: %spx;" %s/>',
             $this->getPostVariable($index),
             $this->getAnswer($index) ?? '',
-            $gap_config->getFieldLength()
+            $gap_config->getFieldLength(),
+            $this->is_disabled ? 'disabled="disabled"' : ''
         );
 
         return str_replace($name, $html, $output);
@@ -118,7 +120,7 @@ class ClozeEditor extends AbstractEditor
      * @param int $key
      * @return ?ClozeAnswer
      */
-    private function getAnswer(int $key) : ?AbstractValueObject
+    private function getAnswer(int $key) : ?string
     {
         if (is_null($this->answer) || ! array_key_exists($key, $this->answer->getAnswers())) {
             return null;

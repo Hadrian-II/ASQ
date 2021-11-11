@@ -19,5 +19,5 @@ il.ASQ.ErrorText = (function($) {
         selectedInput.val(selectedWords.join(','));
     }
 
-    $(document).on('click', '.errortext_word', wordSelected);
+    $(document).on('click', '[data-enabled="true"] .errortext_word', wordSelected);
 })($);

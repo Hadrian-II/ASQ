@@ -27,11 +27,11 @@ class TextSubsetEditor extends AbstractEditor
 
     private TextSubsetEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function generateHtml() : string
@@ -43,6 +43,7 @@ class TextSubsetEditor extends AbstractEditor
             $tpl->setVariable('COUNTER', $i);
             $tpl->setVariable('TEXTFIELD_ID', $this->getPostName($i));
             $tpl->setVariable('TEXTFIELD_SIZE', $this->calculateSize());
+            $tpl->setVariable('DISABLED', $this->is_disabled ? 'disabled="disabled"' : '');
 
             if (!is_null($this->answer) && array_key_exists($i, $this->answer->getAnswers()) && !is_null($this->answer->getAnswers()[$i])) {
                 $tpl->setVariable('TEXTFIELD_VALUE', 'value="' . $this->answer->getAnswers()[$i] . '"');

@@ -34,7 +34,7 @@ class MultipleChoiceEditor extends AbstractEditor
 
     private MultipleChoiceEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -43,7 +43,7 @@ class MultipleChoiceEditor extends AbstractEditor
             shuffle($this->answer_options);
         }
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function additionalJSFile() : ?string
@@ -118,6 +118,10 @@ class MultipleChoiceEditor extends AbstractEditor
             $tpl->setVariable('TYPE', $this->isMultipleChoice() ? "checkbox" : "radio");
             $tpl->setVariable('ANSWER_ID', $answer_option->getOptionId());
             $tpl->setVariable('POST_NAME', $this->getPostName($answer_option->getOptionId()));
+
+            if ($this->is_disabled) {
+                $tpl->setVariable('DISABLED', 'disabled="disabled"');
+            }
 
             if (!is_null($this->answer) && in_array($answer_option->getOptionId(), $this->answer->getSelectedIds())) {
                 $tpl->setVariable('CHECKED', 'checked="checked"');

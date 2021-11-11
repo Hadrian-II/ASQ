@@ -26,12 +26,17 @@ class Renderer extends AbstractComponentRenderer
 
     private ResourceRegistry $registry;
 
+    /**
+     * @param QuestionComponent $input
+     * @param RendererInterface $default_renderer
+     * @return string
+     */
     public function render(Component $input, RendererInterface $default_renderer) : string
     {
         /** @var $question QuestionDto */
         $question = $input->getQuestion();
         $editor_class = $question->getType()->getEditorClass();
-        $editor = new $editor_class($question);
+        $editor = new $editor_class($question, $input->isDisabled());
 
         if (! is_null($input->getAnswer())) {
             $editor->setAnswer($input->getAnswer());

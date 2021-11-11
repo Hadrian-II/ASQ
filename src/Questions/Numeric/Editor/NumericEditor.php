@@ -29,11 +29,11 @@ class NumericEditor extends AbstractEditor
 
     private NumericEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function generateHtml() : string
@@ -43,6 +43,7 @@ class NumericEditor extends AbstractEditor
         $tpl->setCurrentBlock('editor');
         $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
         $tpl->setVariable('NUMERIC_SIZE', $this->configuration->getMaxNumOfChars());
+        $tpl->setVariable('DISABLED', $this->is_disabled ? 'disabled="disabled"' : '');
 
         if ($this->answer !== null) {
             $tpl->setVariable('CURRENT_VALUE', 'value="' . $this->answer->getValue() . '"');

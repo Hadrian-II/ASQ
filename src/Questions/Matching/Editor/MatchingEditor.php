@@ -25,11 +25,6 @@ class MatchingEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
-    public function __construct(QuestionDto $question)
-    {
-        parent::__construct($question);
-    }
-
     public function additionalJSFile() : ?string
     {
         return $this->getBasePath(__DIR__) . 'src/Questions/Matching/Editor/MatchingEditor.js';
@@ -59,6 +54,7 @@ class MatchingEditor extends AbstractEditor
         $tpl->setVariable('QUESTION_ID', $this->question->getId()->toString());
         $tpl->setVariable('ANSWER', is_null($this->answer) ? '' :$this->answer->getAnswerString());
         $tpl->setVariable('MATCHING_TYPE', $config->getMatchingMode());
+        $tpl->setVariable('ENABLED', $this->is_disabled ? 'false' : 'true');
 
         $this->renderDefinitions($config, $tpl);
 

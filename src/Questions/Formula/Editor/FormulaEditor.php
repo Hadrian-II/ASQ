@@ -27,11 +27,11 @@ class FormulaEditor extends AbstractEditor
 
     private FormulaScoringConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function readAnswer() : AbstractValueObject
@@ -91,7 +91,12 @@ class FormulaEditor extends AbstractEditor
     {
         $name = '$r' . $index;
 
-        $html = sprintf('<input type="text" length="20" name="%s" value="%s" />%s', $this->getPostVariableName($name), $this->getResultValue($name) ?? '', !empty($units) ? $this->createUnitSelection($units, $name) : '');
+        $html = sprintf(
+            '<input type="text" length="20" name="%s" value="%s" %s/>%s',
+            $this->getPostVariableName($name),
+            $this->getResultValue($name) ?? '',
+            $this->is_disabled ? 'disabled="disabled"' : '',
+            !empty($units) ? $this->createUnitSelection($units, $name) : '');
 
         return str_replace($name, $html, $output);
     }

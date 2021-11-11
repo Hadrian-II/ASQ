@@ -23,10 +23,12 @@ abstract class AbstractEditor implements IAsqQuestionEditor
 
     protected bool $render_feedback = false;
 
+    protected bool $is_disabled;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->question = $question;
+        $this->is_disabled = $is_disabled;
     }
 
     public function setRenderFeedback(bool $render_feedback) : void

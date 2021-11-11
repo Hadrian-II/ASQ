@@ -34,13 +34,13 @@ class OrderingEditor extends AbstractEditor
     /**
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
         $this->calculateDisplayIds($question);
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function additionalJSFile() : ?string
@@ -93,6 +93,7 @@ class OrderingEditor extends AbstractEditor
 
         $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
+        $tpl->setVariable('ENABLED', $this->is_disabled ? 'false' : 'true');
         $tpl->parseCurrentBlock();
 
         return $tpl->get();

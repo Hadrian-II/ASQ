@@ -30,11 +30,11 @@ class ImageMapEditor extends AbstractEditor
 
     private ImageMapEditorConfiguration $configuration;
 
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function additionalJSFile() : ?string
@@ -62,6 +62,8 @@ class ImageMapEditor extends AbstractEditor
             $tpl->setVariable('OPTION_SHAPE', $this->generateShape($display_definition, $answer_option->getOptionId()));
             $tpl->parseCurrentBlock();
         }
+
+        $tpl->setVariable('ENABLED', $this->is_disabled ? 'false' : 'true');
 
         return $tpl->get();
     }

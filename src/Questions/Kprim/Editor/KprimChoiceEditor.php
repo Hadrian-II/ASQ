@@ -38,7 +38,7 @@ class KprimChoiceEditor extends AbstractEditor
     /**
      * @param QuestionDto $question
      */
-    public function __construct(QuestionDto $question)
+    public function __construct(QuestionDto $question, bool $is_disabled = false)
     {
         $this->answer_options = $question->getAnswerOptions();
         $this->configuration = $question->getPlayConfiguration()->getEditorConfiguration();
@@ -47,7 +47,7 @@ class KprimChoiceEditor extends AbstractEditor
             shuffle($this->answer_options);
         }
 
-        parent::__construct($question);
+        parent::__construct($question, $is_disabled);
     }
 
     public function readAnswer() : AbstractValueObject
@@ -116,6 +116,7 @@ class KprimChoiceEditor extends AbstractEditor
             $tpl->setVariable('ANSWER_ID', $this->getPostName($answer_option->getOptionId()));
             $tpl->setVariable('VALUE_TRUE', self::STR_TRUE);
             $tpl->setVariable('VALUE_FALSE', self::STR_FALSE);
+            $tpl->setVariable('DISABLED', $this->is_disabled ? 'disabled="disabled"' : '');
 
             if (!is_null($this->answer)) {
                 $answer = $this->answer->getAnswerForId($answer_option->getOptionId());

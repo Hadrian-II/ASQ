@@ -14,16 +14,20 @@
 }
 
 /* Errortext Editor */
-.errortext_word:hover {
-	background-color: gray;
+[data-enabled="true"] .errortext_word:hover {
+	background-color: lightgrey;
 }
 
 .errortext_word.selected {
 	background-color: yellow;
 }
 
-.errortext_word.selected:hover {
-	background-color: light-gray;
+[data-enabled="true"] .errortext_word.selected:hover {
+	background-color: grey;
+}
+
+[data-enabled="false"] .errortext_word.selected {
+	background-color: darkorange;
 }
 
 /* Imagemap Editor */
@@ -52,6 +56,12 @@
 	fill: white;
 	fill-opacity: 0.6;
 	cursor: pointer;
+}
+
+[data-enabled="false"] .imagemap_editor rect,
+[data-enabled="false"] .imagemap_editor ellipse,
+[data-enabled="false"] .imagemap_editor polygon {
+	cursor: default;
 }
 
 .imagemap_editor rect.selected,
@@ -98,6 +108,7 @@
 
 .draggableDisabled {
     opacity: 0.5;
+	cursor: default;
 }
 
 .droppableTarget {
@@ -143,6 +154,10 @@
 	cursor: move;
 	padding: 10px;
 	margin: 5px;
+}
+
+[data-enabled="false"] .list_item {
+	cursor: default;
 }
 
 .placeholder {

@@ -26,6 +26,8 @@ class QuestionComponent implements Component
 
     private bool $show_feedback = false;
 
+    private bool $is_disabled = false;
+
     public function __construct(QuestionDto $question_dto)
     {
         $this->question_dto = $question_dto;
@@ -47,6 +49,14 @@ class QuestionComponent implements Component
         return $clone;
     }
 
+    public function withDisabled(bool $is_disabled) : QuestionComponent
+    {
+        $clone = clone $this;
+        $clone->is_disabled = $is_disabled;
+
+        return $clone;
+    }
+
     public function getQuestion() : QuestionDto
     {
         return $this->question_dto;
@@ -60,6 +70,11 @@ class QuestionComponent implements Component
     public function doesShowFeedback() : bool
     {
         return $this->show_feedback;
+    }
+
+    public function isDisabled() : bool
+    {
+        return $this->is_disabled;
     }
 
     public function withAnswerFromPost() : QuestionComponent

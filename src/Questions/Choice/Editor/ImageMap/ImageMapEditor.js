@@ -33,7 +33,7 @@ il.ASQ.ImageMap = (function($) {
     $(document)
         .on(
             'click',
-            '.imagemap_editor rect, .imagemap_editor ellipse, .imagemap_editor polygon',
+            '[data-enabled="true"] .imagemap_editor rect, [data-enabled="true"] .imagemap_editor ellipse, [data-enabled="true"] .imagemap_editor polygon',
             shapeClick,
         );
 })($);
