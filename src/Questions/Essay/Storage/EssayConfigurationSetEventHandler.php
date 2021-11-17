@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Essay\Storage;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
@@ -46,10 +46,11 @@ class EssayConfigurationSetEventHandler extends AbstractEventStorageHandler
 
     public function createEvent(array $data, array $rows): DomainEvent
     {
+        $date = new DateTimeImmutable();
+
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $this->readInt($data['initiating_user_id']),
+            $date->setTimestamp($data['occurred_on']),
             new QuestionPlayConfiguration(
                 new EssayEditorConfiguration(
                     $this->readInt($rows[0]['max_length'])

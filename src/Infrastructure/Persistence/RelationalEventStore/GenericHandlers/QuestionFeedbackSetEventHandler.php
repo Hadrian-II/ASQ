@@ -8,7 +8,7 @@ use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorag
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 use srag\asq\Domain\Model\Feedback\Feedback;
 use srag\asq\Domain\Event\QuestionFeedbackSetEvent;
-use ilDateTime;
+use DateTimeImmutable;
 
 /**
  * Class QuestionFeedbackSetEventHandler
@@ -61,8 +61,7 @@ class QuestionFeedbackSetEventHandler extends  AbstractEventStorageHandler
 
         return new QuestionFeedbackSetEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            (new DateTimeImmutable())->setTimestamp($data['occurred_on']),
             new Feedback(
                 $rows[0]['feedback_correct'],
                 $rows[0]['feedback_wrong'],

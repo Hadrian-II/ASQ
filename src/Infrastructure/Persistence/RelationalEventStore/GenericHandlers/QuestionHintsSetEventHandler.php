@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionHintsSetEvent;
 use srag\asq\Domain\Model\Hint\QuestionHint;
@@ -52,8 +52,7 @@ class QuestionHintsSetEventHandler extends AbstractEventStorageHandler
 
         return new QuestionHintsSetEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            (new DateTimeImmutable())->setTimestamp($data['occurred_on']),
             new QuestionHints($hints)
         );
     }

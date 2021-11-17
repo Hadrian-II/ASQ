@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Statistics;
 
 use ActiveRecord;
-use ilDateTime;
+use DateTimeImmutable;
 
 /**
  * Class StatisticsRecord
@@ -88,7 +88,7 @@ class StatisticsRecord extends ActiveRecord
         string $context,
         int $user_id,
         float $points,
-        ilDateTime $timestamp
+        DateTimeImmutable $timestamp
     ) {
         parent::__construct();
 
@@ -97,7 +97,7 @@ class StatisticsRecord extends ActiveRecord
         $this->context = $context;
         $this->user_id = $user_id;
         $this->points = $points;
-        $this->timestamp = $timestamp->getUnixTime();
+        $this->timestamp = $timestamp->getTimestamp();
     }
 
     public function getId() : int
@@ -125,9 +125,9 @@ class StatisticsRecord extends ActiveRecord
         return $this->points;
     }
 
-    public function getTimestamp() : ilDateTime
+    public function getTimestamp() : DateTimeImmutable
     {
-        return new ilDateTime($this->timestamp, IL_CAL_UNIX);
+        return (new DateTimeImmutable())->setTimestamp($this->timestamp);
     }
 
     public static function returnDbTableName() : string

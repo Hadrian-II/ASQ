@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Event;
 
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Feedback\Feedback;
 
@@ -22,7 +22,7 @@ class QuestionFeedbackSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occurred_on,
+        DateTimeImmutable $occurred_on,
         ?Feedback $feedback = null
     ) {
         parent::__construct($aggregate_id, $occurred_on);

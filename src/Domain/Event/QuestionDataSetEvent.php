@@ -7,7 +7,7 @@ use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\QuestionData;
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
+use DateTimeImmutable;
 
 /**
  * Class QuestionDataSetEvent
@@ -23,7 +23,7 @@ class QuestionDataSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occurred_on,
+        DateTimeImmutable $occurred_on,
         ?QuestionData $data = null
     ) {
         parent::__construct($aggregate_id, $occurred_on);

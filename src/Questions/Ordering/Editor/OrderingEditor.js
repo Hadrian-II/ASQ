@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    $('[data-enabled="true"] .order_list').sortable({
+    $('[data-enabled="true"].order_list').sortable({
         placeholder: 'placeholder',
         tolerance: 'pointer',
         start(e, ui) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace srag\asq\Domain\Model;
 
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
+use DateTimeImmutable;
 use srag\asq\Domain\Event\QuestionMetadataSetEvent;
 use Fluxlabs\CQRS\Aggregate\AbstractAggregateRoot;
 use Fluxlabs\CQRS\Aggregate\IsRevisable;
@@ -69,7 +69,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         $question->ExecuteEvent(
             new AggregateCreatedEvent(
                 $question_uuid,
-                new ilDateTime(time(), IL_CAL_UNIX),
+                new DateTimeImmutable(),
                 [self::VAR_TYPE => $question_type->getTitleKey()]
             )
         );
@@ -135,7 +135,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     public function setData(?QuestionData $data) : void
     {
         if (!QuestionData::isNullableEqual($data, $this->getData())) {
-            $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new ilDateTime(time(), IL_CAL_UNIX), $data));
+            $this->ExecuteEvent(new QuestionDataSetEvent($this->getAggregateId(), new DateTimeImmutable(), $data));
         }
     }
 
@@ -148,7 +148,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         if (!QuestionPlayConfiguration::isNullableEqual($play_configuration, $this->getPlayConfiguration())) {
             $this->ExecuteEvent(new QuestionPlayConfigurationSetEvent(
                 $this->getAggregateId(),
-                new ilDateTime(time(), IL_CAL_UNIX),
+                new DateTimeImmutable(),
                 $play_configuration
             ));
         }
@@ -164,8 +164,6 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 
     /**
      * @param AnswerOption[] $options
-     * @param int $creator_id
-     * @throws \ilDateTimeException
      */
     public function setAnswerOptions(?array $options)
     {
@@ -175,7 +173,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 
         $this->ExecuteEvent(new QuestionAnswerOptionsSetEvent(
             $this->getAggregateId(),
-            new ilDateTime(time(), IL_CAL_UNIX),
+            new DateTimeImmutable(),
             $options
         ));
     }
@@ -190,7 +188,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         if (!QuestionHints::isNullableEqual($hints, $this->getHints())) {
             $this->ExecuteEvent(new QuestionHintsSetEvent(
                 $this->getAggregateId(),
-                new ilDateTime(time(), IL_CAL_UNIX),
+                new DateTimeImmutable(),
                 $hints
             ));
         }
@@ -205,7 +203,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
         if (!Feedback::isNullableEqual($feedback, $this->getFeedback())) {
             $this->ExecuteEvent(new QuestionFeedbackSetEvent(
                 $this->getAggregateId(),
-                new ilDateTime(time(), IL_CAL_UNIX),
+                new DateTimeImmutable(),
                 $feedback
             ));
         }
@@ -235,7 +233,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     {
         $this->ExecuteEvent(new AggregateRevisionCreatedEvent(
             $this->getAggregateId(),
-            new ilDateTime(time(), IL_CAL_UNIX),
+            new DateTimeImmutable(),
             $id
         ));
     }
@@ -247,7 +245,7 @@ class Question extends AbstractAggregateRoot implements IsRevisable
                 !AbstractValueObject::isNullableEqual($meta, $this->metadata[$meta_for])) {
                 $this->ExecuteEvent(new QuestionMetadataSetEvent(
                     $this->getAggregateId(),
-                    new ilDateTime(time(), IL_CAL_UNIX),
+                    new DateTimeImmutable(),
                     $meta,
                     $meta_for
                 ));

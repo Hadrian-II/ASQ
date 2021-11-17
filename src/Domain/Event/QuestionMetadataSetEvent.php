@@ -6,7 +6,7 @@ namespace srag\asq\Domain\Event;
 use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
+use DateTimeImmutable;
 
 /**
  * Class QuestionMetadataSetEvent
@@ -27,7 +27,7 @@ class QuestionMetadataSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occurred_on,
+        DateTimeImmutable $occurred_on,
         ?AbstractValueObject $meta = null,
         ?string $meta_for = null
     ) {

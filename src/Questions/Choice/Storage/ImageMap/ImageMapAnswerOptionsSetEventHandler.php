@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Choice\Storage\ImageMap;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionAnswerOptionsSetEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
@@ -70,8 +70,7 @@ class ImageMapAnswerOptionsSetEventHandler extends AbstractEventStorageHandler
 
         return new QuestionAnswerOptionsSetEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $this->readInt($data['initiating_user_id']),
+            (new DateTimeImmutable())->setTimestamp($data['occurred_on']),
             $options
         );
     }

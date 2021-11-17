@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Questions\Ordering\Storage;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use srag\asq\Domain\Event\QuestionPlayConfigurationSetEvent;
 use srag\asq\Domain\Model\Configuration\QuestionPlayConfiguration;
@@ -49,8 +49,7 @@ class OrderingConfigurationSetEventHandler extends AbstractEventStorageHandler
 
         return new QuestionPlayConfigurationSetEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            $this->readInt($data['initiating_user_id']),
+            (new DateTimeImmutable())->setTimestamp($data['occurred_on']),
             new QuestionPlayConfiguration(
                 new OrderingEditorConfiguration(
                     $this->readBool($item['is_vertical']),

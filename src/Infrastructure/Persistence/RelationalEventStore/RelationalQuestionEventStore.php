@@ -6,7 +6,7 @@ namespace srag\asq\Infrastructure\Persistence\RelationalEventStore;
 use ILIAS\Data\UUID\Factory;
 use ILIAS\Data\UUID\Uuid;
 use ilDBInterface;
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvents;
 use Fluxlabs\CQRS\Event\IEventStore;
 use Fluxlabs\CQRS\Event\Standard\AggregateCreatedEvent;
@@ -228,11 +228,11 @@ class RelationalQuestionEventStore implements IEventStore
                 $atime = $a->getOccurredOn();
                 $btime = $b->getOccurredOn();
 
-                if (ilDateTime::_equals($atime, $btime)) {
+                if ($atime === $btime) {
                     return 0;
                 }
 
-                return ilDateTime::_before($atime, $btime) ? -1 : 1;
+                return $atime < $btime ? -1 : 1;
             }
         );
 

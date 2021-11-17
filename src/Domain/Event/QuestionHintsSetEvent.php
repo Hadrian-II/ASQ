@@ -6,7 +6,7 @@ namespace srag\asq\Domain\Event;
 use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Hint\QuestionHints;
 use ILIAS\Data\UUID\Uuid;
-use ilDateTime;
+use DateTimeImmutable;
 
 /**
  * Class QuestionHintsSetEvent
@@ -22,7 +22,7 @@ class QuestionHintsSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occurred_on,
+        DateTimeImmutable $occurred_on,
         ?QuestionHints $hints = null
     ) {
         parent::__construct($aggregate_id, $occurred_on);

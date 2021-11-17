@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Aggregate\RevisionId;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use Fluxlabs\CQRS\Event\Standard\AggregateRevisionCreatedEvent;
@@ -44,8 +44,7 @@ class AggregateRevisionCreatedEventHandler extends AbstractEventStorageHandler
     {
         return new AggregateRevisionCreatedEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            (new DateTimeImmutable())->setTimestamp($data['occurred_on']),
             RevisionId::create(
                 $rows[0]['key'],
                 $rows[0]['algorithm'],

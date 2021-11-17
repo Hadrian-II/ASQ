@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use ActiveRecord;
-use ilDateTime;
 use srag\asq\Domain\QuestionDto;
+use DateTimeImmutable;
 
 /**
  * Class QuestionAr
@@ -89,8 +89,8 @@ class QuestionAr extends ActiveRecord
         global $DIC;
         $object = new QuestionAr();
 
-        $created = new ilDateTime(time(), IL_CAL_UNIX);
-        $object->created = $created->get(IL_CAL_DATETIME);
+        $created = new DateTimeImmutable();
+        $object->created = $created->getTimestamp();
         $object->creator = $DIC->user()->getId();
         $object->question_id = $question->getId();
         $object->revision_name = $question->getRevisionId()->getName();
@@ -105,9 +105,9 @@ class QuestionAr extends ActiveRecord
         return $this->id;
     }
 
-    public function getCreated()
+    public function getCreated() : DateTimeImmutable
     {
-        return $this->created;
+        return (new DateTimeImmutable())->setTimestamp($this->created);
     }
 
     public function getCreator() : int

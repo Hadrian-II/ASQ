@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Domain\Model;
 
-use ilDateTime;
+use DateTimeImmutable;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
 
 /**
@@ -30,7 +30,7 @@ class QuestionInfo
 
     protected int $working_time;
 
-    protected ilDateTime $created;
+    protected DateTimeImmutable $created;
 
     public function __construct(QuestionListItemAr $question)
     {
@@ -79,7 +79,7 @@ class QuestionInfo
         return $this->revision_name;
     }
 
-    public function getCreated() : ilDateTime
+    public function getCreated() : DateTimeImmutable
     {
         return $this->created;
     }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace srag\asq\Infrastructure\Persistence\Projection;
 
 use ActiveRecord;
-use ilDateTimeException;
 use srag\asq\Domain\QuestionDto;
-use ilDateTime;
+use DateTimeImmutable;
 use ILIAS\Data\UUID\Uuid;
 use ILIAS\Data\UUID\Factory;
 
@@ -99,7 +98,7 @@ class QuestionListItemAr extends ActiveRecord
      */
     protected $working_time;
     /**
-     * @var ilDateTime
+     * @var DateTimeImmutable
      *
      * @con_has_field true
      * @con_fieldtype timestamp
@@ -116,7 +115,7 @@ class QuestionListItemAr extends ActiveRecord
         $object->question = $question->getData()->getQuestionText();
         $object->author = $question->getData()->getAuthor();
         $object->working_time = $question->getData()->getWorkingTime();
-        $object->created = new ilDateTime(time(), IL_CAL_UNIX);
+        $object->created = new DateTimeImmutable();
         return $object;
     }
 
@@ -155,7 +154,7 @@ class QuestionListItemAr extends ActiveRecord
         return $this->revision_name;
     }
 
-    public function getCreated() : ilDateTime
+    public function getCreated() : DateTimeImmutable
     {
         return $this->created;
     }
@@ -164,13 +163,24 @@ class QuestionListItemAr extends ActiveRecord
     {
         switch ($field_name) {
             case 'created':
-                return new ilDateTime($field_value, IL_CAL_DATETIME);
+                $date = new DateTimeImmutable();
+                return $date->setTimestamp($field_value);
             case 'id':
             case 'working_time':
                 return intval($field_value);
             case 'question_id':
                 $factory = new Factory();
                 return $factory->fromString($field_value);
+            default:
+                return null;
+        }
+    }
+
+    public function sleep($field_name)
+    {
+        switch ($field_name) {
+            case 'created':
+                return $this->created->getTimestamp();
             default:
                 return null;
         }

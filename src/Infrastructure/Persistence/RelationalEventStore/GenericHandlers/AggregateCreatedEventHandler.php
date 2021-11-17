@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace srag\asq\Infrastructure\Persistence\RelationalEventStore\GenericHandlers;
 
-use ilDateTime;
+use DateTimeImmutable;
 use Fluxlabs\CQRS\Event\DomainEvent;
 use Fluxlabs\CQRS\Event\Standard\AggregateCreatedEvent;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\AbstractEventStorageHandler;
@@ -37,10 +37,11 @@ class AggregateCreatedEventHandler extends AbstractEventStorageHandler
 
     public function createEvent(array $data, array $rows) : DomainEvent
     {
+        $date = new DateTimeImmutable();
+
         return new AggregateCreatedEvent(
             $this->factory->fromString($data['question_id']),
-            new ilDateTime($data['occurred_on'], IL_CAL_UNIX),
-            intval($data['initiating_user_id']),
+            $date->setTimestamp($data['occurred_on']),
             [Question::VAR_TYPE => $rows[0]['type']]);
     }
 }

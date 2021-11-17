@@ -5,7 +5,7 @@ namespace srag\asq\Domain\Event;
 
 use Fluxlabs\CQRS\Event\AbstractDomainEvent;
 use srag\asq\Domain\Model\Answer\Option\AnswerOption;
-use ilDateTime;
+use DateTimeImmutable;
 use ILIAS\Data\UUID\Uuid;
 use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
 
@@ -26,7 +26,7 @@ class QuestionAnswerOptionsSetEvent extends AbstractDomainEvent
 
     public function __construct(
         Uuid $aggregate_id,
-        ilDateTime $occurred_on,
+        DateTimeImmutable $occurred_on,
         ?array $options = null
     ) {
         parent::__construct($aggregate_id, $occurred_on);
