@@ -101,7 +101,7 @@ class QuestionListItemAr extends ActiveRecord
      * @var DateTimeImmutable
      *
      * @con_has_field true
-     * @con_fieldtype timestamp
+     * @con_fieldtype integer
      */
     protected $created;
 
@@ -163,8 +163,7 @@ class QuestionListItemAr extends ActiveRecord
     {
         switch ($field_name) {
             case 'created':
-                $date = new DateTimeImmutable();
-                return $date->setTimestamp($field_value);
+                return $field_value ? (new DateTimeImmutable())->setTimestamp(intval($field_value)) : null;
             case 'id':
             case 'working_time':
                 return intval($field_value);
@@ -180,7 +179,7 @@ class QuestionListItemAr extends ActiveRecord
     {
         switch ($field_name) {
             case 'created':
-                return $this->created->getTimestamp();
+                return $this->created ? $this->created->getTimestamp() : null;
             default:
                 return null;
         }

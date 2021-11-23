@@ -154,8 +154,7 @@ class AsqQuestionVersionGUI
         $rollback_label = $this->language->txt('asq_label_revision_rollback');
         $delete_label = $this->language->txt('asq_label_revision_delete');
 
-        /** @var $question QuestionInfo */
-        return array_map(function ($question, $ix) use ($rollback_label, $delete_label) {
+        return array_map(function (QuestionInfo $question, $ix) use ($rollback_label, $delete_label) {
             $preview = $this->asq->link()->getPreviewLink($this->question_id, $question->getRevisionName());
             $edit = $this->asq->link()->getEditLink($this->question_id, $question->getRevisionName());
             $this->ctrl->setParameter($this, self::PARAM_SELECTED_VERSION, $question->getRevisionName());
@@ -164,7 +163,7 @@ class AsqQuestionVersionGUI
             return [
                 self::COL_INDEX => $ix,
                 self::COL_NAME => $question->getRevisionName(),
-                self::COL_DATE => $question->getCreated()->get(IL_CAL_DATETIME),
+                self::COL_DATE => $question->getCreated()->format('d.m.Y H:i'),
                 self::COL_CREATOR => $question->getAuthor(),
                 self::PREVIEW_LINK => $preview->getAction(),
                 self::PREVIEW_LABEL => $preview->getLabel(),
