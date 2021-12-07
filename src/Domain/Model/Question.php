@@ -57,6 +57,11 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     private ?bool $has_unrevised_changes = null;
 
     /**
+     * @var RevisionId[]
+     */
+    private ?array $revisions = null;
+
+    /**
      * @var ?AbstractValueObject
      */
     private ?array $metadata = [];
@@ -103,6 +108,12 @@ class Question extends AbstractAggregateRoot implements IsRevisable
 
     protected function applyAggregateRevisionCreatedEvent(AggregateRevisionCreatedEvent $event) : void
     {
+        if ($this->revisions === null) {
+            $this->revisions = [];
+        }
+
+        $this->revisions[] = $event->getRevisionId();
+
         $this->revision_id = $event->getRevisionId();
     }
 
@@ -227,6 +238,14 @@ class Question extends AbstractAggregateRoot implements IsRevisable
     public function getRevisionId() : ?RevisionId
     {
         return $this->revision_id;
+    }
+
+    /**
+     * @return ?RevisionId[]
+     */
+    public function getRevisions() : ?array
+    {
+        return $this->revisions;
     }
 
     public function setRevisionId(RevisionId $id) : void

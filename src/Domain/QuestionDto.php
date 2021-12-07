@@ -39,7 +39,6 @@ class QuestionDto implements JsonSerializable
     private ?QuestionPlayConfiguration $play_configuration = null;
 
     /**
-     *
      * @var ?AnswerOption[]
      */
     private ?array $answer_options = null;
@@ -49,6 +48,11 @@ class QuestionDto implements JsonSerializable
     private ?QuestionHints $question_hints = null;
 
     private bool $has_unrevisioned_changes;
+
+    /**
+     * @var ?RevisionId[]
+     */
+    private ?array $revisions;
 
     /**
      * @var ?AbstractValueObject
@@ -63,6 +67,7 @@ class QuestionDto implements JsonSerializable
         $dto->type = $type;
 
         $dto->revision_id = $question->getRevisionId();
+        $dto->revisions = $question->getRevisions();
         $dto->data = $question->getData();
         $dto->play_configuration = $question->getPlayConfiguration();
         $dto->answer_options = $question->getAnswerOptions();
@@ -118,6 +123,14 @@ class QuestionDto implements JsonSerializable
     public function getRevisionId() : ?RevisionId
     {
         return $this->revision_id;
+    }
+
+    /**
+     * @return ?RevisionId[]
+     */
+    public function getRevisions() : ?array
+    {
+        return $this->revisions;
     }
 
     public function getData() : ?QuestionData
