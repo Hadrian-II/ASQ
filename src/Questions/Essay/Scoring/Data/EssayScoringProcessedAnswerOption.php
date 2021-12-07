@@ -18,7 +18,7 @@ class EssayScoringProcessedAnswerOption
      */
     private array $words;
 
-    private float $points;
+    private ?float $points;
 
     public function __construct(EssayScoringDefinition $def, bool $is_case_insensitive)
     {

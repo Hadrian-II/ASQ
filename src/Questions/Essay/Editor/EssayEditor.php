@@ -75,9 +75,15 @@ class EssayEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
-        return new EssayAnswer($this->getPostValue($this->question->getId()->toString()));
+        $text = $this->getPostValue($this->question->getId()->toString());
+
+        if (strlen($text) > 0) {
+            return new EssayAnswer($text);
+        }
+
+        return null;
     }
 
     public function isComplete() : bool

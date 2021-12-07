@@ -47,8 +47,12 @@ class EssayScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         if ($this->configuration->getScoringMode() === self::SCORING_MANUAL) {
             throw new AsqException('Cant automatically score questions that have manual scoring');
         } else {
