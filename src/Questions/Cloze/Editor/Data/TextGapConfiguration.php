@@ -88,6 +88,10 @@ class TextGapConfiguration extends ClozeGapConfiguration
             }
         }
 
+        if ($this->getMatchingMethod() === null) {
+            return false;
+        }
+
         return true;
     }
 }

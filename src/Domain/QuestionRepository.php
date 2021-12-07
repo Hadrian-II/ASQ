@@ -10,6 +10,7 @@ use Fluxlabs\CQRS\Event\EventStore;
 use Fluxlabs\CQRS\Event\IEventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
+use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**

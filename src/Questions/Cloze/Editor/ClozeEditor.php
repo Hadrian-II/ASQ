@@ -36,7 +36,7 @@ class ClozeEditor extends AbstractEditor
         parent::__construct($question, $is_disabled);
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $answers = [];
 
@@ -44,9 +44,17 @@ class ClozeEditor extends AbstractEditor
             $answers[$i] = $this->getPostValue($this->getPostVariable($i));
         }
 
-        $this->answer = new ClozeAnswer($answers);
+        $no_answer = true;
 
-        return $this->answer;
+        foreach ($answers as $answer) {
+            // if at least one gap is answered, create answer
+            if ($answer !== null and strlen($answer) > 0) {
+                $this->answer = new ClozeAnswer($answers);
+                return $this->answer;
+            }
+        }
+
+        return null;
     }
 
     public function generateHtml() : string
@@ -89,7 +97,7 @@ class ClozeEditor extends AbstractEditor
      */
     private function createOptions(array $gap_items, int $index) : string
     {
-        return implode(array_map(
+        return '<option value="">---</option>' . implode(array_map(
             function (ClozeGapItem $gap_item) use ($index) {
                 return sprintf(
                     '<option value="%1$s" %2$s>%1$s</option>',
