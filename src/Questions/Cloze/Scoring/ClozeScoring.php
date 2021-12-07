@@ -39,8 +39,12 @@ class ClozeScoring extends AbstractScoring
         $this->text_scoring = new TextScoring($DIC->language());
     }
 
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $given_answer = $answer->getAnswers();
 
         $this->reached_points = 0.0;

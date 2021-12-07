@@ -21,11 +21,11 @@ class ScoringComponent implements Component
 {
     use PathHelper;
 
-    private AbstractValueObject $answer;
+    private ?AbstractValueObject $answer;
 
     private QuestionDto $question;
 
-    public function __construct(QuestionDto $question_dto, AbstractValueObject $answer)
+    public function __construct(QuestionDto $question_dto, ?AbstractValueObject $answer)
     {
         $this->question = $question_dto;
         $this->answer = $answer;
@@ -36,7 +36,7 @@ class ScoringComponent implements Component
         return $this->question;
     }
 
-    public function getAnswer() : AbstractValueObject
+    public function getAnswer() : ?AbstractValueObject
     {
         return $this->answer;
     }

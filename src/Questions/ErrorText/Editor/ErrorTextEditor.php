@@ -89,7 +89,7 @@ class ErrorTextEditor extends AbstractEditor
         return $text;
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $answers = $this->getPostValue($this->getPostKey());
 
@@ -102,7 +102,7 @@ class ErrorTextEditor extends AbstractEditor
 
             return new ErrorTextAnswer($answers);
         } else {
-            return new ErrorTextAnswer();
+            return null;
         }
     }
 

@@ -20,8 +20,12 @@ use srag\asq\Application\Exception\AsqException;
  */
 class MultipleChoiceScoring extends AbstractScoring
 {
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $reached_points = 0;
 
         $selected_options = $answer->getSelectedIds();
