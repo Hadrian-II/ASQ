@@ -163,25 +163,44 @@ class MultipleChoiceEditor extends AbstractEditor
             self::VAR_MC_POSTNAME . $this->question->getId()->toString();
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         if ($this->isMultipleChoice()) {
-            $result = [];
-            /** @var AnswerOption $answer_option */
-            foreach ($this->answer_options as $answer_option) {
-                $poststring = $this->getPostName($answer_option->getOptionId());
-                if ($this->isPostVarSet($poststring)) {
-                    $result[] = $this->getPostValue($poststring);
-                }
-            }
-            $this->answer = new MultipleChoiceAnswer($result);
+            $this->answer = $this->readMultiChoice();
         } else {
-            $this->answer = new MultipleChoiceAnswer([
-                $this->getPostValue($this->getPostName())
-            ]);
+            $this->answer = $this->readSingleChoice();
         }
 
         return $this->answer;
+    }
+
+    private function readMultiChoice() : ?AbstractValueObject
+    {
+        $result = [];
+        /** @var AnswerOption $answer_option */
+        foreach ($this->answer_options as $answer_option) {
+            $poststring = $this->getPostName($answer_option->getOptionId());
+            if ($this->isPostVarSet($poststring)) {
+                $result[] = $this->getPostValue($poststring);
+            }
+        }
+
+        if (count($result[]) === null) {
+            return null;
+        }
+
+        return new MultipleChoiceAnswer($result);
+    }
+
+    private function readSingleChoice(): ?MultipleChoiceAnswer
+    {
+        if (!$this->isPostVarSet($this->getPostName())) {
+            return null;
+        }
+
+        return new MultipleChoiceAnswer([
+            $this->getPostValue($this->getPostName())
+        ]);
     }
 
     public function isComplete() : bool
