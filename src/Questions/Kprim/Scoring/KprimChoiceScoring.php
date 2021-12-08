@@ -19,8 +19,12 @@ use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
  */
 class KprimChoiceScoring extends AbstractScoring
 {
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $count = 0;
         foreach ($this->question->getAnswerOptions() as $option) {
             /** @var KprimChoiceScoringDefinition $scoring_definition */

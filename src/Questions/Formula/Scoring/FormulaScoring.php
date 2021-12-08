@@ -38,6 +38,10 @@ class FormulaScoring extends AbstractScoring
 
     public function score(AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $reached_points = 0.0;
 
         foreach ($this->question->getAnswerOptions() as $option) {

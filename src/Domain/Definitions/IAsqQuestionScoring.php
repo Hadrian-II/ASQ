@@ -34,11 +34,11 @@ interface IAsqQuestionScoring
      *
      * Throws exception if automatic scoring not possible
      *
-     * @param AbstractValueObject $answer
+     * @param ?AbstractValueObject $answer
      * @return float
      * @throws AsqException
      */
-    public function score(AbstractValueObject $answer) : float;
+    public function score(?AbstractValueObject $answer) : float;
 
     /**
      * Gives the maximal possible score of a question

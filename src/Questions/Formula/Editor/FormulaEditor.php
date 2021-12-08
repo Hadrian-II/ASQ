@@ -34,7 +34,7 @@ class FormulaEditor extends AbstractEditor
         parent::__construct($question, $is_disabled);
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $results = [];
         $variables = [];

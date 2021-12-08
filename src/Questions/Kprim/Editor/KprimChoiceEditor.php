@@ -50,7 +50,7 @@ class KprimChoiceEditor extends AbstractEditor
         parent::__construct($question, $is_disabled);
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
         $answers = [];
 
@@ -69,7 +69,13 @@ class KprimChoiceEditor extends AbstractEditor
             }
         }
 
-        return new KprimChoiceAnswer($answers);
+        foreach ($answers as $answer) {
+            if ($answer !== null) {
+                return new KprimChoiceAnswer($answers);
+            }
+        }
+
+        return null;
     }
 
     public function generateHtml() : string
