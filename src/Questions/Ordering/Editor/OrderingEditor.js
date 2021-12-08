@@ -14,7 +14,8 @@ $(document).ready(() => {
                 ids.push($(this).attr('data-id'));
             });
 
-            $(this).siblings('input').val(ids.join(','));
+            $(this).siblings('.js_order_answer').val(ids.join(','));
+            $(this).siblings('.js_order_touched').val('1');
         },
     }).disableSelection();
 });

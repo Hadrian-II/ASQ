@@ -27,6 +27,8 @@ class OrderingEditor extends AbstractEditor
     use PostAccess;
     use PathHelper;
 
+    const TOUCHED_KEY = 'touched';
+
     private OrderingEditorConfiguration $configuration;
 
     private array $display_ids;
@@ -53,7 +55,7 @@ class OrderingEditor extends AbstractEditor
         $this->display_ids = [];
 
         foreach ($question->getAnswerOptions() as $option) {
-            $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText() .$option->getDisplayDefinition()->getImage());
+            $this->display_ids[$option->getOptionId()] = md5($question->getId()->toString() . $option->getDisplayDefinition()->getText() . $option->getDisplayDefinition()->getImage());
         }
     }
 
@@ -92,11 +94,17 @@ class OrderingEditor extends AbstractEditor
         }
 
         $tpl->setVariable('POST_NAME', $this->question->getId()->toString());
+        $tpl->setVariable('POST_NAME_TOUCHED', $this->getTouchedKey());
         $tpl->setVariable('ANSWER', $this->getAnswerString($items));
         $tpl->setVariable('ENABLED', $this->is_disabled ? 'false' : 'true');
         $tpl->parseCurrentBlock();
 
         return $tpl->get();
+    }
+
+    private function getTouchedKey() : string
+    {
+        return $this->question->getId()->toString() . self::TOUCHED_KEY;
     }
 
     /**
@@ -125,7 +133,9 @@ class OrderingEditor extends AbstractEditor
 
     public function readAnswer() : ?AbstractValueObject
     {
-        if (!$this->isPostVarSet($this->question->getId()->toString())) {
+        if ($this->getPostValue($this->getTouchedKey()) === '' ||
+            !$this->isPostVarSet($this->question->getId()->toString()))
+        {
             return null;
         }
 

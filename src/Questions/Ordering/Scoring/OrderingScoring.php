@@ -18,9 +18,11 @@ use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
  */
 class OrderingScoring extends AbstractScoring
 {
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
-        $reached_points = 0.0;
+        if ($answer === null) {
+            return 0;
+        }
 
         /** @var OrderingScoringConfiguration $scoring_conf */
         $scoring_conf = $this->question->getPlayConfiguration()->getScoringConfiguration();
