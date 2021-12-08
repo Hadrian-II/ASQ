@@ -24,8 +24,12 @@ class TextSubsetScoring extends AbstractScoring
 {
     protected AbstractValueObject $answer;
 
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $this->answer = $answer;
 
         $max_allowed = $this->question->getPlayConfiguration()->getEditorConfiguration()->getNumberOfRequestedAnswers();

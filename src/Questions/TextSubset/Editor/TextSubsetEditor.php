@@ -76,13 +76,19 @@ class TextSubsetEditor extends AbstractEditor
             return null;
         }
 
-        $answer = [];
+        $answers = [];
 
         for ($i = 1; $i <= $this->configuration->getNumberOfRequestedAnswers(); $i++) {
-            $answer[$i] = $this->getPostValue($this->getPostName($i));
+            $answers[$i] = $this->getPostValue($this->getPostName($i));
         }
 
-        return new TextSubsetAnswer($answer);
+        foreach ($answers as $answer) {
+            if (strlen($answer) > 0) {
+                return new TextSubsetAnswer($answers);
+            }
+        }
+
+        return null;
     }
 
     public function isComplete() : bool
