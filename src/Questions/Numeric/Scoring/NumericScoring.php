@@ -18,8 +18,12 @@ use Fluxlabs\CQRS\Aggregate\AbstractValueObject;
  */
 class NumericScoring extends AbstractScoring
 {
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $reached_points = 0;
 
         /** @var NumericScoringConfiguration $scoring_conf */

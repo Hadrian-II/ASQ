@@ -54,9 +54,16 @@ class NumericEditor extends AbstractEditor
         return $tpl->get();
     }
 
-    public function readAnswer() : AbstractValueObject
+    public function readAnswer() : ?AbstractValueObject
     {
-        return new NumericAnswer($this->readFloat($this->getPostValue($this->question->getId()->toString())));
+        $value = $this->readFloat($this->getPostValue($this->question->getId()->toString()));
+
+        if ($value === null) {
+            return null;
+        }
+        else {
+            return new NumericAnswer($this->readFloat($this->getPostValue($this->question->getId()->toString())));
+        }
     }
 
     public function isComplete() : bool
