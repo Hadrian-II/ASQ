@@ -42,6 +42,10 @@ class MatchingEditor extends AbstractEditor
 
         $matches = array_diff($matches, ['']);
 
+        if (count($matches) === 0) {
+            return null;
+        }
+
         return new MatchingAnswer($matches);
     }
 

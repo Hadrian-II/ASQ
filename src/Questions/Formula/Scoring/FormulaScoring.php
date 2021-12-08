@@ -36,7 +36,7 @@ class FormulaScoring extends AbstractScoring
         $this->configuration = $question->getPlayConfiguration()->getScoringConfiguration();
     }
 
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
         if ($answer === null) {
             return 0;

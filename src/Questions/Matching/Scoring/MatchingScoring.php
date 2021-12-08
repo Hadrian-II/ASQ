@@ -18,8 +18,12 @@ use srag\asq\Application\Exception\AsqException;
  */
 class MatchingScoring extends AbstractScoring
 {
-    public function score(AbstractValueObject $answer) : float
+    public function score(?AbstractValueObject $answer) : float
     {
+        if ($answer === null) {
+            return 0;
+        }
+
         $matches = [];
         $wrong_deduction = $this->question->getPlayConfiguration()->getScoringConfiguration()->getWrongDeduction();
 
