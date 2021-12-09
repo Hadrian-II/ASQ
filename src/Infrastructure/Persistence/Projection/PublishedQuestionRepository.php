@@ -27,6 +27,23 @@ class PublishedQuestionRepository
         $question_list->create();
     }
 
+    public function saveBasicQuestion(QuestionDto $question) : void
+    {
+        $question_list =
+            QuestionListItemAr::where(
+                ['question_id' => $question->getId()->toString()]
+            )->first();
+
+        if ($question_list === null) {
+            $question_list = QuestionListItemAr::createNew($question);
+            $question_list->create();
+        }
+        else {
+            $question_list->updateQuestion($question);
+            $question_list->save();
+        }
+    }
+
     public function revisionExists(Uuid $question_id, string $name) : bool
     {
         return QuestionAr::where(['revision_name' => $name, 'question_id' => $question_id->toString()])->count() > 0;

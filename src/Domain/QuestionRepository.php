@@ -10,7 +10,9 @@ use Fluxlabs\CQRS\Event\EventStore;
 use Fluxlabs\CQRS\Event\IEventStore;
 use srag\asq\Domain\Model\Question;
 use srag\asq\Infrastructure\Persistence\EventStore\QuestionEventStore;
+use srag\asq\Infrastructure\Persistence\Projection\PublishedQuestionRepository;
 use srag\asq\Infrastructure\Persistence\Projection\QuestionListItemAr;
+use srag\asq\Infrastructure\Persistence\QuestionType;
 use srag\asq\Infrastructure\Persistence\RelationalEventStore\RelationalQuestionEventStore;
 
 /**
@@ -39,5 +41,14 @@ class QuestionRepository extends AbstractAggregateRepository
     protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot
     {
         return Question::reconstitute($event_history);
+    }
+
+    public function save(AbstractAggregateRoot $question): void
+    {
+        parent::save($question);
+
+        $question_type = QuestionType::where(["title_key" => $question->getType()])->first();
+        $repository = new PublishedQuestionRepository();
+        $repository->saveBasicQuestion(QuestionDto::CreateFromQuestion($question, $question_type));
     }
 }

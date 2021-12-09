@@ -108,15 +108,20 @@ class QuestionListItemAr extends ActiveRecord
     public static function createNew(QuestionDto $question) : QuestionListItemAr
     {
         $object = new QuestionListItemAr();
-        $object->question_id = $question->getId();
-        $object->revision_name = $question->getRevisionId()->getName();
-        $object->title = $question->getData()->getTitle();
-        $object->description = $question->getData()->getDescription();
-        $object->question = $question->getData()->getQuestionText();
-        $object->author = $question->getData()->getAuthor();
-        $object->working_time = $question->getData()->getWorkingTime();
-        $object->created = new DateTimeImmutable();
+        $object->updateQuestion($question);
         return $object;
+    }
+
+    public function updateQuestion(QuestionDto $question) : void
+    {
+        $this->question_id = $question->getId();
+        $this->revision_name = $question->getRevisionId() ? $question->getRevisionId()->getName() : '';
+        $this->title = $question->getData()->getTitle();
+        $this->description = $question->getData()->getDescription();
+        $this->question = $question->getData()->getQuestionText();
+        $this->author = $question->getData()->getAuthor();
+        $this->working_time = $question->getData()->getWorkingTime();
+        $this->created = new DateTimeImmutable();
     }
 
     public function getTitle() : string
