@@ -18,6 +18,10 @@ use srag\asq\Infrastructure\Helpers\PathHelper;
  */
 class QuestionComponent implements Component
 {
+    const SHOW_HEADER_WITH_POINTS = 1;
+    const SHOW_HEADER = 2;
+    const SHOW_NOTHING = 3;
+
     use PathHelper;
 
     private QuestionDto $question_dto;
@@ -27,6 +31,8 @@ class QuestionComponent implements Component
     private bool $show_feedback = false;
 
     private bool $is_disabled = false;
+
+    private int $title_display = self::SHOW_HEADER;
 
     public function __construct(QuestionDto $question_dto)
     {
@@ -57,6 +63,20 @@ class QuestionComponent implements Component
         return $clone;
     }
 
+    public function withTitleDisplay(int $title_display) : QuestionComponent
+    {
+        $modes = [self::SHOW_HEADER_WITH_POINTS, self::SHOW_HEADER, self::SHOW_NOTHING];
+
+        if (!in_array($title_display, $modes)) {
+            return $this;
+        }
+
+        $clone = clone $this;
+        $clone->title_display = $title_display;
+
+        return $clone;
+    }
+
     public function getQuestion() : QuestionDto
     {
         return $this->question_dto;
@@ -75,6 +95,11 @@ class QuestionComponent implements Component
     public function isDisabled() : bool
     {
         return $this->is_disabled;
+    }
+
+    public function getTitleDisplay() : int
+    {
+        return $this->title_display;
     }
 
     public function withAnswerFromPost() : QuestionComponent

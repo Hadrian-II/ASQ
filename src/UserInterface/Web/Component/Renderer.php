@@ -49,7 +49,7 @@ class Renderer extends AbstractComponentRenderer
         $tpl = new ilTemplate($this->getBasePath(__DIR__) . 'templates/default/tpl.question_view.html', true, true);
 
         $tpl->setCurrentBlock('question');
-        $tpl->setVariable('TITLE', $question->getData()->getTitle());
+        $tpl->setVariable('TITLE', $this->renderTitle($input->getTitleDisplay(), $question));
         $tpl->setVariable('QUESTION', $question->getData()->getQuestionText());
         $tpl->setVariable('EDITOR', $editor->generateHtml());
         $tpl->parseCurrentBlock();
@@ -68,6 +68,25 @@ class Renderer extends AbstractComponentRenderer
         }
 
         return $tpl->get();
+    }
+
+    private function renderTitle(int $display_mode, QuestionDto $question) : string
+    {
+        switch ($display_mode) {
+            case QuestionComponent::SHOW_HEADER_WITH_POINTS:
+                global $ASQDIC;
+                $max = $ASQDIC->asq()->answer()->getMaxScore($question);
+                return sprintf(
+                    '%s (%s: %s)',
+                    $question->getData()->getTitle(),
+                    $this->txt('asq_header_points'),
+                    $max
+                );
+            case QuestionComponent::SHOW_HEADER:
+                return $question->getData()->getTitle();
+            default:
+                return '';
+        }
     }
 
     public function registerResources(ResourceRegistry $registry) : void
