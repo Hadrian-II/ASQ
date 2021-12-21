@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace srag\asq\Application\Service;
 
-use ILIAS\HTTP\Services;
+use ILIAS\DI\HTTPServices;
 use srag\asq\Domain\QuestionDto;
+use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup;
 use srag\asq\UserInterface\Web\Component\QuestionComponent;
 use srag\asq\UserInterface\Web\Fields\Markdown\Markdown;
 use srag\asq\UserInterface\Web\Form\QuestionFormGUI;
 use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInput;
-use srag\asq\UserInterface\Web\Fields\AsqTableInput\AsqTableInputFieldDefinition;
 use ILIAS\Data\Factory as DataFactory;
 use ILIAS\Refinery\Factory;
 use srag\asq\UserInterface\Web\Fields\DurationInput\DurationInput;
-use srag\asq\Questions\Choice\Form\Editor\ImageMap\ImageFormPopup\ImageFormPopup;
 use srag\asq\UserInterface\Web\Fields\AsqImageUpload\AsqImageUpload;
 use srag\asq\UserInterface\Web\Component\Feedback\Form\QuestionFeedbackFormGUI;
 use srag\asq\UserInterface\Web\Component\Hint\Form\HintFormGUI;
@@ -36,7 +35,7 @@ class UIService
 
     private UIServices $ui;
 
-    private Services $http;
+    private HTTPServices $http;
 
     private DataFactory $data_factory;
 
@@ -45,7 +44,7 @@ class UIService
     public function __construct(
         ilLanguage $lng,
         UIServices $ui,
-        Services $http,
+        HTTPServices $http,
         DataFactory $data_factory,
         Factory $refinery)
     {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
+use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 use ILIAS\Data\UUID\Uuid;
-use ILIAS\HTTP\Services;
 use srag\asq\Application\Service\AsqServices;
 use srag\asq\Domain\QuestionDto;
 use srag\asq\Infrastructure\Helpers\PathHelper;
@@ -49,7 +49,7 @@ class AsqQuestionPreviewGUI
 
     private ilCtrl $ctrl;
 
-    private Services $http;
+    private HTTPServices $http;
 
     private ASQServices $asq;
 
@@ -58,7 +58,7 @@ class AsqQuestionPreviewGUI
         ilLanguage $language,
         UIServices $ui,
         ilCtrl $ctrl,
-        Services $http,
+        HTTPServices $http,
         ASQServices $asq)
     {
         $this->question_id = $question_id;

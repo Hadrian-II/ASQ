@@ -3,6 +3,7 @@
 
 namespace ILIAS\AssessmentQuestion\Test;
 
+use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 use ilCtrl;
 use ilLanguage;
@@ -145,7 +146,7 @@ class AsqTestDIC extends \ILIAS\DI\Container
         };
 
         $container['http'] = function ($c) {
-            return new class() extends \ILIAS\HTTP\Services {
+            return new class() extends HTTPServices {
                 public function __construct() {}
             };
         };
