@@ -116,11 +116,18 @@ class QuestionListItemAr extends ActiveRecord
     {
         $this->question_id = $question->getId();
         $this->revision_name = $question->getRevisionId() ? $question->getRevisionId()->getName() : '';
-        $this->title = $question->getData()->getTitle();
-        $this->description = $question->getData()->getDescription();
-        $this->question = $question->getData()->getQuestionText();
-        $this->author = $question->getData()->getAuthor();
-        $this->working_time = $question->getData()->getWorkingTime();
+
+        if ($question->getData() !== null) {
+            $this->title = $question->getData()->getTitle();
+            $this->description = $question->getData()->getDescription();
+            $this->question = $question->getData()->getQuestionText();
+            $this->author = $question->getData()->getAuthor();
+            $this->working_time = $question->getData()->getWorkingTime();
+        }
+        else {
+            $this->title = '';
+        }
+
         $this->created = new DateTimeImmutable();
     }
 
@@ -185,6 +192,8 @@ class QuestionListItemAr extends ActiveRecord
         switch ($field_name) {
             case 'created':
                 return $this->created ? $this->created->getTimestamp() : null;
+            case 'question_id':
+                return $this->question_id ? $this->question_id->toString() : null;
             default:
                 return null;
         }
